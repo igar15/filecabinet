@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <!--    add bootstrap style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!---->
+
+    <title>Documents List</title>
+
+</head>
+<body>
+    <div class="container">
+        <a th:href="@{/}">Back to Home page</a>
+        <h3>Documents List</h3>
+        <hr>
+
+        <a th:href="@{/documents/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Document</a>
+
+        <form action="#" th:action="@{/documents/filter}" method="get">
+            <input type="text" th:name="decimalNum" th:value="${param.decimalNum}" class="form-control mb-4 col-4" placeholder="Decimal number">
+            <button type="submit" class="btn btn-info col-2">Search</button>
+        </form>
+
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Decimal number</th>
+                    <th>Name</th>
+                    <th>Inventory number</th>
+                    <th>Stage</th>
+                    <th>Developer</th>
+                    <th>Show Document</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tempDocument : ${documents}">
+                    <td th:text="${tempDocument.decimalNumber}"></td>
+                    <td th:text="${tempDocument.name}"></td>
+                    <td th:text="${tempDocument.inventoryNumber}"></td>
+                    <td th:text="${tempDocument.stage}"></td>
+                    <td th:text="${tempDocument.developer == null} ? '' : ${tempDocument.developer.name}"></td>
+                    <td>
+                        <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/">Show</a>
+                    </td>
+                    <td>
+                        <a th:href="@{/documents/showFormForUpdate(documentId=${tempDocument.id})}" class="btn btn-info btn-sm">Update</a>
+
+                        <a th:href="@{/documents/delete(documentId=${tempDocument.id})}" class="btn btn-danger btn-sm"
+                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

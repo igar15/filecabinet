@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <!--    add bootstrap style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!---->
+
+    <title>Save Document</title>
+</head>
+<body>
+    <div class="container">
+        <h3>Document Directory</h3>
+        <hr>
+
+        <p class="h4 mb-4">Save Document</p>
+
+        <form action="#" th:action="@{/documents/save}" th:object="${documentTo}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <input type="text" th:field="*{decimalNumber}" class="form-control mb-4 col-4" placeholder="Decimal number">
+            <input type="text" th:field="*{name}" class="form-control mb-4 col-4" placeholder="Name">
+            <input type="number" th:field="*{inventoryNumber}" class="form-control mb-4 col-4" placeholder="Inventory number">
+
+            <div class="col-md-6 form-group">
+                <strong>Stage:</strong>
+                <div class="form-check form-check-inline">
+                    <p th:each="radioValue : ${documentTo.stages}">
+                        <input  class="form-check-input" type="radio" th:field="*{stage}" th:value="${radioValue}"/>
+                        <label class="form-check-label" th:for="${#ids.prev('stage')}" th:text="${radioValue}"></label>
+                    </p>
+                </div>
+                <br>
+                <strong>Developer:</strong>
+                <div class="form-check form-check-inline">
+                    <p th:each="radioValue : ${documentTo.developerNames}">
+                        <input class="form-check-input" type="radio" th:field="*{developerName}" th:value="${radioValue}"/>
+                        <label class="form-check-label" th:for="${#ids.prev('developerName')}" th:text="${radioValue}"></label>
+                    </p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-info col-2">Save</button>
+        </form>
+
+    </div>
+</body>
+</html>

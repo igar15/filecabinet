@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <!--    add bootstrap style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!---->
+
+    <title>Developers list</title>
+</head>
+<body>
+    <div class="container">
+        <a th:href="@{/}">Back to Home page</a>
+        <h3>Developers List</h3>
+        <hr>
+
+        <a th:href="@{/developers/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Developer</a>
+
+        <table class="table table-bordered table-striped w-auto">
+            <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tempDeveloper : ${developers}">
+                <td th:text="${tempDeveloper.name}"></td>
+                <td>
+
+                    <a th:href="@{/developers/showFormForUpdate(developerId=${tempDeveloper.id})}" class="btn btn-info btn-sm">Update</a>
+
+                    <a th:href="@{/developers/delete(developerId=${tempDeveloper.id})}" class="btn btn-danger btn-sm"
+                       onclick="if (!(confirm('Are you sure'))) return false">Delete</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
