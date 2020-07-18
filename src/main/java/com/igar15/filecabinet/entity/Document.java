@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "documents")
@@ -26,6 +27,12 @@ public class Document extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
     private Developer developer;
+
+    @ManyToMany
+    @JoinTable(name = "document_change_notices",
+            joinColumns = @JoinColumn(name = "document_id"),
+            inverseJoinColumns = @JoinColumn(name = "change_notice_id"))
+    private List<ChangeNotice> changeNotices;
 
     public Document() {
     }
@@ -68,5 +75,13 @@ public class Document extends AbstractNamedEntity {
 
     public void setDeveloper(Developer developer) {
         this.developer = developer;
+    }
+
+    public List<ChangeNotice> getChangeNotices() {
+        return changeNotices;
+    }
+
+    public void setChangeNotices(List<ChangeNotice> changeNotices) {
+        this.changeNotices = changeNotices;
     }
 }

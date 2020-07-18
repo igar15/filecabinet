@@ -1,3 +1,5 @@
+drop table if exists document_change_notices;
+drop table if exists change_notices;
 drop table if exists documents;
 drop table if exists developers;
 drop sequence if exists global_seq;
@@ -21,3 +23,20 @@ create table documents (
 );
 create unique index documents_unique_decimal_number_idx on documents (decimal_number);
 create unique index documents_unique_inventory_number_idx on documents (inventory_number);
+
+create table change_notices (
+    id integer primary key default nextval('global_seq'),
+    name varchar not null,
+    change_code integer not null,
+    developer_id integer default null,
+    foreign key (developer_id) references developers (id)
+);
+create unique index change_notices_name_idx on change_notices (name);
+
+create table document_change_notices (
+    document_id integer not null,
+    change_notice_id integer not null,
+    primary key(document_id, change_notice_id),
+    foreign key (document_id) references documents (id),
+    foreign key (change_notice_id) references change_notices (id)
+);

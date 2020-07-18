@@ -70,9 +70,16 @@ public class DocumentController {
         return "/documents/list-documents";
     }
 
+    @GetMapping("/showDocumentInfo")
+    public String showDocumentInfo(@RequestParam("documentId") int id, Model model) {
+        model.addAttribute("documentTo", convertToToById(id));
+        return "/documents/documentToInfo";
+    }
+
     private Document convertFromTo(DocumentTo documentTo) {
+        Developer documentDeveloper = (documentTo.getDeveloperName() == null) ? null : developerService.findByName(documentTo.getDeveloperName());
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(),
-                documentTo.getInventoryNumber(), documentTo.getStage(), developerService.findByName(documentTo.getDeveloperName()));
+                documentTo.getInventoryNumber(), documentTo.getStage(), documentDeveloper);
     }
 
     private DocumentTo convertToToById(int id) {

@@ -24,7 +24,7 @@ public class DocumentTo {
 
     private Stage stage;
 
-    @NotNull(message = "You must set developer name")
+    //@NotNull(message = "You must set developer name")
     private String developerName;
 
     private Stage[] stages = Stage.values();
