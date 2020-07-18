@@ -10,21 +10,21 @@ public class DocumentTo {
 
     private Integer id;
 
-    @NotBlank
-    @Size(min=5, max=100)
+    @NotBlank(message = "Name must not be blank")
+    @Size(min=5, max=100, message = "Name must be between 5 and 100 characters long")
     private String name;
 
-    @NotBlank
-    @Size(min = 6, max = 100)
+    @NotBlank(message = "Decimal number must not be blank")
+    @Size(min = 6, max = 100, message = "Decimal number must be between 6 and 100 characters long")
     private String decimalNumber;
 
-    @NotNull
-    @Min(value = 1)
+    @NotNull(message = "Inventory number must not be empty")
+    @Min(value = 1, message = "Inventory number must be greater than 0")
     private Integer inventoryNumber;
 
     private Stage stage;
 
-    @NotNull
+    @NotNull(message = "You must set developer name")
     private String developerName;
 
     private Stage[] stages = Stage.values();
