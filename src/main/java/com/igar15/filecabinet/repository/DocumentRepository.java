@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
-    List<Document> findByDecimalNumber(String decimalNumber);
+    Optional<Document> findByDecimalNumber(String decimalNumber);
 
     @Query("select d from Document d where d.developer.id=:developerId")
     List<Document> findAllByDeveloperId(@Param("developerId") int developerId);
+
+    @Query("select d from Document d left join d.changeNotices where d.id=:id")
+    Document findByIdWithChangeNotices(@Param("id") int id);
 
 }

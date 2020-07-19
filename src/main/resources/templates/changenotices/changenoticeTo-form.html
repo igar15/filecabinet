@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <title>Save change notice</title>
+</head>
+<body>
+    <div class="container">
+        <button class="btn btn-sm btn-info" onclick="goBack()">Go Back</button>
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+
+        <br><br>
+
+        <h3>Change notice Directory</h3>
+        <hr>
+
+        <p class="h4 mb-4">Save Change notice</p>
+
+        <form class="form-horizontal" th:action="@{/changenotices/showFormForDocsAdd}" th:object="${changeNoticeTo}" method="post">
+
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                <p th:text="'Please correct values in error below'">Error Message</p>
+            </div>
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{name}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Change code:</label>
+                <div class="col-sm-10">
+                    <input type="text" th:class="${#fields.hasErrors('changeCode')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{changeCode}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('changeCode')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('changeCode')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Developer:</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <p th:each="radioValue : ${changeNoticeTo.developerNames}">
+                            <input type="radio" th:field="*{developerName}" th:value="${radioValue}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('developerName')}" th:text="${radioValue}"></label>
+                        </p>
+                        <span class="help-block" th:if="${#fields.hasErrors('developerName')}">
+                            <ul>
+                                <li class="text-danger" th:each="err : ${#fields.errors('developerName')}" th:text="${err}"/>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

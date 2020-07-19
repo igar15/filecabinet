@@ -21,12 +21,14 @@
         <h3>Documents List</h3>
         <hr>
 
-        <a th:href="@{/documents/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Document</a>
-
         <form action="#" th:action="@{/documents/filter}" method="get">
             <input type="text" th:name="decimalNum" th:value="${param.decimalNum}" class="form-control mb-4 col-4" placeholder="Decimal number">
             <button type="submit" class="btn btn-info col-2">Search</button>
         </form>
+
+        <br><br>
+
+        <a th:href="@{/documents/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Document</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
@@ -37,13 +39,13 @@
                     <th>Stage</th>
                     <th>Developer</th>
                     <th>Show Document</th>
-                    <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr th:each="tempDocument : ${documents}">
                     <td class="align-middle">
-                        <a th:href="@{/documents/showDocumentInfo(documentId=${tempDocument.id})}"><span class="text-dark" th:text="${tempDocument.decimalNumber}"/></a>
+                        <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.id}}"><span class="text-dark" th:text="${tempDocument.decimalNumber}"/></a>
                     </td>
                     <td class="align-middle" th:text="${tempDocument.name}"></td>
                     <td class="align-middle text-center" th:text="${tempDocument.inventoryNumber}"></td>
@@ -51,17 +53,6 @@
                     <td class="align-middle text-center" th:text="${tempDocument.developer == null} ? '' : ${tempDocument.developer.name}"></td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
-                    </td>
-                    <td class="align-middle">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a th:href="@{/documents/showFormForUpdate(documentId=${tempDocument.id})}" class="btn btn-sm btn-outline-info">Update</a>
-                            </div>
-                            <div class="col-sm-6">
-                                <a th:href="@{/documents/delete(documentId=${tempDocument.id})}" class="btn btn-sm btn-outline-danger"
-                                   onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
-                            </div>
-                        </div>
                     </td>
                 </tr>
             </tbody>

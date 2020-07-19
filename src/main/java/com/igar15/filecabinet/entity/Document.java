@@ -37,12 +37,13 @@ public class Document extends AbstractNamedEntity {
     public Document() {
     }
 
-    public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, Developer developer) {
+    public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, Developer developer, List<ChangeNotice> changeNotices) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
         this.stage = stage;
         this.developer = developer;
+        this.changeNotices = changeNotices;
     }
 
     public String getDecimalNumber() {

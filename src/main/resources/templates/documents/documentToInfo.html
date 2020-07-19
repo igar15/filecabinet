@@ -80,10 +80,9 @@
                     <h6>Changes:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6>Change #1</h6>
-                    <h6>Change #2</h6>
-                    <h6>Change #3</h6>
-                    <h6>Change #4</h6>
+                    <h6 th:each="tempChangeNoticeName : ${documentTo.changeNoticesNames}">
+                        <span th:text="${tempChangeNoticeName}"></span>
+                    </h6>
                 </div>
             </div>
 

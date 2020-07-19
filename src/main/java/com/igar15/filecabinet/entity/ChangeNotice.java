@@ -24,6 +24,13 @@ public class ChangeNotice extends AbstractNamedEntity {
 
     }
 
+    public ChangeNotice(Integer id, String name, Integer changeCode, Developer developer, List<Document> documents) {
+        super(id, name);
+        this.changeCode = changeCode;
+        this.developer = developer;
+        this.documents = documents;
+    }
+
     public Integer getChangeCode() {
         return changeCode;
     }

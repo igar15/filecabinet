@@ -31,11 +31,13 @@ public class DocumentTo {
 
     private String[] developerNames;
 
+    private String[] changeNoticesNames;
+
     public DocumentTo() {
 
     }
 
-    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, String developerName, String[] developerNames) {
+    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, String developerName, String[] developerNames, String[] changeNoticesNames) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -43,6 +45,7 @@ public class DocumentTo {
         this.stage = stage;
         this.developerName = developerName;
         this.developerNames = developerNames;
+        this.changeNoticesNames = changeNoticesNames;
     }
 
     public DocumentTo(String[] developerNames) {
@@ -111,6 +114,14 @@ public class DocumentTo {
 
     public void setDeveloperNames(String[] developerNames) {
         this.developerNames = developerNames;
+    }
+
+    public String[] getChangeNoticesNames() {
+        return changeNoticesNames;
+    }
+
+    public void setChangeNoticesNames(String[] changeNoticesNames) {
+        this.changeNoticesNames = changeNoticesNames;
     }
 
     @Override

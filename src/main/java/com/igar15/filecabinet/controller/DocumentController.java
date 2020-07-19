@@ -2,8 +2,10 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.dto.DocumentTo;
 import com.igar15.filecabinet.entity.AbstractNamedEntity;
+import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/documents")
@@ -23,6 +28,9 @@ public class DocumentController {
 
     @Autowired
     private DeveloperService developerService;
+
+    @Autowired
+    private ChangeNoticeService changeNoticeService;
 
     @GetMapping("/list")
     public String showAll(Model model) {
@@ -40,6 +48,9 @@ public class DocumentController {
     public String save(@Valid @ModelAttribute("documentTo") DocumentTo documentTo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             documentTo.setDeveloperNames(getDeveloperNames());
+            if (documentTo.getId() != null) {
+                documentTo.setChangeNoticesNames(getChangeNoticesNames(documentTo.getId()));
+            }
             return "/documents/documentTo-form";
         }
         Document savedDocument = convertFromTo(documentTo);
@@ -48,7 +59,12 @@ public class DocumentController {
         } else {
             documentService.update(savedDocument);
         }
-        return "redirect:/documents/list";
+        if (documentTo.getId() == null) {
+            return "redirect:/documents/list";
+        }
+        else {
+            return "redirect:/documents/showDocumentInfo/" + documentTo.getId();
+        }
     }
 
     @GetMapping("/showFormForUpdate")
@@ -66,33 +82,50 @@ public class DocumentController {
 
     @GetMapping("/filter")
     public String filter(@RequestParam("decimalNum") String decimalNumber, Model model) {
-        model.addAttribute("documents", documentService.findByDecimalNumber(decimalNumber));
+        model.addAttribute("documents", List.of(documentService.findByDecimalNumber(decimalNumber)));
         return "/documents/list-documents";
     }
 
-    @GetMapping("/showDocumentInfo")
-    public String showDocumentInfo(@RequestParam("documentId") int id, Model model) {
+    @GetMapping("/showDocumentInfo/{documentId}")
+    public String showDocumentInfo(@PathVariable("documentId") int id, Model model) {
+        DocumentTo documentTo = convertToToById(id);
+
         model.addAttribute("documentTo", convertToToById(id));
         return "/documents/documentToInfo";
     }
 
     private Document convertFromTo(DocumentTo documentTo) {
         Developer documentDeveloper = (documentTo.getDeveloperName() == null) ? null : developerService.findByName(documentTo.getDeveloperName());
+        List<ChangeNotice> changeNotices = (documentTo.getChangeNoticesNames() != null) ? Arrays.stream(documentTo.getChangeNoticesNames())
+                .map(name -> changeNoticeService.findByName(name))
+                .collect(Collectors.toList()) : null;
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(),
-                documentTo.getInventoryNumber(), documentTo.getStage(), documentDeveloper);
+                documentTo.getInventoryNumber(), documentTo.getStage(), documentDeveloper, changeNotices);
     }
 
     private DocumentTo convertToToById(int id) {
-        Document found = documentService.findById(id);
+        Document found = documentService.findByIdWithChangeNotices(id);
         Developer developer = found.getDeveloper();
         String developerName = (developer == null) ? null : developer.getName();
+        String[] changeNoticesNames = found.getChangeNotices().stream()
+                .map(AbstractNamedEntity::getName)
+                .toArray(String[]::new);
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(),
-                found.getInventoryNumber(), found.getStage(), developerName, getDeveloperNames());
+                found.getInventoryNumber(), found.getStage(), developerName, getDeveloperNames(), changeNoticesNames);
     }
 
     private String[] getDeveloperNames() {
         return developerService.findAll().stream()
                 .map(AbstractNamedEntity::getName).toArray(String[]::new);
     }
+
+    private String[] getChangeNoticesNames(int id) {
+        Document found = documentService.findByIdWithChangeNotices(id);
+        return found.getChangeNotices().stream()
+                .map(AbstractNamedEntity::getName)
+                .toArray(String[]::new);
+    }
+
+
 
 }
