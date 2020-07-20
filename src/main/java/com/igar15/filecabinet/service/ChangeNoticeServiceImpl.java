@@ -16,9 +16,9 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     ChangeNoticeRepository changeNoticeRepository;
 
     @Override
-    public void create(ChangeNotice changeNotice) {
+    public ChangeNotice create(ChangeNotice changeNotice) {
         Assert.notNull(changeNotice, "changeNotice must not be null");
-        changeNoticeRepository.save(changeNotice);
+        return changeNoticeRepository.save(changeNotice);
     }
 
     @Override

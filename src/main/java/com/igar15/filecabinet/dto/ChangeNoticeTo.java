@@ -1,8 +1,10 @@
 package com.igar15.filecabinet.dto;
 
+import com.igar15.filecabinet.util.DecNumValid;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,10 @@ public class ChangeNoticeTo {
 
     private String developerName;
 
+    @DecNumValid()
     private String tempDocumentDecimalNumber;
 
+    @NotEmpty
     private List<String> documentDecimalNumbers = new ArrayList<>();
 
     private String[] developerNames;

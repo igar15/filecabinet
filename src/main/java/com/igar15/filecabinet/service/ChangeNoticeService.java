@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChangeNoticeService {
 
-    void create(ChangeNotice changeNotice);
+    ChangeNotice create(ChangeNotice changeNotice);
 
     List<ChangeNotice> findAll();
 

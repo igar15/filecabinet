@@ -32,6 +32,23 @@
                     <a th:href="@{'/changenotices/delete/' + ${changeNoticeTo.id}}" class="btn btn-sm btn-outline-danger"
                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
                 </div>
+                <div class="col-sm-7">
+                    <form th:action="@{/changenotices/addDocumentForNotNew}" th:object="${changeNoticeTo}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{name}">
+                        <input type="hidden" th:field="*{changeCode}">
+                        <input type="hidden" th:field="*{developerName}">
+                        <input type="hidden" th:field="*{documentDecimalNumbers}">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="submit" class="btn btn-sm btn-dark">Add/Remove documents</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="row">
@@ -70,25 +87,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div>
-                    <form th:action="@{/changenotices/addDocumentForNotNew}" th:object="${changeNoticeTo}" method="post">
-                        <input type="hidden" th:field="*{id}">
-                        <input type="hidden" th:field="*{name}">
-                        <input type="hidden" th:field="*{changeCode}">
-                        <input type="hidden" th:field="*{developerName}">
-                        <input type="hidden" th:field="*{documentDecimalNumbers}">
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn btn-sm btn-dark">Add/Remove documents</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </span>
     </div>
 </body>
