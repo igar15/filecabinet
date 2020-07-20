@@ -26,7 +26,7 @@ public class ChangeNoticeTo {
     private String tempDocumentDecimalNumber;
 
     @NotEmpty
-    private List<String> documentDecimalNumbers = new ArrayList<>();
+    private List<String> documentDecimalNumbers;
 
     private String[] developerNames;
 

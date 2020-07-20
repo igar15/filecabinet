@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingErrorProcessor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -63,6 +62,9 @@ public class ChangeNoticeController {
         for (FieldError fieldError : errorsToKeep) {
             bindingResult.addError(fieldError);
         }
+        if (changeNoticeTo.getDocumentDecimalNumbers().size() == 0) {
+            changeNoticeTo.setDocumentDecimalNumbers(null);
+        }
 
         if (bindingResult.hasErrors()) {
             changeNoticeTo.setDeveloperNames(controllersHelperUtil.getDeveloperNames());
@@ -94,6 +96,9 @@ public class ChangeNoticeController {
             return "/changenotices/changenoticeTo-docs-add-form";
         }
         else {
+            if (changeNoticeTo.getDocumentDecimalNumbers() == null) {
+                changeNoticeTo.setDocumentDecimalNumbers(new ArrayList<>());
+            }
             changeNoticeTo.getDocumentDecimalNumbers().add(changeNoticeTo.getTempDocumentDecimalNumber());
             changeNoticeTo.setTempDocumentDecimalNumber(null);
             model.addAttribute("changeNoticeTo", changeNoticeTo);
@@ -133,6 +138,7 @@ public class ChangeNoticeController {
             bindingResult.addError(fieldError);
         }
         if (bindingResult.hasErrors()) {
+            changeNoticeTo.setDocumentDecimalNumbers(new ArrayList<>());
             return "/changenotices/changenoticeTo-docs-add-form";
         }
         else {
