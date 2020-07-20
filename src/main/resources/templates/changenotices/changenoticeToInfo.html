@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Change notice Info</title>
+</head>
+<body>
+    <div class="container">
+        <a th:href="@{/changenotices/list}">Back to Change notices list</a>
+        <br><br>
+
+        <h3>Change notice Directory</h3>
+        <hr>
+
+        <p class="h4 mb-4">Change notice information</p>
+
+        <span th:object="${changeNoticeTo}">
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-3 offset-2">
+                    <a th:href="@{'/changenotices/showFormForUpdate/'+ ${changeNoticeTo.id}}" class="btn btn-sm btn-outline-info">Update</a>
+                    <a th:href="@{'/changenotices/delete/' + ${changeNoticeTo.id}}" class="btn btn-sm btn-outline-danger"
+                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Name:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{name}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Change code:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{changeCode}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Developer name:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{developerName}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Documents:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:each="tempDocDecimalNumber : ${changeNoticeTo.documentDecimalNumbers}" th:text="${tempDocDecimalNumber}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <form th:action="@{/changenotices/addDocumentForNotNew}" th:object="${changeNoticeTo}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{name}">
+                        <input type="hidden" th:field="*{changeCode}">
+                        <input type="hidden" th:field="*{developerName}">
+                        <input type="hidden" th:field="*{documentDecimalNumbers}">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-sm btn-dark">Add/Remove documents</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </span>
+    </div>
+</body>
+</html>

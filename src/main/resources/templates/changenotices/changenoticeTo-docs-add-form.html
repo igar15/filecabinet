@@ -23,6 +23,7 @@
             <input type="hidden" th:field="*{name}">
             <input type="hidden" th:field="*{changeCode}">
             <input type="hidden" th:field="*{developerName}">
+            <input type="hidden" th:field="*{documentDecimalNumbers}">
 
             <div class="form-group">
                 <label class="col-sm-4 control-label">Document decimal number:</label>
@@ -35,6 +36,21 @@
                     </span>
                 </div>
             </div>
+
+
+            <div class="row">
+                <button type="submit" class="btn btn-info col-2 offset-1">Add document</button>
+            </div>
+
+        </form>
+
+        <br><br>
+
+        <form th:action="@{/changenotices/save}" th:object="${changeNoticeTo}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{name}">
+            <input type="hidden" th:field="*{changeCode}">
+            <input type="hidden" th:field="*{developerName}">
 
             <div class="form-group" th:if="${changeNoticeTo.documentDecimalNumbers != null && #lists.size(changeNoticeTo.documentDecimalNumbers) > 0}">
                 <label class="col-sm-2 control-label">Documents:</label>
@@ -52,21 +68,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <button type="submit" class="btn btn-info col-2 offset-1">Add document</button>
-            </div>
-
-        </form>
-
-        <br><br>
-
-        <form th:action="@{/changenotices/save}" th:object="${changeNoticeTo}" method="post">
-            <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{name}">
-            <input type="hidden" th:field="*{changeCode}">
-            <input type="hidden" th:field="*{developerName}">
-            <input type="hidden" th:field="*{documentDecimalNumbers}">
 
             <div class="row">
                 <button type="submit" class="btn btn-info col-2 offset-1">Save</button>

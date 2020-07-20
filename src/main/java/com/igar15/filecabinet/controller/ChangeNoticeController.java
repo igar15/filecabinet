@@ -11,13 +11,17 @@ import com.igar15.filecabinet.util.ControllersHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -55,8 +59,15 @@ public class ChangeNoticeController {
             return "/changenotices/changenoticeTo-form";
         }
         else {
-            model.addAttribute("changeNoticeTo", changeNoticeTo);
-            return "/changenotices/changenoticeTo-docs-add-form";
+            if (changeNoticeTo.getId() == null) {
+                model.addAttribute("changeNoticeTo", changeNoticeTo);
+                return "/changenotices/changenoticeTo-docs-add-form";
+            }
+            else {
+                ChangeNotice changeNotice = convertFromTo(changeNoticeTo);
+                changeNoticeService.update(changeNotice);
+                return "redirect:/changenotices/showChangeNoticeInfo/" + changeNotice.getId();
+            }
         }
     }
 
@@ -71,6 +82,19 @@ public class ChangeNoticeController {
             return "/changenotices/changenoticeTo-docs-add-form";
         }
     }
+
+    @PostMapping("/addDocumentForNotNew")
+    public String addDocumentForNotNew(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/changenotices/changenoticeToInfo";
+        }
+        else {
+            model.addAttribute("changeNoticeTo", changeNoticeTo);
+            return "/changenotices/changenoticeTo-docs-add-form";
+        }
+    }
+
+
 
     @PostMapping("/save")
     public String save(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult) {
@@ -87,6 +111,26 @@ public class ChangeNoticeController {
         return "redirect:/changenotices/list";
     }
 
+    @GetMapping("/showChangeNoticeInfo/{id}")
+    public String showChangeNoticeInfo(@PathVariable("id") int id, Model model) {
+        ChangeNoticeTo changeNoticeTo = convertToToById(id);
+        model.addAttribute("changeNoticeTo", changeNoticeTo);
+        return "/changenotices/changenoticeToInfo";
+    }
+
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable("id") int id, Model model) {
+        model.addAttribute("changeNoticeTo", convertToToById(id));
+        return "/changenotices/changenoticeTo-form";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
+        changeNoticeService.deleteById(id);
+        return "redirect:/changenotices/list";
+    }
+
+
     private ChangeNotice convertFromTo(ChangeNoticeTo changeNoticeTo) {
         Developer developer = (changeNoticeTo.getDeveloperName() == null) ? null : developerService.findByName(changeNoticeTo.getDeveloperName());
         List<Document> documents = (changeNoticeTo.getDocumentDecimalNumbers() != null && changeNoticeTo.getDocumentDecimalNumbers().size() > 0) ?
@@ -95,6 +139,15 @@ public class ChangeNoticeController {
                         .collect(Collectors.toList()) : null;
         ChangeNotice changeNotice = new ChangeNotice(changeNoticeTo.getId(), changeNoticeTo.getName(), changeNoticeTo.getChangeCode(), developer, documents);
         return changeNotice;
+    }
+
+    private ChangeNoticeTo convertToToById(int id) {
+        ChangeNotice found = changeNoticeService.findById(id);
+        String developerName = (found.getDeveloper() != null) ? found.getDeveloper().getName() : null;
+        List<String> documentDecimalNumbers = found.getDocuments().stream()
+                .map(Document::getDecimalNumber)
+                .collect(Collectors.toList());
+        return new ChangeNoticeTo(found.getId(), found.getName(), found.getChangeCode(), developerName, documentDecimalNumbers, controllersHelperUtil.getDeveloperNames());
     }
 
 

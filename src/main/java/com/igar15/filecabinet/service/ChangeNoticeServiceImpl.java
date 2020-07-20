@@ -35,7 +35,7 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     @Override
     public void update(ChangeNotice changeNotice) {
         Assert.notNull(changeNotice, "changeNotice must not be null");
-        ValidationUtil.checkNotFoundWithId(changeNotice, changeNotice.id());
+        ValidationUtil.checkNotFoundWithId(changeNoticeRepository.save(changeNotice), changeNotice.id());
     }
 
     @Override

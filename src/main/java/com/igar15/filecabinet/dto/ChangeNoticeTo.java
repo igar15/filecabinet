@@ -33,6 +33,15 @@ public class ChangeNoticeTo {
         this.developerNames = developerNames;
     }
 
+    public ChangeNoticeTo(Integer id, String name, Integer changeCode, String developerName, List<String> documentDecimalNumbers, String[] developerNames) {
+        this.id = id;
+        this.name = name;
+        this.changeCode = changeCode;
+        this.developerName = developerName;
+        this.documentDecimalNumbers = documentDecimalNumbers;
+        this.developerNames = developerNames;
+    }
+
     public Integer getId() {
         return id;
     }

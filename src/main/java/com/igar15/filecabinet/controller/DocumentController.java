@@ -88,8 +88,6 @@ public class DocumentController {
 
     @GetMapping("/showDocumentInfo/{documentId}")
     public String showDocumentInfo(@PathVariable("documentId") int id, Model model) {
-        DocumentTo documentTo = convertToToById(id);
-
         model.addAttribute("documentTo", convertToToById(id));
         return "/documents/documentToInfo";
     }
