@@ -25,15 +25,18 @@
         <p class="h4 mb-4">Document information</p>
 
         <span th:object="${documentTo}">
+
             <div class="row">
                 <div class="col-sm-2">
+
                 </div>
-                <div class="col-sm-3 offset-2">
-                    <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info">Update</a>
+                <div class="col-sm-3 text-right">
+                 <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info">Update</a>
                     <a th:href="@{/documents/delete(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-danger"
                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
                 </div>
             </div>
+
 
             <div class="row">
                 <div class="col-sm-2 border">
