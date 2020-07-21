@@ -59,7 +59,7 @@
                             <input type="checkbox" th:field="*{documentDecimalNumbers}" th:value="${checkBox}"/>
                             <label class="btn btn-secondary" th:for="${#ids.prev('documentDecimalNumbers')}" th:text="${checkBox}"></label>
                         </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('documentDecimalNumbers') && changeNoticeTo.documentDecimalNumbers != null && #lists.size(changeNoticeTo.documentDecimalNumbers) == 0}">
+                        <span class="help-block" th:if="${#fields.hasErrors('documentDecimalNumbers') && changeNoticeTo.documentDecimalNumbers != null && #sets.size(changeNoticeTo.documentDecimalNumbers) == 0}">
                             <ul>
                                 <li class="text-danger" th:each="err : ${#fields.errors('documentDecimalNumbers')}" th:text="${err}"/>
                             </ul>

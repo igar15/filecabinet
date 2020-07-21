@@ -1,10 +1,13 @@
 package com.igar15.filecabinet.dto;
 
 import com.igar15.filecabinet.entity.Stage;
+import com.igar15.filecabinet.util.ChangeNoticeNameValid;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class DocumentTo {
 
@@ -31,13 +34,16 @@ public class DocumentTo {
 
     private String[] developerNames;
 
-    private String[] changeNoticesNames;
+    @ChangeNoticeNameValid
+    private String tempChangeNoticeName;
+
+    private List<String> changeNoticesNames;
 
     public DocumentTo() {
 
     }
 
-    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, String developerName, String[] developerNames, String[] changeNoticesNames) {
+    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, String developerName, String[] developerNames, List<String> changeNoticesNames) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -116,11 +122,19 @@ public class DocumentTo {
         this.developerNames = developerNames;
     }
 
-    public String[] getChangeNoticesNames() {
+    public String getTempChangeNoticeName() {
+        return tempChangeNoticeName;
+    }
+
+    public void setTempChangeNoticeName(String tempChangeNoticeName) {
+        this.tempChangeNoticeName = tempChangeNoticeName;
+    }
+
+    public List<String> getChangeNoticesNames() {
         return changeNoticesNames;
     }
 
-    public void setChangeNoticesNames(String[] changeNoticesNames) {
+    public void setChangeNoticesNames(List<String> changeNoticesNames) {
         this.changeNoticesNames = changeNoticesNames;
     }
 

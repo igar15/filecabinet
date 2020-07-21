@@ -11,7 +11,9 @@ import com.igar15.filecabinet.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,6 +48,14 @@ public class DocumentController {
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("documentTo") DocumentTo documentTo, BindingResult bindingResult) {
+        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
+                .filter(fer -> !fer.getField().equals("tempChangeNoticeName"))
+                .collect(Collectors.toList());
+        bindingResult = new BeanPropertyBindingResult(documentTo, "documentTo");
+        for (FieldError fieldError : errorsToKeep) {
+            bindingResult.addError(fieldError);
+        }
+
         if (bindingResult.hasErrors()) {
             documentTo.setDeveloperNames(getDeveloperNames());
             if (documentTo.getId() != null) {
@@ -92,9 +102,25 @@ public class DocumentController {
         return "/documents/documentToInfo";
     }
 
+    @PostMapping("/showFormForAddChangeNotice")
+    public String showFormForAddChangeNotice(DocumentTo documentTo, Model model) {
+        model.addAttribute("documentTo", documentTo);
+        return "/documents/documentTo-changes-add-form";
+    }
+
+    @PostMapping("/addChangeNotice")
+    public String addChangeNotice(@Valid DocumentTo documentTo, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/documents/documentTo-changes-add-form";
+        }
+        documentTo.getChangeNoticesNames().add(documentTo.getTempChangeNoticeName());
+        return "/documents/documentTo-changes-add-form";
+    }
+
+
     private Document convertFromTo(DocumentTo documentTo) {
         Developer documentDeveloper = (documentTo.getDeveloperName() == null) ? null : developerService.findByName(documentTo.getDeveloperName());
-        List<ChangeNotice> changeNotices = (documentTo.getChangeNoticesNames() != null) ? Arrays.stream(documentTo.getChangeNoticesNames())
+        List<ChangeNotice> changeNotices = (documentTo.getChangeNoticesNames() != null) ? documentTo.getChangeNoticesNames().stream()
                 .map(name -> changeNoticeService.findByName(name))
                 .collect(Collectors.toList()) : null;
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(),
@@ -105,9 +131,9 @@ public class DocumentController {
         Document found = documentService.findByIdWithChangeNotices(id);
         Developer developer = found.getDeveloper();
         String developerName = (developer == null) ? null : developer.getName();
-        String[] changeNoticesNames = found.getChangeNotices().stream()
+        List<String> changeNoticesNames = found.getChangeNotices().stream()
                 .map(AbstractNamedEntity::getName)
-                .toArray(String[]::new);
+                .collect(Collectors.toList());
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(),
                 found.getInventoryNumber(), found.getStage(), developerName, getDeveloperNames(), changeNoticesNames);
     }
@@ -117,11 +143,11 @@ public class DocumentController {
                 .map(AbstractNamedEntity::getName).toArray(String[]::new);
     }
 
-    private String[] getChangeNoticesNames(int id) {
+    private List<String> getChangeNoticesNames(int id) {
         Document found = documentService.findByIdWithChangeNotices(id);
         return found.getChangeNotices().stream()
                 .map(AbstractNamedEntity::getName)
-                .toArray(String[]::new);
+                .collect(Collectors.toList());
     }
 
 

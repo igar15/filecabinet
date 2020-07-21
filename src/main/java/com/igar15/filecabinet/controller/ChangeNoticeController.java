@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -97,7 +99,7 @@ public class ChangeNoticeController {
         }
         else {
             if (changeNoticeTo.getDocumentDecimalNumbers() == null) {
-                changeNoticeTo.setDocumentDecimalNumbers(new ArrayList<>());
+                changeNoticeTo.setDocumentDecimalNumbers(new HashSet<>());
             }
             changeNoticeTo.getDocumentDecimalNumbers().add(changeNoticeTo.getTempDocumentDecimalNumber());
             changeNoticeTo.setTempDocumentDecimalNumber(null);
@@ -120,6 +122,7 @@ public class ChangeNoticeController {
             return "/changenotices/changenoticeToInfo";
         }
         else {
+            if (changeNoticeTo.getDocumentDecimalNumbers().size() == 0) changeNoticeTo.setDocumentDecimalNumbers(null);
             model.addAttribute("changeNoticeTo", changeNoticeTo);
             return "/changenotices/changenoticeTo-docs-add-form";
         }
@@ -138,7 +141,7 @@ public class ChangeNoticeController {
             bindingResult.addError(fieldError);
         }
         if (bindingResult.hasErrors()) {
-            changeNoticeTo.setDocumentDecimalNumbers(new ArrayList<>());
+            changeNoticeTo.setDocumentDecimalNumbers(new HashSet<>());
             return "/changenotices/changenoticeTo-docs-add-form";
         }
         else {
@@ -187,9 +190,9 @@ public class ChangeNoticeController {
     private ChangeNoticeTo convertToToById(int id) {
         ChangeNotice found = changeNoticeService.findById(id);
         String developerName = (found.getDeveloper() != null) ? found.getDeveloper().getName() : null;
-        List<String> documentDecimalNumbers = found.getDocuments().stream()
+        Set<String> documentDecimalNumbers = found.getDocuments().stream()
                 .map(Document::getDecimalNumber)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         return new ChangeNoticeTo(found.getId(), found.getName(), found.getChangeCode(), developerName, documentDecimalNumbers, controllersHelperUtil.getDeveloperNames());
     }
 

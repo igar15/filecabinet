@@ -6,8 +6,8 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ChangeNoticeTo {
 
@@ -26,7 +26,7 @@ public class ChangeNoticeTo {
     private String tempDocumentDecimalNumber;
 
     @NotEmpty
-    private List<String> documentDecimalNumbers;
+    private Set<String> documentDecimalNumbers;
 
     private String[] developerNames;
 
@@ -37,7 +37,7 @@ public class ChangeNoticeTo {
         this.developerNames = developerNames;
     }
 
-    public ChangeNoticeTo(Integer id, String name, Integer changeCode, String developerName, List<String> documentDecimalNumbers, String[] developerNames) {
+    public ChangeNoticeTo(Integer id, String name, Integer changeCode, String developerName, Set<String> documentDecimalNumbers, String[] developerNames) {
         this.id = id;
         this.name = name;
         this.changeCode = changeCode;
@@ -86,11 +86,11 @@ public class ChangeNoticeTo {
         this.tempDocumentDecimalNumber = tempDocumentDecimalNumber;
     }
 
-    public List<String> getDocumentDecimalNumbers() {
+    public Set<String> getDocumentDecimalNumbers() {
         return documentDecimalNumbers;
     }
 
-    public void setDocumentDecimalNumbers(List<String> documentDecimalNumbers) {
+    public void setDocumentDecimalNumbers(Set<String> documentDecimalNumbers) {
         this.documentDecimalNumbers = documentDecimalNumbers;
     }
 

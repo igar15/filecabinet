@@ -34,6 +34,7 @@
             </div>
 
             <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{changeNoticesNames}">
 
 <!--            <input type="hidden" th:field="*{changeNoticesNames}">-->
 
@@ -102,22 +103,22 @@
                 </div>
             </div>
 
-            <div class="form-group" th:if="${documentTo.changeNoticesNames != null && #lists.size(documentTo.changeNoticesNames) > 0}">
-                <label class="col-sm-2 control-label">Change notices:</label>
-                <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                        <p th:each="checkBox : ${documentTo.changeNoticesNames}">
-                            <input type="checkbox" th:field="*{changeNoticesNames}" th:value="${checkBox}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('changeNoticesNames')}" th:text="${checkBox}"></label>
-                        </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('changeNoticesNames')}">
-                            <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('changeNoticesNames')}" th:text="${err}"/>
-                            </ul>
-                        </span>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="form-group" th:if="${documentTo.changeNoticesNames != null && #lists.size(documentTo.changeNoticesNames) > 0}">-->
+<!--                <label class="col-sm-2 control-label">Change notices:</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                    <div class="form-check form-check-inline">-->
+<!--                        <p th:each="checkBox : ${documentTo.changeNoticesNames}">-->
+<!--                            <input type="checkbox" th:field="*{changeNoticesNames}" th:value="${checkBox}"/>-->
+<!--                            <label class="btn btn-secondary" th:for="${#ids.prev('changeNoticesNames')}" th:text="${checkBox}"></label>-->
+<!--                        </p>-->
+<!--                        <span class="help-block" th:if="${#fields.hasErrors('changeNoticesNames')}">-->
+<!--                            <ul>-->
+<!--                                <li class="text-danger" th:each="err : ${#fields.errors('changeNoticesNames')}" th:text="${err}"/>-->
+<!--                            </ul>-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <div class="row">
                 <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
