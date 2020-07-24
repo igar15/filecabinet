@@ -10,7 +10,7 @@ public interface DocumentService {
 
     Document findById(int id);
 
-   Document findByDecimalNumber(String decimalNumber);
+    Document findByDecimalNumber(String decimalNumber);
 
     Document findByIdWithChangeNotices(int id);
 

@@ -1,6 +1,5 @@
-package com.igar15.filecabinet.util;
+package com.igar15.filecabinet.util.validation;
 
-import com.igar15.filecabinet.entity.ChangeNotice;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,16 +8,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = ChangeNoticeNameValidConstraintValidator.class)
+@Constraint(validatedBy = DecNumValidConstraintValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ChangeNoticeNameValid {
+public @interface DecNumValid {
 
     public String value() default "";
 
-    public String message() default "change notice must exist";
+    public String message() default "document must exist";
 
     public Class<?>[] groups() default {};
 
     public Class<? extends Payload>[] payload() default {};
+
 }

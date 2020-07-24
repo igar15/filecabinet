@@ -18,6 +18,4 @@ public interface DeveloperService {
 
     void deleteById(int id);
 
-
-
 }

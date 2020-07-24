@@ -37,7 +37,7 @@
                         <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${tempChangeNotice.id}}"><span class="text-dark" th:text="${tempChangeNotice.name}"/></a>
                     </td>
                     <td class="align-middle text-center" th:text="${tempChangeNotice.changeCode}"></td>
-                    <td class="align-middle text-center" th:text="${tempChangeNotice.developer.name}"></td>
+                    <td class="align-middle text-center" th:text="${tempChangeNotice.developer == null} ? '' : ${tempChangeNotice.developer.name}"></td>
                 </tr>
             </tbody>
         </table>

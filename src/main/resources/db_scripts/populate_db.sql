@@ -4,13 +4,13 @@ delete from change_notices;
 delete from developers;
 alter sequence global_seq restart with 1000;
 
-insert into developers (name)
-values ('KTK-40'),
-       ('NIO-6'),
-       ('NIO-8'),
-       ('SKB-3'),
-       ('OTD 25'),
-       ('OTD 33');
+insert into developers (name, chief_name, description, workers_amount)
+values ('KTK-40', 'KTK-40 chief name', null, null),
+       ('NIO-6', 'NIO-6 chief name', 'Developers from NIO-6 are good folks', '24'),
+       ('NIO-8', 'NIO-8 chief name', null, '15'),
+       ('SKB-3', 'SKB-3 chief name', 'SKB-3 is a very good department. There are many talent people work here.', '43'),
+       ('OTD 25', 'OTD 25 chief name', null, '11'),
+       ('OTD 33', 'OTD 33 chief name', 'OTD 33 makes great job for the organization!', '22');
 
 insert into documents (name, decimal_number, inventory_number, stage, developer_id)
 values ('Стойка', 'БА6.151.128', '880572', 'O1', '1000'),

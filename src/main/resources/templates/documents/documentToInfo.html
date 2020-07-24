@@ -48,8 +48,8 @@
                         <input type="hidden" th:field="*{decimalNumber}">
                         <input type="hidden" th:field="*{inventoryNumber}">
                         <input type="hidden" th:field="*{stage}">
-                        <input type="hidden" th:field="*{developerName}">
-                        <input type="hidden" th:field="*{changeNoticesNames}">
+                        <input type="hidden" th:field="*{developer}">
+                        <input type="hidden" th:field="*{changeNotices}">
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -99,7 +99,7 @@
                     <h6>Developer:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{developerName}"></h6>
+                    <h6 th:text="${documentTo.developer == null} ? '' : ${documentTo.developer.name}"></h6>
                 </div>
             </div>
             <div class="row">
@@ -107,8 +107,8 @@
                     <h6>Changes:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:each="tempChangeNoticeName : ${documentTo.changeNoticesNames}">
-                        <span th:text="${tempChangeNoticeName}"></span>
+                    <h6 th:each="tempChangeNotice : ${documentTo.changeNotices}">
+                        <span th:text="${tempChangeNotice.name}"></span>
                     </h6>
                 </div>
             </div>

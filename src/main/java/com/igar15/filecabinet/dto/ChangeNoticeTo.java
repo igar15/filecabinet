@@ -1,12 +1,11 @@
 package com.igar15.filecabinet.dto;
 
-import com.igar15.filecabinet.util.DecNumValid;
+import com.igar15.filecabinet.util.validation.DecNumValid;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 public class ChangeNoticeTo {

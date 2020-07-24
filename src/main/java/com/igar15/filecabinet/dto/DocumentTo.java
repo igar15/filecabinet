@@ -1,7 +1,9 @@
 package com.igar15.filecabinet.dto;
 
+import com.igar15.filecabinet.entity.ChangeNotice;
+import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Stage;
-import com.igar15.filecabinet.util.ChangeNoticeNameValid;
+import com.igar15.filecabinet.util.validation.ChangeNoticeNameValid;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -28,34 +30,25 @@ public class DocumentTo {
     private Stage stage;
 
     //@NotNull(message = "You must set developer name")
-    private String developerName;
-
-    private Stage[] stages = Stage.values();
-
-    private String[] developerNames;
+    private Developer developer;
 
     @ChangeNoticeNameValid
     private String tempChangeNoticeName;
 
-    private List<String> changeNoticesNames;
+    private List<ChangeNotice> changeNotices;
 
     public DocumentTo() {
-
+        System.out.println("Hello from DocumentTO default constructor!");
     }
 
-    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, String developerName, String[] developerNames, List<String> changeNoticesNames) {
+    public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, Developer developer, List<ChangeNotice> changeNotices) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
         this.stage = stage;
-        this.developerName = developerName;
-        this.developerNames = developerNames;
-        this.changeNoticesNames = changeNoticesNames;
-    }
-
-    public DocumentTo(String[] developerNames) {
-        this.developerNames = developerNames;
+        this.developer = developer;
+        this.changeNotices = changeNotices;
     }
 
     public Integer getId() {
@@ -98,30 +91,6 @@ public class DocumentTo {
         this.stage = stage;
     }
 
-    public String getDeveloperName() {
-        return developerName;
-    }
-
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName;
-    }
-
-    public Stage[] getStages() {
-        return stages;
-    }
-
-    public void setStages(Stage[] stages) {
-        this.stages = stages;
-    }
-
-    public String[] getDeveloperNames() {
-        return developerNames;
-    }
-
-    public void setDeveloperNames(String[] developerNames) {
-        this.developerNames = developerNames;
-    }
-
     public String getTempChangeNoticeName() {
         return tempChangeNoticeName;
     }
@@ -130,23 +99,20 @@ public class DocumentTo {
         this.tempChangeNoticeName = tempChangeNoticeName;
     }
 
-    public List<String> getChangeNoticesNames() {
-        return changeNoticesNames;
+    public Developer getDeveloper() {
+        return developer;
     }
 
-    public void setChangeNoticesNames(List<String> changeNoticesNames) {
-        this.changeNoticesNames = changeNoticesNames;
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
     }
 
-    @Override
-    public String toString() {
-        return "DocumentTo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", decimalNumber='" + decimalNumber + '\'' +
-                ", inventoryNumber=" + inventoryNumber +
-                ", stage=" + stage +
-                ", developer='" + developerName + '\'' +
-                '}';
+    public List<ChangeNotice> getChangeNotices() {
+        return changeNotices;
     }
+
+    public void setChangeNotices(List<ChangeNotice> changeNotices) {
+        this.changeNotices = changeNotices;
+    }
+
 }

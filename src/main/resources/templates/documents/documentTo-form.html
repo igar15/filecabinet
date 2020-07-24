@@ -34,7 +34,7 @@
             </div>
 
             <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{changeNoticesNames}">
+            <input type="hidden" th:field="*{changeNotices}">
 
 <!--            <input type="hidden" th:field="*{changeNoticesNames}">-->
 
@@ -78,7 +78,7 @@
                 <label class="col-sm-2 control-label">Stage:</label>
                 <div class="col-sm-10">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${documentTo.stages}">
+                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.Stage).values()}">
                             <input type="radio" th:field="*{stage}" th:value="${radioValue}"/>
                             <label class="btn btn-secondary" th:for="${#ids.prev('stage')}" th:text="${radioValue}"></label>
                         </p>
@@ -90,13 +90,13 @@
                 <label class="col-sm-2 control-label">Developer:</label>
                 <div class="col-sm-10">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${documentTo.developerNames}">
-                            <input type="radio" th:field="*{developerName}" th:value="${radioValue}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('developerName')}" th:text="${radioValue}"></label>
+                        <p th:each="radioValue : ${developers}">
+                            <input type="radio" th:field="*{developer}" th:value="${radioValue.name}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('developer')}" th:text="${radioValue.name}"></label>
                         </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('developerName')}">
+                        <span class="help-block" th:if="${#fields.hasErrors('developer')}">
                             <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('developerName')}" th:text="${err}"/>
+                                <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
                             </ul>
                         </span>
                     </div>

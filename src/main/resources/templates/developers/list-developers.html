@@ -21,16 +21,21 @@
 
         <a th:href="@{/developers/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Developer</a>
 
-        <table class="table table-bordered table-striped w-auto">
-            <thead class="thead-dark">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
             <tr>
                 <th>Name</th>
-                <th>Action</th>
+                <th>Chief</th>
+                <th>Workers amount</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="tempDeveloper : ${developers}">
-                <td th:text="${tempDeveloper.name}"></td>
+                <td class="align-middle text-center">
+                    <a th:href="@{'/developers/showDeveloperInfo/' + ${tempDeveloper.id}}"><span class="text-dark" th:text="${tempDeveloper.name}"/></a>
+                </td>
+                <td class="align-middle text-center" th:text="${tempDeveloper.chiefName}"></td>
+                <td class="align-middle text-center" th:text="${tempDeveloper.workersAmount}"></td>
                 <td>
 
                     <a th:href="@{/developers/showFormForUpdate(developerId=${tempDeveloper.id})}" class="btn btn-info btn-sm">Update</a>

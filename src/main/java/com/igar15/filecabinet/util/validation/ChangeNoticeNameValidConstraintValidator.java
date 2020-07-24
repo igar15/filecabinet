@@ -1,8 +1,7 @@
-package com.igar15.filecabinet.util;
+package com.igar15.filecabinet.util.validation;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
-import com.igar15.filecabinet.service.ChangeNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

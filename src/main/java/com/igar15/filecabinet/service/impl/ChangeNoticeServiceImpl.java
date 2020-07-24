@@ -1,8 +1,9 @@
-package com.igar15.filecabinet.service;
+package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
-import com.igar15.filecabinet.util.ValidationUtil;
+import com.igar15.filecabinet.service.ChangeNoticeService;
+import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -22,14 +23,18 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
-    public List<ChangeNotice> findAll() {
-        return changeNoticeRepository.findAll();
+    public ChangeNotice findById(int id) {
+        return ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
     }
 
     @Override
-    public ChangeNotice findById(int id) {
-        ChangeNotice found = changeNoticeRepository.findById(id).orElse(null);
-        return ValidationUtil.checkNotFoundWithId(found, id);
+    public ChangeNotice findByName(String name) {
+        return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name).orElse(null), name);
+    }
+
+    @Override
+    public List<ChangeNotice> findAll() {
+        return changeNoticeRepository.findAll();
     }
 
     @Override
@@ -40,14 +45,7 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
 
     @Override
     public void deleteById(int id) {
-        ChangeNotice found = changeNoticeRepository.findById(id).orElse(null);
-        ValidationUtil.checkNotFoundWithId(found, id);
+        ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
         changeNoticeRepository.deleteById(id);
-    }
-
-    @Override
-    public ChangeNotice findByName(String name) {
-        ChangeNotice found = changeNoticeRepository.findByName(name).orElse(null);
-        return ValidationUtil.checkNotFound(found, name);
     }
 }

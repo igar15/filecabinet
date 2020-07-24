@@ -8,7 +8,10 @@ create sequence global_seq start with 1000;
 
 create table developers (
     id integer primary key default nextval('global_seq'),
-    name varchar not null
+    name varchar not null,
+    chief_name varchar not null,
+    description varchar default null,
+    workers_amount integer default null
 );
 create unique index developers_unique_name_idx on developers (name);
 
