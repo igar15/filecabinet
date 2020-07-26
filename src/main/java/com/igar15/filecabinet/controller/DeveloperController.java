@@ -2,6 +2,7 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.service.DeveloperService;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,13 +40,19 @@ public class DeveloperController {
         } else {
             developerService.update(developer);
         }
-        return "redirect:/developers/list";
+        return "redirect:/developers/showDeveloperInfo/" + developer.getId();
     }
 
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("developerId") int id, Model model) {
         model.addAttribute("developer", developerService.findById(id));
         return "/developers/developer-form";
+    }
+
+    @GetMapping("/showDeveloperInfo/{id}")
+    public String showDeveloperInfo(@PathVariable int id, Model model) {
+        model.addAttribute("developer", developerService.findById(id));
+        return "/developers/developerInfo";
     }
 
     @GetMapping("/delete")

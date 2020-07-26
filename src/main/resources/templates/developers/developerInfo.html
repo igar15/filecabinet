@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Developer Info</title>
+</head>
+<body>
+    <div class="container">
+        <a th:href="@{/developers/list}">Back to Developers list</a>
+        <br><br>
+
+        <h3>Developer Directory</h3>
+        <hr>
+
+        <p class="h4 mb-4">Developer information</p>
+
+        <span th:object="${developer}">
+
+            <div class="row">
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-3 text-right">
+                    <a th:href="@{/developers/showFormForUpdate(developerId=${developer.id})}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                    <a th:href="@{/developers/delete(developerId=${developer.id})}" class="btn btn-sm btn-outline-danger mb-1"
+                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Name:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{name}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Chief name:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{chiefName}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Workers amount:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{workersAmount}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Description:</h6>
+                </div>
+                <div class="col-sm-3 border text-break">
+                    <h6 th:text="*{description}"></h6>
+                </div>
+            </div>
+
+        </span>
+    </div>
+</body>
+</html>

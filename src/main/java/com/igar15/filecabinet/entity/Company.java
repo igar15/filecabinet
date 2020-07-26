@@ -10,6 +10,9 @@ public class Company extends AbstractNamedEntity{
     @Embedded
     private Address address;
 
+    @Column(name = "contact_person")
+    private String contactPerson;
+
     @ManyToMany
     @JoinTable(name = "document_companies",
             joinColumns = @JoinColumn(name = "company_id"),
@@ -26,6 +29,14 @@ public class Company extends AbstractNamedEntity{
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public List<Document> getDocuments() {

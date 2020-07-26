@@ -11,31 +11,32 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Developers list</title>
+    <title>Companies List</title>
 </head>
 <body>
     <div class="container">
         <a th:href="@{/}">Back to Home page</a>
-        <h3>Developers List</h3>
+        <h3>Companies List</h3>
         <hr>
 
-        <a th:href="@{/developers/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Developer</a>
+        <a th:href="@{/companies/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Company</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
                 <th>Name</th>
-                <th>Chief</th>
-                <th>Workers amount</th>
+                <th>Contact person</th>
+                <th>Address</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tempDeveloper : ${developers}">
+            <tr th:each="tempCompany : ${companies}">
                 <td class="align-middle text-center">
-                    <a th:href="@{'/developers/showDeveloperInfo/' + ${tempDeveloper.id}}"><span class="text-dark" th:text="${tempDeveloper.name}"/></a>
+                    <a th:href="@{'/companies/showCompanyInfo/' + ${tempCompany.id}}"><span class="text-dark" th:text="${tempCompany.name}"/></a>
                 </td>
-                <td class="align-middle text-center" th:text="${tempDeveloper.chiefName}"></td>
-                <td class="align-middle text-center" th:text="${tempDeveloper.workersAmount}"></td>
+                <td class="align-middle text-center" th:text="${tempCompany.contactPerson == null} ? '' : ${tempCompany.contactPerson}"/>
+                <td class="align-middle text-center" th:text="${tempCompany.address.zipcode + ', ' + tempCompany.address.city + ', ' +
+                                                        tempCompany.address.street + ', ' + tempCompany.address.building}"></td>
             </tr>
             </tbody>
         </table>

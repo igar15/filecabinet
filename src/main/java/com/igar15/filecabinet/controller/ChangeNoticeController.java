@@ -74,15 +74,17 @@ public class ChangeNoticeController {
             return "/changenotices/changenoticeTo-form";
         }
 
-        ChangeNotice changeNoticeForSaving = convertFromTo(changeNoticeTo);
-
-        if (changeNoticeForSaving.getId() == null) {
-            changeNoticeService.create(changeNoticeForSaving);
-        }
         else {
-            changeNoticeService.update(changeNoticeForSaving);
+            if (changeNoticeTo.getId() == null) {
+                model.addAttribute("changeNoticeTo", changeNoticeTo);
+                return "/changenotices/changenoticeTo-docs-add-form";
+            }
+            else {
+                ChangeNotice changeNoticeForSaving = convertFromTo(changeNoticeTo);
+                changeNoticeService.update(changeNoticeForSaving);
+                return "redirect:/changenotices/showChangeNoticeInfo/" + changeNoticeForSaving.getId();
+            }
         }
-        return "redirect:/changenotices/showChangeNoticeInfo/" + changeNoticeForSaving.getId();
     }
 
     @PostMapping("/addDocument")

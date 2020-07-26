@@ -23,7 +23,8 @@ create table companies (
     city varchar not null,
     street varchar not null,
     building varchar not null,
-    zipcode varchar not null
+    zipcode varchar not null,
+    contact_person varchar default null
 );
 create unique index companies_unique_name_city_street_building_idx on companies (name, city, street, building);
 

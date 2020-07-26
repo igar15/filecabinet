@@ -16,13 +16,13 @@ public class Developer extends AbstractNamedEntity {
     @Size(min = 5, max = 100)
     private String chiefName;
 
-    @Column(name = "description")
-    private String description;
 
     @Column(name = "workers_amount")
     @Min(1)
     private Integer workersAmount;
 
+    @Column(name = "description")
+    private String description;
 
 
 
