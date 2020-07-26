@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap-select-1.13.14/dist/css/bootstrap-select.css}"/>
+
+    <title>Add subscribers</title>
+</head>
+<body>
+<div class="container">
+
+    <h3 th:text="'Document Directory: ' + ${documentTo.decimalNumber}"></h3>
+
+    <form th:action="@{/documents/save}" th:object="${documentTo}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{decimalNumber}">
+        <input type="hidden" th:field="*{inventoryNumber}">
+        <input type="hidden" th:field="*{receiptDate}">
+        <input type="hidden" th:field="*{status}">
+        <input type="hidden" th:field="*{applicability}">
+        <input type="hidden" th:field="*{form}">
+        <input type="hidden" th:field="*{changeNumber}">
+        <input type="hidden" th:field="*{stage}">
+        <input type="hidden" th:field="*{sheetsAmount}">
+        <input type="hidden" th:field="*{format}">
+        <input type="hidden" th:field="*{a4Amount}">
+        <input type="hidden" th:field="*{developer}">
+        <input type="hidden" th:field="*{originalHolder}">
+        <input type="hidden" th:field="*{changeNotices}">
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="externalSubscribers">External subscribers:</label>
+                <select class="form-control selectpicker" th:field="*{externalSubscribers}" id="externalSubscribers" multiple="multiple">
+                    <option th:each="dropValue : ${companies}"
+                            th:value="${dropValue.name}"
+                            th:text="${dropValue.name}">pizza
+                    </option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('externalSubscribers')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('externalSubscribers')}" th:text="${err}"/>
+                    </ul>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
+        </div>
+    </form>
+
+
+
+
+</div>
+
+
+
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/css/bootstrap-4.0.0-dist/js/bootstrap.js}"></script>
+    <script th:src="@{/css/bootstrap-select-1.13.14/dist/js/bootstrap-select.js}"></script>
+</body>
+</html>

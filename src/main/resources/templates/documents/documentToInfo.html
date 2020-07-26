@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -47,15 +47,60 @@
                         <input type="hidden" th:field="*{name}">
                         <input type="hidden" th:field="*{decimalNumber}">
                         <input type="hidden" th:field="*{inventoryNumber}">
+                        <input type="hidden" th:field="*{receiptDate}">
+                        <input type="hidden" th:field="*{status}">
+                        <input type="hidden" th:field="*{applicability}">
+                        <input type="hidden" th:field="*{form}">
+                        <input type="hidden" th:field="*{changeNumber}">
                         <input type="hidden" th:field="*{stage}">
+                        <input type="hidden" th:field="*{sheetsAmount}">
+                        <input type="hidden" th:field="*{format}">
+                        <input type="hidden" th:field="*{a4Amount}">
                         <input type="hidden" th:field="*{developer}">
+                        <input type="hidden" th:field="*{originalHolder}">
                         <input type="hidden" th:field="*{changeNotices}">
+                        <input type="hidden" th:field="*{externalSubscribers}">
                         <div class="row">
                             <div class="col-sm-6">
 
                             </div>
                             <div class="col-sm-5">
                                 <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap mb-1">Add/Remove changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-2 text-right">
+                    <form th:action="@{/documents/showFormForAddSubscribers}" th:object="${documentTo}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{name}">
+                        <input type="hidden" th:field="*{decimalNumber}">
+                        <input type="hidden" th:field="*{inventoryNumber}">
+                        <input type="hidden" th:field="*{receiptDate}">
+                        <input type="hidden" th:field="*{status}">
+                        <input type="hidden" th:field="*{applicability}">
+                        <input type="hidden" th:field="*{form}">
+                        <input type="hidden" th:field="*{changeNumber}">
+                        <input type="hidden" th:field="*{stage}">
+                        <input type="hidden" th:field="*{sheetsAmount}">
+                        <input type="hidden" th:field="*{format}">
+                        <input type="hidden" th:field="*{a4Amount}">
+                        <input type="hidden" th:field="*{developer}">
+                        <input type="hidden" th:field="*{originalHolder}">
+                        <input type="hidden" th:field="*{changeNotices}">
+                        <input type="hidden" th:field="*{externalSubscribers}">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap mb-1">Add/Remove subscribers</button>
                             </div>
                         </div>
                     </form>
@@ -70,6 +115,7 @@
                     <h6 th:text="*{decimalNumber}"></h6>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-2 border">
                     <h6>Name:</h6>
@@ -78,6 +124,7 @@
                     <h6 th:text="*{name}"></h6>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-2 border">
                     <h6>Inventory number:</h6>
@@ -86,6 +133,34 @@
                     <h6 th:text="*{inventoryNumber}"></h6>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Receipt date:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{receiptDate}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Status:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{status}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Change number:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{changeNumber}"></h6>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-sm-2 border">
                     <h6>Stage:</h6>
@@ -94,6 +169,7 @@
                     <h6 th:text="*{stage}"></h6>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-2 border">
                     <h6>Developer:</h6>
@@ -102,6 +178,62 @@
                     <h6 th:text="${documentTo.developer == null} ? '' : ${documentTo.developer.name}"></h6>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Original holder:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{originalHolder.name}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Applicability:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{applicability}"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Form:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{form}"></h6>
+                </div>
+            </div>
+
+            <div class="row" th:if="${documentTo.form.name() == 'PAPER'}">
+                <div class="col-sm-2 border">
+                    <h6>Format:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{format}"></h6>
+                </div>
+            </div>
+
+            <div class="row" th:if="${documentTo.form.name() == 'PAPER'}">
+                <div class="col-sm-2 border">
+                    <h6>Sheets amount:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{sheetsAmount}"></h6>
+                </div>
+            </div>
+
+
+            <div class="row" th:if="${documentTo.form.name() == 'PAPER'}">
+                <div class="col-sm-2 border">
+                    <h6>A4 amount:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{a4Amount}"></h6>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-sm-2 border">
                     <h6>Changes:</h6>
@@ -109,6 +241,17 @@
                 <div class="col-sm-3 border">
                     <h6 th:each="tempChangeNotice : ${documentTo.changeNotices}">
                         <span th:text="${tempChangeNotice.name}"></span>
+                    </h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>External subscribers:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:each="tempExternalSubscriber : ${documentTo.externalSubscribers}">
+                        <span th:text="${tempExternalSubscriber.name}"></span>
                     </h6>
                 </div>
             </div>

@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -22,8 +22,9 @@
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{name}">
             <input type="hidden" th:field="*{changeCode}">
-            <input type="hidden" th:field="*{developerName}">
-            <input type="hidden" th:field="*{documentDecimalNumbers}">
+            <input type="hidden" th:field="*{issueDate}">
+            <input type="hidden" th:field="*{developer}">
+            <input type="hidden" th:field="*{documents}">
 
             <div class="form-group">
                 <label class="col-sm-4 control-label">Document decimal number:</label>
@@ -49,19 +50,20 @@
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{name}">
             <input type="hidden" th:field="*{changeCode}">
-            <input type="hidden" th:field="*{developerName}">
+            <input type="hidden" th:field="*{issueDate}">
+            <input type="hidden" th:field="*{developer}">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Documents:</label>
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                        <p th:each="checkBox : ${changeNoticeTo.documentDecimalNumbers}">
-                            <input type="checkbox" th:field="*{documentDecimalNumbers}" th:value="${checkBox}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('documentDecimalNumbers')}" th:text="${checkBox}"></label>
+                        <p th:each="checkBox : ${changeNoticeTo.documents}">
+                            <input type="checkbox" th:field="*{documents}" th:value="${checkBox.decimalNumber}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('documents')}" th:text="${checkBox.decimalNumber}"></label>
                         </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('documentDecimalNumbers') && changeNoticeTo.documentDecimalNumbers != null && #sets.size(changeNoticeTo.documentDecimalNumbers) == 0}">
+                        <span class="help-block" th:if="${#fields.hasErrors('documents') && changeNoticeTo.documents != null && #sets.size(changeNoticeTo.documents) == 0}">
                             <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('documentDecimalNumbers')}" th:text="${err}"/>
+                                <li class="text-danger" th:each="err : ${#fields.errors('documents')}" th:text="${err}"/>
                             </ul>
                         </span>
                     </div>

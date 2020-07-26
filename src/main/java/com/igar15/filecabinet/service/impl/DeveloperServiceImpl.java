@@ -39,6 +39,7 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     public Developer findByName(String name) {
+        Assert.notNull(name, "name must not be null");
         return ValidationUtil.checkNotFound(developerRepository.findByName(name).orElse(null), name);
     }
 

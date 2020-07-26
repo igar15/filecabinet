@@ -1,11 +1,15 @@
 package com.igar15.filecabinet.dto;
 
+import com.igar15.filecabinet.entity.Developer;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.util.validation.DecNumValid;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class ChangeNoticeTo {
@@ -19,30 +23,33 @@ public class ChangeNoticeTo {
     @Range(min = 1, max = 18, message = "Change code must be between 1 and 18")
     private Integer changeCode;
 
-    private String developerName;
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate issueDate;
+
+    private Developer developer;
 
     @DecNumValid()
     private String tempDocumentDecimalNumber;
 
     @NotEmpty
-    private Set<String> documentDecimalNumbers;
+    private Set<Document> documents;
 
-    private String[] developerNames;
+
+
 
     public ChangeNoticeTo() {
+
     }
 
-    public ChangeNoticeTo (String[] developerNames) {
-        this.developerNames = developerNames;
-    }
-
-    public ChangeNoticeTo(Integer id, String name, Integer changeCode, String developerName, Set<String> documentDecimalNumbers, String[] developerNames) {
+    public ChangeNoticeTo(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer,
+                         Set<Document> documents) {
         this.id = id;
         this.name = name;
         this.changeCode = changeCode;
-        this.developerName = developerName;
-        this.documentDecimalNumbers = documentDecimalNumbers;
-        this.developerNames = developerNames;
+        this.issueDate = issueDate;
+        this.developer = developer;
+        this.documents = documents;
     }
 
     public Integer getId() {
@@ -69,12 +76,20 @@ public class ChangeNoticeTo {
         this.changeCode = changeCode;
     }
 
-    public String getDeveloperName() {
-        return developerName;
+    public LocalDate getIssueDate() {
+        return issueDate;
     }
 
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName;
+    public void setIssueDate(LocalDate issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
     }
 
     public String getTempDocumentDecimalNumber() {
@@ -85,19 +100,13 @@ public class ChangeNoticeTo {
         this.tempDocumentDecimalNumber = tempDocumentDecimalNumber;
     }
 
-    public Set<String> getDocumentDecimalNumbers() {
-        return documentDecimalNumbers;
+    public Set<Document> getDocuments() {
+        return documents;
     }
 
-    public void setDocumentDecimalNumbers(Set<String> documentDecimalNumbers) {
-        this.documentDecimalNumbers = documentDecimalNumbers;
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
     }
 
-    public String[] getDeveloperNames() {
-        return developerNames;
-    }
 
-    public void setDeveloperNames(String[] developerNames) {
-        this.developerNames = developerNames;
-    }
 }

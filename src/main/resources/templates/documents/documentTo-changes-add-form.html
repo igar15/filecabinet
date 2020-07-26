@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -21,9 +21,20 @@
             <input type="hidden" th:field="*{name}">
             <input type="hidden" th:field="*{decimalNumber}">
             <input type="hidden" th:field="*{inventoryNumber}">
+            <input type="hidden" th:field="*{receiptDate}">
+            <input type="hidden" th:field="*{status}">
+            <input type="hidden" th:field="*{applicability}">
+            <input type="hidden" th:field="*{form}">
+            <input type="hidden" th:field="*{changeNumber}">
+            <input type="hidden" th:field="*{changeNumber}">
             <input type="hidden" th:field="*{stage}">
-            <input type="hidden" th:field="*{developerName}">
-            <input type="hidden" th:field="*{changeNoticesNames}">
+            <input type="hidden" th:field="*{sheetsAmount}">
+            <input type="hidden" th:field="*{format}">
+            <input type="hidden" th:field="*{a4Amount}">
+            <input type="hidden" th:field="*{developer}">
+            <input type="hidden" th:field="*{originalHolder}">
+            <input type="hidden" th:field="*{changeNotices}">
+            <input type="hidden" th:field="*{externalSubscribers}">
 
             <div class="form-group">
                 <div class="col-sm-5">
@@ -49,20 +60,30 @@
             <input type="hidden" th:field="*{name}">
             <input type="hidden" th:field="*{decimalNumber}">
             <input type="hidden" th:field="*{inventoryNumber}">
+            <input type="hidden" th:field="*{receiptDate}">
+            <input type="hidden" th:field="*{status}">
+            <input type="hidden" th:field="*{applicability}">
+            <input type="hidden" th:field="*{form}">
+            <input type="hidden" th:field="*{changeNumber}">
             <input type="hidden" th:field="*{stage}">
-            <input type="hidden" th:field="*{developerName}">
+            <input type="hidden" th:field="*{sheetsAmount}">
+            <input type="hidden" th:field="*{format}">
+            <input type="hidden" th:field="*{a4Amount}">
+            <input type="hidden" th:field="*{developer}">
+            <input type="hidden" th:field="*{originalHolder}">
+            <input type="hidden" th:field="*{externalSubscribers}">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Change notices:</label>
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                        <p th:each="checkBox : ${documentTo.changeNoticesNames}">
-                            <input type="checkbox" th:field="*{changeNoticesNames}" th:value="${checkBox}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('changeNoticesNames')}" th:text="${checkBox}"></label>
+                        <p th:each="checkBox : ${documentTo.changeNotices}">
+                            <input type="checkbox" th:field="*{changeNotices}" th:value="${checkBox.name}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('changeNotices')}" th:text="${checkBox.name}"></label>
                         </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('changeNoticesNames')}">
+                        <span class="help-block" th:if="${#fields.hasErrors('changeNotices')}">
                             <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('changeNoticesNames')}" th:text="${err}"/>
+                                <li class="text-danger" th:each="err : ${#fields.errors('changeNotices')}" th:text="${err}"/>
                             </ul>
                         </span>
                     </div>

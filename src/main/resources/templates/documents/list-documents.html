@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -33,12 +33,13 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th>Decimal number</th>
-                    <th>Name</th>
-                    <th>Inventory number</th>
-                    <th>Stage</th>
-                    <th>Developer</th>
-                    <th>Show Document</th>
+                    <th class="align-middle">Decimal number</th>
+                    <th class="align-middle">Name</th>
+                    <th class="align-middle">Inventory number</th>
+                    <th class="align-middle">Stage</th>
+                    <th class="align-middle">Developer</th>
+                    <th class="align-middle">Original holder</th>
+                    <th class="align-middle">Show Document</th>
                 </tr>
             </thead>
 
@@ -51,6 +52,7 @@
                     <td class="align-middle text-center" th:text="${tempDocument.inventoryNumber}"></td>
                     <td class="align-middle text-center" th:text="${tempDocument.stage}"></td>
                     <td class="align-middle text-center" th:text="${tempDocument.developer == null} ? '' : ${tempDocument.developer.name}"></td>
+                    <td class="align-middle text-center" th:text="${tempDocument.originalHolder == null} ? '' : ${tempDocument.originalHolder.name}"></td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
                     </td>

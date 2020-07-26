@@ -1,7 +1,9 @@
 drop table if exists document_change_notices;
+drop table if exists document_companies;
 drop table if exists change_notices;
 drop table if exists documents;
 drop table if exists developers;
+drop table if exists companies;
 drop sequence if exists global_seq;
 
 create sequence global_seq start with 1000;
@@ -15,14 +17,34 @@ create table developers (
 );
 create unique index developers_unique_name_idx on developers (name);
 
+create table companies (
+    id integer primary key default nextval('global_seq'),
+    name varchar not null,
+    city varchar not null,
+    street varchar not null,
+    building varchar not null,
+    zipcode varchar not null
+);
+create unique index companies_unique_name_city_street_building_idx on companies (name, city, street, building);
+
 create table documents (
     id integer primary key default nextval('global_seq'),
     name varchar not null,
     decimal_number varchar not null,
     inventory_number integer not null,
+    receipt_date date not null,
+    status varchar not null,
+    applicability varchar default null,
+    form varchar not null,
+    change_number integer default null,
     stage varchar default null,
+    sheets_amount integer default null,
+    format varchar default null,
+    a4_amount integer default null,
     developer_id integer default null,
-    foreign key (developer_id) references developers (id)
+    original_holder_id integer not null,
+    foreign key (developer_id) references developers (id),
+    foreign key (original_holder_id) references companies (id)
 );
 create unique index documents_unique_decimal_number_idx on documents (decimal_number);
 create unique index documents_unique_inventory_number_idx on documents (inventory_number);
@@ -31,6 +53,7 @@ create table change_notices (
     id integer primary key default nextval('global_seq'),
     name varchar not null,
     change_code integer not null,
+    issue_date date not null,
     developer_id integer default null,
     foreign key (developer_id) references developers (id)
 );
@@ -42,4 +65,12 @@ create table document_change_notices (
     primary key(document_id, change_notice_id),
     foreign key (document_id) references documents (id),
     foreign key (change_notice_id) references change_notices (id)
+);
+
+create table document_companies (
+    document_id integer not null,
+    company_id integer not null,
+    primary key (document_id, company_id),
+    foreign key (document_id) references documents (id),
+    foreign key (company_id) references companies (id)
 );

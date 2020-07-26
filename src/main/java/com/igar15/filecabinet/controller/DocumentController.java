@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.service.ChangeNoticeService;
+import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +34,9 @@ public class DocumentController {
     @Autowired
     private ChangeNoticeService changeNoticeService;
 
+    @Autowired
+    private CompanyService companyService;
+
     @GetMapping("/list")
     public String showAll(Model model) {
         model.addAttribute("documents", documentService.findAll());
@@ -44,6 +47,7 @@ public class DocumentController {
     public String showAddForm(Model model) {
         model.addAttribute("documentTo", new DocumentTo());
         model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("companies", companyService.findAll());
         return "/documents/documentTo-form";
     }
 
@@ -59,27 +63,25 @@ public class DocumentController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
+            model.addAttribute("companies", companyService.findAll());
             return "/documents/documentTo-form";
         }
-        Document savedDocument = convertFromTo(documentTo);
-        if (savedDocument.getId() == null) {
-            documentService.create(savedDocument);
+
+        Document documentForSaving = convertFromTo(documentTo);
+
+        if (documentForSaving.getId() == null) {
+            documentService.create(documentForSaving);
         } else {
-            documentService.update(savedDocument);
+            documentService.update(documentForSaving);
         }
-        return "redirect:/documents/showDocumentInfo/" + savedDocument.getId();
-//        if (documentTo.getId() == null) {
-//            return "redirect:/documents/list";
-//        }
-//        else {
-//            return "redirect:/documents/showDocumentInfo/" + documentTo.getId();
-//        }
+        return "redirect:/documents/showDocumentInfo/" + documentForSaving.getId();
     }
 
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("documentId") int id, Model model) {
         model.addAttribute("documentTo", convertToToById(id));
         model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("companies", companyService.findAll());
         return "/documents/documentTo-form";
     }
 
@@ -113,19 +115,32 @@ public class DocumentController {
             return "/documents/documentTo-changes-add-form";
         }
         documentTo.getChangeNotices().add(changeNoticeService.findByName(documentTo.getTempChangeNoticeName()));
+        documentTo.setTempChangeNoticeName(null);
         return "/documents/documentTo-changes-add-form";
+    }
+
+    @PostMapping("/showFormForAddSubscribers")
+    public String showFormForAddSubscribers(DocumentTo documentTo, Model model) {
+        model.addAttribute("documentTo", documentTo);
+        model.addAttribute("companies", companyService.findAll());
+        return "/documents/documentTo-subscribers-add-form";
     }
 
 
     private Document convertFromTo(DocumentTo documentTo) {
-        return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(),
-                documentTo.getInventoryNumber(), documentTo.getStage(), documentTo.getDeveloper(), documentTo.getChangeNotices());
+        return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
+                documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicability(), documentTo.getForm(),
+                documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
+                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices(),
+                documentTo.getExternalSubscribers());
     }
 
     private DocumentTo convertToToById(int id) {
         Document found = documentService.findByIdWithChangeNotices(id);
-        return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(),
-                found.getInventoryNumber(), found.getStage(), found.getDeveloper(), found.getChangeNotices());
+        return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
+                found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), found.getChangeNumber(),
+                found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
+                found.getOriginalHolder(), found.getChangeNotices(), found.getExternalSubscribers());
     }
 
 }

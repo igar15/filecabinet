@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
 
+<!--    <link th:href="@{/css/bootstrap-4.0.0-dist/css/bootstrap.css}" th:rel="stylesheet"/>-->
+
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+
+<!--        <link th:rel="stylesheet" th:href="@{/css/bootstrap-select-1.13.14/dist/css/bootstrap-select.css}"/>-->
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
 
     <title>Save Document</title>
 </head>
@@ -35,8 +41,8 @@
 
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{changeNotices}">
+            <input type="hidden" th:field="*{externalSubscribers}">
 
-<!--            <input type="hidden" th:field="*{changeNoticesNames}">-->
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Decimal number:</label>
@@ -75,14 +81,120 @@
             </div>
 
             <div class="form-group">
+                <label class="col-sm-2 control-label">Receipt date:</label>
+                <div class="col-sm-10">
+                    <input type="date" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:field="*{receiptDate}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('receiptDate')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('receiptDate')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Status:</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
+                            <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('status')}" th:text="${radioValue}"></label>
+                        </p>
+                        <span class="help-block" th:if="${#fields.hasErrors('status')}">
+                            <ul>
+                                <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Applicability:</label>
+                <div class="col-sm-10">
+                    <input type="text" th:class="${#fields.hasErrors('applicability')} ? 'form-control is-invalid' : 'form-control'" th:field="*{applicability}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('applicability')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('applicability')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Form:</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}" th:field="*{form}">
+                            <input type="radio" th:field="*{form}" th:value="${radioValue}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('form')}" th:text="${radioValue}"></label>
+                        </p>
+                        <span class="help-block" th:if="${#fields.hasErrors('form')}">
+                            <ul>
+                                <li class="text-danger" th:each="err : ${#fields.errors('form')}" th:text="${err}"/>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Change number:</label>
+                <div class="col-sm-10">
+                    <input type="number" th:class="${#fields.hasErrors('changeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{changeNumber}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('changeNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('changeNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="col-sm-2 control-label">Stage:</label>
                 <div class="col-sm-10">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.Stage).values()}">
+                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}">
                             <input type="radio" th:field="*{stage}" th:value="${radioValue}"/>
                             <label class="btn btn-secondary" th:for="${#ids.prev('stage')}" th:text="${radioValue}"></label>
                         </p>
                     </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Sheets amount:</label>
+                <div class="col-sm-10">
+                    <input type="number" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:field="*{sheetsAmount}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('sheetsAmount')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('sheetsAmount')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Format:</label>
+                <div class="col-sm-10">
+                    <input type="text" th:class="${#fields.hasErrors('format')} ? 'form-control is-invalid' : 'form-control'" th:field="*{format}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('format')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('format')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">A4 amount:</label>
+                <div class="col-sm-10">
+                    <input type="number" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:field="*{a4Amount}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('a4Amount')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('a4Amount')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
@@ -103,28 +215,38 @@
                 </div>
             </div>
 
-<!--            <div class="form-group" th:if="${documentTo.changeNoticesNames != null && #lists.size(documentTo.changeNoticesNames) > 0}">-->
-<!--                <label class="col-sm-2 control-label">Change notices:</label>-->
-<!--                <div class="col-sm-10">-->
-<!--                    <div class="form-check form-check-inline">-->
-<!--                        <p th:each="checkBox : ${documentTo.changeNoticesNames}">-->
-<!--                            <input type="checkbox" th:field="*{changeNoticesNames}" th:value="${checkBox}"/>-->
-<!--                            <label class="btn btn-secondary" th:for="${#ids.prev('changeNoticesNames')}" th:text="${checkBox}"></label>-->
-<!--                        </p>-->
-<!--                        <span class="help-block" th:if="${#fields.hasErrors('changeNoticesNames')}">-->
-<!--                            <ul>-->
-<!--                                <li class="text-danger" th:each="err : ${#fields.errors('changeNoticesNames')}" th:text="${err}"/>-->
-<!--                            </ul>-->
-<!--                        </span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="originalHolder">Original holder:</label>
+                    <select class="form-control selectpicker" th:field="*{originalHolder}" id="originalHolder">
+                        <option value="">Nothing selected</option>
+                        <option th:each="dropValue : ${companies}"
+                                th:value="${dropValue.name}"
+                                th:text="${dropValue.name}">pizza
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('originalHolder')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('originalHolder')}" th:text="${err}"/>
+                    </ul>
+                </span>
+                </div>
 
+            </div>
+
+            <br><br>
             <div class="row">
                 <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
             </div>
+            <br><br>
 
         </form>
     </div>
+
+<!--    <script th:src="@{/js/jquery.min.js}"></script>-->
+<!--    <script th:src="@{/js/popper.min.js}"></script>-->
+<!--    <script th:src="@{/css/bootstrap-4.0.0-dist/js/bootstrap.js}"></script>-->
+<!--    <script th:src="@{/css/bootstrap-select-1.13.14/dist/js/bootstrap-select.js}"></script>-->
+
 </body>
 </html>
