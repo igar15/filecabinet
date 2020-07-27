@@ -18,7 +18,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -114,8 +117,9 @@ public class DocumentController {
         if (bindingResult.hasErrors()) {
             return "/documents/documentTo-changes-add-form";
         }
-        documentTo.getChangeNotices().add(changeNoticeService.findByName(documentTo.getTempChangeNoticeName()));
+        documentTo.getChangeNotices().add(documentTo.getTempChangeNoticeName() + " : ch. " + documentTo.getTempChangeNoticeNumber());
         documentTo.setTempChangeNoticeName(null);
+        documentTo.setTempChangeNoticeNumber(null);
         return "/documents/documentTo-changes-add-form";
     }
 
@@ -128,19 +132,29 @@ public class DocumentController {
 
 
     private Document convertFromTo(DocumentTo documentTo) {
+        Map<Integer, ChangeNotice> changeNotices = new HashMap<>();
+        documentTo.getChangeNotices()
+                .forEach(string -> {
+                    String[] split = string.split(" : ch\\. ");
+                    changeNotices.put(Integer.parseInt(split[1]), changeNoticeService.findByName(split[0]));
+                });
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
                 documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicability(), documentTo.getForm(),
                 documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
-                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices(),
+                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), changeNotices,
                 documentTo.getExternalSubscribers());
     }
 
     private DocumentTo convertToToById(int id) {
         Document found = documentService.findByIdWithChangeNotices(id);
+        Set<String> changeNoticesInString = found.getChangeNotices().entrySet()
+                .stream()
+                .map(entry -> entry.getValue().getName() + " : ch. " + entry.getKey())
+                .collect(Collectors.toSet());
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
                 found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), found.getChangeNumber(),
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
-                found.getOriginalHolder(), found.getChangeNotices(), found.getExternalSubscribers());
+                found.getOriginalHolder(), changeNoticesInString, found.getExternalSubscribers());
     }
 
 }

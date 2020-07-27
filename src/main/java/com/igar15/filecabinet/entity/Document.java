@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "documents")
@@ -74,7 +75,8 @@ public class Document extends AbstractNamedEntity {
     @JoinTable(name = "document_change_notices",
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "change_notice_id"))
-    private List<ChangeNotice> changeNotices;
+    @MapKeyColumn(name = "change")
+    private Map<Integer, ChangeNotice> changeNotices;
 
     @ManyToMany
     @JoinTable(name = "document_companies",
@@ -92,7 +94,7 @@ public class Document extends AbstractNamedEntity {
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
-                    Integer a4Amount, Developer developer, Company originalHolder, List<ChangeNotice> changeNotices,
+                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
                     List<Company> externalSubscribers) {
         super(id, name);
         this.decimalNumber = decimalNumber;
@@ -110,15 +112,6 @@ public class Document extends AbstractNamedEntity {
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
         this.externalSubscribers = externalSubscribers;
-    }
-
-    public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, Stage stage, Developer developer, List<ChangeNotice> changeNotices) {
-        super(id, name);
-        this.decimalNumber = decimalNumber;
-        this.inventoryNumber = inventoryNumber;
-        this.stage = stage;
-        this.developer = developer;
-        this.changeNotices = changeNotices;
     }
 
     public String getDecimalNumber() {
@@ -153,11 +146,11 @@ public class Document extends AbstractNamedEntity {
         this.developer = developer;
     }
 
-    public List<ChangeNotice> getChangeNotices() {
+    public Map<Integer, ChangeNotice> getChangeNotices() {
         return changeNotices;
     }
 
-    public void setChangeNotices(List<ChangeNotice> changeNotices) {
+    public void setChangeNotices(Map<Integer, ChangeNotice> changeNotices) {
         this.changeNotices = changeNotices;
     }
 

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -21,18 +22,17 @@ public class ChangeNotice extends AbstractNamedEntity {
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
-
-    @ManyToMany()
-    @JoinTable(name = "document_change_notices",
-            joinColumns = @JoinColumn(name = "change_notice_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_id"))
-    private Set<Document> documents;
+    @ElementCollection
+    @CollectionTable(name = "document_change_notices", joinColumns = @JoinColumn(name = "change_notice_id"))
+    @MapKeyJoinColumn(name = "document_id")
+    @Column(name = "change")
+    private Map<Document, Integer> documents;
 
     public ChangeNotice() {
 
     }
 
-    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer, Set<Document> documents) {
+    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer, Map<Document, Integer> documents) {
         super(id, name);
         this.changeCode = changeCode;
         this.issueDate = issueDate;
@@ -56,11 +56,11 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.developer = developer;
     }
 
-    public Set<Document> getDocuments() {
+    public Map<Document, Integer> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Set<Document> documents) {
+    public void setDocuments(Map<Document, Integer> documents) {
         this.documents = documents;
     }
 

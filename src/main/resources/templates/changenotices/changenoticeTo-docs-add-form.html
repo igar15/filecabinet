@@ -38,6 +38,18 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Document change number:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:class="${#fields.hasErrors('tempDocumentChangeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempDocumentChangeNumber}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('tempDocumentChangeNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('tempDocumentChangeNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
 
                 <button type="submit" class="btn btn-info col-2 offset-1">Add document</button>
 
@@ -58,8 +70,8 @@
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
                         <p th:each="checkBox : ${changeNoticeTo.documents}">
-                            <input type="checkbox" th:field="*{documents}" th:value="${checkBox.decimalNumber}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('documents')}" th:text="${checkBox.decimalNumber}"></label>
+                            <input type="checkbox" th:field="*{documents}" th:value="${checkBox}"/>
+                            <label class="btn btn-secondary" th:for="${#ids.prev('documents')}" th:text="${checkBox}"></label>
                         </p>
                         <span class="help-block" th:if="${#fields.hasErrors('documents') && changeNoticeTo.documents != null && #sets.size(changeNoticeTo.documents) == 0}">
                             <ul>

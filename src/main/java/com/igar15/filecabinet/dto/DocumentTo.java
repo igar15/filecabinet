@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DocumentTo {
 
@@ -65,7 +67,9 @@ public class DocumentTo {
     @ChangeNoticeNameValid
     private String tempChangeNoticeName;
 
-    private List<ChangeNotice> changeNotices;
+    private Integer tempChangeNoticeNumber;
+
+    private Set<String> changeNotices;
 
     private List<Company> externalSubscribers;
 
@@ -78,7 +82,7 @@ public class DocumentTo {
     public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                       String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                       Integer a4Amount, Developer developer, Company originalHolder,
-                      List<ChangeNotice> changeNotices, List<Company> externalSubscribers) {
+                      Set<String> changeNotices, List<Company> externalSubscribers) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -227,11 +231,19 @@ public class DocumentTo {
         this.tempChangeNoticeName = tempChangeNoticeName;
     }
 
-    public List<ChangeNotice> getChangeNotices() {
+    public Integer getTempChangeNoticeNumber() {
+        return tempChangeNoticeNumber;
+    }
+
+    public void setTempChangeNoticeNumber(Integer tempChangeNoticeNumber) {
+        this.tempChangeNoticeNumber = tempChangeNoticeNumber;
+    }
+
+    public Set<String> getChangeNotices() {
         return changeNotices;
     }
 
-    public void setChangeNotices(List<ChangeNotice> changeNotices) {
+    public void setChangeNotices(Set<String> changeNotices) {
         this.changeNotices = changeNotices;
     }
 

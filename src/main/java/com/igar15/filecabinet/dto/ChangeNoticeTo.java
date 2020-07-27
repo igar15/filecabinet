@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 public class ChangeNoticeTo {
@@ -32,8 +33,10 @@ public class ChangeNoticeTo {
     @DecNumValid()
     private String tempDocumentDecimalNumber;
 
+    private Integer tempDocumentChangeNumber;
+
     @NotEmpty
-    private Set<Document> documents;
+    private Set<String> documents;
 
 
 
@@ -43,7 +46,7 @@ public class ChangeNoticeTo {
     }
 
     public ChangeNoticeTo(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer,
-                         Set<Document> documents) {
+                         Set<String> documents) {
         this.id = id;
         this.name = name;
         this.changeCode = changeCode;
@@ -100,13 +103,19 @@ public class ChangeNoticeTo {
         this.tempDocumentDecimalNumber = tempDocumentDecimalNumber;
     }
 
-    public Set<Document> getDocuments() {
+    public Integer getTempDocumentChangeNumber() {
+        return tempDocumentChangeNumber;
+    }
+
+    public void setTempDocumentChangeNumber(Integer tempDocumentChangeNumber) {
+        this.tempDocumentChangeNumber = tempDocumentChangeNumber;
+    }
+
+    public Set<String> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Set<Document> documents) {
+    public void setDocuments(Set<String> documents) {
         this.documents = documents;
     }
-
-
 }

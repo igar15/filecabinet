@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/changenotices")
@@ -65,7 +63,7 @@ public class ChangeNoticeController {
         for (FieldError fieldError : errorsToKeep) {
             bindingResult.addError(fieldError);
         }
-        if (changeNoticeTo.getDocuments().size() == 0) {
+        if (changeNoticeTo.getDocuments() == null || changeNoticeTo.getDocuments().size() == 0) {
             changeNoticeTo.setDocuments(null);
         }
 
@@ -103,8 +101,10 @@ public class ChangeNoticeController {
             if (changeNoticeTo.getDocuments() == null) {
                 changeNoticeTo.setDocuments(new HashSet<>());
             }
-            changeNoticeTo.getDocuments().add(documentService.findByDecimalNumber(changeNoticeTo.getTempDocumentDecimalNumber()));
+
+            changeNoticeTo.getDocuments().add(changeNoticeTo.getTempDocumentDecimalNumber() + ": ch. " + changeNoticeTo.getTempDocumentChangeNumber());
             changeNoticeTo.setTempDocumentDecimalNumber(null);
+            changeNoticeTo.setTempDocumentChangeNumber(null);
             model.addAttribute("changeNoticeTo", changeNoticeTo);
             return "/changenotices/changenoticeTo-docs-add-form";
         }
@@ -181,14 +181,24 @@ public class ChangeNoticeController {
 
 
     private ChangeNotice convertFromTo(ChangeNoticeTo changeNoticeTo) {
+        Map<Document, Integer> documents = new HashMap<>();
+        changeNoticeTo.getDocuments()
+                .forEach(string -> {
+                    String[] split = string.split(": ch\\. ");
+                    documents.put(documentService.findByDecimalNumber(split[0]), Integer.parseInt(split[1]));
+                });
         return new ChangeNotice(changeNoticeTo.getId(), changeNoticeTo.getName(), changeNoticeTo.getChangeCode(),
-                changeNoticeTo.getIssueDate(), changeNoticeTo.getDeveloper(), changeNoticeTo.getDocuments());
+                changeNoticeTo.getIssueDate(), changeNoticeTo.getDeveloper(), documents);
     }
 
     private ChangeNoticeTo convertToToById(int id) {
         ChangeNotice found = changeNoticeService.findById(id);
+        Set<String> documentsInString = found.getDocuments().entrySet()
+                .stream()
+                .map(entry -> entry.getKey().getDecimalNumber() + ": ch. " + entry.getValue())
+                .collect(Collectors.toSet());
         return new ChangeNoticeTo(found.getId(), found.getName(), found.getChangeCode(), found.getIssueDate(),
-                found.getDeveloper(), found.getDocuments());
+                found.getDeveloper(), documentsInString);
     }
 
 
