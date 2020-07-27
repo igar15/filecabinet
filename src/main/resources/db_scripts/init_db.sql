@@ -43,7 +43,7 @@ create table documents (
     format varchar default null,
     a4_amount integer default null,
     developer_id integer default null,
-    original_holder_id integer not null,
+    original_holder_id integer default null,
     foreign key (developer_id) references developers (id),
     foreign key (original_holder_id) references companies (id)
 );

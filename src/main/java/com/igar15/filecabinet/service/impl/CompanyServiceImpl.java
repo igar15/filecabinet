@@ -1,11 +1,14 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.Company;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.CompanyRepository;
+import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -15,6 +18,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private DocumentRepository documentRepository;
 
     @Override
     public void create(Company company) {
@@ -45,8 +51,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
         ValidationUtil.checkNotFoundWithId(companyRepository.findById(id).orElse(null), id);
+        List<Document> documents = documentRepository.findAllByOriginalHolderId(id);
+        documents.forEach(document -> document.setOriginalHolder(null));
         companyRepository.deleteById(id);
     }
 }

@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
-public class TestsTimeChecker implements
+public class TestTimeExtension implements
         BeforeTestExecutionCallback, AfterTestExecutionCallback, BeforeAllCallback, AfterAllCallback {
 
     private static final Logger log = LoggerFactory.getLogger("result");

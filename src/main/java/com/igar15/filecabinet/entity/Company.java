@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.entity;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.List;
 
 @Entity
@@ -8,12 +9,14 @@ import java.util.List;
 public class Company extends AbstractNamedEntity{
 
     @Embedded
+    @Valid
     private Address address;
 
     @Column(name = "contact_person")
     private String contactPerson;
 
-    @ManyToMany
+    @Transient
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "document_companies",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "document_id"))
