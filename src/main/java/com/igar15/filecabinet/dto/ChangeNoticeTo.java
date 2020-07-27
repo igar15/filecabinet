@@ -2,6 +2,7 @@ package com.igar15.filecabinet.dto;
 
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.util.validation.ChangeNumberUniqueValid;
 import com.igar15.filecabinet.util.validation.DecNumValid;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
+@ChangeNumberUniqueValid(decNumber = "tempDocumentDecimalNumber", changeNumber = "tempDocumentChangeNumber")
 public class ChangeNoticeTo {
 
     private Integer id;
@@ -30,10 +32,10 @@ public class ChangeNoticeTo {
 
     private Developer developer;
 
-    @DecNumValid()
+    //@DecNumValid()
     private String tempDocumentDecimalNumber;
 
-    private Integer tempDocumentChangeNumber;
+    private String tempDocumentChangeNumber;
 
     @NotEmpty
     private Set<String> documents;
@@ -103,11 +105,11 @@ public class ChangeNoticeTo {
         this.tempDocumentDecimalNumber = tempDocumentDecimalNumber;
     }
 
-    public Integer getTempDocumentChangeNumber() {
+    public String getTempDocumentChangeNumber() {
         return tempDocumentChangeNumber;
     }
 
-    public void setTempDocumentChangeNumber(Integer tempDocumentChangeNumber) {
+    public void setTempDocumentChangeNumber(String tempDocumentChangeNumber) {
         this.tempDocumentChangeNumber = tempDocumentChangeNumber;
     }
 

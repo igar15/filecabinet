@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +58,7 @@ public class ChangeNoticeController {
     @PostMapping("/showFormForDocsAdd")
     public String showFormForDocsAdd(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
         List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("documents"))
+                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber") && !fer.getField().equals("documents"))
                 .collect(Collectors.toList());
         bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
         for (FieldError fieldError : errorsToKeep) {
@@ -90,10 +91,15 @@ public class ChangeNoticeController {
         List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
                 .filter(fer -> !fer.getField().equals("documents"))
                 .collect(Collectors.toList());
+//        List<ObjectError> globalError = bindingResult.getGlobalErrors();
         bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
         for (FieldError fieldError : errorsToKeep) {
             bindingResult.addError(fieldError);
         }
+//        for (ObjectError objectError: globalError) {
+//            bindingResult.addError(objectError);
+//        }
+
         if (bindingResult.hasErrors()) {
             return "/changenotices/changenoticeTo-docs-add-form";
         }
@@ -113,7 +119,8 @@ public class ChangeNoticeController {
     @PostMapping("/addDocumentForNotNew")
     public String addDocumentForNotNew(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
         List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("documents"))
+                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber")
+                        && !fer.getField().equals("documents"))
                 .collect(Collectors.toList());
         bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
         for (FieldError fieldError : errorsToKeep) {
@@ -136,7 +143,7 @@ public class ChangeNoticeController {
     public String save(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult) {
         Integer id = null;
         List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber"))
+                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber"))
                 .collect(Collectors.toList());
         bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
         for (FieldError fieldError : errorsToKeep) {
