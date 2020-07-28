@@ -14,10 +14,10 @@ values ('KTK-40', 'KTK-40 chief name', null, null),
        ('OTD 25', 'OTD 25 chief name', null, 11),
        ('OTD 33', 'OTD 33 chief name', 'OTD 33 makes great job for the organization!', 22);
 
-insert into companies (name, city, street, building, zipcode)
-values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357'),
-       ('AO "MMZ"', 'Yoshkar-Ola', 'Suvorov street', '15', '424003'),
-       ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033');
+insert into companies (name, city, street, building, zipcode, contact_person)
+values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357', 'Raev A.A.'),
+       ('AO "MMZ"', 'Yoshkar-Ola', 'Suvorov street', '15', '424003', 'Bozhko M.V.'),
+       ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033', 'Visher S.K.');
 
 insert into documents (name, decimal_number, inventory_number, receipt_date, status, applicability, form, change_number,
                        stage, sheets_amount, format, a4_amount, developer_id, original_holder_id)

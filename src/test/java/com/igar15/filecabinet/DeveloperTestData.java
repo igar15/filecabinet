@@ -33,4 +33,12 @@ public class DeveloperTestData {
     public static Developer getNewWithDuplicateName() {
         return new Developer(null, "KTK-40", "new chief name", "new description", 5);
     }
+
+    public static List<Developer> getNewsWithWrongValues() {
+        return List.of(
+                new Developer(null, null, "chief", "description", 3),
+                new Developer(null, "name", null, "description", 3),
+                new Developer(null, "  ", null, "description", 3)
+        );
+    }
 }

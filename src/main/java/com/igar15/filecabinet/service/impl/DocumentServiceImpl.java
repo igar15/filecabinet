@@ -18,9 +18,9 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentRepository documentRepository;
 
     @Override
-    public void create(Document document) {
+    public Document create(Document document) {
         Assert.notNull(document, "document must not be null");
-        documentRepository.save(document);
+        return documentRepository.save(document);
     }
 
     @Override

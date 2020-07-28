@@ -25,6 +25,7 @@ class DeveloperServiceImplTest extends AbstractServiceTest {
         Developer newDeveloper = getNew();
         newDeveloper.setId(newId);
         Assertions.assertEquals(newDeveloper, created);
+        Assertions.assertEquals(developerService.findById(newId), newDeveloper);
     }
 
     @Test
@@ -33,9 +34,10 @@ class DeveloperServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void createWithException() {
-        validateRootCause(ConstraintViolationException.class, () -> developerService.create(new Developer(null, null, "chief", "description", 3)));
-        validateRootCause(ConstraintViolationException.class, () -> developerService.create(new Developer(null, "name", null, "description", 3)));
+    void createWithWrongValues() {
+        getNewsWithWrongValues().forEach(developer -> {
+            validateRootCause(ConstraintViolationException.class, () -> developerService.create(developer));
+        });
     }
 
     @Test

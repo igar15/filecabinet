@@ -23,6 +23,15 @@ public class Address {
     @Column(name = "zipcode")
     private String zipcode;
 
+    public Address() {
+    }
+
+    public Address(String city, String street, String building, String zipcode) {
+        this.city = city;
+        this.street = street;
+        this.building = building;
+        this.zipcode = zipcode;
+    }
 
     public String getCity() {
         return city;

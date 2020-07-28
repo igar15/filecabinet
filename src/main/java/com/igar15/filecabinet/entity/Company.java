@@ -26,6 +26,13 @@ public class Company extends AbstractNamedEntity{
         address = new Address();
     }
 
+    public Company(Integer id, String name, Address address, String contactPerson, List<Document> documents) {
+        super(id, name);
+        this.address = address;
+        this.contactPerson = contactPerson;
+        this.documents = documents;
+    }
+
     public Address getAddress() {
         return address;
     }

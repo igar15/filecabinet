@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CompanyService {
 
-    void create(Company company);
+    Company create(Company company);
 
     Company findById(int id);
 

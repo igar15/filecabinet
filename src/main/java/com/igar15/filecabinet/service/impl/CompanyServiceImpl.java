@@ -24,9 +24,9 @@ public class CompanyServiceImpl implements CompanyService {
     private DocumentRepository documentRepository;
 
     @Override
-    public void create(Company company) {
+    public Company create(Company company) {
         Assert.notNull(company, "company must not be null");
-        companyRepository.save(company);
+        return companyRepository.save(company);
     }
 
     @Override
