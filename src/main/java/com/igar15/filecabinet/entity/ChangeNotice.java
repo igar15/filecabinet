@@ -12,6 +12,7 @@ import java.util.Set;
 public class ChangeNotice extends AbstractNamedEntity {
 
     @Column(name = "change_code")
+    @NotNull
     private Integer changeCode;
 
     @NotNull
@@ -30,6 +31,13 @@ public class ChangeNotice extends AbstractNamedEntity {
 
     public ChangeNotice() {
 
+    }
+
+    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer) {
+        super(id, name);
+        this.changeCode = changeCode;
+        this.issueDate = issueDate;
+        this.developer = developer;
     }
 
     public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer, Map<Document, Integer> documents) {

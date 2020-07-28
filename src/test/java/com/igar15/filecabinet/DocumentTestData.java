@@ -1,13 +1,16 @@
 package com.igar15.filecabinet;
 
 import com.igar15.filecabinet.entity.AbstractBaseEntity;
+import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DocumentTestData {
 
@@ -61,5 +64,39 @@ public class DocumentTestData {
         return new Document(DOCUMENT1_ID, "Стойка 999", "БА6.151.999-05", 777555,
                 LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
                 null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1);
+    }
+
+    public static Document getWithChangeNotices() {
+        Map<Integer, ChangeNotice> changeNotices = new HashMap<>();
+        changeNotices.put(1, ChangeNoticeTestData.CHANGE_NOTICE1);
+        changeNotices.put(2, ChangeNoticeTestData.CHANGE_NOTICE2);
+        DOCUMENT1.setChangeNotices(changeNotices);
+        return DOCUMENT1;
+    }
+
+    public static List<Document> getNewsWithWrongValues() {
+        return List.of(
+                new Document(null, null, "БА6.151.999-05", 777555,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "   ", "БА6.151.999-05", 777555,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "Stoika", null, 777555,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "Stoika", "БА6.151.999-05", null,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "Stoika", "БА6.151.999-05", 12313,
+                        null, Status.DUPLICATE, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "Stoika", "БА6.151.999-05", 1123,
+                        LocalDate.of(2020, 1, 14), null, null, Form.ELECTRONIC, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1),
+                new Document(null, "Stoika", "БА6.151.999-05", 23213,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, null, 2, Stage.O1,
+                        null, null, null, DeveloperTestData.DEVELOPER1, CompanyTestData.COMPANY1)
+        );
     }
 }

@@ -24,6 +24,7 @@ public class Document extends AbstractNamedEntity {
     private String decimalNumber;
 
     @Min(1)
+    @NotNull
     @Column(name = "inventory_number")
     private Integer inventoryNumber;
 
