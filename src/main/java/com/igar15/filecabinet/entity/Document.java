@@ -79,11 +79,7 @@ public class Document extends AbstractNamedEntity {
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
 
-    @ManyToMany
-    @JoinTable(name = "document_companies",
-            joinColumns = @JoinColumn(name = "document_id"),
-            inverseJoinColumns = @JoinColumn(name = "company_id"))
-    private List<Company> externalSubscribers;
+
 
 
     //private List<Sheet> sheets;
@@ -114,8 +110,7 @@ public class Document extends AbstractNamedEntity {
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
-                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
-                    List<Company> externalSubscribers) {
+                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
@@ -131,7 +126,6 @@ public class Document extends AbstractNamedEntity {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
-        this.externalSubscribers = externalSubscribers;
     }
 
     public String getDecimalNumber() {
@@ -212,14 +206,6 @@ public class Document extends AbstractNamedEntity {
 
     public void setChangeNumber(Integer changeNumber) {
         this.changeNumber = changeNumber;
-    }
-
-    public List<Company> getExternalSubscribers() {
-        return externalSubscribers;
-    }
-
-    public void setExternalSubscribers(List<Company> externalSubscribers) {
-        this.externalSubscribers = externalSubscribers;
     }
 
     public LocalDate getReceiptDate() {

@@ -71,8 +71,6 @@ public class DocumentTo {
 
     private Set<String> changeNotices;
 
-    private List<Company> externalSubscribers;
-
 
 
     public DocumentTo() {
@@ -82,7 +80,7 @@ public class DocumentTo {
     public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                       String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                       Integer a4Amount, Developer developer, Company originalHolder,
-                      Set<String> changeNotices, List<Company> externalSubscribers) {
+                      Set<String> changeNotices) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -99,7 +97,6 @@ public class DocumentTo {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
-        this.externalSubscribers = externalSubscribers;
     }
 
 
@@ -247,11 +244,4 @@ public class DocumentTo {
         this.changeNotices = changeNotices;
     }
 
-    public List<Company> getExternalSubscribers() {
-        return externalSubscribers;
-    }
-
-    public void setExternalSubscribers(List<Company> externalSubscribers) {
-        this.externalSubscribers = externalSubscribers;
-    }
 }

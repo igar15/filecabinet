@@ -59,7 +59,6 @@
                         <input type="hidden" th:field="*{developer}">
                         <input type="hidden" th:field="*{originalHolder}">
                         <input type="hidden" th:field="*{changeNotices}">
-                        <input type="hidden" th:field="*{externalSubscribers}">
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -94,7 +93,6 @@
                         <input type="hidden" th:field="*{developer}">
                         <input type="hidden" th:field="*{originalHolder}">
                         <input type="hidden" th:field="*{changeNotices}">
-                        <input type="hidden" th:field="*{externalSubscribers}">
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -245,16 +243,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-2 border">
-                    <h6>External subscribers:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:each="tempExternalSubscriber : ${documentTo.externalSubscribers}">
-                        <span th:text="${tempExternalSubscriber.name}"></span>
-                    </h6>
-                </div>
-            </div>
 
         </span>
 
