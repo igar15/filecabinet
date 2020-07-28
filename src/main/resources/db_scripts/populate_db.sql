@@ -1,3 +1,5 @@
+delete from external_dispatches;
+delete from internal_dispatches;
 delete from document_change_notices;
 delete from change_notices;
 delete from documents;
@@ -49,3 +51,12 @@ values (1009, 1015, 1),
        (1011, 1021, 2),
        (1011, 1022, 3);
 
+insert into external_dispatches (waybill, dispatch_date, status, document_id, remark, company_id)
+values ('wb-465', '2018-04-15', 'ACC_COPY', 1009, null, 1007),
+       ('wb-467', '2018-04-20', 'DUPLICATE', 1009, 'simple remark', 1008),
+       ('wb-546', '2019-06-20', 'ACC_COPY', 1010, 'true remark', 1007);
+
+insert into internal_dispatches (waybill, dispatch_date, status, document_id, remark, stamp, developer_id)
+values ('wb-531', '2017-04-15', 'ACC_COPY', 1009, null, 'I', null),
+       ('wb-532', '2018-04-20', 'ACC_COPY', 1009, 'simple remark', 'V', 1001),
+       ('wb-556', '2019-06-20', 'ACC_COPY', 1010, 'true remark', null, 1001);

@@ -3,12 +3,14 @@ package com.igar15.filecabinet.entity;
 import com.igar15.filecabinet.entity.enums.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "external_dispatches")
 public class ExternalDispatch extends Dispatch {
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     private Company company;

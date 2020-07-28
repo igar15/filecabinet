@@ -1,3 +1,5 @@
+drop table if exists external_dispatches;
+drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
 drop table if exists change_notices;
 drop table if exists documents;
@@ -68,3 +70,29 @@ create table document_change_notices (
     foreign key (change_notice_id) references change_notices (id)
 );
 
+create table external_dispatches (
+    id integer primary key default nextval('global_seq'),
+    waybill varchar not null,
+    dispatch_date date not null,
+    status varchar not null,
+    document_id integer not null,
+    remark varchar default null,
+    company_id integer not null,
+    foreign key (document_id) references documents (id),
+    foreign key (company_id) references companies (id)
+);
+create unique index external_dispatches_waybill_dispatch_date_document_id_idx on external_dispatches (waybill, dispatch_date, document_id);
+
+create table internal_dispatches (
+    id integer primary key default nextval('global_seq'),
+    waybill varchar not null,
+    dispatch_date date not null,
+    status varchar not null,
+    document_id integer not null,
+    remark varchar default null,
+    stamp varchar default null,
+    developer_id integer default null,
+    foreign key (document_id) references documents (id),
+    foreign key (developer_id) references developers (id)
+);
+create unique index internal_dispatches_waybill_dispatch_date_document_id_idx on internal_dispatches (waybill, dispatch_date, document_id);
