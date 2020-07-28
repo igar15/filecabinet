@@ -92,6 +92,25 @@ public class Document extends AbstractNamedEntity {
     public Document() {
     }
 
+    public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate,
+                    Status status, String applicability, Form form, Integer changeNumber, Stage stage,
+                    Integer sheetsAmount, String format, Integer a4Amount, Developer developer, Company originalHolder) {
+        super(id, name);
+        this.decimalNumber = decimalNumber;
+        this.inventoryNumber = inventoryNumber;
+        this.receiptDate = receiptDate;
+        this.status = status;
+        this.applicability = applicability;
+        this.form = form;
+        this.changeNumber = changeNumber;
+        this.stage = stage;
+        this.sheetsAmount = sheetsAmount;
+        this.format = format;
+        this.a4Amount = a4Amount;
+        this.developer = developer;
+        this.originalHolder = originalHolder;
+    }
+
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                     Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
