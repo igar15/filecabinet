@@ -99,7 +99,6 @@ public class DocumentTo {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
-        externalSubscribers.sort(Comparator.comparing(AbstractNamedEntity::getName));
         this.externalSubscribers = externalSubscribers;
     }
 

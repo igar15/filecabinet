@@ -153,9 +153,12 @@ public class DocumentController {
             String second = s2.split("ch\\. ")[1];
             return first.compareTo(second);
         });
+        found.getExternalSubscribers().sort(Comparator.comparing(AbstractNamedEntity::getName));
+        Integer changeNumber = found.getChangeNotices().keySet().stream()
+                .max(Comparator.comparingInt(i -> i)).orElse(null);
         sortedChangeNotices.addAll(changeNoticesInString);
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
-                found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), found.getChangeNumber(),
+                found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), changeNumber,
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
                 found.getOriginalHolder(), sortedChangeNotices, found.getExternalSubscribers());
     }
