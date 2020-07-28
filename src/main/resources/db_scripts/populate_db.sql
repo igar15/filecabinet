@@ -1,5 +1,4 @@
 delete from document_change_notices;
-delete from document_companies;
 delete from change_notices;
 delete from documents;
 delete from developers;
@@ -50,8 +49,3 @@ values (1009, 1015, 1),
        (1011, 1021, 2),
        (1011, 1022, 3);
 
-insert into document_companies (document_id, company_id)
-values (1009, 1007),
-       (1009, 1008),
-       (1010, 1007),
-       (1011, 1008);

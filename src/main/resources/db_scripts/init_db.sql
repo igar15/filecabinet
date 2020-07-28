@@ -1,5 +1,4 @@
 drop table if exists document_change_notices;
-drop table if exists document_companies;
 drop table if exists change_notices;
 drop table if exists documents;
 drop table if exists developers;
@@ -69,10 +68,3 @@ create table document_change_notices (
     foreign key (change_notice_id) references change_notices (id)
 );
 
-create table document_companies (
-    document_id integer not null,
-    company_id integer not null,
-    primary key (document_id, company_id),
-    foreign key (document_id) references documents (id),
-    foreign key (company_id) references companies (id)
-);
