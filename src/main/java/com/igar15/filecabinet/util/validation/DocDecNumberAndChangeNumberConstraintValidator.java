@@ -3,7 +3,6 @@ package com.igar15.filecabinet.util.validation;
 import com.igar15.filecabinet.dto.ChangeNoticeTo;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.DocumentRepository;
-import com.igar15.filecabinet.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,33 +10,29 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
-public class ChangeNumberUniqueConstraintValidator implements ConstraintValidator<ChangeNumberUniqueValid, ChangeNoticeTo> {
+public class DocDecNumberAndChangeNumberConstraintValidator implements ConstraintValidator<DocDecNumberAndChangeNumberValid, ChangeNoticeTo> {
 
    @Autowired
    private DocumentRepository documentRepository;
 
-   private String decNumber;
-
-   private String changeNumber;
-
-
-
-
-   public void initialize(ChangeNumberUniqueValid constraint) {
-      decNumber = constraint.decNumber();
-      changeNumber = constraint.changeNumber();
+   public void initialize(DocDecNumberAndChangeNumberValid constraint) {
 
    }
 
    public boolean isValid(ChangeNoticeTo userInput, ConstraintValidatorContext context) {
 
       if (userInput.getTempDocumentDecimalNumber() == null) return true;
-      //if (userInput.getTempDocumentDecimalNumber().isEmpty()) return true;
       if (userInput.getTempDocumentChangeNumber() == null) return true;
 
       if (userInput.getTempDocumentDecimalNumber().isEmpty()) {
          context.disableDefaultConstraintViolation();
          context.buildConstraintViolationWithTemplate("must not be empty").addPropertyNode("tempDocumentDecimalNumber").addConstraintViolation();
+
+         if (userInput.getTempDocumentChangeNumber().isEmpty()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("must not be empty").addPropertyNode("tempDocumentChangeNumber").addConstraintViolation();
+         }
+
          return false;
       }
 
@@ -46,22 +41,28 @@ public class ChangeNumberUniqueConstraintValidator implements ConstraintValidato
       if (document == null) {
          context.disableDefaultConstraintViolation();
          context.buildConstraintViolationWithTemplate("document must exist").addPropertyNode("tempDocumentDecimalNumber").addConstraintViolation();
+
+         if (userInput.getTempDocumentChangeNumber().isEmpty()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("must not be empty").addPropertyNode("tempDocumentChangeNumber").addConstraintViolation();
+         }
+
          return false;
       }
 
-//      final Boolean[] isAlreadyContains = {false};
 
       boolean match = userInput.getDocuments().stream()
               .anyMatch(doc -> doc.startsWith(userInput.getTempDocumentDecimalNumber()));
 
-//      userInput.getDocuments().forEach(doc -> {
-//         if (doc.startsWith(userInput.getTempDocumentDecimalNumber())) {
-//            isAlreadyContains[0] = true;
-//         }
-//      });
       if (match) {
          context.disableDefaultConstraintViolation();
          context.buildConstraintViolationWithTemplate("document already added").addPropertyNode("tempDocumentDecimalNumber").addConstraintViolation();
+
+         if (userInput.getTempDocumentChangeNumber().isEmpty()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("must not be empty").addPropertyNode("tempDocumentChangeNumber").addConstraintViolation();
+         }
+
          return false;
       }
 

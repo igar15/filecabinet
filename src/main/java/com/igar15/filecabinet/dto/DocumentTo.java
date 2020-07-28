@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
+import com.igar15.filecabinet.util.validation.ChangeNoticeNameAndDocChangeNumberValid;
 import com.igar15.filecabinet.util.validation.ChangeNoticeNameValid;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@ChangeNoticeNameAndDocChangeNumberValid(tempChangeNoticeName = "tempChangeNoticeName", tempChangeNoticeNumber = "tempChangeNoticeNumber")
 public class DocumentTo {
 
     private Integer id;
@@ -64,10 +66,9 @@ public class DocumentTo {
     @NotNull
     private Company originalHolder;
 
-    @ChangeNoticeNameValid
     private String tempChangeNoticeName;
 
-    private Integer tempChangeNoticeNumber;
+    private String tempChangeNoticeNumber;
 
     private Set<String> changeNotices;
 
@@ -231,11 +232,11 @@ public class DocumentTo {
         this.tempChangeNoticeName = tempChangeNoticeName;
     }
 
-    public Integer getTempChangeNoticeNumber() {
+    public String getTempChangeNoticeNumber() {
         return tempChangeNoticeNumber;
     }
 
-    public void setTempChangeNoticeNumber(Integer tempChangeNoticeNumber) {
+    public void setTempChangeNoticeNumber(String tempChangeNoticeNumber) {
         this.tempChangeNoticeNumber = tempChangeNoticeNumber;
     }
 

@@ -1,9 +1,7 @@
 package com.igar15.filecabinet.dto;
 
 import com.igar15.filecabinet.entity.Developer;
-import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.util.validation.ChangeNumberUniqueValid;
-import com.igar15.filecabinet.util.validation.DecNumValid;
+import com.igar15.filecabinet.util.validation.DocDecNumberAndChangeNumberValid;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,10 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Set;
 
-@ChangeNumberUniqueValid(decNumber = "tempDocumentDecimalNumber", changeNumber = "tempDocumentChangeNumber")
+@DocDecNumberAndChangeNumberValid(decNumber = "tempDocumentDecimalNumber", changeNumber = "tempDocumentChangeNumber")
 public class ChangeNoticeTo {
 
     private Integer id;
@@ -32,7 +29,6 @@ public class ChangeNoticeTo {
 
     private Developer developer;
 
-    //@DecNumValid()
     private String tempDocumentDecimalNumber;
 
     private String tempDocumentChangeNumber;

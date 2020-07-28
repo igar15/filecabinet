@@ -4,10 +4,10 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = ChangeNumberUniqueConstraintValidator.class)
+@Constraint(validatedBy = DocDecNumberAndChangeNumberConstraintValidator.class)
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ChangeNumberUniqueValid {
+public @interface DocDecNumberAndChangeNumberValid {
 
     public String decNumber();
 
