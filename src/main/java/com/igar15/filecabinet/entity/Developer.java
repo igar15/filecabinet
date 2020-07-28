@@ -16,15 +16,24 @@ public class Developer extends AbstractNamedEntity {
     @Size(min = 5, max = 100)
     private String chiefName;
 
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "workers_amount")
     @Min(1)
     private Integer workersAmount;
 
-    @Column(name = "description")
-    private String description;
 
+    public Developer() {
 
+    }
+
+    public Developer(Integer id, String name, String chiefName, String description, Integer workersAmount) {
+        super(id, name);
+        this.chiefName = chiefName;
+        this.description = description;
+        this.workersAmount = workersAmount;
+    }
 
     public String getChiefName() {
         return chiefName;

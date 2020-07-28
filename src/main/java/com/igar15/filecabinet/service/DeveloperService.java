@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DeveloperService {
 
-    void create(Developer developer);
+    Developer create(Developer developer);
 
     Developer findById(int id);
 

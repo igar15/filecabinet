@@ -29,9 +29,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     private ChangeNoticeRepository changeNoticeRepository;
 
     @Override
-    public void create(Developer developer) {
+    public Developer create(Developer developer) {
         Assert.notNull(developer, "developer must not be null");
-        developerRepository.save(developer);
+        return developerRepository.save(developer);
     }
 
     @Override
