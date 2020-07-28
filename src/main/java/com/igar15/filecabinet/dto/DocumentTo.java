@@ -1,5 +1,6 @@
 package com.igar15.filecabinet.dto;
 
+import com.igar15.filecabinet.entity.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Company;
 import com.igar15.filecabinet.entity.Developer;
@@ -15,9 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @ChangeNoticeNameAndDocChangeNumberValid(tempChangeNoticeName = "tempChangeNoticeName", tempChangeNoticeNumber = "tempChangeNoticeNumber")
 public class DocumentTo {
@@ -100,6 +99,7 @@ public class DocumentTo {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
+        externalSubscribers.sort(Comparator.comparing(AbstractNamedEntity::getName));
         this.externalSubscribers = externalSubscribers;
     }
 

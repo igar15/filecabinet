@@ -5,6 +5,7 @@ import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -40,7 +41,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<Document> findAll() {
-        return documentRepository.findAll();
+        return documentRepository.findAll(Sort.by(Sort.Direction.ASC, "decimalNumber"));
     }
 
     @Override

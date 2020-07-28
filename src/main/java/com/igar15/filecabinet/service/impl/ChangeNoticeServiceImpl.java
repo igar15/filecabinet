@@ -5,6 +5,7 @@ import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -34,7 +35,7 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
 
     @Override
     public List<ChangeNotice> findAll() {
-        return changeNoticeRepository.findAll();
+        return changeNoticeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Override

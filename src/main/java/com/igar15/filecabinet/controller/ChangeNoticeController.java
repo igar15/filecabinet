@@ -189,11 +189,13 @@ public class ChangeNoticeController {
 
     private ChangeNotice convertFromTo(ChangeNoticeTo changeNoticeTo) {
         Map<Document, Integer> documents = new HashMap<>();
-        changeNoticeTo.getDocuments()
-                .forEach(string -> {
-                    String[] split = string.split(": ch\\. ");
-                    documents.put(documentService.findByDecimalNumber(split[0]), Integer.parseInt(split[1]));
-                });
+        if (changeNoticeTo.getDocuments() != null){
+            changeNoticeTo.getDocuments()
+                    .forEach(string -> {
+                        String[] split = string.split(": ch\\. ");
+                        documents.put(documentService.findByDecimalNumber(split[0]), Integer.parseInt(split[1]));
+                    });
+        }
         return new ChangeNotice(changeNoticeTo.getId(), changeNoticeTo.getName(), changeNoticeTo.getChangeCode(),
                 changeNoticeTo.getIssueDate(), changeNoticeTo.getDeveloper(), documents);
     }
@@ -204,8 +206,14 @@ public class ChangeNoticeController {
                 .stream()
                 .map(entry -> entry.getKey().getDecimalNumber() + ": ch. " + entry.getValue())
                 .collect(Collectors.toSet());
+        Set<String> sortedDocuments = new TreeSet<>((s1, s2) -> {
+            String first = s1.split("ch\\. ")[0];
+            String second = s2.split("ch\\. ")[0];
+            return first.compareTo(second);
+        });
+        sortedDocuments.addAll(documentsInString);
         return new ChangeNoticeTo(found.getId(), found.getName(), found.getChangeCode(), found.getIssueDate(),
-                found.getDeveloper(), documentsInString);
+                found.getDeveloper(), sortedDocuments);
     }
 
 

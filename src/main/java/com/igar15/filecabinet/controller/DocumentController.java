@@ -18,10 +18,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -151,10 +148,16 @@ public class DocumentController {
                 .stream()
                 .map(entry -> entry.getValue().getName() + " : ch. " + entry.getKey())
                 .collect(Collectors.toSet());
+        Set<String> sortedChangeNotices = new TreeSet<>((s1, s2) -> {
+            String first = s1.split("ch\\. ")[1];
+            String second = s2.split("ch\\. ")[1];
+            return first.compareTo(second);
+        });
+        sortedChangeNotices.addAll(changeNoticesInString);
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
                 found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), found.getChangeNumber(),
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
-                found.getOriginalHolder(), changeNoticesInString, found.getExternalSubscribers());
+                found.getOriginalHolder(), sortedChangeNotices, found.getExternalSubscribers());
     }
 
 }

@@ -9,6 +9,7 @@ import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -45,7 +46,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public List<Developer> findAll() {
-        return developerRepository.findAll();
+        return developerRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Override

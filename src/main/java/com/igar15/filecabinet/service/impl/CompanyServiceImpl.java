@@ -7,6 +7,7 @@ import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -41,7 +42,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> findAll() {
-        return companyRepository.findAll();
+        return companyRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Override
