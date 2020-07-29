@@ -36,8 +36,6 @@ public class ChangeNoticeTo {
 
     private String tempDocumentChangeNumber;
 
-    //@NotEmpty
-    //private Set<String> documents;
     private TreeMap<Document, Integer> documents;
 
 
