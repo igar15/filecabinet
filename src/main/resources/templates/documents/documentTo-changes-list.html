@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Document change notices</title>
+</head>
+<body>
+<div class="container">
+    <a href="#" onclick="goBack()">Go Back</a>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <br><br>
+
+    <h3>Document Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Document change notices:</p>
+
+    <form th:action="@{/documents/addChange}" th:object="${documentTo}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{decimalNumber}">
+        <input type="hidden" th:field="*{inventoryNumber}">
+        <input type="hidden" th:field="*{receiptDate}">
+        <input type="hidden" th:field="*{status}">
+        <input type="hidden" th:field="*{applicability}">
+        <input type="hidden" th:field="*{form}">
+        <input type="hidden" th:field="*{changeNumber}">
+        <input type="hidden" th:field="*{changeNumber}">
+        <input type="hidden" th:field="*{stage}">
+        <input type="hidden" th:field="*{sheetsAmount}">
+        <input type="hidden" th:field="*{format}">
+        <input type="hidden" th:field="*{a4Amount}">
+        <input type="hidden" th:field="*{developer}">
+        <input type="hidden" th:field="*{originalHolder}">
+        <input type="hidden" th:field="*{changeNotices}">
+
+        <div class="form-group">
+            <div class="col-sm-5">
+                <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeName')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-5">
+                <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>
+    </form>
+
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th class="align-middle">Change number</th>
+                <th class="align-middle">Name</th>
+                <th class="align-middle">Change code</th>
+                <th class="align-middle">Issue date</th>
+                <th class="align-middle">Developer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
+                <td class="align-middle" th:text="${entry.key}"></td>
+                <td class="align-middle" th:text="${entry.value.name}"></td>
+                <td class="align-middle" th:text="${entry.value.changeCode}"></td>
+                <td class="align-middle" th:text="${entry.value.issueDate}"></td>
+                <td class="align-middle" th:text="${entry.value.developer.name}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+</body>
+</html>

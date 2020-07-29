@@ -69,7 +69,8 @@ public class DocumentTo {
 
     private String tempChangeNoticeNumber;
 
-    private Set<String> changeNotices;
+    //private Set<String> changeNotices;
+    private Map<Integer, ChangeNotice> changeNotices;
 
 
 
@@ -80,7 +81,7 @@ public class DocumentTo {
     public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                       String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                       Integer a4Amount, Developer developer, Company originalHolder,
-                      Set<String> changeNotices) {
+                      Map<Integer, ChangeNotice> changeNotices) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -236,12 +237,20 @@ public class DocumentTo {
         this.tempChangeNoticeNumber = tempChangeNoticeNumber;
     }
 
-    public Set<String> getChangeNotices() {
+//    public Set<String> getChangeNotices() {
+//        return changeNotices;
+//    }
+//
+//    public void setChangeNotices(Set<String> changeNotices) {
+//        this.changeNotices = changeNotices;
+//    }
+
+
+    public Map<Integer, ChangeNotice> getChangeNotices() {
         return changeNotices;
     }
 
-    public void setChangeNotices(Set<String> changeNotices) {
+    public void setChangeNotices(Map<Integer, ChangeNotice> changeNotices) {
         this.changeNotices = changeNotices;
     }
-
 }

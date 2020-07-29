@@ -79,4 +79,9 @@ public class ChangeNotice extends AbstractNamedEntity {
     public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
