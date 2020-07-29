@@ -67,10 +67,13 @@
         <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>
     </form>
 
+    <div th:if="${documentTo.changeNotices == null || documentTo.changeNotices.size() == 0}">
+        <h2>No changes</h2>
+    </div>
 
-
-    <table class="table table-bordered table-hover">
-        <thead class="thead-dark text-center">
+    <div th:if="${documentTo.changeNotices != null && documentTo.changeNotices.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
             <tr>
                 <th class="align-middle">Change number</th>
                 <th class="align-middle">Name</th>
@@ -79,8 +82,8 @@
                 <th class="align-middle">Developer</th>
                 <th class="align-middle">Action</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
                 <td class="align-middle" th:text="${entry.key}"></td>
                 <td class="align-middle">
@@ -88,17 +91,15 @@
                 </td>
                 <td class="align-middle" th:text="${entry.value.changeCode}"></td>
                 <td class="align-middle" th:text="${entry.value.issueDate}"></td>
-                <td class="align-middle" th:text="${entry.value.developer.name}"></td>
+                <td class="align-middle" th:text="${entry.value.developer} == null ? '' : ${entry.value.developer.name}"></td>
                 <td class="align-middle">
                     <a class="btn btn-sm btn-outline-danger"
                        th:href="@{'/documents/removeChange/' + ${documentTo.id} + '/' + ${entry.key}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
                 </td>
             </tr>
-        </tbody>
-    </table>
-
-
-
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

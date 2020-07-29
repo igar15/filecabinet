@@ -3,7 +3,6 @@ package com.igar15.filecabinet.entity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -238,5 +236,10 @@ public class Document extends AbstractNamedEntity {
 
     public void setA4Amount(Integer a4Amount) {
         this.a4Amount = a4Amount;
+    }
+
+    @Override
+    public String toString() {
+        return decimalNumber;
     }
 }

@@ -51,8 +51,10 @@ public class DocDecNumberAndChangeNumberConstraintValidator implements Constrain
       }
 
 
-      boolean match = userInput.getDocuments().stream()
-              .anyMatch(doc -> doc.startsWith(userInput.getTempDocumentDecimalNumber()));
+//      boolean match = userInput.getDocuments().stream()
+//              .anyMatch(doc -> doc.startsWith(userInput.getTempDocumentDecimalNumber()));
+      boolean match = userInput.getDocuments().keySet().stream()
+              .anyMatch(doc -> doc.getDecimalNumber().startsWith(userInput.getTempDocumentDecimalNumber()));
 
       if (match) {
          context.disableDefaultConstraintViolation();

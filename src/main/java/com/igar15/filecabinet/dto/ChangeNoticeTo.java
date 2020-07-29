@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.dto;
 
 import com.igar15.filecabinet.entity.Developer;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.util.validation.DocDecNumberAndChangeNumberValid;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +10,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 @DocDecNumberAndChangeNumberValid(decNumber = "tempDocumentDecimalNumber", changeNumber = "tempDocumentChangeNumber")
 public class ChangeNoticeTo {
@@ -33,8 +36,9 @@ public class ChangeNoticeTo {
 
     private String tempDocumentChangeNumber;
 
-    @NotEmpty
-    private Set<String> documents;
+    //@NotEmpty
+    //private Set<String> documents;
+    private TreeMap<Document, Integer> documents;
 
 
 
@@ -44,7 +48,7 @@ public class ChangeNoticeTo {
     }
 
     public ChangeNoticeTo(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer,
-                         Set<String> documents) {
+                         TreeMap<Document, Integer> documents) {
         this.id = id;
         this.name = name;
         this.changeCode = changeCode;
@@ -109,11 +113,20 @@ public class ChangeNoticeTo {
         this.tempDocumentChangeNumber = tempDocumentChangeNumber;
     }
 
-    public Set<String> getDocuments() {
+//    public Set<String> getDocuments() {
+//        return documents;
+//    }
+//
+//    public void setDocuments(Set<String> documents) {
+//        this.documents = documents;
+//    }
+
+
+    public TreeMap<Document, Integer> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Set<String> documents) {
+    public void setDocuments(TreeMap<Document, Integer> documents) {
         this.documents = documents;
     }
 }

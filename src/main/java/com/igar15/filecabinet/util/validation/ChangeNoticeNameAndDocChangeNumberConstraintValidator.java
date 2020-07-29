@@ -47,8 +47,11 @@ public class ChangeNoticeNameAndDocChangeNumberConstraintValidator implements Co
 
 //      boolean match = obj.getChangeNotices().stream()
 //              .anyMatch(change -> change.startsWith(obj.getTempChangeNoticeName()));
-      boolean match = obj.getChangeNotices().values().stream()
-              .anyMatch(change -> change.getName().startsWith(obj.getTempChangeNoticeName()));
+      boolean match = false;
+      if (obj.getChangeNotices() != null) {
+         match = obj.getChangeNotices().values().stream()
+                 .anyMatch(change -> change.getName().startsWith(obj.getTempChangeNoticeName()));
+      }
 
       if (match) {
          context.disableDefaultConstraintViolation();
@@ -69,7 +72,10 @@ public class ChangeNoticeNameAndDocChangeNumberConstraintValidator implements Co
 
 //      boolean changeNumberExist = obj.getChangeNotices().stream()
 //              .anyMatch(change -> change.endsWith("ch. " + obj.getTempChangeNoticeNumber()));
-      boolean changeNumberExist = obj.getChangeNotices().containsKey(Integer.parseInt(obj.getTempChangeNoticeNumber()));
+      boolean changeNumberExist = false;
+      if (obj.getChangeNotices() != null) {
+         changeNumberExist = obj.getChangeNotices().containsKey(Integer.parseInt(obj.getTempChangeNoticeNumber()));
+      }
 
       if (changeNumberExist) {
          context.disableDefaultConstraintViolation();

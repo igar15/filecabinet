@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Change documents list</title>
+</head>
+<body>
+<div class="container">
+
+    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNoticeTo.id}}">Back to Change notice info</a>
+    <br><br>
+
+    <h3>Change notice Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Change notice documents:</p>
+
+    <form th:action="@{/changenotices/addDoc}" th:object="${changeNoticeTo}" method="post">
+<!--        <h5 th:text="${changeNoticeTo.name}"></h5>-->
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{changeCode}">
+        <input type="hidden" th:field="*{issueDate}">
+        <input type="hidden" th:field="*{developer}">
+        <input type="hidden" th:field="*{documents}">
+
+        <div class="form-group">
+            <div class="col-sm-5">
+                <input type="text" placeholder="Decimal number" th:class="${#fields.hasErrors('tempDocumentDecimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempDocumentDecimalNumber}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('tempDocumentDecimalNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('tempDocumentDecimalNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-5">
+                <input type="text" placeholder="Change number" th:class="${#fields.hasErrors('tempDocumentChangeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempDocumentChangeNumber}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('tempDocumentChangeNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('tempDocumentChangeNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm mb-3">Add document</button>
+    </form>
+
+    <div th:if="${changeNoticeTo.documents == null || changeNoticeTo.documents.size() == 0}">
+        <h2>No documents</h2>
+    </div>
+
+    <div th:if="${changeNoticeTo.documents != null && changeNoticeTo.documents.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <th class="align-middle">Decimal number</th>
+            <th class="align-middle">Name</th>
+            <th class="align-middle">Change number</th>
+            <th class="align-middle">Developer</th>
+            <th class="align-middle">Action</th>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${changeNoticeTo.documents.entrySet()}">
+                <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
+                <td class="align-middle" th:text="${entry.key.name}"></td>
+                <td class="align-middle" th:text="${entry.value}"></td>
+                <td class="align-middle" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
+                <td class="align-middle">
+                    <a class="btn btn-sm btn-outline-danger"
+                       th:href="@{'/changenotices/removeDoc/' + ${changeNoticeTo.id} + '/' + ${entry.key.decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

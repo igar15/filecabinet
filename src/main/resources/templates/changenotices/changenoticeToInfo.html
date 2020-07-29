@@ -46,7 +46,7 @@
                         <input type="hidden" th:field="*{changeCode}">
                         <input type="hidden" th:field="*{issueDate}">
                         <input type="hidden" th:field="*{developer}">
-                        <input type="hidden" th:field="*{documents}">
+<!--                        <input type="hidden" th:field="*{documents}">-->
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -100,7 +100,7 @@
                     <h6>Documents:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:each="tempDoc : ${changeNoticeTo.documents}" th:text="${tempDoc}"></h6>
+                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNoticeTo.id}}">Show documents</a>
                 </div>
             </div>
 

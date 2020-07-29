@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class MapChangeFormatter implements Formatter<Map<Integer, ChangeNotice>> {
+public class MapIntegerChangeNoticeFormatter implements Formatter<Map<Integer, ChangeNotice>> {
 
     @Autowired
     private ChangeNoticeService changeNoticeService;
@@ -21,6 +21,9 @@ public class MapChangeFormatter implements Formatter<Map<Integer, ChangeNotice>>
     @Override
     public Map<Integer, ChangeNotice> parse(String s, Locale locale) throws ParseException {
         Map<Integer, ChangeNotice> resultMap = new HashMap<>();
+        if (s.equals("{}")) {
+            return resultMap;
+        }
         String s1 = s.replaceAll("\\{", "").replaceAll("}", "");
         String[] split = s1.split(", ");
         for (String tempSplit : split) {

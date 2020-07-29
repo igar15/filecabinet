@@ -105,10 +105,11 @@ public class ChangeNoticeController {
         }
         else {
             if (changeNoticeTo.getDocuments() == null) {
-                changeNoticeTo.setDocuments(new HashSet<>());
+//                changeNoticeTo.setDocuments(new HashSet<>());
+                changeNoticeTo.setDocuments(new TreeMap<>());
             }
 
-            changeNoticeTo.getDocuments().add(changeNoticeTo.getTempDocumentDecimalNumber() + ": ch. " + changeNoticeTo.getTempDocumentChangeNumber());
+//            changeNoticeTo.getDocuments().add(changeNoticeTo.getTempDocumentDecimalNumber() + ": ch. " + changeNoticeTo.getTempDocumentChangeNumber());
             changeNoticeTo.setTempDocumentDecimalNumber(null);
             changeNoticeTo.setTempDocumentChangeNumber(null);
             model.addAttribute("changeNoticeTo", changeNoticeTo);
@@ -150,7 +151,8 @@ public class ChangeNoticeController {
             bindingResult.addError(fieldError);
         }
         if (bindingResult.hasErrors()) {
-            changeNoticeTo.setDocuments(new HashSet<>());
+//            changeNoticeTo.setDocuments(new HashSet<>());
+            changeNoticeTo.setDocuments(new TreeMap<>());
             return "/changenotices/changenoticeTo-docs-add-form";
         }
         else {
@@ -186,34 +188,80 @@ public class ChangeNoticeController {
         return "redirect:/changenotices/list";
     }
 
+    @GetMapping("/showDocuments/{id}")
+    public String showDocuments(@PathVariable("id") int changeNoticeId, Model model) {
+        model.addAttribute("changeNoticeTo", convertToToById(changeNoticeId));
+        return "/changenotices/changeNoticeTo-docs-list";
+    }
+
+    @PostMapping("/addDoc")
+    public String addDoc(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/changenotices/changeNoticeTo-docs-list";
+        }
+        Document newDocument = documentService.findByDecimalNumber(changeNoticeTo.getTempDocumentDecimalNumber());
+        changeNoticeTo.getDocuments().put(newDocument, Integer.parseInt(changeNoticeTo.getTempDocumentChangeNumber()));
+        changeNoticeService.update(convertFromTo(changeNoticeTo));
+
+        return "redirect:/changenotices//showDocuments/" + changeNoticeTo.getId();
+    }
+
+    @GetMapping("/removeDoc/{id}/{decimalNumber}")
+    public String removeDoc(@PathVariable("id") int changeNoticeId, @PathVariable("decimalNumber") String decimalNumber) {
+        ChangeNotice updated = changeNoticeService.findById(changeNoticeId);
+        Document removed = updated.getDocuments().keySet().stream()
+                .filter(doc -> doc.getDecimalNumber().equals(decimalNumber))
+                .findFirst().orElse(null);
+        updated.getDocuments().remove(removed);
+        changeNoticeService.update(updated);
+        return "redirect:/changenotices/showDocuments/" + changeNoticeId;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private ChangeNotice convertFromTo(ChangeNoticeTo changeNoticeTo) {
-        Map<Document, Integer> documents = new HashMap<>();
-        if (changeNoticeTo.getDocuments() != null){
-            changeNoticeTo.getDocuments()
-                    .forEach(string -> {
-                        String[] split = string.split(": ch\\. ");
-                        documents.put(documentService.findByDecimalNumber(split[0]), Integer.parseInt(split[1]));
-                    });
-        }
+//        Map<Document, Integer> documents = new HashMap<>();
+//        if (changeNoticeTo.getDocuments() != null){
+//            changeNoticeTo.getDocuments()
+//                    .forEach(string -> {
+//                        String[] split = string.split(": ch\\. ");
+//                        documents.put(documentService.findByDecimalNumber(split[0]), Integer.parseInt(split[1]));
+//                    });
+//        }
         return new ChangeNotice(changeNoticeTo.getId(), changeNoticeTo.getName(), changeNoticeTo.getChangeCode(),
-                changeNoticeTo.getIssueDate(), changeNoticeTo.getDeveloper(), documents);
+                changeNoticeTo.getIssueDate(), changeNoticeTo.getDeveloper(), changeNoticeTo.getDocuments());
     }
 
     private ChangeNoticeTo convertToToById(int id) {
         ChangeNotice found = changeNoticeService.findById(id);
-        Set<String> documentsInString = found.getDocuments().entrySet()
-                .stream()
-                .map(entry -> entry.getKey().getDecimalNumber() + ": ch. " + entry.getValue())
-                .collect(Collectors.toSet());
-        Set<String> sortedDocuments = new TreeSet<>((s1, s2) -> {
-            String first = s1.split("ch\\. ")[0];
-            String second = s2.split("ch\\. ")[0];
-            return first.compareTo(second);
+//        Set<String> documentsInString = found.getDocuments().entrySet()
+//                .stream()
+//                .map(entry -> entry.getKey().getDecimalNumber() + ": ch. " + entry.getValue())
+//                .collect(Collectors.toSet());
+//        Set<String> sortedDocuments = new TreeSet<>((s1, s2) -> {
+//            String first = s1.split("ch\\. ")[0];
+//            String second = s2.split("ch\\. ")[0];
+//            return first.compareTo(second);
+//        });
+//        sortedDocuments.addAll(documentsInString);
+        TreeMap<Document, Integer> treeMap = new TreeMap<>((s1, s2) -> {
+            return s1.getDecimalNumber().compareTo(s2.getDecimalNumber());
         });
-        sortedDocuments.addAll(documentsInString);
+        treeMap.putAll(found.getDocuments());
         return new ChangeNoticeTo(found.getId(), found.getName(), found.getChangeCode(), found.getIssueDate(),
-                found.getDeveloper(), sortedDocuments);
+                found.getDeveloper(), treeMap);
     }
 
 
