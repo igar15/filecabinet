@@ -130,8 +130,14 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/removeDoc/{id}/{decimalNumber}")
-    public String removeDoc(@PathVariable("id") int changeNoticeId, @PathVariable("decimalNumber") String decimalNumber) {
+    public String removeDoc(@PathVariable("id") int changeNoticeId, @PathVariable("decimalNumber") String decimalNumber, Model model) {
         ChangeNotice updated = changeNoticeService.findById(changeNoticeId);
+        if (updated.getDocuments().size() == 1) {
+            model.addAttribute("changeNoticeTo", convertToToById(changeNoticeId));
+            String errorMessage = "The change notice can not exist without any documents!";
+            model.addAttribute("errorMessage", errorMessage);
+            return "/changenotices/changeNoticeTo-docs-list";
+        }
         Document removed = updated.getDocuments().keySet().stream()
                 .filter(doc -> doc.getDecimalNumber().equals(decimalNumber))
                 .findFirst().orElse(null);

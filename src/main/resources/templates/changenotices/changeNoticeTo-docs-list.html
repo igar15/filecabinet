@@ -85,6 +85,9 @@
             </tbody>
         </table>
     </div>
+    <div class="text-danger" th:if="${errorMessage != null}">
+        <h5 th:text="${errorMessage}"></h5>
+    </div>
 </div>
 </body>
 </html>
