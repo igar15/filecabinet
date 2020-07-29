@@ -14,7 +14,7 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "stamp")
     private Stamp stamp;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
     private Developer developer;
 

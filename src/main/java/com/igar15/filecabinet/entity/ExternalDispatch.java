@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ExternalDispatch extends Dispatch {
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "company_id")
     private Company company;
 

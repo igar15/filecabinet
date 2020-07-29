@@ -23,7 +23,7 @@ public abstract class Dispatch extends AbstractBaseEntity {
     private Status status;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     private Document document;
 
