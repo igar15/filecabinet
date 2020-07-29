@@ -146,12 +146,26 @@ public class DocumentController {
         return "redirect:/documents/showChanges/" + documentTo.getId();
     }
 
-    @GetMapping("/removeChange/{id}/{changeNumber}")
-    public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeNumber") int changeNumber) {
-        Document updated = documentService.findById(documentId);
-        updated.getChangeNotices().remove(changeNumber);
-        documentService.update(updated);
-        return "redirect:/documents/showChanges/" + documentId;
+    @GetMapping("/removeChange/{id}/{changeId}")
+    public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeId") int changeId, Model model) {
+        ChangeNotice changeNotice = changeNoticeService.findById(changeId);
+        if (changeNotice.getDocuments().size() == 1) {
+            model.addAttribute("documentTo", convertToToById(documentId));
+            String errorMessage = "Change notice " + changeNotice.getName() + " can not exist without any documents!";
+            model.addAttribute("errorMessage", errorMessage);
+            return "/documents/documentTo-changes-list";
+        }
+        else {
+            Document updated = documentService.findById(documentId);
+            Optional<Map.Entry<Integer, ChangeNotice>> found = updated.getChangeNotices().entrySet().stream()
+                    .filter(entry -> entry.getValue().equals(changeNotice))
+                    .findFirst();
+            if (found.isPresent()) {
+                updated.getChangeNotices().remove(found.get().getKey());
+                documentService.update(updated);
+            }
+            return "redirect:/documents/showChanges/" + documentId;
+        }
     }
 
 
