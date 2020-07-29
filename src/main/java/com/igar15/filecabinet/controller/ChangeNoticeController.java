@@ -55,90 +55,12 @@ public class ChangeNoticeController {
         return "/changenotices/changenoticeTo-form";
     }
 
-//    @PostMapping("/showFormForDocsAdd")
-//    public String showFormForDocsAdd(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
-//        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-//                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber") && !fer.getField().equals("documents"))
-//                .collect(Collectors.toList());
-//        bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
-//        for (FieldError fieldError : errorsToKeep) {
-//            bindingResult.addError(fieldError);
-//        }
-//        if (changeNoticeTo.getDocuments() == null || changeNoticeTo.getDocuments().size() == 0) {
-//            changeNoticeTo.setDocuments(null);
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("developers", developerService.findAll());
-//            return "/changenotices/changenoticeTo-form";
-//        }
-//
-//        else {
-//            if (changeNoticeTo.getId() == null) {
-//                model.addAttribute("changeNoticeTo", changeNoticeTo);
-//                return "/changenotices/changenoticeTo-docs-add-form";
-//            }
-//            else {
-//                ChangeNotice changeNoticeForSaving = convertFromTo(changeNoticeTo);
-//                changeNoticeService.update(changeNoticeForSaving);
-//                return "redirect:/changenotices/showChangeNoticeInfo/" + changeNoticeForSaving.getId();
-//            }
-//        }
-//    }
-//
-//    @PostMapping("/addDocument")
-//    public String addDocument(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
-//        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-//                .filter(fer -> !fer.getField().equals("documents"))
-//                .collect(Collectors.toList());
-////        List<ObjectError> globalError = bindingResult.getGlobalErrors();
-//        bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
-//        for (FieldError fieldError : errorsToKeep) {
-//            bindingResult.addError(fieldError);
-//        }
-////        for (ObjectError objectError: globalError) {
-////            bindingResult.addError(objectError);
-////        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "/changenotices/changenoticeTo-docs-add-form";
-//        }
-//        else {
-//            if (changeNoticeTo.getDocuments() == null) {
-////                changeNoticeTo.setDocuments(new HashSet<>());
-//                changeNoticeTo.setDocuments(new TreeMap<>());
-//            }
-//
-////            changeNoticeTo.getDocuments().add(changeNoticeTo.getTempDocumentDecimalNumber() + ": ch. " + changeNoticeTo.getTempDocumentChangeNumber());
-//            changeNoticeTo.setTempDocumentDecimalNumber(null);
-//            changeNoticeTo.setTempDocumentChangeNumber(null);
-//            model.addAttribute("changeNoticeTo", changeNoticeTo);
-//            return "/changenotices/changenoticeTo-docs-add-form";
-//        }
-//    }
-//
-//    @PostMapping("/addDocumentForNotNew")
-//    public String addDocumentForNotNew(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
-//        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-//                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber")
-//                        && !fer.getField().equals("documents"))
-//                .collect(Collectors.toList());
-//        bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
-//        for (FieldError fieldError : errorsToKeep) {
-//            bindingResult.addError(fieldError);
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "/changenotices/changenoticeToInfo";
-//        }
-//        else {
-//            if (changeNoticeTo.getDocuments().size() == 0) changeNoticeTo.setDocuments(null);
-//            model.addAttribute("changeNoticeTo", changeNoticeTo);
-//            return "/changenotices/changenoticeTo-docs-add-form";
-//        }
-//    }
-
-
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable("id") int id, Model model) {
+        model.addAttribute("changeNoticeTo", convertToToById(id));
+        model.addAttribute("developers", developerService.findAll());
+        return "/changenotices/changenoticeTo-form";
+    }
 
     @PostMapping("/save")
     public String save(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
@@ -154,12 +76,13 @@ public class ChangeNoticeController {
             //changeNoticeTo.setDocuments(new TreeMap<>());
             return "/changenotices/changenoticeTo-form";
         }
-        ChangeNotice changeNotice = convertFromTo(changeNoticeTo);
-        if (changeNotice.isNew()) {
-            changeNoticeService.create(changeNotice);
-            return "redirect:/changenotices/showDocuments/" + changeNotice.getId();
+
+        if (changeNoticeTo.getId() == null) {
+            model.addAttribute("changeNoticeTo", changeNoticeTo);
+            return "/changenotices/changeNoticeTo-docs-list";
         }
         else {
+            ChangeNotice changeNotice = convertFromTo(changeNoticeTo);
             changeNoticeService.update(changeNotice);
             return "redirect:/changenotices/showChangeNoticeInfo/" + changeNotice.getId();
         }
@@ -170,13 +93,6 @@ public class ChangeNoticeController {
         ChangeNoticeTo changeNoticeTo = convertToToById(id);
         model.addAttribute("changeNoticeTo", changeNoticeTo);
         return "/changenotices/changenoticeToInfo";
-    }
-
-    @GetMapping("/showFormForUpdate/{id}")
-    public String showFormForUpdate(@PathVariable("id") int id, Model model) {
-        model.addAttribute("changeNoticeTo", convertToToById(id));
-        model.addAttribute("developers", developerService.findAll());
-        return "/changenotices/changenoticeTo-form";
     }
 
     @GetMapping("/delete/{id}")
@@ -197,10 +113,20 @@ public class ChangeNoticeController {
             return "/changenotices/changeNoticeTo-docs-list";
         }
         Document newDocument = documentService.findByDecimalNumber(changeNoticeTo.getTempDocumentDecimalNumber());
+        if (changeNoticeTo.getDocuments() == null) {
+            changeNoticeTo.setDocuments(new TreeMap<>(Comparator.comparing(Document::getDecimalNumber)));
+        }
         changeNoticeTo.getDocuments().put(newDocument, Integer.parseInt(changeNoticeTo.getTempDocumentChangeNumber()));
-        changeNoticeService.update(convertFromTo(changeNoticeTo));
 
-        return "redirect:/changenotices//showDocuments/" + changeNoticeTo.getId();
+        if (changeNoticeTo.getId() == null) {
+            ChangeNotice newChangeNotice = changeNoticeService.create(convertFromTo(changeNoticeTo));
+            changeNoticeTo.setId(newChangeNotice.getId());
+        }
+        else {
+            changeNoticeService.update(convertFromTo(changeNoticeTo));
+
+        }
+        return "redirect:/changenotices/showDocuments/" + changeNoticeTo.getId();
     }
 
     @GetMapping("/removeDoc/{id}/{decimalNumber}")

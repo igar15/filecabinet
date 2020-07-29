@@ -53,8 +53,12 @@ public class DocDecNumberAndChangeNumberConstraintValidator implements Constrain
 
 //      boolean match = userInput.getDocuments().stream()
 //              .anyMatch(doc -> doc.startsWith(userInput.getTempDocumentDecimalNumber()));
-      boolean match = userInput.getDocuments().keySet().stream()
-              .anyMatch(doc -> doc.getDecimalNumber().startsWith(userInput.getTempDocumentDecimalNumber()));
+      boolean match = false;
+
+      if (userInput.getDocuments() != null) {
+         match = userInput.getDocuments().keySet().stream()
+                 .anyMatch(doc -> doc.getDecimalNumber().startsWith(userInput.getTempDocumentDecimalNumber()));
+      }
 
       if (match) {
          context.disableDefaultConstraintViolation();
@@ -76,6 +80,7 @@ public class DocDecNumberAndChangeNumberConstraintValidator implements Constrain
       }
 
       boolean notContainsNumber = !document.getChangeNotices().containsKey(Integer.parseInt(userInput.getTempDocumentChangeNumber()));
+
       if (!notContainsNumber) {
          context.disableDefaultConstraintViolation();
          context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode("tempDocumentChangeNumber").addConstraintViolation();
