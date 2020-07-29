@@ -146,6 +146,14 @@ public class DocumentController {
         return "redirect:/documents/showChanges/" + documentTo.getId();
     }
 
+    @GetMapping("/removeChange/{id}/{changeNumber}")
+    public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeNumber") int changeNumber) {
+        Document updated = documentService.findById(documentId);
+        updated.getChangeNotices().remove(changeNumber);
+        documentService.update(updated);
+        return "redirect:/documents/showChanges/" + documentId;
+    }
+
 
 
 

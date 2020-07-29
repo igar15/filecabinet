@@ -15,13 +15,7 @@
 </head>
 <body>
 <div class="container">
-    <a href="#" onclick="goBack()">Go Back</a>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-
+    <a th:href="@{'/documents/showDocumentInfo/' + ${documentTo.id}}">Back to Document info</a>
     <br><br>
 
     <h3>Document Directory</h3>
@@ -83,15 +77,22 @@
                 <th class="align-middle">Change code</th>
                 <th class="align-middle">Issue date</th>
                 <th class="align-middle">Developer</th>
+                <th class="align-middle">Action</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
                 <td class="align-middle" th:text="${entry.key}"></td>
-                <td class="align-middle" th:text="${entry.value.name}"></td>
+                <td class="align-middle">
+                    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${entry.value.id}}"><span class="text-dark" th:text="${entry.value.name}"/></a>
+                </td>
                 <td class="align-middle" th:text="${entry.value.changeCode}"></td>
                 <td class="align-middle" th:text="${entry.value.issueDate}"></td>
                 <td class="align-middle" th:text="${entry.value.developer.name}"></td>
+                <td class="align-middle">
+                    <a class="btn btn-sm btn-outline-danger"
+                       th:href="@{'/documents/removeChange/' + ${documentTo.id} + '/' + ${entry.key}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                </td>
             </tr>
         </tbody>
     </table>
