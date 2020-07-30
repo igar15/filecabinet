@@ -12,6 +12,8 @@ public interface InternalDispatchService {
 
     List<InternalDispatch> findAll();
 
+    List<InternalDispatch> findAllByDocumentId(int documentId);
+
     void update(InternalDispatch internalDispatch);
 
     void deleteById(int id);

@@ -19,6 +19,7 @@ public abstract class Dispatch extends AbstractBaseEntity {
     private LocalDate dispatchDate;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 

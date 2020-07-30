@@ -33,6 +33,11 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     }
 
     @Override
+    public List<ExternalDispatch> findAllByDocumentId(int documentId) {
+        return externalDispatchRepository.findByDocuments_Id(documentId);
+    }
+
+    @Override
     public void update(ExternalDispatch externalDispatch) {
         Assert.notNull(externalDispatch, "externalDispatch must not be null");
         ValidationUtil.checkNotFoundWithId(externalDispatch, externalDispatch.id());
