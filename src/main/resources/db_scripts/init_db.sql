@@ -1,3 +1,5 @@
+drop table if exists document_external_dispatches;
+drop table if exists document_internal_dispatches;
 drop table if exists external_dispatches;
 drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
@@ -75,24 +77,34 @@ create table external_dispatches (
     waybill varchar not null,
     dispatch_date date not null,
     status varchar not null,
-    document_id integer not null,
     remark varchar default null,
     company_id integer not null,
-    foreign key (document_id) references documents (id) on delete cascade,
     foreign key (company_id) references companies (id) on delete cascade
 );
-create unique index external_dispatches_waybill_dispatch_date_document_id_idx on external_dispatches (waybill, dispatch_date, document_id);
+
+create table document_external_dispatches (
+    document_id integer not null,
+    external_dispatch_id integer not null,
+    primary key (document_id, external_dispatch_id),
+    foreign key (document_id) references documents(id),
+    foreign key (external_dispatch_id) references external_dispatches (id)
+);
 
 create table internal_dispatches (
     id integer primary key default nextval('global_seq'),
     waybill varchar not null,
     dispatch_date date not null,
     status varchar not null,
-    document_id integer not null,
     remark varchar default null,
     stamp varchar default null,
     developer_id integer default null,
-    foreign key (document_id) references documents (id) on delete cascade,
     foreign key (developer_id) references developers (id) on delete cascade
 );
-create unique index internal_dispatches_waybill_dispatch_date_document_id_idx on internal_dispatches (waybill, dispatch_date, document_id);
+
+create table document_internal_dispatches (
+    document_id integer not null,
+    internal_dispatch_id integer not null,
+    primary key (document_id, internal_dispatch_id),
+    foreign key (document_id) references documents (id),
+    foreign key (internal_dispatch_id) references internal_dispatches (id)
+);
