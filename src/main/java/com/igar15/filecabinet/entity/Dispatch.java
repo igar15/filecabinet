@@ -22,11 +22,6 @@ public abstract class Dispatch extends AbstractBaseEntity {
     @Column(name = "status")
     private Status status;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
-
     @Column(name = "remark")
     private String remark;
 
@@ -36,12 +31,11 @@ public abstract class Dispatch extends AbstractBaseEntity {
 
     }
 
-    public Dispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, Document document, String remark) {
+    public Dispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark) {
         super(id);
         this.waybill = waybill;
         this.dispatchDate = dispatchDate;
         this.status = status;
-        this.document = document;
         this.remark = remark;
     }
 
@@ -59,14 +53,6 @@ public abstract class Dispatch extends AbstractBaseEntity {
 
     public void setDispatchDate(LocalDate dispatchDate) {
         this.dispatchDate = dispatchDate;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
     }
 
     public Status getStatus() {

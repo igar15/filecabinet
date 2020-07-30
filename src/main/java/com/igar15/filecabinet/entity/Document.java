@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "documents")
@@ -76,6 +77,20 @@ public class Document extends AbstractNamedEntity {
             inverseJoinColumns = @JoinColumn(name = "change_notice_id"))
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
+
+//    @Transient
+//    @ManyToMany
+//    @JoinTable(name = "document_external_dispatches",
+//            joinColumns = @JoinColumn(name = "document_id"),
+//            inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
+//    private Set<ExternalDispatch> externalDispatches;
+//
+//    @Transient
+//    @ManyToMany
+//    @JoinTable(name = "document_internal_dispatches",
+//            joinColumns = @JoinColumn(name = "document_id"),
+//            inverseJoinColumns = @JoinColumn(name = "internal_dispatch_id"))
+//    private Set<InternalDispatch> internalDispatches;
 
 
 
@@ -237,6 +252,22 @@ public class Document extends AbstractNamedEntity {
     public void setA4Amount(Integer a4Amount) {
         this.a4Amount = a4Amount;
     }
+
+//    public Set<ExternalDispatch> getExternalDispatches() {
+//        return externalDispatches;
+//    }
+//
+//    public void setExternalDispatches(Set<ExternalDispatch> externalDispatches) {
+//        this.externalDispatches = externalDispatches;
+//    }
+//
+//    public Set<InternalDispatch> getInternalDispatches() {
+//        return internalDispatches;
+//    }
+//
+//    public void setInternalDispatches(Set<InternalDispatch> internalDispatches) {
+//        this.internalDispatches = internalDispatches;
+//    }
 
     @Override
     public String toString() {

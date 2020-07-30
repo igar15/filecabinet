@@ -86,7 +86,7 @@ create table document_external_dispatches (
     document_id integer not null,
     external_dispatch_id integer not null,
     primary key (document_id, external_dispatch_id),
-    foreign key (document_id) references documents(id),
+    foreign key (document_id) references documents(id) on delete cascade,
     foreign key (external_dispatch_id) references external_dispatches (id)
 );
 
@@ -105,6 +105,6 @@ create table document_internal_dispatches (
     document_id integer not null,
     internal_dispatch_id integer not null,
     primary key (document_id, internal_dispatch_id),
-    foreign key (document_id) references documents (id),
+    foreign key (document_id) references documents (id) on delete cascade,
     foreign key (internal_dispatch_id) references internal_dispatches (id)
 );

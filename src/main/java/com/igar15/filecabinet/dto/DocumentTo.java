@@ -1,9 +1,6 @@
 package com.igar15.filecabinet.dto;
 
-import com.igar15.filecabinet.entity.AbstractNamedEntity;
-import com.igar15.filecabinet.entity.ChangeNotice;
-import com.igar15.filecabinet.entity.Company;
-import com.igar15.filecabinet.entity.Developer;
+import com.igar15.filecabinet.entity.*;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
@@ -237,15 +234,6 @@ public class DocumentTo {
         this.tempChangeNoticeNumber = tempChangeNoticeNumber;
     }
 
-//    public Set<String> getChangeNotices() {
-//        return changeNotices;
-//    }
-//
-//    public void setChangeNotices(Set<String> changeNotices) {
-//        this.changeNotices = changeNotices;
-//    }
-
-
     public Map<Integer, ChangeNotice> getChangeNotices() {
         return changeNotices;
     }
@@ -253,4 +241,5 @@ public class DocumentTo {
     public void setChangeNotices(Map<Integer, ChangeNotice> changeNotices) {
         this.changeNotices = changeNotices;
     }
+
 }
