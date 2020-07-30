@@ -5,6 +5,7 @@ import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.InternalDispatchService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -29,12 +30,12 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
 
     @Override
     public List<InternalDispatch> findAll() {
-        return internalDispatchRepository.findAll();
+        return internalDispatchRepository.findAll(Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
     @Override
     public List<InternalDispatch> findAllByDocumentId(int documentId) {
-        return internalDispatchRepository.findByDocuments_Id(documentId);
+        return internalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
     @Override

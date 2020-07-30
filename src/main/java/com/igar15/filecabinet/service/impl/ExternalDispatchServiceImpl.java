@@ -5,6 +5,7 @@ import com.igar15.filecabinet.repository.ExternalDispatchRepository;
 import com.igar15.filecabinet.service.ExternalDispatchService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -29,12 +30,12 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
 
     @Override
     public List<ExternalDispatch> findAll() {
-        return externalDispatchRepository.findAll();
+        return externalDispatchRepository.findAll(Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
     @Override
     public List<ExternalDispatch> findAllByDocumentId(int documentId) {
-        return externalDispatchRepository.findByDocuments_Id(documentId);
+        return externalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
     @Override

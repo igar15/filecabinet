@@ -78,9 +78,11 @@ create table external_dispatches (
     dispatch_date date not null,
     status varchar not null,
     remark varchar default null,
+    letter_outgoing_number varchar not null,
     company_id integer not null,
     foreign key (company_id) references companies (id) on delete cascade
 );
+create unique index external_dispatches_waybill_dispatch_date_outgoing_number_idx on external_dispatches (waybill, dispatch_date, letter_outgoing_number);
 
 create table document_external_dispatches (
     document_id integer not null,
