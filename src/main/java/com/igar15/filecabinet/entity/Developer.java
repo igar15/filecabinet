@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -25,16 +26,26 @@ public class Developer extends AbstractNamedEntity {
     @Min(1)
     private Integer workersAmount;
 
+    @NotNull
+    @Column(name = "is_developer")
+    private Boolean isDeveloper;
+
+    @NotNull
+    @Column(name = "can_take_albums")
+    private Boolean canTakeAlbums;
+
 
     public Developer() {
 
     }
 
-    public Developer(Integer id, String name, String chiefName, String description, Integer workersAmount) {
+    public Developer(Integer id, String name, String chiefName, String description, Integer workersAmount, Boolean isDeveloper, Boolean canTakeAlbums) {
         super(id, name);
         this.chiefName = chiefName;
         this.description = description;
         this.workersAmount = workersAmount;
+        this.isDeveloper = isDeveloper;
+        this.canTakeAlbums = canTakeAlbums;
     }
 
     public String getChiefName() {
@@ -59,5 +70,21 @@ public class Developer extends AbstractNamedEntity {
 
     public void setWorkersAmount(Integer workersAmount) {
         this.workersAmount = workersAmount;
+    }
+
+    public Boolean getIsDeveloper() {
+        return isDeveloper;
+    }
+
+    public void setIsDeveloper(Boolean aDevelop) {
+        this.isDeveloper = aDevelop;
+    }
+
+    public Boolean getCanTakeAlbums() {
+        return canTakeAlbums;
+    }
+
+    public void setCanTakeAlbums(Boolean canTakeAlbums) {
+        this.canTakeAlbums = canTakeAlbums;
     }
 }

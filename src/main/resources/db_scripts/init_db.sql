@@ -16,7 +16,9 @@ create table developers (
     name varchar not null,
     chief_name varchar not null,
     description varchar default null,
-    workers_amount integer default null
+    workers_amount integer default null,
+    is_developer boolean not null,
+    can_take_albums boolean not null
 );
 create unique index developers_unique_name_idx on developers (name);
 
