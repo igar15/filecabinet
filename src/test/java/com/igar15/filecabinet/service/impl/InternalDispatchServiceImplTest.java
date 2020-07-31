@@ -8,6 +8,7 @@ import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -36,6 +37,11 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         getNewsWithWrongValues().forEach(internalDispatch -> {
             validateRootCause(ConstraintViolationException.class, () -> internalDispatchService.create(internalDispatch));
         });
+    }
+
+    @Test
+    void createDuplicateStampAndDocument() {
+        Assertions.assertThrows(DataAccessException.class, () -> internalDispatchService.create(getNewWithDuplicateStampAndDocument()));
     }
 
     @Test

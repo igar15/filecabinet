@@ -1,7 +1,6 @@
-drop table if exists document_external_dispatches;
-drop table if exists document_internal_dispatches;
-drop table if exists external_dispatches;
 drop table if exists internal_dispatches;
+drop table if exists document_external_dispatches;
+drop table if exists external_dispatches;
 drop table if exists document_change_notices;
 drop table if exists change_notices;
 drop table if exists documents;
@@ -101,14 +100,14 @@ create table internal_dispatches (
     status varchar not null,
     remark varchar default null,
     stamp varchar default null,
-    developer_id integer default null,
-    foreign key (developer_id) references developers (id) on delete cascade
-);
-
-create table document_internal_dispatches (
+    developer_id integer not null,
     document_id integer not null,
-    internal_dispatch_id integer not null,
-    primary key (document_id, internal_dispatch_id),
-    foreign key (document_id) references documents (id) on delete cascade,
-    foreign key (internal_dispatch_id) references internal_dispatches (id)
+    received_internal_date date not null,
+    internal_handler_name varchar not null,
+    internal_handler_phone_number varchar not null,
+    album_entry varchar not null,
+    foreign key (developer_id) references developers (id) on delete cascade,
+    foreign key (document_id) references documents (id) on delete cascade
 );
+create unique index internal_dispatches_stamp_document_id_idx on internal_dispatches (stamp, document_id);
+

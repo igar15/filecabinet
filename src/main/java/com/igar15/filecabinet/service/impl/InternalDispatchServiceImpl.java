@@ -35,7 +35,7 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
 
     @Override
     public List<InternalDispatch> findAllByDocumentId(int documentId) {
-        return internalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
+        return internalDispatchRepository.findByDocument_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
     @Override
