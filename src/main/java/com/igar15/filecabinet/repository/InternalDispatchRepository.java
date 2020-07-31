@@ -12,4 +12,6 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
     List<InternalDispatch> findByDocument_Id(int documentId, Sort sort);
 
+    List<InternalDispatch> findByDispatchHandler_Id(int developerId);
+
 }

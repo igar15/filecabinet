@@ -3,9 +3,11 @@ package com.igar15.filecabinet.service.impl;
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.repository.DeveloperRepository;
 import com.igar15.filecabinet.repository.DocumentRepository;
+import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Autowired
     private ChangeNoticeRepository changeNoticeRepository;
+
+    @Autowired
+    InternalDispatchRepository internalDispatchRepository;
 
     @Override
     public Developer create(Developer developer) {
