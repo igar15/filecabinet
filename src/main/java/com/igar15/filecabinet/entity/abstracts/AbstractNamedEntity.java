@@ -1,4 +1,6 @@
-package com.igar15.filecabinet.entity;
+package com.igar15.filecabinet.entity.abstracts;
+
+import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -6,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @MappedSuperclass
-public abstract class AbstractNamedEntity extends AbstractBaseEntity{
+public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
     @NotBlank
     @Size(min=2, max=100)

@@ -41,7 +41,7 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     @Override
     public void update(ExternalDispatch externalDispatch) {
         Assert.notNull(externalDispatch, "externalDispatch must not be null");
-        ValidationUtil.checkNotFoundWithId(externalDispatch, externalDispatch.id());
+        ValidationUtil.checkNotFoundWithId(externalDispatchRepository.save(externalDispatch), externalDispatch.id());
     }
 
     @Override

@@ -1,14 +1,10 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.dto.DocumentTo;
-import com.igar15.filecabinet.entity.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.ChangeNotice;
-import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.service.ChangeNoticeService;
-import com.igar15.filecabinet.service.CompanyService;
-import com.igar15.filecabinet.service.DeveloperService;
-import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +32,9 @@ public class DocumentController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private ExternalDispatchService externalDispatchService;
 
     @GetMapping("/list")
     public String showAll(Model model) {
@@ -166,6 +165,31 @@ public class DocumentController {
             }
             return "redirect:/documents/showChanges/" + documentId;
         }
+    }
+
+    @GetMapping("/showExternalDispatches/{id}")
+    public String showExternalDispatches(@PathVariable("id") int id, Model model) {
+        List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
+        model.addAttribute("externalDispatches", externalDispatches);
+        model.addAttribute("documentId", id);
+        return "/documents/document-externals-list";
+    }
+
+    @GetMapping("/removeExternal/{id}/{externalId}")
+    public String removeExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
+        ExternalDispatch found = externalDispatchService.findById(externalId);
+        if (found.getDocuments().size() == 1) {
+            List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
+            model.addAttribute("externalDispatches", externalDispatches);
+            model.addAttribute("documentId", id);
+            String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
+            model.addAttribute("errorMessage", errorMessage);
+            return "/documents/document-externals-list";
+        }
+        Document docFound = documentService.findById(id);
+        found.getDocuments().remove(docFound);
+        externalDispatchService.update(found);
+        return "redirect:/documents/showExternalDispatches/" + id;
     }
 
 

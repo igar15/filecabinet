@@ -1,5 +1,7 @@
 package com.igar15.filecabinet.entity;
 
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

@@ -1,5 +1,6 @@
-package com.igar15.filecabinet.entity;
+package com.igar15.filecabinet.entity.abstracts;
 
+import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.entity.enums.Status;
 
 import javax.persistence.*;

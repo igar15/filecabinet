@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <title>Save External Dispatch</title>
+</head>
+<body>
+<div class="container">
+    <a href="#" onclick="goBack()">Go Back</a>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <br><br>
+
+    <h3>External Dispatch Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save External Dispatch</p>
+
+    <form class="form-horizontal" th:action="@{/externaldispatches/save}" th:object="${externalDispatchTo}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <p th:text="'Please correct values in error below'">Error Message</p>
+        </div>
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{documents}">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Waybill:</label>
+            <div class="col-sm-10">
+                <input type="text" th:class="${#fields.hasErrors('waybill')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{waybill}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('waybill')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('waybill')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Dispatch date:</label>
+            <div class="col-sm-10">
+                <input type="date" th:class="${#fields.hasErrors('dispatchDate')} ? 'form-control is-invalid' : 'form-control'" th:field="*{dispatchDate}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('dispatchDate')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('dispatchDate')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Status:</label>
+            <div class="col-sm-10">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
+                        <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
+                        <label class="btn btn-secondary" th:for="${#ids.prev('status')}" th:text="${radioValue}"></label>
+                    </p>
+                    <span class="help-block" th:if="${#fields.hasErrors('status')}">
+                            <ul>
+                                <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
+                            </ul>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Remark:</label>
+            <div class="col-sm-10">
+                <input type="text" th:class="${#fields.hasErrors('remark')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{remark}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('remark')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('remark')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Letter outgoing number:</label>
+            <div class="col-sm-10">
+                <input type="text" th:class="${#fields.hasErrors('letterOutgoingNumber')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{letterOutgoingNumber}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('letterOutgoingNumber')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('letterOutgoingNumber')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="originalHolder">Company:</label>
+                <select class="form-control selectpicker" th:field="*{company}" id="originalHolder">
+                    <option value="">Nothing selected</option>
+                    <option th:each="dropValue : ${companies}"
+                            th:value="${dropValue.name}"
+                            th:text="${dropValue.name}">
+                    </option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('company')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('company')}" th:text="${err}"/>
+                    </ul>
+                </span>
+            </div>
+
+        </div>
+
+        <br><br>
+        <div class="row">
+            <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
+        </div>
+        <br><br>
+
+
+    </form>
+
+</div>
+</body>
+</html>

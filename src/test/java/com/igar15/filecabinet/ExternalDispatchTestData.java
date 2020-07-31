@@ -1,6 +1,6 @@
 package com.igar15.filecabinet;
 
-import com.igar15.filecabinet.entity.AbstractBaseEntity;
+import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.enums.Status;
 

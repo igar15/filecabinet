@@ -1,12 +1,11 @@
 package com.igar15.filecabinet.entity;
 
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 @Entity
 @Table(name="change_notices")

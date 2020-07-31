@@ -1,7 +1,7 @@
 package com.igar15.filecabinet.util.validation;
 
 
-import com.igar15.filecabinet.entity.AbstractBaseEntity;
+import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 
 public class ValidationUtil {

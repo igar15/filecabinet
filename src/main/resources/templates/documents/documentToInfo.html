@@ -237,11 +237,19 @@
                     <h6>Changes:</h6>
                 </div>
                 <div class="col-sm-3 border">
-<!--                    <h6 th:each="tempChangeNotice : ${documentTo.changeNotices}">-->
-<!--                        <span th:text="${tempChangeNotice}"></span>-->
-<!--                    </h6>-->
                     <a th:href="@{'/documents/showChanges/' + ${documentTo.id}}">
                         Show changes
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>External dispatches:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <a th:href="@{'/documents/showExternalDispatches/' + ${documentTo.id}}">
+                        Show externals
                     </a>
                 </div>
             </div>

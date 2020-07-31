@@ -1,4 +1,4 @@
-package com.igar15.filecabinet.entity;
+package com.igar15.filecabinet.entity.abstracts;
 
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;

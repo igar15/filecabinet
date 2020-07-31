@@ -1,5 +1,6 @@
 package com.igar15.filecabinet.entity;
 
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
@@ -11,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "documents")

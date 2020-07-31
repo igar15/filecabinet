@@ -1,12 +1,13 @@
 package com.igar15.filecabinet.entity;
 
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+
 import javax.persistence.*;
 import javax.validation.Valid;
-import java.util.List;
 
 @Entity
 @Table(name = "companies")
-public class Company extends AbstractNamedEntity{
+public class Company extends AbstractNamedEntity {
 
     @Embedded
     @Valid
