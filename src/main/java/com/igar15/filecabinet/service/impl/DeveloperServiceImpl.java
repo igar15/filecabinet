@@ -55,6 +55,12 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
+    public List<Developer> findByCanTakeAlbums(Boolean canTakeAlbums) {
+        Assert.notNull(canTakeAlbums, "can take albums must be not null");
+        return developerRepository.findByCanTakeAlbums(canTakeAlbums);
+    }
+
+    @Override
     public void update(Developer developer) {
         Assert.notNull(developer, "developer must not be null");
         ValidationUtil.checkNotFoundWithId(developerRepository.save(developer), developer.id());

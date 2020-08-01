@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "internal_dispatches")
@@ -23,10 +24,11 @@ public class InternalDispatch extends Dispatch {
     @JoinColumn(name = "developer_id")
     private Developer dispatchHandler;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
+    @ManyToMany
+    @JoinTable(name = "document_internal_dispatches",
+            joinColumns = @JoinColumn(name = "internal_dispatch_id"),
+            inverseJoinColumns = @JoinColumn(name = "document_id"))
+    private Set<Document> documents;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -42,8 +44,8 @@ public class InternalDispatch extends Dispatch {
     private String internalHandlerPhoneNumber;
 
     @NotBlank
-    @Column(name = "album_entry")
-    private String albumEntry;
+    @Column(name = "album_name")
+    private String albumName;
 
 
     public InternalDispatch() {
@@ -51,16 +53,16 @@ public class InternalDispatch extends Dispatch {
     }
 
     public InternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
-                            Stamp stamp, Developer dispatchHandler, Document document, LocalDate receivedInternalDate,
-                            String internalHandlerName, String internalHandlerPhoneNumber, String albumEntry) {
+                            Stamp stamp, Developer dispatchHandler, Set<Document> documents, LocalDate receivedInternalDate,
+                            String internalHandlerName, String internalHandlerPhoneNumber, String albumName) {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
         this.dispatchHandler = dispatchHandler;
-        this.document = document;
+        this.documents = documents;
         this.receivedInternalDate = receivedInternalDate;
         this.internalHandlerName = internalHandlerName;
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
-        this.albumEntry = albumEntry;
+        this.albumName = albumName;
     }
 
     public Stamp getStamp() {
@@ -79,12 +81,12 @@ public class InternalDispatch extends Dispatch {
         this.dispatchHandler = developer;
     }
 
-    public Document getDocument() {
-        return document;
+    public Set<Document> getDocuments() {
+        return documents;
     }
 
-    public void setDocument(Document document) {
-        this.document = document;
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
     }
 
     public LocalDate getReceivedInternalDate() {
@@ -111,11 +113,11 @@ public class InternalDispatch extends Dispatch {
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
     }
 
-    public String getAlbumEntry() {
-        return albumEntry;
+    public String getAlbumName() {
+        return albumName;
     }
 
-    public void setAlbumEntry(String albumEntry) {
-        this.albumEntry = albumEntry;
+    public void setAlbumName(String albumEntry) {
+        this.albumName = albumEntry;
     }
 }

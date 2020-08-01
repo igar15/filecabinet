@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface InternalDispatchRepository extends JpaRepository<InternalDispatch, Integer> {
 
-    List<InternalDispatch> findByDocument_Id(int documentId);
+    List<InternalDispatch> findByDocuments_Id(int documentId);
 
-    List<InternalDispatch> findByDocument_Id(int documentId, Sort sort);
+    List<InternalDispatch> findByDocuments_Id(int documentId, Sort sort);
 
     List<InternalDispatch> findByDispatchHandler_Id(int developerId);
 

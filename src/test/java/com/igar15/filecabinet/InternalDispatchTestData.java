@@ -26,12 +26,12 @@ public class InternalDispatchTestData {
 
     public static InternalDispatch getNew() {
         return new InternalDispatch(null, "wb-54", LocalDate.of(2017, 4, 15),
-                Status.ACC_COPY, null, Stamp.II, DeveloperTestData.DEVELOPER1, DocumentTestData.DOCUMENT1, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
+                Status.ACC_COPY, null, Stamp.II, DeveloperTestData.DEVELOPER1, null, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
     }
 
     public static InternalDispatch getNewWithDuplicateStampAndDocument() {
         return new InternalDispatch(null, "wb-54", LocalDate.of(2017, 4, 15),
-                Status.ACC_COPY, null, Stamp.V, DeveloperTestData.DEVELOPER1, DocumentTestData.DOCUMENT1, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
+                Status.ACC_COPY, null, Stamp.V, DeveloperTestData.DEVELOPER1, null, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
 
     }
 
@@ -50,7 +50,7 @@ public class InternalDispatchTestData {
 
     public static InternalDispatch getUpdated() {
         return new InternalDispatch(INTERNAL_DISPATCH1_ID, "wb-545", LocalDate.of(2014, 4, 15),
-                Status.ACC_COPY, null, Stamp.I, DeveloperTestData.DEVELOPER2, DocumentTestData.DOCUMENT1, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
+                Status.ACC_COPY, null, Stamp.I, DeveloperTestData.DEVELOPER2, null, LocalDate.of(2020, 4, 18), "Fatelnikova", "1-34-68", "Singly");
     }
 
 }

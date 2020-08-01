@@ -1,4 +1,5 @@
 delete from document_external_dispatches;
+delete from document_internal_dispatches;
 delete from external_dispatches;
 delete from internal_dispatches;
 delete from document_change_notices;
@@ -62,8 +63,13 @@ values (1009, 1023),
        (1009, 1024),
        (1010, 1025);
 
-insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, developer_id, document_id,
-                                 received_internal_date, internal_handler_name, internal_handler_phone_number, album_entry)
-values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, 1009, '2019-02-15', 'Naumkin', '1-31-65', 'ЮПИЯ.301265.026'),
-       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, 1009, '2020-01-15', 'Naumkin', '1-31-65', 'Singly'),
-       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', null, 1000, 1010, '2020-04-18', 'Fatelnikova', '1-34-68', 'Singly');
+insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, developer_id,
+                                 received_internal_date, internal_handler_name, internal_handler_phone_number, album_name)
+values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naumkin', '1-31-65', 'ЮПИЯ.301265.026'),
+       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', 'БА1.640.016-01'),
+       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', null, 1000, '2020-04-18', 'Fatelnikova', '1-34-68', 'БА1.640.020-03');
+
+insert into document_internal_dispatches (document_id,internal_dispatch_id)
+values (1009, 1026),
+       (1009, 1027),
+       (1010, 1028);

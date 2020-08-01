@@ -14,8 +14,11 @@ public interface DeveloperService {
 
     List<Developer> findAll();
 
+    List<Developer> findByCanTakeAlbums(Boolean canTakeAlbums);
+
     void update(Developer developer);
 
     void deleteById(int id);
+
 
 }
