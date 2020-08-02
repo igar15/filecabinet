@@ -36,6 +36,24 @@
         <input type="hidden" th:field="*{documents}">
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">Is Album:</label>
+            <div class="col-sm-10">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <p>
+                        <input type="radio" th:field="*{isAlbum}" th:value="1" th:checked="*{isAlbum}">Yes
+                        <input type="radio" th:field="*{isAlbum}" th:value="0" th:checked="*{isAlbum}">No
+                    </p>
+                    <span class="help-block" th:if="${#fields.hasErrors('isAlbum')}">
+                            <ul>
+                                <li class="text-danger" th:each="err : ${#fields.errors('isAlbum')}" th:text="${err}"/>
+                            </ul>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
             <label class="col-sm-2 control-label">Album name:</label>
             <div class="col-sm-10">
                 <input type="text" th:class="${#fields.hasErrors('albumName')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{albumName}"/>

@@ -93,8 +93,8 @@
 <!--                            <label class="btn btn-secondary" th:for="${#ids.prev('status')}" th:text="${radioValue}"></label>-->
 <!--                        </p>-->
                         <p>
-                            <input type="radio" th:field="*{isDeveloper}" th:value="0" th:checked="*{isDeveloper}">Yes
-                            <input type="radio" th:field="*{isDeveloper}" th:value="1" th:checked="*{isDeveloper}">No
+                            <input type="radio" th:field="*{isDeveloper}" th:value="1" th:checked="*{isDeveloper}">Yes
+                            <input type="radio" th:field="*{isDeveloper}" th:value="0" th:checked="*{isDeveloper}">No
                         </p>
                         <span class="help-block" th:if="${#fields.hasErrors('isDeveloper')}">
                             <ul>

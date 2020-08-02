@@ -5,6 +5,7 @@ import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.enums.Stamp;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.util.validation.AlbumEntryValid;
+import com.igar15.filecabinet.util.validation.AlbumNameValid;
 import com.igar15.filecabinet.util.validation.DecNumValid;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
+@AlbumNameValid
 public class InternalDispatchTo {
 
     private Integer id;
@@ -51,7 +53,6 @@ public class InternalDispatchTo {
     @NotNull
     private Boolean isAlbum;
 
-    @AlbumEntryValid
     private String albumName;
 
     private Set<Document> documents;

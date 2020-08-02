@@ -47,7 +47,6 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "is_album")
     private Boolean isAlbum;
 
-    @NotBlank
     @Column(name = "album_name")
     private String albumName;
 
