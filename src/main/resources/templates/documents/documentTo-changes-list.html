@@ -23,6 +23,51 @@
 
     <p class="h4 mb-4">Document change notices:</p>
 
+<!--    <form th:action="@{/documents/addChange}" th:object="${documentTo}" method="post">-->
+<!--        <input type="hidden" th:field="*{id}">-->
+<!--        <input type="hidden" th:field="*{name}">-->
+<!--        <input type="hidden" th:field="*{decimalNumber}">-->
+<!--        <input type="hidden" th:field="*{inventoryNumber}">-->
+<!--        <input type="hidden" th:field="*{receiptDate}">-->
+<!--        <input type="hidden" th:field="*{status}">-->
+<!--        <input type="hidden" th:field="*{applicability}">-->
+<!--        <input type="hidden" th:field="*{form}">-->
+<!--        <input type="hidden" th:field="*{changeNumber}">-->
+<!--        <input type="hidden" th:field="*{changeNumber}">-->
+<!--        <input type="hidden" th:field="*{stage}">-->
+<!--        <input type="hidden" th:field="*{sheetsAmount}">-->
+<!--        <input type="hidden" th:field="*{format}">-->
+<!--        <input type="hidden" th:field="*{a4Amount}">-->
+<!--        <input type="hidden" th:field="*{developer}">-->
+<!--        <input type="hidden" th:field="*{originalHolder}">-->
+<!--        <input type="hidden" th:field="*{changeNotices}">-->
+
+<!--        <div class="form-group">-->
+<!--            <div class="col-sm-5">-->
+<!--                <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>-->
+<!--                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">-->
+<!--                        <ul>-->
+<!--                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeName')}" th:text="${err}"/>-->
+<!--                        </ul>-->
+<!--                    </span>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <div class="col-sm-5">-->
+<!--                <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>-->
+<!--                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">-->
+<!--                        <ul>-->
+<!--                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeNumber')}" th:text="${err}"/>-->
+<!--                        </ul>-->
+<!--                    </span>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>-->
+<!--    </form>-->
+
+
     <form th:action="@{/documents/addChange}" th:object="${documentTo}" method="post">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{name}">
@@ -42,30 +87,45 @@
         <input type="hidden" th:field="*{originalHolder}">
         <input type="hidden" th:field="*{changeNotices}">
 
-        <div class="form-group">
-            <div class="col-sm-5">
-                <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">
+        <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeName')}" th:text="${err}"/>
                         </ul>
                     </span>
-            </div>
-        </div>
+                </div>
 
-        <div class="form-group">
-            <div class="col-sm-5">
-                <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">
+                <div class="col-sm-4">
+                    <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeNumber')}" th:text="${err}"/>
                         </ul>
                     </span>
-            </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>
+                </div>
+
         </div>
 
-        <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>
     </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div th:if="${documentTo.changeNotices == null || documentTo.changeNotices.size() == 0}">
         <h2>No changes</h2>
