@@ -113,3 +113,16 @@ img {
     font-weight: 200;
     line-height: 30px;
 }
+
+table.table thead .sorted:after{
+    display: inline-block;
+    font-family: 'FontAwesome';
+    opacity: 0.8;
+    margin-left: 1em;
+}
+table.table thead .sorted.sorted-desc:after{
+    content: "\f15e";
+}
+table.table thead .sorted.sorted-asc:after{
+    content: "\f15d";
+}

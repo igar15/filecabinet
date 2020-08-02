@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 
@@ -10,6 +10,7 @@
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
 
     <title>Developers list</title>
 </head>
@@ -24,13 +25,13 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
-                <th>Name</th>
+                <th><a class="sorted" sd:pagination-sort="name">Name</a></th>
                 <th>Chief</th>
-                <th>Workers amount</th>
+                <th><a class="sorted" sd:pagination-sort="workersAmount">Workers amount</a></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tempDeveloper : ${developers}">
+            <tr th:each="tempDeveloper : ${page}">
                 <td class="align-middle text-center">
                     <a th:href="@{'/developers/showDeveloperInfo/' + ${tempDeveloper.id}}"><span class="text-dark" th:text="${tempDeveloper.name}"/></a>
                 </td>
@@ -39,6 +40,33 @@
             </tr>
             </tbody>
         </table>
+
+<!--        Show <span sd:page-size-selector="javascript"></span> entries-->
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                Show <span sd:page-size-selector="javascript"></span> entries
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div sd:pagination-summary="">info</div>
+            </div>
+            <div class="col-sm-6">
+                <nav class="pull-right">
+                    <ul class="pagination" sd:pagination-split="5" sd:pagination="full">
+                        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+
+
     </div>
 </body>
 </html>

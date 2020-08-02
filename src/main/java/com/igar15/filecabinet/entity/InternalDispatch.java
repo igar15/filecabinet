@@ -43,6 +43,10 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "internal_handler_phone_number")
     private String internalHandlerPhoneNumber;
 
+    @NotNull
+    @Column(name = "is_album")
+    private Boolean isAlbum;
+
     @NotBlank
     @Column(name = "album_name")
     private String albumName;
@@ -54,7 +58,7 @@ public class InternalDispatch extends Dispatch {
 
     public InternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
                             Stamp stamp, Developer dispatchHandler, Set<Document> documents, LocalDate receivedInternalDate,
-                            String internalHandlerName, String internalHandlerPhoneNumber, String albumName) {
+                            String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName) {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
         this.dispatchHandler = dispatchHandler;
@@ -62,6 +66,7 @@ public class InternalDispatch extends Dispatch {
         this.receivedInternalDate = receivedInternalDate;
         this.internalHandlerName = internalHandlerName;
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
+        this.isAlbum = isAlbum;
         this.albumName = albumName;
     }
 
@@ -111,6 +116,14 @@ public class InternalDispatch extends Dispatch {
 
     public void setInternalHandlerPhoneNumber(String internalHandlerPhoneNumber) {
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
+    }
+
+    public Boolean getIsAlbum() {
+        return isAlbum;
+    }
+
+    public void setIsAlbum(Boolean album) {
+        isAlbum = album;
     }
 
     public String getAlbumName() {

@@ -48,6 +48,9 @@ public class InternalDispatchTo {
     @NotBlank
     private String internalHandlerPhoneNumber;
 
+    @NotNull
+    private Boolean isAlbum;
+
     @AlbumEntryValid
     private String albumName;
 
@@ -60,7 +63,7 @@ public class InternalDispatchTo {
 
     public InternalDispatchTo(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark, Stamp stamp,
                               Developer dispatchHandler, LocalDate receivedInternalDate,
-                              String internalHandlerName, String internalHandlerPhoneNumber, String albumName, Set<Document> documents) {
+                              String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName, Set<Document> documents) {
         this.id = id;
         this.waybill = waybill;
         this.dispatchDate = dispatchDate;
@@ -71,6 +74,7 @@ public class InternalDispatchTo {
         this.receivedInternalDate = receivedInternalDate;
         this.internalHandlerName = internalHandlerName;
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
+        this.isAlbum = isAlbum;
         this.albumName = albumName;
         this.documents = documents;
     }
@@ -161,6 +165,14 @@ public class InternalDispatchTo {
 
     public void setInternalHandlerPhoneNumber(String internalHandlerPhoneNumber) {
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
+    }
+
+    public Boolean getIsAlbum() {
+        return isAlbum;
+    }
+
+    public void setIsAlbum(Boolean album) {
+        isAlbum = album;
     }
 
     public String getAlbumName() {

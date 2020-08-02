@@ -1,9 +1,15 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Developer;
+import com.igar15.filecabinet.repository.DeveloperRepository;
 import com.igar15.filecabinet.service.DeveloperService;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,9 +24,12 @@ public class DeveloperController {
     @Autowired
     private DeveloperService developerService;
 
+    @Autowired
+    private DeveloperRepository developerRepository;
+
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("developers", developerService.findAll());
+    public String showAll(Model model, @SortDefault("name") Pageable pageable) {
+        model.addAttribute("page", developerRepository.findAll(pageable));
         return "/developers/list-developers";
     }
 

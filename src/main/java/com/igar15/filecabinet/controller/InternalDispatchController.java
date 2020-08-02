@@ -127,13 +127,13 @@ public class InternalDispatchController {
         InternalDispatch found = internalDispatchService.findById(id);
         return new InternalDispatchTo(found.getId(), found.getWaybill(), found.getDispatchDate(), found.getStatus(), found.getRemark(),
                 found.getStamp(), found.getDispatchHandler(), found.getReceivedInternalDate(),
-                found.getInternalHandlerName(), found.getInternalHandlerPhoneNumber(), found.getAlbumName(), found.getDocuments());
+                found.getInternalHandlerName(), found.getInternalHandlerPhoneNumber(), found.getIsAlbum(), found.getAlbumName(), found.getDocuments());
     }
 
     private InternalDispatch convertFromTo(InternalDispatchTo internalDispatchTo) {
         return new InternalDispatch(internalDispatchTo.getId(), internalDispatchTo.getWaybill(), internalDispatchTo.getDispatchDate(),
                 internalDispatchTo.getStatus(), internalDispatchTo.getRemark(), internalDispatchTo.getStamp(), internalDispatchTo.getDispatchHandler(),
                 internalDispatchTo.getDocuments(), internalDispatchTo.getReceivedInternalDate(), internalDispatchTo.getInternalHandlerName(),
-                internalDispatchTo.getInternalHandlerPhoneNumber(), internalDispatchTo.getAlbumName());
+                internalDispatchTo.getInternalHandlerPhoneNumber(), internalDispatchTo.getIsAlbum(), internalDispatchTo.getAlbumName());
     }
 }
