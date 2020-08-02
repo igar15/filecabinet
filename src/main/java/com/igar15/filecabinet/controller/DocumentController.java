@@ -4,6 +4,7 @@ import com.igar15.filecabinet.dto.DocumentTo;
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class DocumentController {
 
     @Autowired
     private ExternalDispatchService externalDispatchService;
+
+    @Autowired
+    private InternalDispatchService internalDispatchService;
 
     @GetMapping("/list")
     public String showAll(Model model) {
@@ -190,6 +194,27 @@ public class DocumentController {
         found.getDocuments().remove(docFound);
         externalDispatchService.update(found);
         return "redirect:/documents/showExternalDispatches/" + id;
+    }
+
+    @GetMapping("/showInternalDispatches/{id}")
+    public String showInternalDispatches(@PathVariable("id") int id, Model model) {
+        List<InternalDispatch> internalDispatches = internalDispatchService.findAllByDocumentId(id);
+        model.addAttribute("internalDispatches", internalDispatches);
+        return "/documents/document-internals-list";
+    }
+
+    @GetMapping("/removeInternal/{id}/{internalId}")
+    public String removeInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
+        InternalDispatch found = internalDispatchService.findById(internalId);
+        Document docFound = documentService.findById(id);
+        found.getDocuments().remove(docFound);
+        if (found.getDocuments().isEmpty()) {
+            internalDispatchService.deleteById(internalId);
+        }
+        else {
+            internalDispatchService.update(found);
+        }
+        return "redirect:/documents/showInternalDispatches/" + id;
     }
 
 

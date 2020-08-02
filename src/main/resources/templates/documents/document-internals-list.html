@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Internal dispatches list</title>
+</head>
+<body>
+<div class="container">
+    <a th:href="@{'/documents/showDocumentInfo/' + ${id}}">Back to Document info</a>
+    <br><br>
+
+    <h3>Document Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Document internal dispatches:</p>
+
+
+    <div th:if="${internalDispatches == null || internalDispatches.size() == 0}">
+        <h2>No internal dispatches</h2>
+    </div>
+
+    <div th:if="${internalDispatches != null && internalDispatches.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <tr>
+                <th class="align-middle">Waybill</th>
+                <th class="align-middle">Dispatch date</th>
+                <th class="align-middle">Status</th>
+                <th class="align-middle">Stamp</th>
+                <th class="align-middle">Dispatch type</th>
+                <th class="align-middle">Dispatch handler</th>
+                <th class="align-middle">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tempInternal : ${internalDispatches}">
+                <td class="align-middle">
+                    <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}"><span class="text-dark" th:text="${tempInternal.waybill}"/></a>
+                </td>
+                <td class="align-middle" th:text="${tempInternal.dispatchDate}"></td>
+                <td class="align-middle" th:text="${tempInternal.status}"></td>
+                <td class="align-middle" th:text="${tempInternal.stamp}"></td>
+                <td class="align-middle" th:text="${tempInternal.isAlbum} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Rossip'"></td>
+                <td class="align-middle" th:text="${tempInternal.dispatchHandler.name}"></td>
+                <td class="align-middle">
+                    <a class="btn btn-sm btn-outline-danger"
+                       th:href="@{'/documents/removeInternal/' + ${id} + '/' + ${tempInternal.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
