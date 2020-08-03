@@ -26,22 +26,24 @@
         <h3>Document Directory</h3>
         <hr>
 
-        <p class="h4 mb-4">Save Document</p>
+
+        <p class="h4 mb-3 offset-sm-3">Document Card</p>
 
         <form class="form-horizontal" th:object="${documentTo}" th:action="@{/documents/save}" method="post">
 
-            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
                 <p th:text="'Please correct values in error below'">Error Message</p>
             </div>
 
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{changeNotices}">
 
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Decimal number:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('decimalNumber')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{decimalNumber}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Decimal number:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{decimalNumber}" th:class="${#fields.hasErrors('decimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Decimal number'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('decimalNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('decimalNumber')}" th:text="${err}"/>
@@ -50,10 +52,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Name:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:field="*{name}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Document name:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Document name'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('name')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
@@ -62,10 +66,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Inventory number:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{inventoryNumber}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Inventory number:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Inventory number'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('inventoryNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('inventoryNumber')}" th:text="${err}"/>
@@ -74,10 +80,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Receipt date:</label>
-                <div class="col-sm-10">
-                    <input type="date" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:field="*{receiptDate}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Receipt date:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="date" th:field="*{receiptDate}" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Receipt date'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('receiptDate')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('receiptDate')}" th:text="${err}"/>
@@ -86,27 +94,31 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Status:</label>
-                <div class="col-sm-10">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Status:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
+                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
                             <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('status')}" th:text="${radioValue}"></label>
-                        </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('status')}">
-                            <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
-                            </ul>
-                        </span>
+                            <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="${radioValue.name}" ></label>
+                        </div>
                     </div>
+                    <span class="help-block" th:if="${#fields.hasErrors('status')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Applicability:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('applicability')} ? 'form-control is-invalid' : 'form-control'" th:field="*{applicability}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Applicability:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{applicability}" th:class="${#fields.hasErrors('applicability')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Applicability'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('applicability')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('applicability')}" th:text="${err}"/>
@@ -115,27 +127,31 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Form:</label>
-                <div class="col-sm-10">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}" th:field="*{form}">
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Document form:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('form')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
+                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}" th:field="*{form}">
                             <input type="radio" th:field="*{form}" th:value="${radioValue}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('form')}" th:text="${radioValue}"></label>
-                        </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('form')}">
-                            <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('form')}" th:text="${err}"/>
-                            </ul>
-                        </span>
+                            <label class="btn-sm btn-light" th:for="${#ids.prev('form')}" th:text="${radioValue.name}" ></label>
+                        </div>
                     </div>
+                    <span class="help-block" th:if="${#fields.hasErrors('form')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('form')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Change number:</label>
-                <div class="col-sm-10">
-                    <input type="number" th:class="${#fields.hasErrors('changeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{changeNumber}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Change number:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" th:field="*{changeNumber}" th:class="${#fields.hasErrors('changeNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Change number'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('changeNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('changeNumber')}" th:text="${err}"/>
@@ -144,22 +160,34 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Stage:</label>
-                <div class="col-sm-10">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}">
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Stage:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons"
+                         th:class="${#fields.hasErrors('stage')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
+                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}"
+                             th:field="*{stage}">
                             <input type="radio" th:field="*{stage}" th:value="${radioValue}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('stage')}" th:text="${radioValue}"></label>
-                        </p>
+                            <label class="btn-sm btn-light" th:for="${#ids.prev('stage')}"
+                                   th:text="${radioValue}"></label>
+                        </div>
                     </div>
+                    <span class="help-block" th:if="${#fields.hasErrors('stage')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('stage')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Sheets amount:</label>
-                <div class="col-sm-10">
-                    <input type="number" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:field="*{sheetsAmount}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Sheets amount:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" th:field="*{sheetsAmount}" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Sheets amount'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('sheetsAmount')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('sheetsAmount')}" th:text="${err}"/>
@@ -168,10 +196,14 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Format:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('format')} ? 'form-control is-invalid' : 'form-control'" th:field="*{format}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Format:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{format}"
+                           th:class="${#fields.hasErrors('format')} ? 'form-control is-invalid' : 'form-control'"
+                           th:placeholder="'Format'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('format')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('format')}" th:text="${err}"/>
@@ -180,10 +212,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">A4 amount:</label>
-                <div class="col-sm-10">
-                    <input type="number" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:field="*{a4Amount}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>A4 amount:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" th:field="*{a4Amount}" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'A4 amount'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('a4Amount')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('a4Amount')}" th:text="${err}"/>
@@ -192,55 +226,55 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Developer:</label>
-                <div class="col-sm-10">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${developers}">
-                            <input type="radio" th:field="*{developer}" th:value="${radioValue.name}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('developer')}" th:text="${radioValue.name}"></label>
-                        </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('developer')}">
-                            <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
-                            </ul>
-                        </span>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Developer:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <select class="form-control selectpicker" th:field="*{developer}">
+                        <option value="">Nothing selected</option>
+                        <option th:each="dropValue : ${developers}"
+                                th:value="${dropValue.name}"
+                                th:text="${dropValue.name}">
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('developer')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="originalHolder">Original holder:</label>
-                    <select class="form-control selectpicker" th:field="*{originalHolder}" id="originalHolder">
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Original holder:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <select class="form-control selectpicker" th:field="*{originalHolder}">
                         <option value="">Nothing selected</option>
                         <option th:each="dropValue : ${companies}"
                                 th:value="${dropValue.name}"
-                                th:text="${dropValue.name}">pizza
+                                th:text="${dropValue.name}">
                         </option>
                     </select>
                     <span class="help-block" th:if="${#fields.hasErrors('originalHolder')}">
-                    <ul>
-                        <li class="text-danger" th:each="err : ${#fields.errors('originalHolder')}" th:text="${err}"/>
-                    </ul>
-                </span>
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('originalHolder')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
-
             </div>
 
-            <br><br>
             <div class="row">
-                <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
             </div>
             <br><br>
-
         </form>
     </div>
-
 <!--    <script th:src="@{/js/jquery.min.js}"></script>-->
 <!--    <script th:src="@{/js/popper.min.js}"></script>-->
 <!--    <script th:src="@{/css/bootstrap-4.0.0-dist/js/bootstrap.js}"></script>-->
 <!--    <script th:src="@{/css/bootstrap-select-1.13.14/dist/js/bootstrap-select.js}"></script>-->
-
 </body>
 </html>

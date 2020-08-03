@@ -20,46 +20,45 @@ public class DocumentTo {
 
     private Integer id;
 
-    @NotBlank(message = "Name must not be blank")
-    @Size(min=5, max=100, message = "Name must be between 5 and 100 characters long")
+    @NotBlank(message = "document name must not be blank")
     private String name;
 
-    @NotBlank(message = "Decimal number must not be blank")
-    @Size(min = 6, max = 100, message = "Decimal number must be between 6 and 100 characters long")
+    @NotBlank(message = "document decimal number must not be blank")
     private String decimalNumber;
 
-    @NotNull(message = "Inventory number must not be empty")
-    @Min(value = 1, message = "Inventory number must be greater than 0")
+    @NotNull(message = "document inventory number must not be empty")
+    @Min(value = 1, message = "document inventory number must be greater than 0")
     private Integer inventoryNumber;
 
-    @NotNull
+    @NotNull(message = "document receipt date must not be null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptDate;
 
-    @NotNull
+    @NotNull(message = "document status must not be null")
     private Status status;
 
     private String applicability;
 
-    @NotNull
+    @NotNull(message = "document form must not be null")
     private Form form;
 
-    @Min(1)
+    @Min(value = 1, message = "document change number must be greater than 0")
     private Integer changeNumber;
 
     private Stage stage;
 
-    @Min(1)
+    @Min(value = 1, message = "document sheets amount must be greater than 0")
     private Integer sheetsAmount;
 
     private String format;
 
-    @Min(1)
+    @Min(value = 1, message = "document A4 amount must be greater than 0")
     private Integer a4Amount;
 
+    //@NotNull
     private Developer developer;
 
-    @NotNull
+    @NotNull(message = "document original holder must not be null")
     private Company originalHolder;
 
     private String tempChangeNoticeName;
