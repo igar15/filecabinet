@@ -41,10 +41,23 @@ public class DocumentController {
     private InternalDispatchService internalDispatchService;
 
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("documents", documentService.findAll());
+    public String showAll(@RequestParam(name = "decimalNum", required = false) String decimalNum, Model model) {
+        List<Document> documents = null;
+        if (decimalNum == null || decimalNum.isEmpty()) {
+            documents = documentService.findAll();
+        }
+        else {
+            documents = List.of(documentService.findByDecimalNumber(decimalNum));
+        }
+        model.addAttribute("documents", documents);
         return "/documents/list-documents";
     }
+
+//    @GetMapping("/filter")
+//    public String filter(@RequestParam("decimalNum") String decimalNumber, Model model) {
+//        model.addAttribute("documents", List.of(documentService.findByDecimalNumber(decimalNumber)));
+//        return "/documents/list-documents";
+//    }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
@@ -92,12 +105,6 @@ public class DocumentController {
     public String delete(@RequestParam("documentId") int id) {
         documentService.deleteById(id);
         return "redirect:/documents/list";
-    }
-
-    @GetMapping("/filter")
-    public String filter(@RequestParam("decimalNum") String decimalNumber, Model model) {
-        model.addAttribute("documents", List.of(documentService.findByDecimalNumber(decimalNumber)));
-        return "/documents/list-documents";
     }
 
     @GetMapping("/showDocumentInfo/{documentId}")

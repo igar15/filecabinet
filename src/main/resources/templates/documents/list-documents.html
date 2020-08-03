@@ -21,7 +21,7 @@
         <h3>Documents List</h3>
         <hr>
 
-        <form action="#" th:action="@{/documents/filter}" method="get">
+        <form action="#" th:action="@{/documents/list}" method="get">
             <input type="text" th:name="decimalNum" th:value="${param.decimalNum}" class="form-control mb-4 col-4" placeholder="Decimal number">
             <button type="submit" class="btn btn-info col-2">Search</button>
         </form>
