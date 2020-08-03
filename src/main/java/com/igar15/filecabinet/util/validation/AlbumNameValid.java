@@ -12,10 +12,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AlbumNameValid {
 
-//    public String decNumber();
-//
-//    public String changeNumber();
-
     public String message() default "the document (album name) must exist!";
 
     public Class<?>[] groups() default {};

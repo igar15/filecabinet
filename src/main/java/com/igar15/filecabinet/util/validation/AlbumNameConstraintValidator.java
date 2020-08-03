@@ -23,17 +23,22 @@ public class AlbumNameConstraintValidator implements ConstraintValidator<AlbumNa
          return false;
       }
       if (obj.getIsAlbum()) {
-//         if (obj.getAlbumName() == null) {
-//            context.disableDefaultConstraintViolation();
-//            context.buildConstraintViolationWithTemplate("document must exist (album name)").addPropertyNode("albumName").addConstraintViolation();
-//            return false;
-//         }
          Document document = documentRepository.findByDecimalNumber(obj.getAlbumName()).orElse(null);
          if (document == null) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("document must exist (album name)").addPropertyNode("albumName").addConstraintViolation();
+            if (obj.getStamp() == null) {
+               context.buildConstraintViolationWithTemplate("stamp for album must not be null").addPropertyNode("stamp").addConstraintViolation();
+            }
             return false;
-         } else return true;
+         } else {
+            if (obj.getStamp() == null) {
+               context.disableDefaultConstraintViolation();
+               context.buildConstraintViolationWithTemplate("stamp for album must not be null").addPropertyNode("stamp").addConstraintViolation();
+               return false;
+            }
+            return true;
+         }
       }
       else {
          if (obj.getAlbumName() == null || obj.getAlbumName().isEmpty()) {
