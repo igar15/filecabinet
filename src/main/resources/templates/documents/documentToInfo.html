@@ -31,79 +31,12 @@
 
                 </div>
                 <div class="col-sm-3 text-right">
-                 <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                    <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info mb-1">Update</a>
                     <a th:href="@{/documents/delete(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-danger mb-1"
                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-2">
-
-                </div>
-                <div class="col-sm-2 text-right">
-                    <form th:action="@{/documents/showFormForAddChangeNotice}" th:object="${documentTo}" method="post">
-                        <input type="hidden" th:field="*{id}">
-                        <input type="hidden" th:field="*{name}">
-                        <input type="hidden" th:field="*{decimalNumber}">
-                        <input type="hidden" th:field="*{inventoryNumber}">
-                        <input type="hidden" th:field="*{receiptDate}">
-                        <input type="hidden" th:field="*{status}">
-                        <input type="hidden" th:field="*{applicability}">
-                        <input type="hidden" th:field="*{form}">
-                        <input type="hidden" th:field="*{changeNumber}">
-                        <input type="hidden" th:field="*{stage}">
-                        <input type="hidden" th:field="*{sheetsAmount}">
-                        <input type="hidden" th:field="*{format}">
-                        <input type="hidden" th:field="*{a4Amount}">
-                        <input type="hidden" th:field="*{developer}">
-                        <input type="hidden" th:field="*{originalHolder}">
-                        <input type="hidden" th:field="*{changeNotices}">
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                            </div>
-                            <div class="col-sm-5">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap mb-1">Add/Remove changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-2">
-
-                </div>
-                <div class="col-sm-2 text-right">
-                    <form th:action="@{/documents/showFormForAddSubscribers}" th:object="${documentTo}" method="post">
-                        <input type="hidden" th:field="*{id}">
-                        <input type="hidden" th:field="*{name}">
-                        <input type="hidden" th:field="*{decimalNumber}">
-                        <input type="hidden" th:field="*{inventoryNumber}">
-                        <input type="hidden" th:field="*{receiptDate}">
-                        <input type="hidden" th:field="*{status}">
-                        <input type="hidden" th:field="*{applicability}">
-                        <input type="hidden" th:field="*{form}">
-                        <input type="hidden" th:field="*{changeNumber}">
-                        <input type="hidden" th:field="*{stage}">
-                        <input type="hidden" th:field="*{sheetsAmount}">
-                        <input type="hidden" th:field="*{format}">
-                        <input type="hidden" th:field="*{a4Amount}">
-                        <input type="hidden" th:field="*{developer}">
-                        <input type="hidden" th:field="*{originalHolder}">
-                        <input type="hidden" th:field="*{changeNotices}">
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                            </div>
-                            <div class="col-sm-5">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap mb-1">Add/Remove subscribers</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-sm-2 border">

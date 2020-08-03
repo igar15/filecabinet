@@ -66,6 +66,11 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void findByIsAlbum() {
+        Assertions.assertEquals(List.of(INTERNAL_DISPATCH2, INTERNAL_DISPATCH3), internalDispatchService.findByIsAlbum(true));
+    }
+
+    @Test
     void update() {
         InternalDispatch updated = getUpdated();
         internalDispatchService.update(updated);

@@ -31,7 +31,7 @@ public class InternalDispatchTo {
 
     private String remark;
 
-    @NotNull
+    //@NotNull --> add to class type validator (if is album --> need stamp)
     private Stamp stamp;
 
     @NotNull

@@ -8,16 +8,16 @@ import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/internaldispatches")
@@ -112,6 +112,18 @@ public class InternalDispatchController {
         found.getDocuments().remove(removed);
         internalDispatchService.update(found);
         return "redirect:/internaldispatches/showInternalDispatchInfo/" + id;
+    }
+
+    @GetMapping("/list/albums")
+    public String showAlbums(Model model) {
+        model.addAttribute("albums", internalDispatchService.findByIsAlbum(true));
+        return "/internaldispatches/list-albums";
+    }
+
+    @GetMapping("/showAlbumInfo/{id}")
+    public String showAlbumInfo(@PathVariable("id") int id, Model model) {
+        model.addAttribute("album", internalDispatchService.findById(id));
+        return "/internaldispatches/album-info";
     }
 
 

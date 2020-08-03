@@ -39,6 +39,11 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
     }
 
     @Override
+    public List<InternalDispatch> findByIsAlbum(boolean isAlbum) {
+        return internalDispatchRepository.findByIsAlbum(true);
+    }
+
+    @Override
     public void update(InternalDispatch internalDispatch) {
         Assert.notNull(internalDispatch, "internalDispatch must not be null");
         ValidationUtil.checkNotFoundWithId(internalDispatchRepository.save(internalDispatch), internalDispatch.id());

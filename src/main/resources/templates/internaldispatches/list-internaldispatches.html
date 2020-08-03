@@ -24,25 +24,29 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">
         <tr>
-            <th class="align-middle">Album name</th>
+            <th class="align-middle">Dispatch date</th>
+            <th class="align-middle">Waybill</th>
+            <th class="align-middle">Dispatch type</th>
             <th class="align-middle">Stamp</th>
-            <th class="align-middle">Handler</th>
-            <th class="align-middle">Received date</th>
+            <th class="align-middle">Current handler</th>
             <th class="align-middle">Handler name</th>
             <th class="align-middle">Handler phone number</th>
+            <th class="align-middle">Received date</th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="tempInternal : ${internalDispatches}">
+            <td class="align-middle text-center" th:text="${tempInternal.dispatchDate}"></td>
             <td class="align-middle">
-                <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}"><span class="text-dark" th:text="${tempInternal.albumName}"/></a>
+                <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}"><span class="text-dark" th:text="${tempInternal.waybill}"/></a>
             </td>
+            <td class="align-middle text-center" th:text="${tempInternal.isAlbum == true} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Scattered'"></td>
             <td class="align-middle text-center" th:text="${tempInternal.stamp}"></td>
             <td class="align-middle text-center" th:text="${tempInternal.dispatchHandler.name}"></td>
-            <td class="align-middle text-center" th:text="${tempInternal.receivedInternalDate}"></td>
             <td class="align-middle text-center" th:text="${tempInternal.internalHandlerName}"></td>
             <td class="align-middle text-center" th:text="${tempInternal.internalHandlerPhoneNumber}"></td>
+            <td class="align-middle text-center" th:text="${tempInternal.receivedInternalDate}"></td>
         </tr>
         </tbody>
     </table>

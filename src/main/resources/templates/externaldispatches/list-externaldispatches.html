@@ -24,25 +24,25 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">
         <tr>
-            <th class="align-middle">Waybill</th>
             <th class="align-middle">Dispatch date</th>
-            <th class="align-middle">Status</th>
-            <th class="align-middle">Remark</th>
             <th class="align-middle">Letter outgoing number</th>
             <th class="align-middle">Company</th>
+            <th class="align-middle">Waybill</th>
+            <th class="align-middle">Status</th>
+            <th class="align-middle">Remark</th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="tempExternal : ${externalDispatches}">
+            <td class="align-middle" th:text="${tempExternal.dispatchDate}"></td>
+            <td class="align-middle text-center" th:text="${tempExternal.letterOutgoingNumber}"></td>
+            <td class="align-middle text-center" th:text="${tempExternal.company == null} ? '' : ${tempExternal.company.name}"></td>
             <td class="align-middle">
                 <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}"><span class="text-dark" th:text="${tempExternal.waybill}"/></a>
             </td>
-            <td class="align-middle" th:text="${tempExternal.dispatchDate}"></td>
             <td class="align-middle text-center" th:text="${tempExternal.status}"></td>
             <td class="align-middle text-center" th:text="${tempExternal.remark}"></td>
-            <td class="align-middle text-center" th:text="${tempExternal.letterOutgoingNumber}"></td>
-            <td class="align-middle text-center" th:text="${tempExternal.company == null} ? '' : ${tempExternal.company.name}"></td>
         </tr>
         </tbody>
     </table>

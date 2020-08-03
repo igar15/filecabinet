@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <title>Albums list</title>
+</head>
+<body>
+<div class="container">
+    <a th:href="@{/}">Back to Home page</a>
+    <br><br>
+    <h3>Album List</h3>
+    <hr>
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark text-center">
+        <tr>
+            <th class="align-middle">Album name</th>
+            <th class="align-middle">Stamp</th>
+            <th class="align-middle">Current handler</th>
+            <th class="align-middle">Handler name</th>
+            <th class="align-middle">Handler phone number</th>
+            <th class="align-middle">Received date</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempAlbum : ${albums}">
+            <td class="align-middle">
+                <a th:href="@{'/internaldispatches/showAlbumInfo/' + ${tempAlbum.id}}"><span class="text-dark" th:text="${tempAlbum.albumName}"/></a>
+            </td>
+            <td class="align-middle text-center" th:text="${tempAlbum.stamp}"></td>
+            <td class="align-middle text-center" th:text="${tempAlbum.dispatchHandler.name}"></td>
+            <td class="align-middle text-center" th:text="${tempAlbum.internalHandlerName}"></td>
+            <td class="align-middle text-center" th:text="${tempAlbum.internalHandlerPhoneNumber}"></td>
+            <td class="align-middle text-center" th:text="${tempAlbum.receivedInternalDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

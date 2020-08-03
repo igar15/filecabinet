@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Album info</title>
+</head>
+<body>
+<div class="container">
+    <a th:href="@{/internaldispatches/list/albums}">Back to Albums list</a>
+    <br><br>
+
+    <h3>Album Directory</h3>
+    <hr>
+
+    <div th:object="${album}">
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Album name:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{albumName}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Stamp:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{stamp}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Dispatch date:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{dispatchDate}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Current handler:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{dispatchHandler.name}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Internal handler name:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{internalHandlerName}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Internal handler phone number:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{internalHandlerPhoneNumber}"></h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 border">
+                <h6>Received date:</h6>
+            </div>
+            <div class="col-sm-3 border">
+                <h6 th:text="*{receivedInternalDate}"></h6>
+            </div>
+        </div>
+
+    </div>
+
+    <br><br>
+
+
+    <p class="h4 mb-4">Album documents:</p>
+
+
+
+    <div th:if="${album.documents == null || album.documents.size() == 0}">
+        <h2>No documents</h2>
+    </div>
+
+    <div th:if="${album.documents != null && album.documents.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <th class="align-middle">Decimal number</th>
+            <th class="align-middle">Name</th>
+            <th class="align-middle">Show document</th>
+            </thead>
+            <tbody>
+            <tr th:each="tempDocument : ${album.documents}">
+                <td class="align-middle">
+                    <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.id}}" th:target="_blank"><span class="text-dark" th:text="${tempDocument.decimalNumber}"/></a>
+                </td>
+                <td class="align-middle" th:text="${tempDocument.name}"></td>
+                <td class="align-middle text-center">
+                    <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

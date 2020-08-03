@@ -14,6 +14,8 @@ public interface InternalDispatchService {
 
     List<InternalDispatch> findAllByDocumentId(int documentId);
 
+    List<InternalDispatch> findByIsAlbum(boolean isAlbum);
+
     void update(InternalDispatch internalDispatch);
 
     void deleteById(int id);
