@@ -15,6 +15,8 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Query("select d from Document d where d.developer.id=:developerId")
     List<Document> findAllByDeveloperId(@Param("developerId") int developerId);
 
+    List<Document> findAllByDeveloper_Name(String name);
+
     List<Document> findAllByOriginalHolderId(int originalHolderId);
 
     @Query("select d from Document d left join d.changeNotices where d.id=:id")

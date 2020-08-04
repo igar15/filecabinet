@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.*;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,13 +42,24 @@ public class DocumentController {
     private InternalDispatchService internalDispatchService;
 
     @GetMapping("/list")
-    public String showAll(@RequestParam(name = "decimalNum", required = false) String decimalNum, Model model) {
+    public String showAll(@RequestParam(name = "decimalNum", required = false) String decimalNum,
+                          @RequestParam(name = "developer", required = false) String developer,
+                          Model model) {
         List<Document> documents = null;
+        model.addAttribute("developers", developerService.findAll().stream().
+                map(dev -> dev.getName()).collect(Collectors.toList()));
+        model.addAttribute("developerParameter", developer);
+
         if (decimalNum == null || decimalNum.isEmpty()) {
             documents = documentService.findAll();
         }
         else {
-            documents = List.of(documentService.findByDecimalNumber(decimalNum));
+            try {
+                documents = List.of(documentService.findByDecimalNumber(decimalNum));
+            } catch (NotFoundException e) {
+                model.addAttribute("errors", List.of("document not found!"));
+                return "/documents/list-documents";
+            }
         }
         model.addAttribute("documents", documents);
         return "/documents/list-documents";

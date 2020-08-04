@@ -21,8 +21,34 @@
         <h3>Documents List</h3>
         <hr>
 
+
+
         <form action="#" th:action="@{/documents/list}" method="get">
-            <input type="text" th:name="decimalNum" th:value="${param.decimalNum}" class="form-control mb-4 col-4" placeholder="Decimal number">
+            <div class="row mb-1">
+                <div class="col-sm-3">
+                    <input type="text" th:name="decimalNum" th:value="${param.decimalNum}" th:class="${errors == null} ? 'form-control' : 'form-control is-invalid'" placeholder="Decimal number">
+                    <span class="help-block" th:if="${errors != null}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${errors}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+                <div class="col-sm-3">
+                    <select th:class="${errors == null} ? 'form-control selectpicker' : 'form-control selectpicker is-invalid'" name="developer">
+                        <option value="">Developer (not selected)</option>
+                        <option th:each="drop : ${developers}"
+                                th:value="${drop}"
+                                th:text="${drop}"
+                                th:selected="${drop == developerParameter}">
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${errors != null}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${errors}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
             <button type="submit" class="btn btn-info col-2">Search</button>
         </form>
 
