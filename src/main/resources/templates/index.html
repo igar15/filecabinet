@@ -53,12 +53,6 @@
         </div>
 
         <div class="row mb-2">
-            <div class="col-md-4">
-                <a th:href="@{/developers/list}">
-                    <img th:src="@{/images/developers.png}"/>
-                    <h4 class="text-center">Developers</h4>
-                </a>
-            </div>
 
             <div class="col-md-4">
                 <a th:href="@{/documents/list}">
@@ -66,6 +60,14 @@
                     <h4 class="text-center">Documents</h4>
                 </a>
             </div>
+
+            <div class="col-md-4">
+                <a th:href="@{/developers/list}">
+                    <img th:src="@{/images/developers.png}"/>
+                    <h4 class="text-center">Developers</h4>
+                </a>
+            </div>
+
 
             <div class="col-md-4">
                 <a th:href="@{/changenotices/list}">
@@ -93,9 +95,27 @@
 
             <div class="col-md-4">
                 <a th:href="@{/internaldispatches/list}">
-                    <!--                    <img th:src="@{/images/companies.png}"/>-->
+                    <img th:src="@{/images/internals.png}"/>
                     <h4 class="text-center">Internal dispatches</h4>
                 </a>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+
+            <div class="col-md-4">
+                <a th:href="@{/internaldispatches/list/albums}">
+                    <img th:src="@{/images/archive.png}"/>
+                    <h4 class="text-center">Copies Archive</h4>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+
             </div>
         </div>
 
