@@ -1,3 +1,4 @@
+delete from applicabilities;
 delete from document_external_dispatches;
 delete from document_internal_dispatches;
 delete from external_dispatches;
@@ -22,14 +23,20 @@ values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357', 'Raev A.A.
        ('AO "MMZ"', 'Yoshkar-Ola', 'Suvorov street', '15', '424003', 'Bozhko M.V.'),
        ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033', 'Visher S.K.');
 
-insert into documents (name, decimal_number, inventory_number, receipt_date, status, applicability, form, change_number,
+insert into documents (name, decimal_number, inventory_number, receipt_date, status, form, change_number,
                        stage, sheets_amount, format, a4_amount, developer_id, original_holder_id)
-values ('Стойка', 'БА6.151.128', 880572, '2003-01-30', 'ORIGINAL', 'ЮПИЯ.301265.026', 'ELECTRONIC', 2, 'O1', null, null, null, 1000, 1006),
-       ('Блок Д02-6М1Э Перечень элементов', 'ВУИА.465211.001ПЭ3', 63140, '2015-03-20', 'ORIGINAL', 'ВУИА.465211.001', 'PAPER', 2, 'O1', 28, 'A4', 28, 1005, 1006),
-       ('Крышка', 'ЮПИЯ.301265.026', 884986, '2014-06-30', 'ORIGINAL', null, 'ELECTRONIC', 3, 'O1', null, null, null, 1000, 1006),
-       ('Крышка Сборочный чертеж', 'ЮПИЯ.301265.026СБ', 939986, '2014-06-30', 'ORIGINAL', 'ЮПИЯ.301265.026', 'PAPER', 2, 'O1', 1, 'A1', 8, 1000, 1006),
-       ('Пульт АРМ ОП СЭ01-7Э Схема электрическая принципиальная', 'ВУИА.468362.021Э3', 68199, '2018-09-15', 'ACC_COPY', 'ВУИА.468362.021', 'ELECTRONIC', null,  null, null, null, null, null, 1007),
-       ('Панель ПСЭ25-22 Перечень элементов', 'ЮПИЯ.468151.031ПЭ3', 929213, '2012-11-18', 'ACC_COPY', 'ЮПИЯ.468151.031', 'ELECTRONIC', 3, null, null, null, null, null, 1008);
+values ('Стойка', 'БА6.151.128', 880572, '2003-01-30', 'ORIGINAL', 'ELECTRONIC', 2, 'O1', null, null, null, 1000, 1006),
+       ('Блок Д02-6М1Э Перечень элементов', 'ВУИА.465211.001ПЭ3', 63140, '2015-03-20', 'ORIGINAL', 'PAPER', 2, 'O1', 28, 'A4', 28, 1005, 1006),
+       ('Крышка', 'ЮПИЯ.301265.026', 884986, '2014-06-30', 'ORIGINAL', 'ELECTRONIC', 3, 'O1', null, null, null, 1000, 1006),
+       ('Крышка Сборочный чертеж', 'ЮПИЯ.301265.026СБ', 939986, '2014-06-30', 'ORIGINAL', 'PAPER', 2, 'O1', 1, 'A1', 8, 1000, 1006),
+       ('Пульт АРМ ОП СЭ01-7Э Схема электрическая принципиальная', 'ВУИА.468362.021Э3', 68199, '2018-09-15', 'ACC_COPY', 'ELECTRONIC', null,  null, null, null, null, null, 1007),
+       ('Панель ПСЭ25-22 Перечень элементов', 'ЮПИЯ.468151.031ПЭ3', 929213, '2012-11-18', 'ACC_COPY', 'ELECTRONIC', 3, null, null, null, null, null, 1008);
+
+insert into applicabilities (inner_id, outer_id)
+values (1011, 1009),
+       (1012, 1011),
+       (1011, 1010);
+
 
 insert into change_notices (name, change_code, issue_date, developer_id)
 values ('ВУИА.СЭ.739', 5, '2018-05-24', 1000),

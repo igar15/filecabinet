@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -99,4 +100,5 @@ class DocumentServiceImplTest extends AbstractServiceTest {
     void deleteByIdNotFound() {
         Assertions.assertThrows(NotFoundException.class, () -> documentService.deleteById(NOT_FOUND_ID));
     }
+
 }

@@ -37,6 +37,7 @@
 
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{changeNotices}">
+            <input type="hidden" th:field="*{applicabilities}">
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
@@ -108,20 +109,6 @@
                     <span class="help-block" th:if="${#fields.hasErrors('status')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Applicability:</h6>
-                </div>
-                <div class="col-sm-5">
-                    <input type="text" th:field="*{applicability}" th:class="${#fields.hasErrors('applicability')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Applicability'"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('applicability')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('applicability')}" th:text="${err}"/>
                         </ul>
                     </span>
                 </div>

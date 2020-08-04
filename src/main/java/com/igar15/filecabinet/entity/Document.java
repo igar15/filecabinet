@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "documents")
@@ -36,8 +37,11 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "applicability")
-    private String applicability;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "applicabilities",
+    joinColumns = @JoinColumn(name = "inner_id"),
+    inverseJoinColumns = @JoinColumn(name = "outer_id"))
+    private Set<Document> applicabilities;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -63,15 +67,15 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "a4_amount")
     private Integer a4Amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "original_holder_id")
     private Company originalHolder;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "document_change_notices",
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "change_notice_id"))
@@ -103,14 +107,14 @@ public class Document extends AbstractNamedEntity {
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate,
-                    Status status, String applicability, Form form, Integer changeNumber, Stage stage,
+                    Status status, Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage,
                     Integer sheetsAmount, String format, Integer a4Amount, Developer developer, Company originalHolder) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
         this.receiptDate = receiptDate;
         this.status = status;
-        this.applicability = applicability;
+        this.applicabilities = applicabilities;
         this.form = form;
         this.changeNumber = changeNumber;
         this.stage = stage;
@@ -122,14 +126,14 @@ public class Document extends AbstractNamedEntity {
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
-                    String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
+                    Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                     Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
         this.receiptDate = receiptDate;
         this.status = status;
-        this.applicability = applicability;
+        this.applicabilities = applicabilities;
         this.form = form;
         this.changeNumber = changeNumber;
         this.stage = stage;
@@ -197,14 +201,6 @@ public class Document extends AbstractNamedEntity {
         this.originalHolder = originalHolder;
     }
 
-    public String getApplicability() {
-        return applicability;
-    }
-
-    public void setApplicability(String applicability) {
-        this.applicability = applicability;
-    }
-
     public Form getForm() {
         return form;
     }
@@ -253,7 +249,15 @@ public class Document extends AbstractNamedEntity {
         this.a4Amount = a4Amount;
     }
 
-//    public Set<ExternalDispatch> getExternalDispatches() {
+    public Set<Document> getApplicabilities() {
+        return applicabilities;
+    }
+
+    public void setApplicabilities(Set<Document> documents) {
+        this.applicabilities = documents;
+    }
+
+    //    public Set<ExternalDispatch> getExternalDispatches() {
 //        return externalDispatches;
 //    }
 //

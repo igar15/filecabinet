@@ -121,15 +121,6 @@
 
             <div class="row">
                 <div class="col-sm-2 border">
-                    <h6>Applicability:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{applicability}"></h6>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-2 border">
                     <h6>Form:</h6>
                 </div>
                 <div class="col-sm-3 border">
@@ -172,6 +163,17 @@
                 <div class="col-sm-3 border">
                     <a th:href="@{'/documents/showChanges/' + ${documentTo.id}}">
                         Show changes
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 border">
+                    <h6>Applicabilities:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <a th:href="@{'/documents/showApplicabilities/' + ${documentTo.id}}">
+                        Show applicabilities
                     </a>
                 </div>
             </div>

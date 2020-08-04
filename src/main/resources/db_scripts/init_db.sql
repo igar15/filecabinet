@@ -1,3 +1,4 @@
+drop table if exists applicabilities;
 drop table if exists document_internal_dispatches;
 drop table if exists document_external_dispatches;
 drop table if exists external_dispatches;
@@ -40,7 +41,6 @@ create table documents (
     inventory_number integer not null,
     receipt_date date not null,
     status varchar not null,
-    applicability varchar default null,
     form varchar not null,
     change_number integer default null,
     stage varchar default null,
@@ -54,6 +54,14 @@ create table documents (
 );
 create unique index documents_unique_decimal_number_idx on documents (decimal_number);
 create unique index documents_unique_inventory_number_idx on documents (inventory_number);
+
+create table applicabilities (
+    inner_id integer not null,
+    outer_id integer not null,
+    primary key (inner_id, outer_id),
+    foreign key (inner_id) references documents (id) on delete cascade,
+    foreign key (outer_id) references documents (id) on delete cascade
+);
 
 create table change_notices (
     id integer primary key default nextval('global_seq'),

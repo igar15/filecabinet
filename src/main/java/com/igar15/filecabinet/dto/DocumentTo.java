@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.util.validation.ChangeNoticeNameAndDocChangeNumberValid;
 import com.igar15.filecabinet.util.validation.ChangeNoticeNameValid;
+import com.igar15.filecabinet.util.validation.DecNumValid;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
@@ -37,7 +38,10 @@ public class DocumentTo {
     @NotNull(message = "document status must not be null")
     private Status status;
 
-    private String applicability;
+    private Set<Document> applicabilities;
+
+    @DecNumValid
+    private String tempApplicability;
 
     @NotNull(message = "document form must not be null")
     private Form form;
@@ -75,7 +79,7 @@ public class DocumentTo {
     }
 
     public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
-                      String applicability, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
+                      Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                       Integer a4Amount, Developer developer, Company originalHolder,
                       Map<Integer, ChangeNotice> changeNotices) {
         this.id = id;
@@ -84,7 +88,7 @@ public class DocumentTo {
         this.inventoryNumber = inventoryNumber;
         this.receiptDate = receiptDate;
         this.status = status;
-        this.applicability = applicability;
+        this.applicabilities = applicabilities;
         this.form = form;
         this.changeNumber = changeNumber;
         this.stage = stage;
@@ -145,12 +149,12 @@ public class DocumentTo {
         this.status = status;
     }
 
-    public String getApplicability() {
-        return applicability;
+    public Set<Document> getApplicabilities() {
+        return applicabilities;
     }
 
-    public void setApplicability(String applicability) {
-        this.applicability = applicability;
+    public void setApplicabilities(Set<Document> applicabilities) {
+        this.applicabilities = applicabilities;
     }
 
     public Form getForm() {
@@ -241,4 +245,11 @@ public class DocumentTo {
         this.changeNotices = changeNotices;
     }
 
+    public String getTempApplicability() {
+        return tempApplicability;
+    }
+
+    public void setTempApplicability(String tempApplicability) {
+        this.tempApplicability = tempApplicability;
+    }
 }

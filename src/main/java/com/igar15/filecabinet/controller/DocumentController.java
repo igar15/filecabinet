@@ -224,6 +224,32 @@ public class DocumentController {
         return "redirect:/documents/showInternalDispatches/" + id;
     }
 
+    @GetMapping("/showApplicabilities/{id}")
+    public String showApplicabilities(@PathVariable("id") int id, Model model) {
+        model.addAttribute("documentTo", convertToToById(id));
+        return ("/documents/document-applicabilities-list");
+    }
+
+    @GetMapping("/removeApplicability/{id}/{applicabilityId}")
+    public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId) {
+        Document found = documentService.findById(id);
+        Document removeApplicability = documentService.findById(applicabilityId);
+        found.getApplicabilities().remove(removeApplicability);
+        documentService.update(found);
+        return "redirect:/documents/showApplicabilities/" + id;
+    }
+
+    @PostMapping("/addApplicability")
+    public String addApplicability(@Valid DocumentTo documentTo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/documents/document-applicabilities-list";
+        }
+        Document newApplicability = documentService.findByDecimalNumber(documentTo.getTempApplicability());
+        documentTo.getApplicabilities().add(newApplicability);
+        documentService.update(convertFromTo(documentTo));
+        return "redirect:/documents/showApplicabilities/" + documentTo.getId();
+    }
+
 
 
 
@@ -249,7 +275,7 @@ public class DocumentController {
 //                    changeNotices.put(Integer.parseInt(split[1]), changeNoticeService.findByName(split[0]));
 //                });
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
-                documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicability(), documentTo.getForm(),
+                documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicabilities(), documentTo.getForm(),
                 documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
                 documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices());
     }
@@ -269,7 +295,7 @@ public class DocumentController {
                 .max(Comparator.comparingInt(i -> i)).orElse(null);
 //        sortedChangeNotices.addAll(changeNoticesInString);
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
-                found.getReceiptDate(), found.getStatus(), found.getApplicability(), found.getForm(), changeNumber,
+                found.getReceiptDate(), found.getStatus(), found.getApplicabilities(), found.getForm(), changeNumber,
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
                 found.getOriginalHolder(), found.getChangeNotices());
     }
