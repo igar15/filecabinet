@@ -114,6 +114,7 @@ img {
     line-height: 30px;
 }
 
+
 table.table thead .sorted:after{
     display: inline-block;
     font-family: 'FontAwesome';

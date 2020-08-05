@@ -23,38 +23,31 @@
 
     <p class="h4 mb-4">Document applicabilities:</p>
 
-    <form th:action="@{/documents/addApplicability}" th:object="${documentTo}" method="post">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{name}">
-        <input type="hidden" th:field="*{decimalNumber}">
-        <input type="hidden" th:field="*{inventoryNumber}">
-        <input type="hidden" th:field="*{receiptDate}">
-        <input type="hidden" th:field="*{status}">
-        <input type="hidden" th:field="*{applicabilities}">
-        <input type="hidden" th:field="*{form}">
-        <input type="hidden" th:field="*{changeNumber}">
-        <input type="hidden" th:field="*{changeNumber}">
-        <input type="hidden" th:field="*{stage}">
-        <input type="hidden" th:field="*{sheetsAmount}">
-        <input type="hidden" th:field="*{format}">
-        <input type="hidden" th:field="*{a4Amount}">
-        <input type="hidden" th:field="*{developer}">
-        <input type="hidden" th:field="*{originalHolder}">
-        <input type="hidden" th:field="*{changeNotices}">
+    <form th:action="@{'/documents/addApplicability/' + ${id}}" method="get">
+<!--        <input type="hidden" th:field="*{id}">-->
+<!--        <input type="hidden" th:field="*{name}">-->
+<!--        <input type="hidden" th:field="*{decimalNumber}">-->
+<!--        <input type="hidden" th:field="*{inventoryNumber}">-->
+<!--        <input type="hidden" th:field="*{receiptDate}">-->
+<!--        <input type="hidden" th:field="*{status}">-->
+<!--        <input type="hidden" th:field="*{applicabilities}">-->
+<!--        <input type="hidden" th:field="*{form}">-->
+<!--        <input type="hidden" th:field="*{changeNumber}">-->
+<!--        <input type="hidden" th:field="*{changeNumber}">-->
+<!--        <input type="hidden" th:field="*{stage}">-->
+<!--        <input type="hidden" th:field="*{sheetsAmount}">-->
+<!--        <input type="hidden" th:field="*{format}">-->
+<!--        <input type="hidden" th:field="*{a4Amount}">-->
+<!--        <input type="hidden" th:field="*{developer}">-->
+<!--        <input type="hidden" th:field="*{originalHolder}">-->
+<!--        <input type="hidden" th:field="*{changeNotices}">-->
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-sm-4">
-                <input type="text" placeholder="Applicability decimal number" th:class="${#fields.hasErrors('tempApplicability')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempApplicability}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('tempApplicability')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('tempApplicability')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                <input type="text" class="form-control" th:name="newApplicability" th:value="${param.newApplicability}" placeholder="Applicability decimal number"/>
             </div>
 
-            <div class="col-sm-4">
-                <button type="submit" class="btn btn-primary btn-sm mb-3">Add applicability</button>
-            </div>
+                <button type="submit" class="btn btn-primary col-2">Add applicability</button>
 
         </div>
 

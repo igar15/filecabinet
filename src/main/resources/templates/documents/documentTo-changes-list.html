@@ -23,109 +23,49 @@
 
     <p class="h4 mb-4">Document change notices:</p>
 
-<!--    <form th:action="@{/documents/addChange}" th:object="${documentTo}" method="post">-->
-<!--        <input type="hidden" th:field="*{id}">-->
-<!--        <input type="hidden" th:field="*{name}">-->
-<!--        <input type="hidden" th:field="*{decimalNumber}">-->
-<!--        <input type="hidden" th:field="*{inventoryNumber}">-->
-<!--        <input type="hidden" th:field="*{receiptDate}">-->
-<!--        <input type="hidden" th:field="*{status}">-->
-<!--        <input type="hidden" th:field="*{applicability}">-->
-<!--        <input type="hidden" th:field="*{form}">-->
-<!--        <input type="hidden" th:field="*{changeNumber}">-->
-<!--        <input type="hidden" th:field="*{changeNumber}">-->
-<!--        <input type="hidden" th:field="*{stage}">-->
-<!--        <input type="hidden" th:field="*{sheetsAmount}">-->
-<!--        <input type="hidden" th:field="*{format}">-->
-<!--        <input type="hidden" th:field="*{a4Amount}">-->
-<!--        <input type="hidden" th:field="*{developer}">-->
-<!--        <input type="hidden" th:field="*{originalHolder}">-->
-<!--        <input type="hidden" th:field="*{changeNotices}">-->
+<!--    <form th:action="@{'/documents/addChange/' + ${documentTo.id}}" method="post">-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{id}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{name}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{decimalNumber}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{inventoryNumber}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{receiptDate}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{status}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{applicabilities}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{form}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{changeNumber}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{changeNumber}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{stage}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{sheetsAmount}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{format}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{a4Amount}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{developer}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{originalHolder}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="hidden" th:field="*{changeNotices}">&ndash;&gt;-->
 
-<!--        <div class="form-group">-->
-<!--            <div class="col-sm-5">-->
-<!--                <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>-->
-<!--                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">-->
+<!--        <div class="row mb-3">-->
+<!--                <div class="col-sm-4">-->
+<!--                    <input type="text" th:name="newChangeNoticeName" th:value="${param.newChangeNoticeName}" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'"/>-->
+<!--                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">-->
 <!--                        <ul>-->
 <!--                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeName')}" th:text="${err}"/>-->
 <!--                        </ul>-->
 <!--                    </span>-->
-<!--            </div>-->
-<!--        </div>-->
+<!--                </div>-->
 
-<!--        <div class="form-group">-->
-<!--            <div class="col-sm-5">-->
-<!--                <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>-->
-<!--                <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">-->
+<!--                <div class="col-sm-4">-->
+<!--                    <input type="text" th:name="newChangeNoticeNumber" th:value="${param.newChangeNoticeNumber}" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'"/>-->
+<!--                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">-->
 <!--                        <ul>-->
 <!--                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeNumber')}" th:text="${err}"/>-->
 <!--                        </ul>-->
 <!--                    </span>-->
-<!--            </div>-->
+<!--                </div>-->
+
+<!--                <button type="submit" class="btn btn-primary col-2">Add change</button>-->
+
 <!--        </div>-->
 
-<!--        <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>-->
 <!--    </form>-->
-
-
-    <form th:action="@{/documents/addChange}" th:object="${documentTo}" method="post">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{name}">
-        <input type="hidden" th:field="*{decimalNumber}">
-        <input type="hidden" th:field="*{inventoryNumber}">
-        <input type="hidden" th:field="*{receiptDate}">
-        <input type="hidden" th:field="*{status}">
-        <input type="hidden" th:field="*{applicabilities}">
-        <input type="hidden" th:field="*{form}">
-        <input type="hidden" th:field="*{changeNumber}">
-        <input type="hidden" th:field="*{changeNumber}">
-        <input type="hidden" th:field="*{stage}">
-        <input type="hidden" th:field="*{sheetsAmount}">
-        <input type="hidden" th:field="*{format}">
-        <input type="hidden" th:field="*{a4Amount}">
-        <input type="hidden" th:field="*{developer}">
-        <input type="hidden" th:field="*{originalHolder}">
-        <input type="hidden" th:field="*{changeNotices}">
-
-        <div class="row">
-                <div class="col-sm-4">
-                    <input type="text" placeholder="Change notice name" th:class="${#fields.hasErrors('tempChangeNoticeName')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeName}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeName')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeName')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-
-                <div class="col-sm-4">
-                    <input type="text" placeholder="Change notice number" th:class="${#fields.hasErrors('tempChangeNoticeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempChangeNoticeNumber}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('tempChangeNoticeNumber')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('tempChangeNoticeNumber')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-
-                <div class="col-sm-4">
-                    <button type="submit" class="btn btn-primary btn-sm mb-3">Add change</button>
-                </div>
-
-        </div>
-
-    </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <div th:if="${documentTo.changeNotices == null || documentTo.changeNotices.size() == 0}">
         <h2>No changes</h2>
@@ -134,29 +74,29 @@
     <div th:if="${documentTo.changeNotices != null && documentTo.changeNotices.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-            <tr>
-                <th class="align-middle">Change number</th>
-                <th class="align-middle">Name</th>
-                <th class="align-middle">Change code</th>
-                <th class="align-middle">Issue date</th>
-                <th class="align-middle">Developer</th>
-                <th class="align-middle">Action</th>
-            </tr>
+                <tr>
+                    <th class="align-middle">Change number</th>
+                    <th class="align-middle">Name</th>
+                    <th class="align-middle">Issue date</th>
+                    <th class="align-middle">Developer</th>
+                    <th class="align-middle">Change code</th>
+                    <th class="align-middle">Action</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
-                <td class="align-middle" th:text="${entry.key}"></td>
-                <td class="align-middle">
-                    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${entry.value.id}}"><span class="text-dark" th:text="${entry.value.name}"/></a>
-                </td>
-                <td class="align-middle" th:text="${entry.value.changeCode}"></td>
-                <td class="align-middle" th:text="${entry.value.issueDate}"></td>
-                <td class="align-middle" th:text="${entry.value.developer} == null ? '' : ${entry.value.developer.name}"></td>
-                <td class="align-middle">
-                    <a class="btn btn-sm btn-outline-danger"
-                       th:href="@{'/documents/removeChange/' + ${documentTo.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
-                </td>
-            </tr>
+                <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
+                    <td class="align-middle text-center" th:text="${entry.key}"></td>
+                    <td class="align-middle text-center">
+                        <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${entry.value.id}}"><span class="text-dark " th:text="${entry.value.name}"/></a>
+                    </td>
+                    <td class="align-middle text-center" th:text="${entry.value.issueDate}"></td>
+                    <td class="align-middle text-center" th:text="${entry.value.developer} == null ? '' : ${entry.value.developer.name}"></td>
+                    <td class="align-middle text-center" th:text="${entry.value.changeCode}"></td>
+                    <td class="align-middle text-center">
+                        <a class="btn btn-sm btn-outline-danger"
+                           th:href="@{'/documents/removeChange/' + ${documentTo.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -166,7 +106,5 @@
     </div>
 
 </div>
-
-
 </body>
 </html>

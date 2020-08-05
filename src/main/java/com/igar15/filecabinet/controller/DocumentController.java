@@ -65,15 +65,14 @@ public class DocumentController {
                           Model model) {
         decimalNumber = "".equals(decimalNumber) ? null : decimalNumber;
         name = "".equals(name) ? null : name;
-        developer = "".equals(developer) ? null : developer;
-        originalHolder = "".equals(originalHolder) ? null : originalHolder;
         inventoryNumber = "".equals(inventoryNumber) ? null : inventoryNumber;
         status = "".equals(status) ? null : status;
         stage = "".equals(stage) ? null : stage;
         form = "".equals(form) ? null : form;
-        LocalDate afterFinal = (after == null) ? LocalDate.MIN : after;
-        LocalDate beforeFinal = (before == null) ? LocalDate.MAX : before;
-
+        developer = "".equals(developer) ? null : developer;
+        originalHolder = "".equals(originalHolder) ? null : originalHolder;
+        LocalDate afterFinal = (after == null) ? LocalDate.of(1900, 1, 1) : after;
+        LocalDate beforeFinal = (before == null) ? LocalDate.of(2050, 1, 1) : before;
 
         model.addAttribute("developers", developerService.findAll());
         model.addAttribute("developer", developer);
@@ -83,37 +82,48 @@ public class DocumentController {
         model.addAttribute("stage", stage);
         model.addAttribute("form", form);
 
-        Document document = new Document();
-        Integer docInventoryNumber = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
-        Status docStatus = status == null ? null : Status.valueOf(status);
-        Stage docStage = stage == null ? null : Stage.valueOf(stage);
-        Form docForm = form == null ? null : Form.valueOf(form);
-        document.setDecimalNumber(decimalNumber);
-        document.setName(name);
-        document.setDeveloper(developerService.findByName(developer));
-        document.setOriginalHolder(companyService.findByName(originalHolder));
-        document.setInventoryNumber(docInventoryNumber);
-        document.setStatus(docStatus);
-        document.setStage(docStage);
-        document.setForm(docForm);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withMatcher("decimalNumber", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase())
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
-        Example<Document> example = Example.of(document, matcher);
-        Page<Document> documents = documentRepository.findAll(example, pageable);
-        List<Document> collect = documents.get()
-                .filter(doc -> (doc.getReceiptDate().compareTo(afterFinal) >= 0) && (doc.getReceiptDate().compareTo(beforeFinal) <= 0))
-                .collect(Collectors.toList());
-        documents = new PageImpl<>(collect, pageable, pageable.getOffset());
+        Page<Document> documents = null;
+
+        if (checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer, originalHolder)) {
+            documents = documentRepository.findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(afterFinal, beforeFinal, pageable);
+        }
+        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer)) {
+            documents = documentRepository.findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(originalHolder, afterFinal, beforeFinal, pageable);
+        }
+        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, originalHolder)) {
+            documents = documentRepository.findAllByDeveloper_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, afterFinal, beforeFinal, pageable);
+        }
+        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form)) {
+            documents = documentRepository.findAllByDeveloper_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, originalHolder, afterFinal, beforeFinal, pageable);
+        }
+        else {
+            Document document = new Document();
+            Integer docInventoryNumber = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
+            Status docStatus = status == null ? null : Status.valueOf(status);
+            Stage docStage = stage == null ? null : Stage.valueOf(stage);
+            Form docForm = form == null ? null : Form.valueOf(form);
+            document.setDecimalNumber(decimalNumber);
+            document.setName(name);
+            document.setDeveloper(developerService.findByName(developer));
+            document.setOriginalHolder(companyService.findByName(originalHolder));
+            document.setInventoryNumber(docInventoryNumber);
+            document.setStatus(docStatus);
+            document.setStage(docStage);
+            document.setForm(docForm);
+
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher("decimalNumber", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase())
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
+            Example<Document> example = Example.of(document, matcher);
+            documents = documentRepository.findAll(example, pageable);
+            List<Document> collect = documents.get()
+                    .filter(doc -> (doc.getReceiptDate().compareTo(afterFinal) >= 0) && (doc.getReceiptDate().compareTo(beforeFinal) <= 0))
+                    .collect(Collectors.toList());
+            documents = new PageImpl<>(collect, pageable, pageable.getOffset());
+        }
         model.addAttribute("documents", documents);
         return "/documents/list-documents";
     }
-
-//    @GetMapping("/filter")
-//    public String filter(@RequestParam("decimalNum") String decimalNumber, Model model) {
-//        model.addAttribute("documents", List.of(documentService.findByDecimalNumber(decimalNumber)));
-//        return "/documents/list-documents";
-//    }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
@@ -199,18 +209,16 @@ public class DocumentController {
         return "/documents/documentTo-changes-list";
     }
 
-    @PostMapping("/addChange")
-    public String addChange(@Valid DocumentTo documentTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/documents/documentTo-changes-list";
-        }
-        ChangeNotice newChange = changeNoticeService.findByName(documentTo.getTempChangeNoticeName());
-        documentTo.getChangeNotices().put(Integer.parseInt(documentTo.getTempChangeNoticeNumber()), newChange);
-        documentService.update(convertFromTo(documentTo));
-//        documentTo.setTempChangeNoticeName(null);
-//        documentTo.setTempChangeNoticeNumber(null);
-        return "redirect:/documents/showChanges/" + documentTo.getId();
-    }
+//    @PostMapping("/addChange")
+//    public String addChange(@Valid DocumentTo documentTo, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "/documents/documentTo-changes-list";
+//        }
+//        ChangeNotice newChange = changeNoticeService.findByName(documentTo.getTempChangeNoticeName());
+//        documentTo.getChangeNotices().put(Integer.parseInt(documentTo.getTempChangeNoticeNumber()), newChange);
+//        documentService.update(convertFromTo(documentTo));
+//        return "redirect:/documents/showChanges/" + documentTo.getId();
+//    }
 
     @GetMapping("/removeChange/{id}/{changeId}")
     public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeId") int changeId, Model model) {
@@ -295,15 +303,24 @@ public class DocumentController {
         return "redirect:/documents/showApplicabilities/" + id;
     }
 
-    @PostMapping("/addApplicability")
-    public String addApplicability(@Valid DocumentTo documentTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/documents/document-applicabilities-list";
-        }
-        Document newApplicability = documentService.findByDecimalNumber(documentTo.getTempApplicability());
-        documentTo.getApplicabilities().add(newApplicability);
-        documentService.update(convertFromTo(documentTo));
-        return "redirect:/documents/showApplicabilities/" + documentTo.getId();
+//    @PostMapping("/addApplicability")
+//    public String addApplicability(@Valid DocumentTo documentTo, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "/documents/document-applicabilities-list";
+//        }
+//        Document newApplicability = documentService.findByDecimalNumber(documentTo.getTempApplicability());
+//        documentTo.getApplicabilities().add(newApplicability);
+//        documentService.update(convertFromTo(documentTo));
+//        return "redirect:/documents/showApplicabilities/" + documentTo.getId();
+//    }
+
+    @GetMapping("/addApplicability/{id}")
+    public String addApplicability(@PathVariable("id") int id,
+                                   @RequestParam(name = "newApplicability") String newApplicability,
+                                   DocumentTo documentTo,
+                                   Model model) {
+        model.addAttribute("documentTo", documentTo);
+        return "/documents/document-applicabilities-list";
     }
 
 
@@ -354,6 +371,12 @@ public class DocumentController {
                 found.getReceiptDate(), found.getStatus(), found.getApplicabilities(), found.getForm(), changeNumber,
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
                 found.getOriginalHolder(), found.getChangeNotices());
+    }
+
+
+    private boolean checkParamsOnNull(String... params) {
+        return Arrays.stream(params)
+                .allMatch(Objects::isNull);
     }
 
 }

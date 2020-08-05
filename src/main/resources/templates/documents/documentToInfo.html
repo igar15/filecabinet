@@ -16,31 +16,22 @@
 <body>
 
     <div class="container">
+
         <a th:href="@{/documents/list}">Back to Documents list</a>
+
         <br><br>
 
         <h3>Document Directory</h3>
+
         <hr>
 
         <p class="h4 mb-4">Document information</p>
 
-        <span th:object="${documentTo}">
-
-            <div class="row">
-                <div class="col-sm-2">
-
-                </div>
-                <div class="col-sm-3 text-right">
-                    <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info mb-1">Update</a>
-                    <a th:href="@{/documents/delete(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-danger mb-1"
-                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
-                </div>
-            </div>
-
+        <div th:object="${documentTo}">
 
             <div class="row">
                 <div class="col-sm-2 border">
-                    <h6>Decimal number:</h6>
+                    <h6 >Decimal number:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{decimalNumber}"></h6>
@@ -79,7 +70,7 @@
                     <h6>Status:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{status}"></h6>
+                    <h6 th:text="*{status.name}"></h6>
                 </div>
             </div>
 
@@ -124,7 +115,7 @@
                     <h6>Form:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{form}"></h6>
+                    <h6 th:text="*{form.name}"></h6>
                 </div>
             </div>
 
@@ -189,7 +180,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-1">
                 <div class="col-sm-2 border">
                     <h6>Internal dispatches:</h6>
                 </div>
@@ -200,8 +191,16 @@
                 </div>
             </div>
 
+            <div class="row mb-1">
+                <div class="col-sm-4 offset-1 text-right">
+                    <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info">Update</a>
+                    <a th:href="@{/documents/delete(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-danger"
+                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                </div>
+            </div>
 
-        </span>
+
+        </div>
 
 
 
