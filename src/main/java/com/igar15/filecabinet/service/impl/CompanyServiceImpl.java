@@ -36,8 +36,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company findByName(String name) {
-        Assert.notNull(name, "name must not be null");
-        return ValidationUtil.checkNotFound(companyRepository.findByName(name).orElse(null), name);
+//        Assert.notNull(name, "name must not be null");
+//        return ValidationUtil.checkNotFound(companyRepository.findByName(name).orElse(null), name);
+        return companyRepository.findByName(name).orElse(null);
     }
 
     @Override

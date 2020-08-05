@@ -1,13 +1,18 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.dto.DocumentTo;
-import com.igar15.filecabinet.entity.ChangeNotice;
-import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.entity.ExternalDispatch;
-import com.igar15.filecabinet.entity.InternalDispatch;
+import com.igar15.filecabinet.entity.*;
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+import com.igar15.filecabinet.entity.enums.Form;
+import com.igar15.filecabinet.entity.enums.Stage;
+import com.igar15.filecabinet.entity.enums.Status;
+import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.*;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.SortDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -16,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,26 +47,64 @@ public class DocumentController {
     @Autowired
     private InternalDispatchService internalDispatchService;
 
-    @GetMapping("/list")
-    public String showAll(@RequestParam(name = "decimalNum", required = false) String decimalNum,
-                          @RequestParam(name = "developer", required = false) String developer,
-                          Model model) {
-        List<Document> documents = null;
-        model.addAttribute("developers", developerService.findAll().stream().
-                map(dev -> dev.getName()).collect(Collectors.toList()));
-        model.addAttribute("developerParameter", developer);
+    @Autowired
+    private DocumentRepository documentRepository;
 
-        if (decimalNum == null || decimalNum.isEmpty()) {
-            documents = documentService.findAll();
-        }
-        else {
-            try {
-                documents = List.of(documentService.findByDecimalNumber(decimalNum));
-            } catch (NotFoundException e) {
-                model.addAttribute("errors", List.of("document not found!"));
-                return "/documents/list-documents";
-            }
-        }
+    @GetMapping("/list")
+    public String showAll(@RequestParam(name = "decimalNumber", required = false) String decimalNumber,
+                          @RequestParam(name = "name", required = false) String name,
+                          @RequestParam(name = "developer", required = false) String developer,
+                          @RequestParam(name = "originalHolder", required = false) String originalHolder,
+                          @RequestParam(name = "inventoryNumber", required = false) String inventoryNumber,
+                          @RequestParam(name = "status", required = false) String status,
+                          @RequestParam(name = "stage", required = false) String stage,
+                          @RequestParam(name = "form", required = false) String form,
+                          @RequestParam(name = "after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate after,
+                          @RequestParam(name = "before", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate before,
+                          @SortDefault("decimalNumber") Pageable pageable,
+                          Model model) {
+        decimalNumber = "".equals(decimalNumber) ? null : decimalNumber;
+        name = "".equals(name) ? null : name;
+        developer = "".equals(developer) ? null : developer;
+        originalHolder = "".equals(originalHolder) ? null : originalHolder;
+        inventoryNumber = "".equals(inventoryNumber) ? null : inventoryNumber;
+        status = "".equals(status) ? null : status;
+        stage = "".equals(stage) ? null : stage;
+        form = "".equals(form) ? null : form;
+        LocalDate afterFinal = (after == null) ? LocalDate.MIN : after;
+        LocalDate beforeFinal = (before == null) ? LocalDate.MAX : before;
+
+
+        model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("developer", developer);
+        model.addAttribute("originalHolders", companyService.findAll());
+        model.addAttribute("originalHolder", originalHolder);
+        model.addAttribute("status", status);
+        model.addAttribute("stage", stage);
+        model.addAttribute("form", form);
+
+        Document document = new Document();
+        Integer docInventoryNumber = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
+        Status docStatus = status == null ? null : Status.valueOf(status);
+        Stage docStage = stage == null ? null : Stage.valueOf(stage);
+        Form docForm = form == null ? null : Form.valueOf(form);
+        document.setDecimalNumber(decimalNumber);
+        document.setName(name);
+        document.setDeveloper(developerService.findByName(developer));
+        document.setOriginalHolder(companyService.findByName(originalHolder));
+        document.setInventoryNumber(docInventoryNumber);
+        document.setStatus(docStatus);
+        document.setStage(docStage);
+        document.setForm(docForm);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("decimalNumber", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase())
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
+        Example<Document> example = Example.of(document, matcher);
+        Page<Document> documents = documentRepository.findAll(example, pageable);
+        List<Document> collect = documents.get()
+                .filter(doc -> (doc.getReceiptDate().compareTo(afterFinal) >= 0) && (doc.getReceiptDate().compareTo(beforeFinal) <= 0))
+                .collect(Collectors.toList());
+        documents = new PageImpl<>(collect, pageable, pageable.getOffset());
         model.addAttribute("documents", documents);
         return "/documents/list-documents";
     }
