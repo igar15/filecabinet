@@ -179,29 +179,6 @@ public class DocumentController {
         return "/documents/documentToInfo";
     }
 
-    @PostMapping("/showFormForAddChangeNotice")
-    public String showFormForAddChangeNotice(DocumentTo documentTo, Model model) {
-        model.addAttribute("documentTo", documentTo);
-        return "/documents/documentTo-changes-add-form";
-    }
-
-    @PostMapping("/addChangeNotice")
-    public String addChangeNotice(@Valid DocumentTo documentTo, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "/documents/documentTo-changes-add-form";
-        }
-//        documentTo.getChangeNotices().add(documentTo.getTempChangeNoticeName() + " : ch. " + documentTo.getTempChangeNoticeNumber());
-        documentTo.setTempChangeNoticeName(null);
-        documentTo.setTempChangeNoticeNumber(null);
-        return "/documents/documentTo-changes-add-form";
-    }
-
-    @PostMapping("/showFormForAddSubscribers")
-    public String showFormForAddSubscribers(DocumentTo documentTo, Model model) {
-        model.addAttribute("documentTo", documentTo);
-        model.addAttribute("companies", companyService.findAll());
-        return "/documents/documentTo-subscribers-add-form";
-    }
 
     @GetMapping("/showChanges/{id}")
     public String showChanges(@PathVariable("id") int documentId, Model model) {
@@ -209,16 +186,6 @@ public class DocumentController {
         return "/documents/documentTo-changes-list";
     }
 
-//    @PostMapping("/addChange")
-//    public String addChange(@Valid DocumentTo documentTo, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "/documents/documentTo-changes-list";
-//        }
-//        ChangeNotice newChange = changeNoticeService.findByName(documentTo.getTempChangeNoticeName());
-//        documentTo.getChangeNotices().put(Integer.parseInt(documentTo.getTempChangeNoticeNumber()), newChange);
-//        documentService.update(convertFromTo(documentTo));
-//        return "redirect:/documents/showChanges/" + documentTo.getId();
-//    }
 
     @GetMapping("/removeChange/{id}/{changeId}")
     public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeId") int changeId, Model model) {
@@ -341,29 +308,7 @@ public class DocumentController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private Document convertFromTo(DocumentTo documentTo) {
-//        Map<Integer, ChangeNotice> changeNotices = new HashMap<>();
-//        documentTo.getChangeNotices()
-//                .forEach(string -> {
-//                    String[] split = string.split(" : ch\\. ");
-//                    changeNotices.put(Integer.parseInt(split[1]), changeNoticeService.findByName(split[0]));
-//                });
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
                 documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicabilities(), documentTo.getForm(),
                 documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
@@ -373,18 +318,8 @@ public class DocumentController {
 
     private DocumentTo convertToToById(int id) {
         Document found = documentService.findByIdWithChangeNotices(id);
-//        Set<String> changeNoticesInString = found.getChangeNotices().entrySet()
-//                .stream()
-//                .map(entry -> entry.getValue().getName() + " : ch. " + entry.getKey())
-//                .collect(Collectors.toSet());
-//        Set<String> sortedChangeNotices = new TreeSet<>((s1, s2) -> {
-//            String first = s1.split("ch\\. ")[1];
-//            String second = s2.split("ch\\. ")[1];
-//            return first.compareTo(second);
-//        });
         Integer changeNumber = found.getChangeNotices().keySet().stream()
                 .max(Comparator.comparingInt(i -> i)).orElse(null);
-//        sortedChangeNotices.addAll(changeNoticesInString);
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
                 found.getReceiptDate(), found.getStatus(), found.getApplicabilities(), found.getForm(), changeNumber,
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
