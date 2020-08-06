@@ -16,12 +16,16 @@
 <body>
 <div class="container">
     <a th:href="@{'/documents/showDocumentInfo/' + ${id}}">Back to Document info</a>
+
     <br><br>
 
     <h3>Document Directory</h3>
+
     <hr>
 
-    <p class="h4 mb-4">Document external dispatches:</p>
+    <p class="h4 mb-4" >Document external dispatches:</p>
+    <p class="h4 mb-3" th:text="${documentTo.decimalNumber} + ' applicabilities'"></p>
+
 
 
     <div th:if="${externalDispatches == null || externalDispatches.size() == 0}">

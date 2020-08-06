@@ -174,9 +174,13 @@
                     <h6>External dispatches:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showExternalDispatches/' + ${documentTo.id}}">
-                        Show externals
-                    </a>
+                    <form th:action="@{'/documents/showExternalDispatches/' + ${documentTo.id}}" th:object="${documentTo}">
+                        <button type="submit" class="thead-dark">Show externals</button>
+                    </form>
+
+<!--                    <a th:href="@{'/documents/showExternalDispatches/' + ${documentTo.decimalNumber}}">-->
+<!--                        Show externals-->
+<!--                    </a>-->
                 </div>
             </div>
 

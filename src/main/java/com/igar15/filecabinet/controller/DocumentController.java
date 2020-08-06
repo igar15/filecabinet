@@ -243,10 +243,10 @@ public class DocumentController {
     }
 
     @GetMapping("/showExternalDispatches/{id}")
-    public String showExternalDispatches(@PathVariable("id") int id, Model model) {
+    public String showExternalDispatches(@PathVariable("id") int id, Model model, DocumentTo documentTo) {
         List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
         model.addAttribute("externalDispatches", externalDispatches);
-        model.addAttribute("documentId", id);
+        model.addAttribute("documentTo", documentTo);
         return "/documents/document-externals-list";
     }
 
@@ -303,22 +303,36 @@ public class DocumentController {
         return "redirect:/documents/showApplicabilities/" + id;
     }
 
-//    @PostMapping("/addApplicability")
-//    public String addApplicability(@Valid DocumentTo documentTo, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "/documents/document-applicabilities-list";
-//        }
-//        Document newApplicability = documentService.findByDecimalNumber(documentTo.getTempApplicability());
-//        documentTo.getApplicabilities().add(newApplicability);
-//        documentService.update(convertFromTo(documentTo));
-//        return "redirect:/documents/showApplicabilities/" + documentTo.getId();
-//    }
-
-    @GetMapping("/addApplicability/{id}")
+    @PostMapping("/addApplicability/{id}")
     public String addApplicability(@PathVariable("id") int id,
                                    @RequestParam(name = "newApplicability") String newApplicability,
-                                   DocumentTo documentTo,
                                    Model model) {
+        String errorMessage = null;
+        if (newApplicability == null || newApplicability.trim().isEmpty()) {
+            errorMessage = "Must not be empty";
+        }
+        else {
+            try {
+                Document applicability = documentService.findByDecimalNumber(newApplicability);
+                Document document = documentService.findById(id);
+                if (document.getApplicabilities().contains(applicability)) {
+                    errorMessage = "Applicability already added";
+                }
+                else {
+                    document.getApplicabilities().add(applicability);
+                    documentService.update(document);
+                    //Replace that next by adding document to model
+                    DocumentTo documentTo = convertToToById(id);
+                    model.addAttribute("documentTo", documentTo);
+                    return "/documents/document-applicabilities-list";
+                }
+
+            } catch (NotFoundException e) {
+                errorMessage = "Document not found";
+            }
+        }
+        model.addAttribute("errorMessage", errorMessage);
+        DocumentTo documentTo = convertToToById(id);
         model.addAttribute("documentTo", documentTo);
         return "/documents/document-applicabilities-list";
     }

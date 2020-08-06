@@ -83,11 +83,11 @@ public class Document extends AbstractNamedEntity {
     private Map<Integer, ChangeNotice> changeNotices;
 
 //    @Transient
-//    @ManyToMany
-//    @JoinTable(name = "document_external_dispatches",
-//            joinColumns = @JoinColumn(name = "document_id"),
-//            inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
-//    private Set<ExternalDispatch> externalDispatches;
+    @ManyToMany
+    @JoinTable(name = "document_external_dispatches",
+            joinColumns = @JoinColumn(name = "document_id"),
+            inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
+    private Set<ExternalDispatch> externalDispatches;
 //
 //    @Transient
 //    @ManyToMany
@@ -127,7 +127,7 @@ public class Document extends AbstractNamedEntity {
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
-                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices) {
+                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices, Set<ExternalDispatch> externalDispatches) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
@@ -143,6 +143,7 @@ public class Document extends AbstractNamedEntity {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
+        this.externalDispatches = externalDispatches;
     }
 
     public String getDecimalNumber() {
