@@ -90,11 +90,11 @@ public class Document extends AbstractNamedEntity {
     private Set<ExternalDispatch> externalDispatches;
 //
 //    @Transient
-//    @ManyToMany
-//    @JoinTable(name = "document_internal_dispatches",
-//            joinColumns = @JoinColumn(name = "document_id"),
-//            inverseJoinColumns = @JoinColumn(name = "internal_dispatch_id"))
-//    private Set<InternalDispatch> internalDispatches;
+    @ManyToMany
+    @JoinTable(name = "document_internal_dispatches",
+            joinColumns = @JoinColumn(name = "document_id"),
+            inverseJoinColumns = @JoinColumn(name = "internal_dispatch_id"))
+    private Set<InternalDispatch> internalDispatches;
 
 
 
@@ -127,7 +127,8 @@ public class Document extends AbstractNamedEntity {
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
-                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices, Set<ExternalDispatch> externalDispatches) {
+                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
+                    Set<ExternalDispatch> externalDispatches, Set<InternalDispatch> internalDispatches) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
@@ -144,6 +145,7 @@ public class Document extends AbstractNamedEntity {
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
         this.externalDispatches = externalDispatches;
+        this.internalDispatches = internalDispatches;
     }
 
     public String getDecimalNumber() {
@@ -258,21 +260,21 @@ public class Document extends AbstractNamedEntity {
         this.applicabilities = documents;
     }
 
-    //    public Set<ExternalDispatch> getExternalDispatches() {
-//        return externalDispatches;
-//    }
-//
-//    public void setExternalDispatches(Set<ExternalDispatch> externalDispatches) {
-//        this.externalDispatches = externalDispatches;
-//    }
-//
-//    public Set<InternalDispatch> getInternalDispatches() {
-//        return internalDispatches;
-//    }
-//
-//    public void setInternalDispatches(Set<InternalDispatch> internalDispatches) {
-//        this.internalDispatches = internalDispatches;
-//    }
+        public Set<ExternalDispatch> getExternalDispatches() {
+        return externalDispatches;
+    }
+
+    public void setExternalDispatches(Set<ExternalDispatch> externalDispatches) {
+        this.externalDispatches = externalDispatches;
+    }
+
+    public Set<InternalDispatch> getInternalDispatches() {
+        return internalDispatches;
+    }
+
+    public void setInternalDispatches(Set<InternalDispatch> internalDispatches) {
+        this.internalDispatches = internalDispatches;
+    }
 
     @Override
     public String toString() {

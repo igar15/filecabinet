@@ -23,51 +23,45 @@
 
     <hr>
 
-    <p class="h4 mb-4" >Document external dispatches:</p>
-    <p class="h4 mb-3" th:text="${documentTo.decimalNumber} + ' applicabilities'"></p>
+    <p class="h4 mb-4" th:text="${documentTo.decimalNumber} + ' external dispatches'"></p>
 
-
-
-    <div th:if="${externalDispatches == null || externalDispatches.size() == 0}">
+    <div th:if="${documentTo.externalDispatches == null || documentTo.externalDispatches.size() == 0}">
         <h2>No external dispatches</h2>
     </div>
 
-    <div th:if="${externalDispatches != null && externalDispatches.size() != 0}">
+    <div th:if="${documentTo.externalDispatches != null && documentTo.externalDispatches.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-            <tr>
-                <th class="align-middle">Waybill</th>
-                <th class="align-middle">Dispatch date</th>
-                <th class="align-middle">Status</th>
-                <th class="align-middle">Letter outgoing number</th>
-                <th class="align-middle">Company</th>
-                <th class="align-middle">Action</th>
-            </tr>
+                <tr>
+                    <th class="align-middle">Letter outgoing number</th>
+                    <th class="align-middle">Dispatch date</th>
+                    <th class="align-middle">Company</th>
+                    <th class="align-middle">Waybill</th>
+                    <th class="align-middle">Status</th>
+                    <th class="align-middle">Action</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="tempExternal : ${externalDispatches}">
-                <td class="align-middle">
-                    <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}"><span class="text-dark" th:text="${tempExternal.waybill}"/></a>
-                </td>
-                <td class="align-middle" th:text="${tempExternal.dispatchDate}"></td>
-                <td class="align-middle" th:text="${tempExternal.status}"></td>
-                <td class="align-middle" th:text="${tempExternal.letterOutgoingNumber}"></td>
-                <td class="align-middle" th:text="${tempExternal.company.name}"></td>
-                <td class="align-middle">
-                    <a class="btn btn-sm btn-outline-danger"
-                       th:href="@{'/documents/removeExternal/' + ${id} + '/' + ${tempExternal.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
-                </td>
-            </tr>
+                <tr th:each="tempExternal : ${documentTo.externalDispatches}">
+                    <td class="align-middle text-center">
+                        <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}" th:text="${tempExternal.letterOutgoingNumber}"></a>
+                    </td>
+                    <td class="align-middle text-center" th:text="${tempExternal.dispatchDate}"></td>
+                    <td class="align-middle text-center" th:text="${tempExternal.company.name}"></td>
+                    <td class="align-middle text-center" th:text="${tempExternal.waybill}"></td>
+                    <td class="align-middle text-center" th:text="${tempExternal.status}"></td>
+                    <td class="align-middle text-center">
+                        <a class="btn btn-sm btn-outline-danger"
+                           th:href="@{'/documents/removeExternal/' + ${id} + '/' + ${tempExternal.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="text-danger" th:if="${errorMessage != null}">
-        <h5 th:text="${errorMessage}"></h5>
+        <h6 th:text="${errorMessage}"></h6>
     </div>
-
-
-
 </div>
 </body>
 </html>

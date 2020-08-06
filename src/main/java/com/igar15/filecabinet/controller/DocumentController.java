@@ -243,10 +243,10 @@ public class DocumentController {
     }
 
     @GetMapping("/showExternalDispatches/{id}")
-    public String showExternalDispatches(@PathVariable("id") int id, Model model, DocumentTo documentTo) {
-        List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
-        model.addAttribute("externalDispatches", externalDispatches);
-        model.addAttribute("documentTo", documentTo);
+    public String showExternalDispatches(@PathVariable("id") int id, Model model) {
+//        List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
+//        model.addAttribute("externalDispatches", externalDispatches);
+        model.addAttribute("documentTo", convertToToById(id));
         return "/documents/document-externals-list";
     }
 
@@ -254,37 +254,40 @@ public class DocumentController {
     public String removeExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
         ExternalDispatch found = externalDispatchService.findById(externalId);
         if (found.getDocuments().size() == 1) {
-            List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
-            model.addAttribute("externalDispatches", externalDispatches);
-            model.addAttribute("documentId", id);
+            model.addAttribute("documentTo", convertToToById(id));
             String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
             return "/documents/document-externals-list";
         }
-        Document docFound = documentService.findById(id);
-        found.getDocuments().remove(docFound);
+//        Document docFound = documentService.findById(id);
+//        found.getDocuments().remove(docFound);
+        found.setDocuments(found.getDocuments().stream()
+                .filter(document -> document.getId() != id)
+                .collect(Collectors.toSet()));
         externalDispatchService.update(found);
         return "redirect:/documents/showExternalDispatches/" + id;
     }
 
     @GetMapping("/showInternalDispatches/{id}")
     public String showInternalDispatches(@PathVariable("id") int id, Model model) {
-        List<InternalDispatch> internalDispatches = internalDispatchService.findAllByDocumentId(id);
-        model.addAttribute("internalDispatches", internalDispatches);
+//        List<InternalDispatch> internalDispatches = internalDispatchService.findAllByDocumentId(id);
+        model.addAttribute("documentTo", convertToToById(id));
         return "/documents/document-internals-list";
     }
 
     @GetMapping("/removeInternal/{id}/{internalId}")
     public String removeInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
         InternalDispatch found = internalDispatchService.findById(internalId);
-        Document docFound = documentService.findById(id);
-        found.getDocuments().remove(docFound);
-        if (found.getDocuments().isEmpty()) {
-            internalDispatchService.deleteById(internalId);
+        if (found.getDocuments().size() == 1) {
+            model.addAttribute("documentTo", convertToToById(id));
+            String errorMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
+            model.addAttribute("errorMessage", errorMessage);
+            return "/documents/document-internals-list";
         }
-        else {
-            internalDispatchService.update(found);
-        }
+        found.setDocuments(found.getDocuments().stream()
+                .filter(document -> document.getId() != id)
+                .collect(Collectors.toSet()));
+        internalDispatchService.update(found);
         return "redirect:/documents/showInternalDispatches/" + id;
     }
 
@@ -364,7 +367,8 @@ public class DocumentController {
         return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
                 documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicabilities(), documentTo.getForm(),
                 documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
-                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices());
+                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices(),
+                documentTo.getExternalDispatches(), documentTo.getInternalDispatches());
     }
 
     private DocumentTo convertToToById(int id) {
@@ -384,7 +388,7 @@ public class DocumentController {
         return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
                 found.getReceiptDate(), found.getStatus(), found.getApplicabilities(), found.getForm(), changeNumber,
                 found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
-                found.getOriginalHolder(), found.getChangeNotices());
+                found.getOriginalHolder(), found.getChangeNotices(), found.getExternalDispatches(), found.getInternalDispatches());
     }
 
 

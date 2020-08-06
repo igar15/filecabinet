@@ -72,6 +72,12 @@ public class DocumentTo {
     //private Set<String> changeNotices;
     private Map<Integer, ChangeNotice> changeNotices;
 
+    private Set<ExternalDispatch> externalDispatches;
+
+    private Set<InternalDispatch> internalDispatches;
+
+
+
 
 
     public DocumentTo() {
@@ -81,7 +87,7 @@ public class DocumentTo {
     public DocumentTo(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                       Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
                       Integer a4Amount, Developer developer, Company originalHolder,
-                      Map<Integer, ChangeNotice> changeNotices) {
+                      Map<Integer, ChangeNotice> changeNotices, Set<ExternalDispatch> externalDispatches, Set<InternalDispatch> internalDispatches) {
         this.id = id;
         this.name = name;
         this.decimalNumber = decimalNumber;
@@ -98,6 +104,8 @@ public class DocumentTo {
         this.developer = developer;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
+        this.externalDispatches = externalDispatches;
+        this.internalDispatches = internalDispatches;
     }
 
 
@@ -251,5 +259,21 @@ public class DocumentTo {
 
     public void setTempApplicability(String tempApplicability) {
         this.tempApplicability = tempApplicability;
+    }
+
+    public Set<ExternalDispatch> getExternalDispatches() {
+        return externalDispatches;
+    }
+
+    public void setExternalDispatches(Set<ExternalDispatch> externalDispatches) {
+        this.externalDispatches = externalDispatches;
+    }
+
+    public Set<InternalDispatch> getInternalDispatches() {
+        return internalDispatches;
+    }
+
+    public void setInternalDispatches(Set<InternalDispatch> internalDispatches) {
+        this.internalDispatches = internalDispatches;
     }
 }
