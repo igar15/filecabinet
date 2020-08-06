@@ -23,11 +23,11 @@
 
     <hr>
 
-    <p class="h4 mb-4" th:text="${documentTo.decimalNumber} + ' internal dispatches'"></p>
+    <p class="h4 mb-3" th:text="${documentTo.decimalNumber} + ' internal dispatches'"></p>
 
 
     <div th:if="${documentTo.internalDispatches == null || documentTo.internalDispatches.size() == 0}">
-        <h2>No internal dispatches</h2>
+        <h6>No internal dispatches</h6>
     </div>
 
     <div th:if="${documentTo.internalDispatches != null && documentTo.internalDispatches.size() != 0}">

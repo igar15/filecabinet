@@ -10,8 +10,7 @@ import javax.validation.constraints.Size;
 @MappedSuperclass
 public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
-    @NotBlank
-    @Size(min=2, max=100)
+    @NotBlank(message = "document name must not be blank")
     @Column(name = "name")
     private String name;
 

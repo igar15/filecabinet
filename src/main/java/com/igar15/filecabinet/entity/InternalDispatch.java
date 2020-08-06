@@ -132,4 +132,6 @@ public class InternalDispatch extends Dispatch {
     public void setAlbumName(String albumEntry) {
         this.albumName = albumEntry;
     }
+
+
 }

@@ -16,4 +16,5 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
     List<InternalDispatch> findByIsAlbum(boolean isAlbum);
 
+
 }

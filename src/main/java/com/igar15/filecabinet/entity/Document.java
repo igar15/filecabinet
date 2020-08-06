@@ -4,6 +4,7 @@ import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -18,21 +19,21 @@ import java.util.Set;
 @Table(name = "documents")
 public class Document extends AbstractNamedEntity {
 
-    @NotBlank
-    @Size(min = 6, max = 100)
+    @NotBlank(message = "document decimal number must not be blank")
     @Column(name = "decimal_number")
     private String decimalNumber;
 
-    @Min(1)
-    @NotNull
+    @NotNull(message = "document inventory number must not be empty")
+    @Min(value = 1, message = "document inventory number must be greater than 0")
     @Column(name = "inventory_number")
     private Integer inventoryNumber;
 
-    @NotNull
+    @NotNull(message = "document receipt date must not be null")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "receipt_date")
     private LocalDate receiptDate;
 
-    @NotNull
+    @NotNull(message = "document status must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -43,12 +44,12 @@ public class Document extends AbstractNamedEntity {
     inverseJoinColumns = @JoinColumn(name = "outer_id"))
     private Set<Document> applicabilities;
 
-    @NotNull
+    @NotNull(message = "document form must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "form")
     private Form form;
 
-    @Min(1)
+    @Min(value = 1, message = "document change number must be greater than 0")
     @Column(name = "change_number")
     private Integer changeNumber;
 
@@ -56,14 +57,14 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "stage")
     private Stage stage;
 
-    @Min(1)
+    @Min(value = 1, message = "document sheets amount must be greater than 0")
     @Column(name = "sheets_amount")
     private Integer sheetsAmount;
 
     @Column(name = "format")
     private String format;
 
-    @Min(1)
+    @Min(value = 1, message = "document A4 amount must be greater than 0")
     @Column(name = "a4_amount")
     private Integer a4Amount;
 
@@ -71,6 +72,7 @@ public class Document extends AbstractNamedEntity {
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
+    @NotNull(message = "document original holder must not be null")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "original_holder_id")
     private Company originalHolder;
@@ -88,7 +90,7 @@ public class Document extends AbstractNamedEntity {
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
     private Set<ExternalDispatch> externalDispatches;
-//
+
 //    @Transient
     @ManyToMany
     @JoinTable(name = "document_internal_dispatches",

@@ -193,8 +193,8 @@
 
             <div class="row mb-1">
                 <div class="col-sm-4 offset-1 text-right">
-                    <a th:href="@{/documents/showFormForUpdate(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-info">Update</a>
-                    <a th:href="@{/documents/delete(documentId=${documentTo.id})}" class="btn btn-sm btn-outline-danger"
+                    <a th:href="@{'/documents/showFormForUpdate/' + ${documentTo.id}}" class="btn btn-sm btn-outline-info">Update</a>
+                    <a th:href="@{'/documents/delete/' + ${documentTo.id}}" class="btn btn-sm btn-outline-danger"
                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
                 </div>
             </div>

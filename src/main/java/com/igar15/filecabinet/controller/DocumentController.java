@@ -159,23 +159,23 @@ public class DocumentController {
         return "redirect:/documents/showDocumentInfo/" + documentForSaving.getId();
     }
 
-    @GetMapping("/showFormForUpdate")
-    public String showFormForUpdate(@RequestParam("documentId") int id, Model model) {
-        model.addAttribute("documentTo", convertToToById(id));
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable("id") int id, Model model) {
+        model.addAttribute("documentTo", documentService.findById(id));
         model.addAttribute("developers", developerService.findAll());
         model.addAttribute("companies", companyService.findAll());
         return "/documents/documentTo-form";
     }
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam("documentId") int id) {
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
         documentService.deleteById(id);
         return "redirect:/documents/list";
     }
 
-    @GetMapping("/showDocumentInfo/{documentId}")
-    public String showDocumentInfo(@PathVariable("documentId") int id, Model model) {
-        model.addAttribute("documentTo", convertToToById(id));
+    @GetMapping("/showDocumentInfo/{id}")
+    public String showDocumentInfo(@PathVariable("id") int id, Model model) {
+        model.addAttribute("documentTo", documentService.findById(id));
         return "/documents/documentToInfo";
     }
 

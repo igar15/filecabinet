@@ -64,4 +64,5 @@ public class ExternalDispatch extends Dispatch {
     public void setDocuments(Set<Document> documents) {
         this.documents = documents;
     }
+
 }
