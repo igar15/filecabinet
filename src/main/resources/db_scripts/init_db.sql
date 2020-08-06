@@ -118,6 +118,7 @@ create table internal_dispatches (
     foreign key (developer_id) references developers (id) on delete cascade
 );
 create unique index internal_dispatches_stamp_album_name_idx on internal_dispatches (stamp, album_name);
+create unique index internal_dispatches_waybill_dispatch_date_idx on internal_dispatches (waybill, dispatch_date);
 
 create table document_internal_dispatches (
     document_id integer not null,

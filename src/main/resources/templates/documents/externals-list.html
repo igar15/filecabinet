@@ -23,13 +23,13 @@
 
     <hr>
 
-    <p class="h4 mb-3" th:text="${documentTo.decimalNumber} + ' external dispatches'"></p>
+    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' external dispatches'"></p>
 
-    <div th:if="${documentTo.externalDispatches == null || documentTo.externalDispatches.size() == 0}">
+    <div th:if="${document.externalDispatches == null || document.externalDispatches.size() == 0}">
         <h6>No external dispatches</h6>
     </div>
 
-    <div th:if="${documentTo.externalDispatches != null && documentTo.externalDispatches.size() != 0}">
+    <div th:if="${document.externalDispatches != null && document.externalDispatches.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
@@ -42,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="tempExternal : ${documentTo.externalDispatches}">
+                <tr th:each="tempExternal : ${document.externalDispatches}">
                     <td class="align-middle text-center">
                         <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}" th:text="${tempExternal.letterOutgoingNumber}"></a>
                     </td>

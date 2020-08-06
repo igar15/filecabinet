@@ -85,7 +85,7 @@ public class InternalDispatchController {
     @PostMapping("/addDocument")
     public String addDocument(@Valid InternalDispatchTo internalDispatchTo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "/externaldispatches/externalDispatchToInfo";
+            return "/internaldispatches/internalDispatchToInfo";
         }
         Document added = documentService.findByDecimalNumber(internalDispatchTo.getTempDocumentDecimalNumber());
         internalDispatchTo.getDocuments().add(added);

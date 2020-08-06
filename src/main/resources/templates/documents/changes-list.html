@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="container">
-    <a th:href="@{'/documents/showDocumentInfo/' + ${documentTo.id}}">Back to Document info</a>
+    <a th:href="@{'/documents/showDocumentInfo/' + ${document.id}}">Back to Document info</a>
 
     <br><br>
 
@@ -23,14 +23,14 @@
 
     <hr>
 
-    <p class="h4 mb-3" th:text="${documentTo.decimalNumber} + ' change notices'"></p>
+    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' change notices'"></p>
 
 
-    <div th:if="${documentTo.changeNotices == null || documentTo.changeNotices.size() == 0}">
+    <div th:if="${document.changeNotices == null || document.changeNotices.size() == 0}">
         <h6>No changes</h6>
     </div>
 
-    <div th:if="${documentTo.changeNotices != null && documentTo.changeNotices.size() != 0}">
+    <div th:if="${document.changeNotices != null && document.changeNotices.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="entry : ${documentTo.changeNotices.entrySet()}">
+                <tr th:each="entry : ${document.changeNotices.entrySet()}">
                     <td class="align-middle text-center" th:text="${entry.key}"></td>
                     <td class="align-middle text-center">
                         <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${entry.value.id}}" th:text="${entry.value.name}"></a>
@@ -53,7 +53,7 @@
                     <td class="align-middle text-center" th:text="${entry.value.changeCode}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeChange/' + ${documentTo.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/documents/removeChange/' + ${document.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
                     </td>
                 </tr>
             </tbody>

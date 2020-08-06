@@ -2,7 +2,6 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.dto.DocumentTo;
 import com.igar15.filecabinet.entity.*;
-import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
@@ -122,49 +121,38 @@ public class DocumentController {
             documents = new PageImpl<>(collect, pageable, pageable.getOffset());
         }
         model.addAttribute("documents", documents);
-        return "/documents/list-documents";
+        return "/documents/documents-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
-        model.addAttribute("documentTo", new DocumentTo());
+        model.addAttribute("document", new Document());
         model.addAttribute("developers", developerService.findAll());
         model.addAttribute("companies", companyService.findAll());
-        return "/documents/documentTo-form";
+        return "/documents/form";
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("documentTo") DocumentTo documentTo, BindingResult bindingResult, Model model) {
-        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("tempChangeNoticeName"))
-                .collect(Collectors.toList());
-        bindingResult = new BeanPropertyBindingResult(documentTo, "documentTo");
-        for (FieldError fieldError : errorsToKeep) {
-            bindingResult.addError(fieldError);
-        }
-
+    public String save(@Valid @ModelAttribute("document") Document document, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
             model.addAttribute("companies", companyService.findAll());
-            return "/documents/documentTo-form";
+            return "/documents/form";
         }
-
-        Document documentForSaving = convertFromTo(documentTo);
-
-        if (documentForSaving.getId() == null) {
-            documentService.create(documentForSaving);
+        if (document.isNew()) {
+            documentService.create(document);
         } else {
-            documentService.update(documentForSaving);
+            documentService.update(document);
         }
-        return "redirect:/documents/showDocumentInfo/" + documentForSaving.getId();
+        return "redirect:/documents/showDocumentInfo/" + document.getId();
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
-        model.addAttribute("documentTo", documentService.findById(id));
+        model.addAttribute("document", documentService.findById(id));
         model.addAttribute("developers", developerService.findAll());
         model.addAttribute("companies", companyService.findAll());
-        return "/documents/documentTo-form";
+        return "/documents/form";
     }
 
     @GetMapping("/delete/{id}")
@@ -175,59 +163,53 @@ public class DocumentController {
 
     @GetMapping("/showDocumentInfo/{id}")
     public String showDocumentInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("documentTo", documentService.findById(id));
-        return "/documents/documentToInfo";
+        model.addAttribute("document", documentService.findById(id));
+        return "/documents/info";
     }
-
 
     @GetMapping("/showChanges/{id}")
-    public String showChanges(@PathVariable("id") int documentId, Model model) {
-        model.addAttribute("documentTo", convertToToById(documentId));
-        return "/documents/documentTo-changes-list";
+    public String showChanges(@PathVariable("id") int id, Model model) {
+        model.addAttribute("document", documentService.findById(id));
+        return "documents/changes-list";
     }
 
-
     @GetMapping("/removeChange/{id}/{changeId}")
-    public String removeChange(@PathVariable("id") int documentId, @PathVariable("changeId") int changeId, Model model) {
+    public String removeChange(@PathVariable("id") int id, @PathVariable("changeId") int changeId, Model model) {
         ChangeNotice changeNotice = changeNoticeService.findById(changeId);
         if (changeNotice.getDocuments().size() == 1) {
-            model.addAttribute("documentTo", convertToToById(documentId));
+            model.addAttribute("document", documentService.findById(id));
             String errorMessage = "Change notice " + changeNotice.getName() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
-            return "/documents/documentTo-changes-list";
         }
         else {
-            Document updated = documentService.findById(documentId);
-            Optional<Map.Entry<Integer, ChangeNotice>> found = updated.getChangeNotices().entrySet().stream()
+            Document document = documentService.findById(id);
+            Optional<Map.Entry<Integer, ChangeNotice>> found = document.getChangeNotices().entrySet().stream()
                     .filter(entry -> entry.getValue().equals(changeNotice))
                     .findFirst();
             if (found.isPresent()) {
-                updated.getChangeNotices().remove(found.get().getKey());
-                documentService.update(updated);
+                document.getChangeNotices().remove(found.get().getKey());
+                documentService.update(document);
             }
-            return "redirect:/documents/showChanges/" + documentId;
+            model.addAttribute("document", document);
         }
+        return "documents/changes-list";
     }
 
     @GetMapping("/showExternalDispatches/{id}")
     public String showExternalDispatches(@PathVariable("id") int id, Model model) {
-//        List<ExternalDispatch> externalDispatches = externalDispatchService.findAllByDocumentId(id);
-//        model.addAttribute("externalDispatches", externalDispatches);
-        model.addAttribute("documentTo", convertToToById(id));
-        return "/documents/document-externals-list";
+        model.addAttribute("document", documentService.findById(id));
+        return "/documents/externals-list";
     }
 
     @GetMapping("/removeExternal/{id}/{externalId}")
     public String removeExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
         ExternalDispatch found = externalDispatchService.findById(externalId);
         if (found.getDocuments().size() == 1) {
-            model.addAttribute("documentTo", convertToToById(id));
+            model.addAttribute("document", documentService.findById(id));
             String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
-            return "/documents/document-externals-list";
+            return "/documents/externals-list";
         }
-//        Document docFound = documentService.findById(id);
-//        found.getDocuments().remove(docFound);
         found.setDocuments(found.getDocuments().stream()
                 .filter(document -> document.getId() != id)
                 .collect(Collectors.toSet()));
@@ -237,19 +219,18 @@ public class DocumentController {
 
     @GetMapping("/showInternalDispatches/{id}")
     public String showInternalDispatches(@PathVariable("id") int id, Model model) {
-//        List<InternalDispatch> internalDispatches = internalDispatchService.findAllByDocumentId(id);
-        model.addAttribute("documentTo", convertToToById(id));
-        return "/documents/document-internals-list";
+        model.addAttribute("document", documentService.findById(id));
+        return "/documents/internals-list";
     }
 
     @GetMapping("/removeInternal/{id}/{internalId}")
     public String removeInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
         InternalDispatch found = internalDispatchService.findById(internalId);
         if (found.getDocuments().size() == 1) {
-            model.addAttribute("documentTo", convertToToById(id));
+            model.addAttribute("document", documentService.findById(id));
             String errorMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
-            return "/documents/document-internals-list";
+            return "/documents/internals-list";
         }
         found.setDocuments(found.getDocuments().stream()
                 .filter(document -> document.getId() != id)
@@ -260,17 +241,19 @@ public class DocumentController {
 
     @GetMapping("/showApplicabilities/{id}")
     public String showApplicabilities(@PathVariable("id") int id, Model model) {
-        model.addAttribute("documentTo", convertToToById(id));
-        return ("/documents/document-applicabilities-list");
+        model.addAttribute("document", documentService.findById(id));
+        return ("/documents/applicabilities-list");
     }
 
     @GetMapping("/removeApplicability/{id}/{applicabilityId}")
-    public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId) {
-        Document found = documentService.findById(id);
-        Document removeApplicability = documentService.findById(applicabilityId);
-        found.getApplicabilities().remove(removeApplicability);
-        documentService.update(found);
-        return "redirect:/documents/showApplicabilities/" + id;
+    public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId, Model model) {
+        Document document = documentService.findById(id);
+        document.setApplicabilities(document.getApplicabilities().stream()
+                .filter(doc -> doc.getId() != applicabilityId)
+                .collect(Collectors.toSet()));
+        documentService.update(document);
+        model.addAttribute("document", document);
+        return "/documents/applicabilities-list";
     }
 
     @PostMapping("/addApplicability/{id}")
@@ -278,23 +261,21 @@ public class DocumentController {
                                    @RequestParam(name = "newApplicability") String newApplicability,
                                    Model model) {
         String errorMessage = null;
+        Document document = documentService.findById(id);
         if (newApplicability == null || newApplicability.trim().isEmpty()) {
-            errorMessage = "Must not be empty";
+            errorMessage = "Decimal number must not be empty";
         }
         else {
             try {
                 Document applicability = documentService.findByDecimalNumber(newApplicability);
-                Document document = documentService.findById(id);
                 if (document.getApplicabilities().contains(applicability)) {
                     errorMessage = "Applicability already added";
                 }
                 else {
                     document.getApplicabilities().add(applicability);
                     documentService.update(document);
-                    //Replace that next by adding document to model
-                    DocumentTo documentTo = convertToToById(id);
-                    model.addAttribute("documentTo", documentTo);
-                    return "/documents/document-applicabilities-list";
+                    model.addAttribute("document", document);
+                    return "/documents/applicabilities-list";
                 }
 
             } catch (NotFoundException e) {
@@ -302,30 +283,9 @@ public class DocumentController {
             }
         }
         model.addAttribute("errorMessage", errorMessage);
-        DocumentTo documentTo = convertToToById(id);
-        model.addAttribute("documentTo", documentTo);
-        return "/documents/document-applicabilities-list";
+        model.addAttribute("document", document);
+        return "/documents/applicabilities-list";
     }
-
-
-    private Document convertFromTo(DocumentTo documentTo) {
-        return new Document(documentTo.getId(), documentTo.getName(), documentTo.getDecimalNumber(), documentTo.getInventoryNumber(),
-                documentTo.getReceiptDate(), documentTo.getStatus(), documentTo.getApplicabilities(), documentTo.getForm(),
-                documentTo.getChangeNumber(), documentTo.getStage(), documentTo.getSheetsAmount(), documentTo.getFormat(),
-                documentTo.getA4Amount(), documentTo.getDeveloper(), documentTo.getOriginalHolder(), documentTo.getChangeNotices(),
-                documentTo.getExternalDispatches(), documentTo.getInternalDispatches());
-    }
-
-    private DocumentTo convertToToById(int id) {
-        Document found = documentService.findByIdWithChangeNotices(id);
-        Integer changeNumber = found.getChangeNotices().keySet().stream()
-                .max(Comparator.comparingInt(i -> i)).orElse(null);
-        return new DocumentTo(found.getId(), found.getName(), found.getDecimalNumber(), found.getInventoryNumber(),
-                found.getReceiptDate(), found.getStatus(), found.getApplicabilities(), found.getForm(), changeNumber,
-                found.getStage(), found.getSheetsAmount(), found.getFormat(), found.getA4Amount(), found.getDeveloper(),
-                found.getOriginalHolder(), found.getChangeNotices(), found.getExternalDispatches(), found.getInternalDispatches());
-    }
-
 
     private boolean checkParamsOnNull(String... params) {
         return Arrays.stream(params)

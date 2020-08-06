@@ -29,7 +29,7 @@
 
         <p class="h4 mb-3 offset-sm-3">Document Card</p>
 
-        <form class="form-horizontal" th:object="${documentTo}" th:action="@{/documents/save}" method="post">
+        <form class="form-horizontal" th:object="${document}" th:action="@{/documents/save}" method="post">
 
             <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
                 <p th:text="'Please correct values in error below'">Error Message</p>
