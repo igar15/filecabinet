@@ -60,11 +60,11 @@ class ExternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(EXTERNAL_DISPATCHES, externalDispatchService.findAll());
     }
 
-    @Test
-    void findAllByDocumentId() {
-        List<ExternalDispatch> allByDocumentId = externalDispatchService.findAllByDocumentId(DocumentTestData.DOCUMENT1_ID);
-        Assertions.assertEquals(List.of(EXTERNAL_DISPATCH1, EXTERNAL_DISPATCH2), allByDocumentId);
-    }
+//    @Test
+//    void findAllByDocumentId() {
+//        List<ExternalDispatch> allByDocumentId = externalDispatchService.findAllByDocumentId(DocumentTestData.DOCUMENT1_ID);
+//        Assertions.assertEquals(List.of(EXTERNAL_DISPATCH1, EXTERNAL_DISPATCH2), allByDocumentId);
+//    }
 
     @Test
     void update() {

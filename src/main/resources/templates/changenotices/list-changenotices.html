@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 
@@ -15,20 +15,70 @@
 </head>
 <body>
     <div class="container">
+
         <a th:href="@{/}">Back to Home page</a>
+
         <br><br>
+
         <h3>Change notices List</h3>
+
         <hr>
+
+        <div class="container-fluid p-3 my-3 bg-dark text-white">
+            <form action="#" th:action="@{/changenotices/list}" method="get">
+                <div class="row mb-3">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" th:name="name" th:value="${param.name}" placeholder="Name">
+                    </div>
+                    <div class="col-sm-3 offset-3">
+                        <select class="form-control selectpicker" name="developer">
+                            <option value="">Developer (not selected)</option>
+                            <option th:each="drop : ${developers}"
+                                    th:value="${drop.name}"
+                                    th:text="${drop.name}"
+                                    th:selected="${drop.name == developer}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 offset-2">
+                        <input type="text" class="form-control" th:name="changeCode" th:value="${param.changeCode}" placeholder="Change code">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-info">Search</button>
+                        <a th:href="@{/documents/list}" class="btn btn-danger">Clear filters</a>
+                    </div>
+                    <div class="col-sm-1">
+                        <div th:text="'I. Date (After):'" class="h6 thead-dark align-middle text-center"></div>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" th:name="after" th:value="${param.after}">
+                    </div>
+                    <div class="col-sm-1">
+                        <div th:text="'I. Date (Before):'" class="h6 thead-dark align-middle text-center"></div>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" th:name="before" th:value="${param.before}">
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+
+        <br><br>
 
         <a th:href="@{/changenotices/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Change notice</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th>Name</th>
-                    <th>Issue date</th>
-                    <th>Change code</th>
-                    <th>Developer</th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="issueDate">Issue date</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="changeCode">Change code</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="developer">Developer</a></th>
                     <th>Show notice</th>
                 </tr>
             </thead>
@@ -36,17 +86,41 @@
             <tbody>
                 <tr th:each="tempChangeNotice : ${changeNotices}">
                     <td class="align-middle text-center">
-                        <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${tempChangeNotice.id}}"><span class="text-dark" th:text="${tempChangeNotice.name}"/></a>
+                        <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${tempChangeNotice.id}}" th:text="${tempChangeNotice.name}"></a>
                     </td>
                     <td class="align-middle text-center" th:text="${tempChangeNotice.issueDate}"></td>
                     <td class="align-middle text-center" th:text="${tempChangeNotice.changeCode}"></td>
-                    <td class="align-middle text-center" th:text="${tempChangeNotice.developer == null} ? '' : ${tempChangeNotice.developer.name}"></td>
+                    <td class="align-middle text-center">
+                        <a th:if="${tempChangeNotice.developer != null}" th:href="@{'/developers/showDeveloperInfo/' + ${tempChangeNotice.developer.id}}" th:text="${tempChangeNotice.developer.name}"></a>
+                    </td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                Show <span sd:page-size-selector="javascript"></span> entries
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div sd:pagination-summary="">info</div>
+            </div>
+            <div class="col-sm-6">
+                <nav class="pull-right">
+                    <ul class="pagination" sd:pagination-split="5" sd:pagination="full">
+                        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

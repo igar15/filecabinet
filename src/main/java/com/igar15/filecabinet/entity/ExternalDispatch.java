@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -21,11 +22,20 @@ public class ExternalDispatch extends Dispatch {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @Transient
     @ManyToMany
     @JoinTable(name = "document_external_dispatches",
             joinColumns = @JoinColumn(name = "external_dispatch_id"),
             inverseJoinColumns = @JoinColumn(name = "document_id"))
-    private Set<Document> documents;
+    private Set<Document> documentsSet;
+
+
+    @ElementCollection
+    @CollectionTable(name = "document_external_dispatches",
+        joinColumns = @JoinColumn(name = "external_dispatch_id"))
+    @MapKeyJoinColumn(name = "document_id")
+    @Column(name = "is_active")
+    private Map<Document, Boolean> documents;
 
 
 
@@ -33,13 +43,25 @@ public class ExternalDispatch extends Dispatch {
 
     }
 
+//    public ExternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark, String letterOutgoingNumber,
+//                            Company company, Set<Document> documents) {
+//        super(id, waybill, dispatchDate, status, remark);
+//        this.letterOutgoingNumber = letterOutgoingNumber;
+//        this.company = company;
+//        this.documentsSet = documents;
+//    }
+
     public ExternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark, String letterOutgoingNumber,
-                            Company company, Set<Document> documents) {
+                            Company company, Map<Document, Boolean> documents) {
         super(id, waybill, dispatchDate, status, remark);
         this.letterOutgoingNumber = letterOutgoingNumber;
         this.company = company;
         this.documents = documents;
     }
+
+
+
+
 
     public String getLetterOutgoingNumber() {
         return letterOutgoingNumber;
@@ -57,12 +79,19 @@ public class ExternalDispatch extends Dispatch {
         this.company = company;
     }
 
-    public Set<Document> getDocuments() {
+    public Set<Document> getDocumentsSet() {
+        return documentsSet;
+    }
+
+    public void setDocumentsSet(Set<Document> documentsSet) {
+        this.documentsSet = documentsSet;
+    }
+
+    public Map<Document, Boolean> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Set<Document> documents) {
+    public void setDocuments(Map<Document, Boolean> documents) {
         this.documents = documents;
     }
-
 }

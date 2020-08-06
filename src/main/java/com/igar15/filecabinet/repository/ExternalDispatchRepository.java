@@ -13,8 +13,10 @@ public interface ExternalDispatchRepository extends JpaRepository<ExternalDispat
 //    @Query("select ex from ExternalDispatch ex join ex.documents d where d.id = :id")
 //    List<ExternalDispatch> findAllByDocumentId(@Param("id") int documentId);
 
-    List<ExternalDispatch> findByDocuments_Id(int documentId);
-
-    List<ExternalDispatch> findByDocuments_Id(int documentId, Sort sort);
+//    List<ExternalDispatch> findByDocuments_Id(int documentId);
+//
+//    List<ExternalDispatch> findByDocuments_Id(int documentId, Sort sort);
+//
+//    List<ExternalDispatch>
 
 }

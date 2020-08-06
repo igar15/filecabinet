@@ -97,6 +97,7 @@ create unique index external_dispatches_waybill_dispatch_date_outgoing_number_id
 create table document_external_dispatches (
     document_id integer not null,
     external_dispatch_id integer not null,
+    is_active boolean not null,
     primary key (document_id, external_dispatch_id),
     foreign key (document_id) references documents(id) on delete cascade,
     foreign key (external_dispatch_id) references external_dispatches (id)

@@ -1,6 +1,5 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.dto.DocumentTo;
 import com.igar15.filecabinet.entity.*;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
@@ -14,9 +13,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -204,13 +201,13 @@ public class DocumentController {
     @GetMapping("/removeExternal/{id}/{externalId}")
     public String removeExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
         ExternalDispatch found = externalDispatchService.findById(externalId);
-        if (found.getDocuments().size() == 1) {
+        if (found.getDocumentsSet().size() == 1) {
             model.addAttribute("document", documentService.findById(id));
             String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
             return "/documents/externals-list";
         }
-        found.setDocuments(found.getDocuments().stream()
+        found.setDocumentsSet(found.getDocumentsSet().stream()
                 .filter(document -> document.getId() != id)
                 .collect(Collectors.toSet()));
         externalDispatchService.update(found);

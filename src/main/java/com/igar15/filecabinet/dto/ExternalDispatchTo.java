@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 public class ExternalDispatchTo {
@@ -37,7 +38,7 @@ public class ExternalDispatchTo {
     @DecNumValid
     private String tempDocumentDecimalNumber;
 
-    private Set<Document> documents;
+    private Map<Document, Boolean> documents;
 
 
 
@@ -47,7 +48,7 @@ public class ExternalDispatchTo {
     }
 
     public ExternalDispatchTo(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
-                              String letterOutgoingNumber,Company company, Set<Document> documents) {
+                              String letterOutgoingNumber,Company company, Map<Document, Boolean> documents) {
         this.id = id;
         this.waybill = waybill;
         this.dispatchDate = dispatchDate;
@@ -122,11 +123,11 @@ public class ExternalDispatchTo {
         this.tempDocumentDecimalNumber = tempDocumentDecimalNumber;
     }
 
-    public Set<Document> getDocuments() {
+    public Map<Document, Boolean> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Set<Document> documents) {
+    public void setDocuments(Map<Document, Boolean> documents) {
         this.documents = documents;
     }
 }

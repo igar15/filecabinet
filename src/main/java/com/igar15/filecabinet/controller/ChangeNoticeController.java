@@ -4,11 +4,15 @@ import com.igar15.filecabinet.dto.ChangeNoticeTo;
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Developer;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.ControllersHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -40,11 +44,15 @@ public class ChangeNoticeController {
     private DocumentService documentService;
 
     @Autowired
+    private ChangeNoticeRepository changeNoticeRepository;
+
+    @Autowired
     ControllersHelperUtil controllersHelperUtil;
 
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("changeNotices", changeNoticeService.findAll());
+    public String showAll(@SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("changeNotices", changeNoticeRepository.findAll(pageable));
         return "/changenotices/list-changenotices";
     }
 

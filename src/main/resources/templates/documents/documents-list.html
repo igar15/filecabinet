@@ -127,12 +127,16 @@
             <tbody>
                 <tr th:each="tempDocument : ${documents}">
                     <td class="align-middle">
-                        <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.id}}"><span class="text-dark" th:text="${tempDocument.decimalNumber}"/></a>
+                        <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.id}}" th:text="${tempDocument.decimalNumber}"></a>
                     </td>
                     <td class="align-middle" th:text="${tempDocument.name}"></td>
-                    <td class="align-middle text-center" th:text="${tempDocument.developer == null} ? '' : ${tempDocument.developer.name}"></td>
+                    <td class="align-middle text-center">
+                        <a th:if="${tempDocument.developer != null}" th:href="@{'/developers/showDeveloperInfo/' + ${tempDocument.developer.id}}" th:text="${tempDocument.developer.name}"></a>
+                    </td>
                     <td class="align-middle text-center" th:text="${tempDocument.status.name}"></td>
-                    <td class="align-middle text-center" th:text="${tempDocument.originalHolder == null} ? '' : ${tempDocument.originalHolder.name}"></td>
+                    <td class="align-middle text-center">
+                        <a th:if="${tempDocument.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempDocument.originalHolder.id}}" th:text="${tempDocument.originalHolder.name}"></a>
+                    </td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
                     </td>

@@ -33,10 +33,10 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
         return externalDispatchRepository.findAll(Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
-    @Override
-    public List<ExternalDispatch> findAllByDocumentId(int documentId) {
-        return externalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
-    }
+//    @Override
+//    public List<ExternalDispatch> findAllByDocumentId(int documentId) {
+//        return externalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
+//    }
 
     @Override
     public void update(ExternalDispatch externalDispatch) {

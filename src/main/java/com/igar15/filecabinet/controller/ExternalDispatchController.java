@@ -86,7 +86,7 @@ public class ExternalDispatchController {
             return "/externaldispatches/externalDispatchToInfo";
         }
         Document added = documentService.findByDecimalNumber(externalDispatchTo.getTempDocumentDecimalNumber());
-        externalDispatchTo.getDocuments().add(added);
+        externalDispatchTo.getDocuments().put(added, true);
         if (externalDispatchTo.getId() == null) {
             ExternalDispatch newExternalDispatch = externalDispatchService.create(convertFromTo(externalDispatchTo));
             externalDispatchTo.setId(newExternalDispatch.getId());
@@ -101,13 +101,13 @@ public class ExternalDispatchController {
     public String removeDoc(@PathVariable("id") int id, @PathVariable("decimalNumber") String decimalNumber, Model model) {
         Document removed = documentService.findByDecimalNumber(decimalNumber);
         ExternalDispatch found = externalDispatchService.findById(id);
-        if (found.getDocuments().size() == 1) {
+        if (found.getDocumentsSet().size() == 1) {
             model.addAttribute("externalDispatchTo", convertToToById(id));
             String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
             return "/externaldispatches/externalDispatchToInfo";
         }
-        found.getDocuments().remove(removed);
+        found.getDocumentsSet().remove(removed);
         externalDispatchService.update(found);
         return "redirect:/externaldispatches/showExternalDispatchInfo/" + id;
     }
