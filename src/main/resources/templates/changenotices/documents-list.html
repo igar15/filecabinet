@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 
-    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNoticeTo.id}}">Back to Change notice info</a>
+    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNotice.id}}">Back to Change notice info</a>
 
     <br><br>
 
@@ -24,7 +24,7 @@
 
     <hr>
 
-    <form th:action="@{'/changenotices/addDoc/' + ${id}}" method="post">
+    <form th:action="@{'/changenotices/addDoc/' +  ${changeNotice.id}}" method="post">
         <div class="row mb-1">
             <div class="col-sm-4">
                 <input type="text" th:class="${docErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${docErrorMessage != null || numberErrorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
@@ -50,13 +50,13 @@
 
     <br>
 
-    <p class="h4 mb-4" th:text="${changeNoticeTo.name} + ' documents'"></p>
+    <p class="h4 mb-4" th:text="${changeNotice.name} + ' documents'"></p>
 
-    <div th:if="${changeNoticeTo.documents == null || changeNoticeTo.documents.size() == 0}">
+    <div th:if="${changeNotice.documents == null || changeNotice.documents.size() == 0}">
         <h6>No documents</h6>
     </div>
 
-    <div th:if="${changeNoticeTo.documents != null && changeNoticeTo.documents.size() != 0}">
+    <div th:if="${changeNotice.documents != null && changeNotice.documents.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <th class="align-middle">Decimal number</th>
@@ -66,14 +66,14 @@
             <th class="align-middle">Action</th>
             </thead>
             <tbody>
-            <tr th:each="entry : ${changeNoticeTo.documents.entrySet()}">
+            <tr th:each="entry : ${changeNotice.documents.entrySet()}">
                 <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
                 <td class="align-middle" th:text="${entry.key.name}"></td>
                 <td class="align-middle text-center" th:text="${entry.value}"></td>
                 <td class="align-middle text-center" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
                 <td class="align-middle text-center">
                     <a class="btn btn-sm btn-outline-danger"
-                       th:href="@{'/changenotices/removeDoc/' + ${changeNoticeTo.id} + '/' + ${entry.key.decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                       th:href="@{'/changenotices/removeDoc/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
                 </td>
             </tr>
             </tbody>

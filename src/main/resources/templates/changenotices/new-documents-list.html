@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Change documents list</title>
+</head>
+<body>
+<div class="container">
+
+<!--    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNotice.id}}">Back to Change notice info</a>-->
+
+    <br><br>
+
+    <h3>Change notice Directory</h3>
+
+    <hr>
+
+    <form th:action="@{/changenotices/addDocForNew/}" th:object="${changeNotice}" method="post">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{issueDate}">
+        <input type="hidden" th:field="*{changeCode}">
+        <input type="hidden" th:field="*{developer}">
+
+        <div class="row mb-1">
+            <div class="col-sm-4">
+                <input type="text" th:class="${docErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${docErrorMessage != null || numberErrorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
+                <span class="help-block" th:if="${docErrorMessage != null}">
+                    <ul>
+                        <li class="text-danger" th:text="${docErrorMessage}"/>
+                    </ul>
+                </span>
+            </div>
+            <div class="col-sm-4">
+                <input type="number" th:class="${numberErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocumentChangeNumber" th:value="${numberErrorMessage != null || docErrorMessage != null} ? ${param.newDocumentChangeNumber} : ''" placeholder="Change number"/>
+                <span class="help-block" th:if="${numberErrorMessage != null}">
+                    <ul>
+                        <li class="text-danger" th:text="${numberErrorMessage}"/>
+                    </ul>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary">Add document</button>
+            </div>
+        </div>
+    </form>
+
+    <br>
+
+    <p class="h4 mb-4" th:text="${changeNotice.name} + ' documents'"></p>
+
+    <div th:if="${changeNotice.documents == null || changeNotice.documents.size() == 0}">
+        <h6>No documents</h6>
+    </div>
+
+    <div th:if="${changeNotice.documents != null && changeNotice.documents.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <th class="align-middle">Decimal number</th>
+            <th class="align-middle">Name</th>
+            <th class="align-middle">Change number</th>
+            <th class="align-middle">Developer</th>
+            <th class="align-middle">Action</th>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${changeNotice.documents.entrySet()}">
+                <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
+                <td class="align-middle" th:text="${entry.key.name}"></td>
+                <td class="align-middle text-center" th:text="${entry.value}"></td>
+                <td class="align-middle text-center" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
+                <td class="align-middle text-center">
+                    <a class="btn btn-sm btn-outline-danger"
+                       th:href="@{'/changenotices/removeDoc/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-danger" th:if="${errorMessage != null}">
+        <h5 th:text="${errorMessage}"></h5>
+    </div>
+</div>
+</body>
+</html>

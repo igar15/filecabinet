@@ -1,6 +1,8 @@
 package com.igar15.filecabinet.entity;
 
 import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,11 +13,13 @@ import java.util.Map;
 @Table(name="change_notices")
 public class ChangeNotice extends AbstractNamedEntity {
 
+    @NotNull(message = "Change code must not be empty")
+    @Range(min = 1, max = 18, message = "Change code must be between 1 and 18")
     @Column(name = "change_code")
-    @NotNull
     private Integer changeCode;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "issue_date")
     private LocalDate issueDate;
 

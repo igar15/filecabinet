@@ -11,14 +11,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class MapDocumentIntegerFormatter implements Formatter<TreeMap<Document, Integer>> {
+public class MapDocumentIntegerFormatter implements Formatter<Map<Document, Integer>> {
 
     @Autowired
     private DocumentService documentService;
 
     @Override
-    public TreeMap<Document, Integer> parse(String s, Locale locale) throws ParseException {
-        TreeMap<Document, Integer> resultMap = new TreeMap<>(Comparator.comparing(Document::getDecimalNumber));
+    public Map<Document, Integer> parse(String s, Locale locale) throws ParseException {
+        Map<Document, Integer> resultMap = new HashMap<>();
 
         if (s.equals("{}")) {
             return resultMap;
@@ -33,7 +33,7 @@ public class MapDocumentIntegerFormatter implements Formatter<TreeMap<Document, 
     }
 
     @Override
-    public String print(TreeMap<Document, Integer> documentIntegerMap, Locale locale) {
+    public String print(Map<Document, Integer> documentIntegerMap, Locale locale) {
         String mapAsString = documentIntegerMap.keySet().stream()
                 .map(key -> key + "=" + documentIntegerMap.get(key))
                 .collect(Collectors.joining(", ", "{", "}"));

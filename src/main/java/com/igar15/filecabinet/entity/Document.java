@@ -84,14 +84,12 @@ public class Document extends AbstractNamedEntity {
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
 
-//    @Transient
     @ManyToMany
     @JoinTable(name = "document_external_dispatches",
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
     private Set<ExternalDispatch> externalDispatches;
 
-//    @Transient
     @ManyToMany
     @JoinTable(name = "document_internal_dispatches",
             joinColumns = @JoinColumn(name = "document_id"),

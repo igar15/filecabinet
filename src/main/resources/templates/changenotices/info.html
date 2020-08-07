@@ -24,9 +24,9 @@
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${changeNoticeTo.name} + ' information'"></p>
+        <p class="h4 mb-4" th:text="${changeNotice.name} + ' information'"></p>
 
-        <div th:object="${changeNoticeTo}">
+        <div th:object="${changeNotice}">
 
             <div class="row">
                 <div class="col-sm-2 border">
@@ -69,14 +69,14 @@
                     <h6>Documents:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNoticeTo.id}}">Show documents</a>
+                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}">Show documents</a>
                 </div>
             </div>
 
             <div class="row mb-1">
                 <div class="col-sm-4 offset-1 text-right">
-                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNoticeTo.id}}" class="btn btn-sm btn-outline-info">Update</a>
-                    <a th:href="@{'/changenotices/delete/' + ${changeNoticeTo.id}}" class="btn btn-sm btn-outline-danger"
+                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-info">Update</a>
+                    <a th:href="@{'/changenotices/delete/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-danger"
                        onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
                 </div>
             </div>
