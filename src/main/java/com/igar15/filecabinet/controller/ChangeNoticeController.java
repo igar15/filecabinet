@@ -99,8 +99,6 @@ public class ChangeNoticeController {
                 changeNotices = new PageImpl<>(collect, pageable, pageable.getOffset());
             }
         }
-
-
         model.addAttribute("changeNotices", changeNotices);
         return "/changenotices/list-changenotices";
     }
@@ -121,13 +119,6 @@ public class ChangeNoticeController {
 
     @PostMapping("/save")
     public String save(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult, Model model) {
-        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("tempDocumentDecimalNumber") && !fer.getField().equals("tempDocumentChangeNumber"))
-                .collect(Collectors.toList());
-        bindingResult = new BeanPropertyBindingResult(changeNoticeTo, "changeNoticeTo");
-        for (FieldError fieldError : errorsToKeep) {
-            bindingResult.addError(fieldError);
-        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
             //changeNoticeTo.setDocuments(new TreeMap<>());
@@ -164,26 +155,60 @@ public class ChangeNoticeController {
         return "/changenotices/changeNoticeTo-docs-list";
     }
 
-    @PostMapping("/addDoc")
-    public String addDoc(@Valid ChangeNoticeTo changeNoticeTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/changenotices/changeNoticeTo-docs-list";
-        }
-        Document newDocument = documentService.findByDecimalNumber(changeNoticeTo.getTempDocumentDecimalNumber());
-        if (changeNoticeTo.getDocuments() == null) {
-            changeNoticeTo.setDocuments(new TreeMap<>(Comparator.comparing(Document::getDecimalNumber)));
-        }
-        changeNoticeTo.getDocuments().put(newDocument, Integer.parseInt(changeNoticeTo.getTempDocumentChangeNumber()));
+    @PostMapping("/addDoc/{id}")
+    public String addDoc(@PathVariable("id") int id,
+                         @RequestParam(value = "newDocument") String newDocument,
+                         @RequestParam(value = "newDocumentChangeNumber") String newDocumentChangeNumber,
+                         Model model) {
 
-        if (changeNoticeTo.getId() == null) {
-            ChangeNotice newChangeNotice = changeNoticeService.create(convertFromTo(changeNoticeTo));
-            changeNoticeTo.setId(newChangeNotice.getId());
+        String docErrorMessage = null;
+        String numberErrorMessage = null;
+
+        ChangeNoticeTo changeNoticeTo = convertToToById(id);
+        if (newDocument == null || newDocument.trim().isEmpty()) {
+            docErrorMessage = "Decimal number must not be empty";
+            if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+                numberErrorMessage = "Change number must not be empty";
+            }
+        }
+        else if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+            numberErrorMessage = "Change number must not be empty";
+            if (newDocument == null || newDocument.trim().isEmpty()) {
+                docErrorMessage = "Decimal number must not be empty";
+            }
         }
         else {
-            changeNoticeService.update(convertFromTo(changeNoticeTo));
-
+            Document document = documentService.findByDecimalNumber(newDocument);
+            if (document == null) {
+                docErrorMessage = "Document does not exist";
+            }
+            else if (changeNoticeTo.getDocuments().containsKey(document)) {
+                docErrorMessage = "This change notice already has this document";
+            }
+            else {
+                Integer changeNumber = null;
+                try {
+                    changeNumber = Integer.valueOf(newDocumentChangeNumber);
+                    if (changeNumber < 1) {
+                        numberErrorMessage = "Change number must be greater than 0";
+                    }
+                    else if (document.getChangeNotices().containsKey(changeNumber)){
+                        numberErrorMessage = "Document already has this change number";
+                    }
+                    else {
+                        changeNoticeTo.getDocuments().put(document, changeNumber);
+                        changeNoticeService.update(convertFromTo(changeNoticeTo));
+                    }
+                } catch (NumberFormatException e) {
+                    numberErrorMessage = "Invalid change number";
+                }
+            }
         }
-        return "redirect:/changenotices/showDocuments/" + changeNoticeTo.getId();
+
+        model.addAttribute("changeNoticeTo", changeNoticeTo);
+        model.addAttribute("docErrorMessage", docErrorMessage);
+        model.addAttribute("numberErrorMessage", numberErrorMessage);
+        return "/changenotices/changeNoticeTo-docs-list";
     }
 
     @GetMapping("/removeDoc/{id}/{decimalNumber}")

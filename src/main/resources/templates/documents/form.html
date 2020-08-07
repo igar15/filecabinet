@@ -24,8 +24,8 @@
         <br><br>
 
         <h3>Document Directory</h3>
-        <hr>
 
+        <hr>
 
         <p class="h4 mb-3 offset-sm-3">Document Card</p>
 
@@ -74,7 +74,7 @@
                     <h6>Inventory number:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Inventory number'"/>
+                    <input type="number" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Inventory number'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('inventoryNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('inventoryNumber')}" th:text="${err}"/>

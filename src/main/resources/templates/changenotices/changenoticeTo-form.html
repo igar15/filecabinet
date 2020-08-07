@@ -24,22 +24,26 @@
         <br><br>
 
         <h3>Change notice Directory</h3>
+
         <hr>
 
-        <p class="h4 mb-4">Save Change notice</p>
+        <p class="h4 mb-3 offset-sm-3">Change notice Card</p>
 
-        <form class="form-horizontal" th:action="@{/changenotices/save}" th:object="${changeNoticeTo}" method="post">
-            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        <form class="form-horizontal" th:object="${changeNoticeTo}" th:action="@{/changenotices/save}" method="post">
+
+            <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
                 <p th:text="'Please correct values in error below'">Error Message</p>
             </div>
 
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{documents}">
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Name:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{name}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Name:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Name'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('name')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
@@ -48,10 +52,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Change code:</label>
-                <div class="col-sm-10">
-                    <input type="text" th:class="${#fields.hasErrors('changeCode')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{changeCode}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Change code:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" th:field="*{changeCode}" th:class="${#fields.hasErrors('changeCode')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Change code'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('changeCode')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('changeCode')}" th:text="${err}"/>
@@ -60,10 +66,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Issue date:</label>
-                <div class="col-sm-10">
-                    <input type="date" th:class="${#fields.hasErrors('issueDate')} ? 'form-control is-invalid' : 'form-control'"  th:field="*{issueDate}"/>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Issue date:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="date" th:field="*{issueDate}" th:class="${#fields.hasErrors('issueDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Issue date'"/>
                     <span class="help-block" th:if="${#fields.hasErrors('issueDate')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('issueDate')}" th:text="${err}"/>
@@ -72,26 +80,31 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Developer:</label>
-                <div class="col-sm-10">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <p th:each="radioValue : ${developers}">
-                            <input type="radio" th:field="*{developer}" th:value="${radioValue.name}"/>
-                            <label class="btn btn-secondary" th:for="${#ids.prev('developer')}" th:text="${radioValue.name}"></label>
-                        </p>
-                        <span class="help-block" th:if="${#fields.hasErrors('developer')}">
-                            <ul>
-                                <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
-                            </ul>
-                        </span>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Developer:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <select class="form-control selectpicker" th:field="*{developer}">
+                        <option value="">Nothing selected</option>
+                        <option th:each="dropValue : ${developers}"
+                                th:value="${dropValue.name}"
+                                th:text="${dropValue.name}">
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('developer')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
+                        </ul>
+                    </span>
                 </div>
             </div>
 
             <div class="row">
-                <button type="submit" class="btn btn-info col-2 offset-1">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
             </div>
+
+            <br><br>
 
         </form>
     </div>

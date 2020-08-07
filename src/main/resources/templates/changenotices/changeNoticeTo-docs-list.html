@@ -17,49 +17,43 @@
 <div class="container">
 
     <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNoticeTo.id}}">Back to Change notice info</a>
+
     <br><br>
 
     <h3>Change notice Directory</h3>
+
     <hr>
 
-    <p class="h4 mb-4">Change notice documents:</p>
-
-    <form th:action="@{/changenotices/addDoc}" th:object="${changeNoticeTo}" method="post">
-<!--        <h5 th:text="${changeNoticeTo.name}"></h5>-->
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{name}">
-        <input type="hidden" th:field="*{changeCode}">
-        <input type="hidden" th:field="*{issueDate}">
-        <input type="hidden" th:field="*{developer}">
-        <input type="hidden" th:field="*{documents}">
-
-        <div class="form-group">
-            <div class="col-sm-5">
-                <input type="text" placeholder="Decimal number" th:class="${#fields.hasErrors('tempDocumentDecimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempDocumentDecimalNumber}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('tempDocumentDecimalNumber')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('tempDocumentDecimalNumber')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+    <form th:action="@{'/changenotices/addDoc/' + ${id}}" method="post">
+        <div class="row mb-1">
+            <div class="col-sm-4">
+                <input type="text" th:class="${docErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${docErrorMessage != null || numberErrorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
+                <span class="help-block" th:if="${docErrorMessage != null}">
+                    <ul>
+                        <li class="text-danger" th:text="${docErrorMessage}"/>
+                    </ul>
+                </span>
+            </div>
+            <div class="col-sm-4">
+                <input type="number" th:class="${numberErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocumentChangeNumber" th:value="${numberErrorMessage != null || docErrorMessage != null} ? ${param.newDocumentChangeNumber} : ''" placeholder="Change number"/>
+                <span class="help-block" th:if="${numberErrorMessage != null}">
+                    <ul>
+                        <li class="text-danger" th:text="${numberErrorMessage}"/>
+                    </ul>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary">Add document</button>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-sm-5">
-                <input type="text" placeholder="Change number" th:class="${#fields.hasErrors('tempDocumentChangeNumber')} ? 'form-control is-invalid' : 'form-control'" th:field="*{tempDocumentChangeNumber}"/>
-                <span class="help-block" th:if="${#fields.hasErrors('tempDocumentChangeNumber')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('tempDocumentChangeNumber')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-sm mb-3">Add document</button>
     </form>
 
+    <br>
+
+    <p class="h4 mb-4" th:text="${changeNoticeTo.name} + ' documents'"></p>
+
     <div th:if="${changeNoticeTo.documents == null || changeNoticeTo.documents.size() == 0}">
-        <h2>No documents</h2>
+        <h6>No documents</h6>
     </div>
 
     <div th:if="${changeNoticeTo.documents != null && changeNoticeTo.documents.size() != 0}">
@@ -75,9 +69,9 @@
             <tr th:each="entry : ${changeNoticeTo.documents.entrySet()}">
                 <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
                 <td class="align-middle" th:text="${entry.key.name}"></td>
-                <td class="align-middle" th:text="${entry.value}"></td>
-                <td class="align-middle" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
-                <td class="align-middle">
+                <td class="align-middle text-center" th:text="${entry.value}"></td>
+                <td class="align-middle text-center" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
+                <td class="align-middle text-center">
                     <a class="btn btn-sm btn-outline-danger"
                        th:href="@{'/changenotices/removeDoc/' + ${changeNoticeTo.id} + '/' + ${entry.key.decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
                 </td>
