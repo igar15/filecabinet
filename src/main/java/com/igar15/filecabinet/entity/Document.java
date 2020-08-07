@@ -4,6 +4,7 @@ import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
+import com.igar15.filecabinet.util.validation.DecNumUnique;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class Document extends AbstractNamedEntity {
 
     @NotBlank(message = "document decimal number must not be blank")
+    @DecNumUnique
     @Column(name = "decimal_number")
     private String decimalNumber;
 

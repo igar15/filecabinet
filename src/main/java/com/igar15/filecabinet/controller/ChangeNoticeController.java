@@ -122,6 +122,7 @@ public class ChangeNoticeController {
             return "/changenotices/new-documents-list";
         }
         else {
+            changeNotice.setDocuments(changeNoticeService.findById(changeNotice.getId()).getDocuments());
             changeNoticeService.update(changeNotice);
             model.addAttribute("changeNotice", changeNotice);
             return "/changenotices/info";
