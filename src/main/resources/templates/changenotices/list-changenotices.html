@@ -41,13 +41,13 @@
                         </select>
                     </div>
                     <div class="col-sm-2 offset-2">
-                        <input type="text" class="form-control" th:name="changeCode" th:value="${param.changeCode}" placeholder="Change code">
+                        <input type="number" class="form-control" th:name="changeCode" th:value="${param.changeCode}" placeholder="Change code">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
                         <button type="submit" class="btn btn-info">Search</button>
-                        <a th:href="@{/documents/list}" class="btn btn-danger">Clear filters</a>
+                        <a th:href="@{/changenotices/list}" class="btn btn-danger">Clear filters</a>
                     </div>
                     <div class="col-sm-1">
                         <div th:text="'I. Date (After):'" class="h6 thead-dark align-middle text-center"></div>

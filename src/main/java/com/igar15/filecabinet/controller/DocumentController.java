@@ -55,8 +55,8 @@ public class DocumentController {
                           @RequestParam(name = "status", required = false) String status,
                           @RequestParam(name = "stage", required = false) String stage,
                           @RequestParam(name = "form", required = false) String form,
-                          @RequestParam(name = "after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate after,
-                          @RequestParam(name = "before", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate before,
+                          @RequestParam(name = "after", required = false) String after,
+                          @RequestParam(name = "before", required = false) String before,
                           @SortDefault("decimalNumber") Pageable pageable,
                           Model model) {
         decimalNumber = "".equals(decimalNumber) ? null : decimalNumber;
@@ -67,8 +67,8 @@ public class DocumentController {
         form = "".equals(form) ? null : form;
         developer = "".equals(developer) ? null : developer;
         originalHolder = "".equals(originalHolder) ? null : originalHolder;
-        LocalDate afterFinal = (after == null) ? LocalDate.of(1900, 1, 1) : after;
-        LocalDate beforeFinal = (before == null) ? LocalDate.of(2050, 1, 1) : before;
+        LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
+        LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
 
         model.addAttribute("developers", developerService.findAll());
         model.addAttribute("developer", developer);
@@ -81,20 +81,25 @@ public class DocumentController {
         Page<Document> documents = null;
 
         if (checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer, originalHolder)) {
-            documents = documentRepository.findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(afterFinal, beforeFinal, pageable);
+            documents = documentRepository.findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(afterDate, beforeDate, pageable);
         }
         else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer)) {
-            documents = documentRepository.findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(originalHolder, afterFinal, beforeFinal, pageable);
+            documents = documentRepository.findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(originalHolder, afterDate, beforeDate, pageable);
         }
         else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, originalHolder)) {
-            documents = documentRepository.findAllByDeveloper_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, afterFinal, beforeFinal, pageable);
+            documents = documentRepository.findAllByDeveloper_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, afterDate, beforeDate, pageable);
         }
         else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form)) {
-            documents = documentRepository.findAllByDeveloper_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, originalHolder, afterFinal, beforeFinal, pageable);
+            documents = documentRepository.findAllByDeveloper_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, originalHolder, afterDate, beforeDate, pageable);
         }
         else {
             Document document = new Document();
-            Integer docInventoryNumber = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
+            Integer inventoryNumberInt = null;
+            try {
+                inventoryNumberInt = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
+            } catch (NumberFormatException e) {
+                inventoryNumberInt = -1;
+            }
             Status docStatus = status == null ? null : Status.valueOf(status);
             Stage docStage = stage == null ? null : Stage.valueOf(stage);
             Form docForm = form == null ? null : Form.valueOf(form);
@@ -102,7 +107,7 @@ public class DocumentController {
             document.setName(name);
             document.setDeveloper(developerService.findByName(developer));
             document.setOriginalHolder(companyService.findByName(originalHolder));
-            document.setInventoryNumber(docInventoryNumber);
+            document.setInventoryNumber(inventoryNumberInt);
             document.setStatus(docStatus);
             document.setStage(docStage);
             document.setForm(docForm);
@@ -112,10 +117,12 @@ public class DocumentController {
                     .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
             Example<Document> example = Example.of(document, matcher);
             documents = documentRepository.findAll(example, pageable);
-            List<Document> collect = documents.get()
-                    .filter(doc -> (doc.getReceiptDate().compareTo(afterFinal) >= 0) && (doc.getReceiptDate().compareTo(beforeFinal) <= 0))
-                    .collect(Collectors.toList());
-            documents = new PageImpl<>(collect, pageable, pageable.getOffset());
+            if (after != null || !"".equals(after) || before != null || !"".equals(before)) {
+                List<Document> collect = documents.get()
+                        .filter(doc -> (doc.getReceiptDate().compareTo(afterDate) >= 0) && (doc.getReceiptDate().compareTo(beforeDate) <= 0))
+                        .collect(Collectors.toList());
+                documents = new PageImpl<>(collect, pageable, pageable.getOffset());
+            }
         }
         model.addAttribute("documents", documents);
         return "/documents/documents-list";

@@ -10,8 +10,7 @@ import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.ControllersHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +18,11 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,9 +48,60 @@ public class ChangeNoticeController {
     ControllersHelperUtil controllersHelperUtil;
 
     @GetMapping("/list")
-    public String showAll(@SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+    public String showAll(@RequestParam(name = "name", required = false) String name,
+                          @RequestParam(name = "developer", required = false) String developer,
+                          @RequestParam(name = "changeCode", required = false) String changeCode,
+                          @RequestParam(name = "after", required = false) String after,
+                          @RequestParam(name = "before", required = false) String before,
+                          @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
+                          Model model) {
+        name = "".equals(name) ? null : name;
+        developer = "".equals(developer) ? null : developer;
+        changeCode = "".equals(changeCode) ? null : changeCode;
+        LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
+        LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
+
         model.addAttribute("developers", developerService.findAll());
-        model.addAttribute("changeNotices", changeNoticeRepository.findAll(pageable));
+        model.addAttribute("developer", developer);
+
+        Page<ChangeNotice> changeNotices = null;
+
+        Integer changeCodeInt = null;
+        try {
+            changeCodeInt = changeCode == null ? null : Integer.valueOf(changeCode);
+        } catch (NumberFormatException e) {
+            changeCodeInt = - 1;
+        }
+
+        if (checkParamsOnNull(name, developer, changeCode)) {
+            changeNotices = changeNoticeRepository.findByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(afterDate, beforeDate, pageable);
+        }
+        else if (checkParamsOnNull(name, developer)) {
+            changeNotices = changeNoticeRepository.findByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(changeCodeInt, afterDate, beforeDate, pageable);
+        } else if (checkParamsOnNull(name, changeCode)) {
+            changeNotices = changeNoticeRepository.findByDeveloper_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(developer, afterDate, beforeDate, pageable);
+        } else if (checkParamsOnNull(name)) {
+            changeNotices = changeNoticeRepository.findByDeveloper_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(developer, changeCodeInt, afterDate, beforeDate, pageable);
+        }
+        else {
+            ChangeNotice changeNotice = new ChangeNotice();
+            changeNotice.setName(name);
+            changeNotice.setDeveloper(developerService.findByName(developer));
+            changeNotice.setChangeCode(changeCodeInt);
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
+            Example<ChangeNotice> example = Example.of(changeNotice, matcher);
+            changeNotices = changeNoticeRepository.findAll(example, pageable);
+            if (after != null || !"".equals(after) || before != null || !"".equals(before)) {
+                List<ChangeNotice> collect = changeNotices.get()
+                        .filter(change -> (change.getIssueDate().compareTo(afterDate) >= 0) && (change.getIssueDate().compareTo(beforeDate) <= 0))
+                        .collect(Collectors.toList());
+                changeNotices = new PageImpl<>(collect, pageable, pageable.getOffset());
+            }
+        }
+
+
+        model.addAttribute("changeNotices", changeNotices);
         return "/changenotices/list-changenotices";
     }
 
@@ -201,5 +250,10 @@ public class ChangeNoticeController {
                 found.getDeveloper(), treeMap);
     }
 
+
+    private boolean checkParamsOnNull(String... params) {
+        return Arrays.stream(params)
+                .allMatch(Objects::isNull);
+    }
 
 }
