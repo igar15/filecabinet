@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>External dispatch info</title>
+</head>
+<body>
+<div class="container">
+
+    <a th:href="@{/externaldispatches/list}">Back to External dispatches list</a>
+
+    <br><br>
+
+    <h3>External dispatch Directory</h3>
+
+    <hr>
+
+    <p class="h4 mb-4" th:text="${externalDispatch.letterOutgoingNumber} + ' information'"></p>
+
+    <div th:object="${externalDispatch}">
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Letter outgoing number:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{letterOutgoingNumber}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Dispatch date:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{dispatchDate}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Waybill:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{waybill}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Status:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{status.name}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Remark:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{remark}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border">
+                <h6>Company:</h6>
+            </div>
+            <div class="col-sm-2 border">
+                <h6 th:text="*{company.name}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-5">
+            <div class="col-sm-2">
+
+            </div>
+            <div class="col-sm-3 text-right">
+                <a th:href="@{'/externaldispatches/showFormForUpdate/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                <a th:href="@{'/externaldispatches/delete/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-danger mb-1"
+                   onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+            </div>
+        </div>
+
+    </div>
+
+<br><br>
+
+
+
+    <form th:action="@{'/externaldispatches/addDocument/' + ${externalDispatch.id}}" method="post">
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
+            </div>
+            <button type="submit" class="btn btn-primary col-2">Add document</button>
+        </div>
+        <span class="help-block" th:if="${errorMessage != null}">
+            <ul>
+                <li class="text-danger" th:text="${errorMessage}"/>
+            </ul>
+        </span>
+    </form>
+
+    <div th:if="${externalDispatch.documents == null || externalDispatch.documents.size() == 0}">
+        <h6>No documents</h6>
+    </div>
+
+    <div th:if="${externalDispatch.documents != null && externalDispatch.documents.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+                <th class="align-middle">Decimal number</th>
+                <th class="align-middle">Name</th>
+                <th class="align-middle">Active</th>
+                <th class="align-middle">Action</th>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${externalDispatch.documents}">
+                    <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
+                    <td class="align-middle" th:text="${entry.key.name}"></td>
+                    <td class="align-middle text-center" th:text="${entry.value}"></td>
+                    <td class="align-middle text-center">
+                        <a class="btn btn-sm btn-outline-danger"
+                           th:href="@{'/externaldispatches/removeDoc/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-danger" th:if="${errorDeleteMessage != null}">
+        <h6 th:text="${errorDeleteMessage}"></h6>
+    </div>
+
+</div>
+</body>
+</html>

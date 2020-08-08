@@ -2,6 +2,7 @@ package com.igar15.filecabinet.entity.abstracts;
 
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.entity.enums.Status;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ public abstract class Dispatch extends AbstractBaseEntity {
     private String waybill;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dispatch_date")
     private LocalDate dispatchDate;
 

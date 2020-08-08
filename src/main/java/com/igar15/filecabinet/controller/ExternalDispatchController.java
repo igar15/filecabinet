@@ -3,17 +3,18 @@ package com.igar15.filecabinet.controller;
 import com.igar15.filecabinet.dto.ExternalDispatchTo;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.repository.ExternalDispatchRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.ExternalDispatchService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,53 +26,57 @@ public class ExternalDispatchController {
     private ExternalDispatchService externalDispatchService;
 
     @Autowired
+    private ExternalDispatchRepository externalDispatchRepository;
+
+    @Autowired
     private CompanyService companyService;
 
     @Autowired
     private DocumentService documentService;
 
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("externalDispatches", externalDispatchService.findAll());
-        return "/externaldispatches/list-externaldispatches";
+    public String showAll(@SortDefault("dispatchDate") Pageable pageable, Model model) {
+        model.addAttribute("externalDispatches", externalDispatchRepository.findAll(pageable));
+        return "/externaldispatches/externaldispatches-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
-        model.addAttribute("externalDispatchTo", new ExternalDispatchTo());
+        model.addAttribute("externalDispatch", new ExternalDispatch());
         model.addAttribute("companies", companyService.findAll());
-        return "/externaldispatches/externalDispatchTo-form";
+        return "/externaldispatches/form";
     }
 
     @PostMapping("/save")
-    public String save(@Valid ExternalDispatchTo externalDispatchTo, BindingResult bindingResult, Model model) {
+    public String save(@Valid ExternalDispatch externalDispatch, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("companies", companyService.findAll());
-            return "/externaldispatches/externalDispatchTo-form";
+            return "/externaldispatches/form";
         }
         else {
-            if (externalDispatchTo.getId() == null) {
-                model.addAttribute("externalDispatchTo", externalDispatchTo);
-                return "/externaldispatches/externalDispatchToInfo";
+            if (externalDispatch.isNew()) {
+                externalDispatchService.create(externalDispatch);
             }
             else {
-                externalDispatchService.update(convertFromTo(externalDispatchTo));
-                return "redirect:/externaldispatches/showExternalDispatchInfo/" + externalDispatchTo.getId();
+                externalDispatch.setDocuments(externalDispatchService.findById(externalDispatch.getId()).getDocuments());
+                externalDispatchService.update(externalDispatch);
             }
+            model.addAttribute("externalDispatch", externalDispatch);
+            return "/externaldispatches/info";
         }
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
-        model.addAttribute("externalDispatchTo", convertToToById(id));
+        model.addAttribute("externalDispatch", externalDispatchService.findById(id));
         model.addAttribute("companies", companyService.findAll());
-        return "/externaldispatches/externalDispatchTo-form";
+        return "/externaldispatches/form";
     }
 
     @GetMapping("/showExternalDispatchInfo/{id}")
     public String showExternalDispatchInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("externalDispatchTo", convertToToById(id));
-        return "/externaldispatches/externalDispatchToInfo";
+        model.addAttribute("externalDispatch", externalDispatchService.findById(id));
+        return "/externaldispatches/info";
     }
 
     @GetMapping("/delete/{id}")
@@ -80,53 +85,54 @@ public class ExternalDispatchController {
         return "redirect:/externaldispatches/list";
     }
 
-    @PostMapping("/addDocument")
-    public String addDocument(@Valid ExternalDispatchTo externalDispatchTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/externaldispatches/externalDispatchToInfo";
-        }
-        Document added = documentService.findByDecimalNumber(externalDispatchTo.getTempDocumentDecimalNumber());
-        externalDispatchTo.getDocuments().put(added, true);
-        if (externalDispatchTo.getId() == null) {
-            ExternalDispatch newExternalDispatch = externalDispatchService.create(convertFromTo(externalDispatchTo));
-            externalDispatchTo.setId(newExternalDispatch.getId());
+    @PostMapping("/addDocument/{id}")
+    public String addDocument(@PathVariable("id") int id,
+                              @RequestParam("newDocument") String newDocument,
+                              Model model) {
+
+        String errorMessage = null;
+        ExternalDispatch externalDispatch = externalDispatchService.findById(id);
+        if (newDocument == null || newDocument.trim().isEmpty()) {
+            errorMessage = "Decimal number must not be empty";
         }
         else {
-            externalDispatchService.update(convertFromTo(externalDispatchTo));
+            try {
+                Document document = documentService.findByDecimalNumber(newDocument);
+                if (externalDispatch.getDocuments().containsKey(document)) {
+                    errorMessage = "Document already added";
+                }
+                else {
+                    externalDispatch.getDocuments().put(document, true);
+                    externalDispatchService.update(externalDispatch);
+                }
+
+            } catch (NotFoundException e) {
+                errorMessage = "Document not found";
+            }
         }
-        return "redirect:/externaldispatches/showExternalDispatchInfo/" + externalDispatchTo.getId();
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("externalDispatch", externalDispatch);
+        return "/externaldispatches/info";
     }
 
-    @GetMapping("/removeDoc/{id}/{decimalNumber}")
-    public String removeDoc(@PathVariable("id") int id, @PathVariable("decimalNumber") String decimalNumber, Model model) {
-        Document removed = documentService.findByDecimalNumber(decimalNumber);
+    @GetMapping("/removeDoc/{id}/{documentId}")
+    public String removeDoc(@PathVariable("id") int id,
+                            @PathVariable("documentId") int documentId,
+                            Model model) {
+        String errorDeleteMessage = null;
         ExternalDispatch found = externalDispatchService.findById(id);
-        if (found.getDocumentsSet().size() == 1) {
-            model.addAttribute("externalDispatchTo", convertToToById(id));
-            String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-            return "/externaldispatches/externalDispatchToInfo";
+
+        if (found.getDocuments().size() < 2) {
+            errorDeleteMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
         }
-        found.getDocumentsSet().remove(removed);
-        externalDispatchService.update(found);
-        return "redirect:/externaldispatches/showExternalDispatchInfo/" + id;
+        else {
+            Document document = documentService.findById(documentId);
+            found.getDocuments().remove(document);
+            externalDispatchService.update(found);
+        }
+        model.addAttribute("errorDeleteMessage", errorDeleteMessage);
+        model.addAttribute("externalDispatch", found);
+        return "/externaldispatches/info";
     }
-
-
-
-
-
-    private ExternalDispatchTo convertToToById(int id) {
-        ExternalDispatch found = externalDispatchService.findById(id);
-        return new ExternalDispatchTo(found.getId(), found.getWaybill(), found.getDispatchDate(), found.getStatus(), found.getRemark(),
-                found.getLetterOutgoingNumber(), found.getCompany(), found.getDocuments());
-    }
-
-    private ExternalDispatch convertFromTo(ExternalDispatchTo externalDispatchTo) {
-        return new ExternalDispatch(externalDispatchTo.getId(), externalDispatchTo.getWaybill(), externalDispatchTo.getDispatchDate(),
-                externalDispatchTo.getStatus(), externalDispatchTo.getRemark(), externalDispatchTo.getLetterOutgoingNumber(),
-                externalDispatchTo.getCompany(), externalDispatchTo.getDocuments());
-    }
-
 
 }

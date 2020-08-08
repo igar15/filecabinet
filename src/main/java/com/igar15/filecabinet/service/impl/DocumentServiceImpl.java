@@ -35,9 +35,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document findByDecimalNumber(String decimalNumber) {
-        return documentRepository.findByDecimalNumber(decimalNumber).orElse(null);
-//        Assert.notNull(decimalNumber, "decimalNumber must not be null");
-//        return ValidationUtil.checkNotFound(documentRepository.findByDecimalNumber(decimalNumber).orElse(null), decimalNumber);
+        Assert.notNull(decimalNumber, "decimalNumber must not be null");
+        return ValidationUtil.checkNotFound(documentRepository.findByDecimalNumber(decimalNumber).orElse(null), decimalNumber);
     }
 
     @Override

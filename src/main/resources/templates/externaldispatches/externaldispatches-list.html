@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>External Dispatches List</title>
+</head>
+<body>
+<div class="container">
+
+    <a th:href="@{/}">Back to Home page</a>
+
+    <br><br>
+
+    <h3>External dispatch List</h3>
+
+    <hr>
+
+    <a th:href="@{/externaldispatches/showAddForm}" class="btn btn-primary btn-sm mb-3">Add External Dispatch</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="letterOutgoingNumber">Letter outgoing number</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchDate">Dispatch date</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="company">Company</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="waybill">Waybill</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="status">Status</a></th>
+                <th class="align-middle">Remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tempExternal : ${externalDispatches}">
+                <td class="align-middle text-center">
+                    <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}" th:text="${tempExternal.letterOutgoingNumber}"></a>
+                </td>
+                <td class="align-middle text-center" th:text="${tempExternal.dispatchDate}"></td>
+                <td class="align-middle text-center" th:text="${tempExternal.company == null} ? '' : ${tempExternal.company.name}"></td>
+                <td class="align-middle text-center" th:text="${tempExternal.waybill}"></td>
+                <td class="align-middle text-center" th:text="${tempExternal.status}"></td>
+                <td class="align-middle text-center" th:text="${tempExternal.remark}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            Show <span sd:page-size-selector="javascript"></span> entries
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div sd:pagination-summary="">info</div>
+        </div>
+        <div class="col-sm-6">
+            <nav class="pull-right">
+                <ul class="pagination" sd:pagination-split="5" sd:pagination="full">
+                    <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>
