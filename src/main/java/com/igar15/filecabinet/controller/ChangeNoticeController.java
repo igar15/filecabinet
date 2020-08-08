@@ -13,6 +13,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -112,6 +113,7 @@ public class ChangeNoticeController {
 
     @PostMapping("/save")
     public String save(@Valid ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
+        bindingResult = checkNameOnDuplicate(changeNotice, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
             return "/changenotices/form";
@@ -282,6 +284,22 @@ public class ChangeNoticeController {
     private boolean checkParamsOnNull(String... params) {
         return Arrays.stream(params)
                 .allMatch(Objects::isNull);
+    }
+
+    private BindingResult checkNameOnDuplicate(ChangeNotice obj, BindingResult bindingResult) {
+        boolean isUnique = true;
+        ChangeNotice changeNotice = changeNoticeService.findByName(obj.getName());
+
+        if (obj.isNew()) {
+            isUnique = changeNotice == null;
+        }
+        else if (changeNotice != null && !changeNotice.getId().equals(obj.getId())) {
+            isUnique = false;
+        }
+        if (!isUnique) {
+            bindingResult.rejectValue("name", "error.changeNotice", "Change notice already exist");
+        }
+        return bindingResult;
     }
 
 }

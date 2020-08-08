@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class ChangeNotice extends AbstractNamedEntity {
     @JoinColumn(name = "developer_id")
     private Developer developer;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_change_notices", joinColumns = @JoinColumn(name = "change_notice_id"))
     @MapKeyJoinColumn(name = "document_id")
     @Column(name = "change")
@@ -51,6 +52,7 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.developer = developer;
         this.documents = documents;
     }
+
 
     public Integer getChangeCode() {
         return changeCode;

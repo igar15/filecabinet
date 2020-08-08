@@ -24,7 +24,7 @@ public class ChangeNoticeNameValidConstraintValidator implements ConstraintValid
     @Override
     public boolean isValid(String theUserChangeNotName, ConstraintValidatorContext constraintValidatorContext) {
         if (theUserChangeNotName == null) return false;
-        ChangeNotice changeNotice = changeNoticeRepository.findByName(theUserChangeNotName).orElse(null);
+        ChangeNotice changeNotice = changeNoticeRepository.findByName(theUserChangeNotName);
         return changeNotice != null;
     }
 }

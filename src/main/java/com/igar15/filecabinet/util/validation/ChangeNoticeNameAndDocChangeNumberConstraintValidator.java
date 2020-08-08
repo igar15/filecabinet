@@ -32,7 +32,7 @@ public class ChangeNoticeNameAndDocChangeNumberConstraintValidator implements Co
          return false;
       }
 
-      ChangeNotice changeNotice = changeNoticeRepository.findByName(obj.getTempChangeNoticeName()).orElse(null);
+      ChangeNotice changeNotice = changeNoticeRepository.findByName(obj.getTempChangeNoticeName());
 
       if (changeNotice == null) {
          context.disableDefaultConstraintViolation();

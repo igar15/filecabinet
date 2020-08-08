@@ -13,7 +13,9 @@ import java.util.Optional;
 
 public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Integer> {
 
-    Optional<ChangeNotice> findByName(String name);
+//    Optional<ChangeNotice> findByName(String name);
+
+    ChangeNotice findByName(String name);
 
     @Query("select c from ChangeNotice c where c.developer.id=:id")
     List<ChangeNotice> findAllByDeveloperId(@Param("id") int id);

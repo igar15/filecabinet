@@ -30,7 +30,8 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
 
     @Override
     public ChangeNotice findByName(String name) {
-        return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name).orElse(null), name);
+        return changeNoticeRepository.findByName(name);
+//        return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name), name);
     }
 
     @Override

@@ -4,14 +4,12 @@ import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
-import com.igar15.filecabinet.util.validation.DecNumUnique;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +19,6 @@ import java.util.Set;
 public class Document extends AbstractNamedEntity {
 
     @NotBlank(message = "document decimal number must not be blank")
-    @DecNumUnique
     @Column(name = "decimal_number")
     private String decimalNumber;
 
@@ -86,13 +83,13 @@ public class Document extends AbstractNamedEntity {
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "document_external_dispatches",
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
     private Set<ExternalDispatch> externalDispatches;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "document_internal_dispatches",
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "internal_dispatch_id"))

@@ -138,6 +138,7 @@ public class DocumentController {
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("document") Document document, BindingResult bindingResult, Model model) {
+        bindingResult = checkDecimalNumberOnDuplicate(document, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
             model.addAttribute("companies", companyService.findAll());
@@ -294,6 +295,22 @@ public class DocumentController {
     private boolean checkParamsOnNull(String... params) {
         return Arrays.stream(params)
                 .allMatch(Objects::isNull);
+    }
+
+    private BindingResult checkDecimalNumberOnDuplicate(Document obj, BindingResult bindingResult) {
+        boolean isUnique = true;
+        Document document = documentService.findByDecimalNumber(obj.getDecimalNumber());
+
+        if (obj.isNew()) {
+            isUnique = document == null;
+        }
+        else if (document != null && !document.getId().equals(obj.getId())) {
+            isUnique = false;
+        }
+        if (!isUnique) {
+            bindingResult.rejectValue("decimalNumber", "error.document", "Document already exist");
+        }
+        return bindingResult;
     }
 
 }
