@@ -1,6 +1,5 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.dto.ExternalDispatchTo;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.repository.ExternalDispatchRepository;
@@ -37,7 +36,7 @@ public class ExternalDispatchController {
     @GetMapping("/list")
     public String showAll(@SortDefault("dispatchDate") Pageable pageable, Model model) {
         model.addAttribute("externalDispatches", externalDispatchRepository.findAll(pageable));
-        return "/externaldispatches/externaldispatches-list";
+        return "/externaldispatches/all-list";
     }
 
     @GetMapping("/showAddForm")

@@ -93,7 +93,7 @@ public class ChangeNoticeController {
             }
         }
         model.addAttribute("changeNotices", changeNotices);
-        return "/changenotices/changenotices-list";
+        return "/changenotices/all-list";
     }
 
     @GetMapping("/showAddForm")
@@ -120,7 +120,7 @@ public class ChangeNoticeController {
 
         if (changeNotice.isNew()) {
             model.addAttribute("changeNotice", changeNotice);
-            return "/changenotices/new-documents-list";
+            return "documents-list(for new)";
         }
         else {
             changeNotice.setDocuments(changeNoticeService.findById(changeNotice.getId()).getDocuments());
@@ -258,7 +258,7 @@ public class ChangeNoticeController {
             return "/changenotices/documents-list";
         }
         else {
-            return "/changenotices/new-documents-list";
+            return "/changenotices/documents-list(for new)";
         }
     }
 

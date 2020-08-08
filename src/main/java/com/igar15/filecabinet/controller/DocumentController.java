@@ -10,7 +10,6 @@ import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -125,7 +124,7 @@ public class DocumentController {
             }
         }
         model.addAttribute("documents", documents);
-        return "/documents/documents-list";
+        return "/documents/all-list";
     }
 
     @GetMapping("/showAddForm")
