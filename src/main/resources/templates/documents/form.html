@@ -137,20 +137,6 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Change number:</h6>
-                </div>
-                <div class="col-sm-5">
-                    <input type="number" th:field="*{changeNumber}" th:class="${#fields.hasErrors('changeNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Change number'"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('changeNumber')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('changeNumber')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
                     <h6>Stage:</h6>
                 </div>
                 <div class="col-sm-5">

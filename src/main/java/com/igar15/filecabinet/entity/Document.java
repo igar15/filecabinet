@@ -48,10 +48,6 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "form")
     private Form form;
 
-    @Min(value = 1, message = "document change number must be greater than 0")
-    @Column(name = "change_number")
-    private Integer changeNumber;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "stage")
     private Stage stage;
@@ -106,7 +102,7 @@ public class Document extends AbstractNamedEntity {
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate,
-                    Status status, Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage,
+                    Status status, Set<Document> applicabilities, Form form, Stage stage,
                     Integer sheetsAmount, String format, Integer a4Amount, Developer developer, Company originalHolder) {
         super(id, name);
         this.decimalNumber = decimalNumber;
@@ -115,7 +111,6 @@ public class Document extends AbstractNamedEntity {
         this.status = status;
         this.applicabilities = applicabilities;
         this.form = form;
-        this.changeNumber = changeNumber;
         this.stage = stage;
         this.sheetsAmount = sheetsAmount;
         this.format = format;
@@ -125,7 +120,7 @@ public class Document extends AbstractNamedEntity {
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
-                    Set<Document> applicabilities, Form form, Integer changeNumber, Stage stage, Integer sheetsAmount, String format,
+                    Set<Document> applicabilities, Form form, Stage stage, Integer sheetsAmount, String format,
                     Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
                     Set<ExternalDispatch> externalDispatches, Set<InternalDispatch> internalDispatches) {
         super(id, name);
@@ -135,7 +130,6 @@ public class Document extends AbstractNamedEntity {
         this.status = status;
         this.applicabilities = applicabilities;
         this.form = form;
-        this.changeNumber = changeNumber;
         this.stage = stage;
         this.sheetsAmount = sheetsAmount;
         this.format = format;
@@ -209,14 +203,6 @@ public class Document extends AbstractNamedEntity {
 
     public void setForm(Form form) {
         this.form = form;
-    }
-
-    public Integer getChangeNumber() {
-        return changeNumber;
-    }
-
-    public void setChangeNumber(Integer changeNumber) {
-        this.changeNumber = changeNumber;
     }
 
     public LocalDate getReceiptDate() {

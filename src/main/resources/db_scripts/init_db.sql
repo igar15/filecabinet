@@ -42,7 +42,6 @@ create table documents (
     receipt_date date not null,
     status varchar not null,
     form varchar not null,
-    change_number integer default null,
     stage varchar default null,
     sheets_amount integer default null,
     format varchar default null,
