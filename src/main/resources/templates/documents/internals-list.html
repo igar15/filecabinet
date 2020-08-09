@@ -45,7 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="tempInternal : ${document.internalDispatches}">
+                <tr th:each="tempInternal : ${document.internalDispatches}" th:class="${tempInternal.value} ? 'table-default' : 'table-danger'">
                     <td class="align-middle text-center" th:text="${tempInternal.key.isAlbum} ? 'Copies archive' : ${tempInternal.key.dispatchHandler.name}"></td>
                     <td class="align-middle text-center" th:text="${tempInternal.key.status}"></td>
                     <td class="align-middle text-center" th:text="${tempInternal.value}"></td>

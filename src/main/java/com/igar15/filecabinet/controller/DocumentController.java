@@ -203,7 +203,12 @@ public class DocumentController {
 
     @GetMapping("/showExternalDispatches/{id}")
     public String showExternalDispatches(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", documentService.findById(id));
+        Document document = documentService.findById(id);
+        LinkedHashMap<ExternalDispatch, Boolean> sortedMap = document.getExternalDispatches().entrySet().stream()
+                .sorted(Map.Entry.<ExternalDispatch, Boolean>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        document.setExternalDispatches(sortedMap);
+        model.addAttribute("document", document);
         return "/documents/externals-list";
     }
 
@@ -223,7 +228,12 @@ public class DocumentController {
 
     @GetMapping("/showInternalDispatches/{id}")
     public String showInternalDispatches(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", documentService.findById(id));
+        Document document = documentService.findById(id);
+        LinkedHashMap<InternalDispatch, Boolean> sortedMap = document.getInternalDispatches().entrySet().stream()
+                .sorted(Map.Entry.<InternalDispatch, Boolean>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        document.setInternalDispatches(sortedMap);
+        model.addAttribute("document", document);
         return "/documents/internals-list";
     }
 
