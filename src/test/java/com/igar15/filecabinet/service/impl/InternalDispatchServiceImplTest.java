@@ -26,12 +26,6 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
     @Autowired
     private InternalDispatchRepository internalDispatchRepository;
 
-    @Test
-    void check() {
-        List<InternalDispatch> byDecimalNumber = internalDispatchRepository.findByDecimalNumber(1009);
-        byDecimalNumber.forEach(internalDispatch -> System.out.println(internalDispatch.getWaybill()));
-
-    }
 
     @Test
     void create() {
