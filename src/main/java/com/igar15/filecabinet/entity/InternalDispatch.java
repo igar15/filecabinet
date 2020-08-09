@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,19 @@ public class InternalDispatch extends Dispatch {
     @JoinColumn(name = "developer_id")
     private Developer dispatchHandler;
 
+    @Transient
     @ManyToMany
     @JoinTable(name = "document_internal_dispatches",
             joinColumns = @JoinColumn(name = "internal_dispatch_id"),
             inverseJoinColumns = @JoinColumn(name = "document_id"))
-    private Set<Document> documents;
+    private Set<Document> documentsSet;
+
+    @ElementCollection
+    @CollectionTable(name = "document_internal_dispatches",
+            joinColumns = @JoinColumn(name = "internal_dispatch_id"))
+    @MapKeyJoinColumn(name = "document_id")
+    @Column(name = "is_active")
+    private Map<Document, Boolean> documents;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -61,7 +70,7 @@ public class InternalDispatch extends Dispatch {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
         this.dispatchHandler = dispatchHandler;
-        this.documents = documents;
+        this.documentsSet = documents;
         this.receivedInternalDate = receivedInternalDate;
         this.internalHandlerName = internalHandlerName;
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
@@ -85,12 +94,12 @@ public class InternalDispatch extends Dispatch {
         this.dispatchHandler = developer;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
+    public Set<Document> getDocumentsSet() {
+        return documentsSet;
     }
 
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
+    public void setDocumentsSet(Set<Document> documents) {
+        this.documentsSet = documents;
     }
 
     public LocalDate getReceivedInternalDate() {
@@ -133,5 +142,12 @@ public class InternalDispatch extends Dispatch {
         this.albumName = albumEntry;
     }
 
+    public Map<Document, Boolean> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Map<Document, Boolean> documents) {
+        this.documents = documents;
+    }
 
 }

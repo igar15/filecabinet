@@ -205,20 +205,18 @@ public class DocumentController {
         return "/documents/externals-list";
     }
 
-    @GetMapping("/removeExternal/{id}/{externalId}")
-    public String removeExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
-        ExternalDispatch found = externalDispatchService.findById(externalId);
-        if (found.getDocumentsSet().size() == 1) {
-            model.addAttribute("document", documentService.findById(id));
-            String errorMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-            return "/documents/externals-list";
-        }
-        found.setDocumentsSet(found.getDocumentsSet().stream()
-                .filter(document -> document.getId() != id)
-                .collect(Collectors.toSet()));
-        externalDispatchService.update(found);
-        return "redirect:/documents/showExternalDispatches/" + id;
+    @GetMapping("/deregisterExternal/{id}/{externalId}")
+    public String deregisterExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
+        Document document = documentService.findById(id);
+        document.getExternalDispatches().keySet()
+                .forEach(externalDispatch -> {
+                    if (externalDispatch.getId().equals(externalId)) {
+                        document.getExternalDispatches().put(externalDispatch, false);
+                    }
+                });
+        documentService.update(document);
+        model.addAttribute("document", document);
+        return "/documents/externals-list";
     }
 
     @GetMapping("/showInternalDispatches/{id}")
@@ -227,20 +225,18 @@ public class DocumentController {
         return "/documents/internals-list";
     }
 
-    @GetMapping("/removeInternal/{id}/{internalId}")
-    public String removeInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
-        InternalDispatch found = internalDispatchService.findById(internalId);
-        if (found.getDocuments().size() == 1) {
-            model.addAttribute("document", documentService.findById(id));
-            String errorMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-            return "/documents/internals-list";
-        }
-        found.setDocuments(found.getDocuments().stream()
-                .filter(document -> document.getId() != id)
-                .collect(Collectors.toSet()));
-        internalDispatchService.update(found);
-        return "redirect:/documents/showInternalDispatches/" + id;
+    @GetMapping("/deregisterInternal/{id}/{internalId}")
+    public String deregisterInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
+        Document document = documentService.findById(id);
+        document.getInternalDispatches().keySet()
+                .forEach(internalDispatch -> {
+                    if (internalDispatch.getId().equals(internalId)) {
+                        document.getInternalDispatches().put(internalDispatch, false);
+                    }
+                });
+        documentService.update(document);
+        model.addAttribute("document", document);
+        return "/documents/internals-list";
     }
 
     @GetMapping("/showApplicabilities/{id}")

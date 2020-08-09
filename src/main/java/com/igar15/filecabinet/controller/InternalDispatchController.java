@@ -1,23 +1,23 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.dto.ExternalDispatchTo;
-import com.igar15.filecabinet.dto.InternalDispatchTo;
 import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.InternalDispatch;
+import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DeveloperService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
-import org.dom4j.rule.Mode;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/internaldispatches")
@@ -27,53 +27,65 @@ public class InternalDispatchController {
     private InternalDispatchService internalDispatchService;
 
     @Autowired
+    private InternalDispatchRepository internalDispatchRepository;
+
+    @Autowired
     private DeveloperService developerService;
 
     @Autowired
     private DocumentService documentService;
 
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("internalDispatches", internalDispatchService.findAll());
-        return "/internaldispatches/list-internaldispatches";
+    public String showAll(@SortDefault(value = "dispatchDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        model.addAttribute("internalDispatches", internalDispatchRepository.findAll(pageable));
+        return "/internaldispatches/all-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
-        model.addAttribute("internalDispatchTo", new InternalDispatchTo());
+        model.addAttribute("internalDispatch", new InternalDispatch());
         model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-        return "/internaldispatches/internalDispatchTo-form";
+        return "/internaldispatches/form";
     }
 
     @PostMapping("/save")
-    public String save(@Valid InternalDispatchTo internalDispatchTo, BindingResult bindingResult, Model model) {
+    public String save(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-            return "/internaldispatches/internalDispatchTo-form";
+            return "/internaldispatches/form";
         }
         else {
-            if (internalDispatchTo.getId() == null) {
-                model.addAttribute("internalDispatchTo", internalDispatchTo);
-                return "/internaldispatches/internalDispatchToInfo";
+            if (internalDispatch.isNew()) {
+                if (internalDispatch.getIsAlbum()) {
+                    Document document = documentService.findByDecimalNumber(internalDispatch.getAlbumName());
+                    internalDispatch.setDocuments(new HashMap<>());
+                    internalDispatch.getDocuments().put(document, true);
+                    internalDispatch.setInternalHandlerName("Kochetova T.");
+                    internalDispatch.setReceivedInternalDate(internalDispatch.getDispatchDate());
+                    internalDispatch.setInternalHandlerPhoneNumber("1-34-15");
+                }
+                internalDispatchService.create(internalDispatch);
             }
             else {
-                internalDispatchService.update(convertFromTo(internalDispatchTo));
-                return "redirect:/internaldispatches/showInternalDispatchInfo/" + internalDispatchTo.getId();
+                internalDispatch.setDocuments(internalDispatchService.findById(internalDispatch.getId()).getDocuments());
+                internalDispatchService.update(internalDispatch);
             }
+            model.addAttribute("internalDispatch", internalDispatch);
+            return "/internaldispatches/info";
         }
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
-        model.addAttribute("internalDispatchTo", convertToToById(id));
+        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
         model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-        return "/internaldispatches/internalDispatchTo-form";
+        return "/internaldispatches/orm";
     }
 
     @GetMapping("/showInternalDispatchInfo/{id}")
     public String showInternalDispatchInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("internalDispatchTo", convertToToById(id));
-        return "/internaldispatches/internalDispatchToInfo";
+        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
+        return "/internaldispatches/info";
     }
 
     @GetMapping("/delete/{id}")
@@ -82,70 +94,81 @@ public class InternalDispatchController {
         return "redirect:/internaldispatches/list";
     }
 
-    @PostMapping("/addDocument")
-    public String addDocument(@Valid InternalDispatchTo internalDispatchTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/internaldispatches/internalDispatchToInfo";
-        }
-        Document added = documentService.findByDecimalNumber(internalDispatchTo.getTempDocumentDecimalNumber());
-        internalDispatchTo.getDocuments().add(added);
-        if (internalDispatchTo.getId() == null) {
-            InternalDispatch newInternalDispatch = internalDispatchService.create(convertFromTo(internalDispatchTo));
-            internalDispatchTo.setId(newInternalDispatch.getId());
+    @PostMapping("/addDocument/{id}")
+    public String addDocument(@PathVariable("id") int id,
+                              @RequestParam("newDocument") String newDocument,
+                              Model model) {
+
+        String errorMessage = null;
+        InternalDispatch internalDispatch = internalDispatchService.findById(id);
+        if (newDocument == null || newDocument.trim().isEmpty()) {
+            errorMessage = "Decimal number must not be empty";
         }
         else {
-            internalDispatchService.update(convertFromTo(internalDispatchTo));
+            try {
+                Document document = documentService.findByDecimalNumber(newDocument);
+                if (internalDispatch.getDocuments().containsKey(document)) {
+                    errorMessage = "Document already added";
+                }
+                else {
+                    internalDispatch.getDocuments().put(document, true);
+                    internalDispatchService.update(internalDispatch);
+                }
+
+            } catch (NotFoundException e) {
+                errorMessage = "Document not found";
+            }
         }
-        return "redirect:/internaldispatches/showInternalDispatchInfo/" + internalDispatchTo.getId();
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("internalDispatch", internalDispatch);
+        return "/internaldispatches/info";
     }
 
-    @GetMapping("/removeDoc/{id}/{decimalNumber}")
-    public String removeDoc(@PathVariable("id") int id, @PathVariable("decimalNumber") String decimalNumber, Model model) {
-        Document removed = documentService.findByDecimalNumber(decimalNumber);
+
+    @GetMapping("/removeDoc/{id}/{documentId}")
+    public String removeDoc(@PathVariable("id") int id,
+                            @PathVariable("documentId") int documentId,
+                            Model model) {
+        String errorDeleteMessage = null;
         InternalDispatch found = internalDispatchService.findById(id);
-        if (found.getDocuments().size() == 1) {
-            model.addAttribute("internalDispatchTo", convertToToById(id));
-            String errorMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-            return "/internaldispatches/internalDispatchToInfo";
+
+        if (found.getDocuments().size() < 2) {
+            errorDeleteMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
         }
-        found.getDocuments().remove(removed);
-        internalDispatchService.update(found);
-        return "redirect:/internaldispatches/showInternalDispatchInfo/" + id;
+        else {
+            Document document = documentService.findById(documentId);
+            found.getDocuments().remove(document);
+            internalDispatchService.update(found);
+        }
+        model.addAttribute("errorDeleteMessage", errorDeleteMessage);
+        model.addAttribute("internalDispatch", found);
+        return "/internaldispatches/info";
     }
 
     @GetMapping("/list/albums")
-    public String showAlbums(Model model) {
-        model.addAttribute("albums", internalDispatchService.findByIsAlbum(true));
+    public String showAlbums(@SortDefault("albumName") Pageable pageable, Model model) {
+        model.addAttribute("internalDispatches", internalDispatchService.findByIsAlbum(true, pageable));
         return "/internaldispatches/list-albums";
     }
 
     @GetMapping("/showAlbumInfo/{id}")
     public String showAlbumInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("album", internalDispatchService.findById(id));
+        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
         return "/internaldispatches/album-info";
     }
 
-
-
-
-
-
-
-
-
-
-    private InternalDispatchTo convertToToById(int id) {
-        InternalDispatch found = internalDispatchService.findById(id);
-        return new InternalDispatchTo(found.getId(), found.getWaybill(), found.getDispatchDate(), found.getStatus(), found.getRemark(),
-                found.getStamp(), found.getDispatchHandler(), found.getReceivedInternalDate(),
-                found.getInternalHandlerName(), found.getInternalHandlerPhoneNumber(), found.getIsAlbum(), found.getAlbumName(), found.getDocuments());
+    @GetMapping("/showChangeHandlerForm/{id}")
+    public String showChangeHandlerForm(@PathVariable("id") int id, Model model) {
+        model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
+        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
+        return "/internaldispatches/album-changehandler";
     }
 
-    private InternalDispatch convertFromTo(InternalDispatchTo internalDispatchTo) {
-        return new InternalDispatch(internalDispatchTo.getId(), internalDispatchTo.getWaybill(), internalDispatchTo.getDispatchDate(),
-                internalDispatchTo.getStatus(), internalDispatchTo.getRemark(), internalDispatchTo.getStamp(), internalDispatchTo.getDispatchHandler(),
-                internalDispatchTo.getDocuments(), internalDispatchTo.getReceivedInternalDate(), internalDispatchTo.getInternalHandlerName(),
-                internalDispatchTo.getInternalHandlerPhoneNumber(), internalDispatchTo.getIsAlbum(), internalDispatchTo.getAlbumName());
+    @PostMapping("/changeHandler")
+    public String changeHandler(InternalDispatch internalDispatch) {
+        internalDispatch.setDocuments(internalDispatchService.findById(internalDispatch.getId()).getDocuments());
+        internalDispatchService.update(internalDispatch);
+        return "redirect:/internaldispatches/list/albums";
     }
+
 }

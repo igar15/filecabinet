@@ -60,15 +60,15 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(INTERNAL_DISPATCHES, internalDispatchService.findAll());
     }
 
-    @Test
-    void findAllByDocumentId() {
-        Assertions.assertEquals(List.of(INTERNAL_DISPATCH2, INTERNAL_DISPATCH1), internalDispatchService.findAllByDocumentId(DocumentTestData.DOCUMENT1_ID));
-    }
+//    @Test
+//    void findAllByDocumentId() {
+//        Assertions.assertEquals(List.of(INTERNAL_DISPATCH2, INTERNAL_DISPATCH1), internalDispatchService.findAllByDocumentId(DocumentTestData.DOCUMENT1_ID));
+//    }
 
-    @Test
-    void findByIsAlbum() {
-        Assertions.assertEquals(List.of(INTERNAL_DISPATCH2, INTERNAL_DISPATCH3), internalDispatchService.findByIsAlbum(true));
-    }
+//    @Test
+//    void findByIsAlbum() {
+//        Assertions.assertEquals(List.of(INTERNAL_DISPATCH2, INTERNAL_DISPATCH3), internalDispatchService.findByIsAlbum(true));
+//    }
 
     @Test
     void update() {

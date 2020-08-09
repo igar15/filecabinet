@@ -2,12 +2,15 @@ package com.igar15.filecabinet.util.validation;
 
 import com.igar15.filecabinet.dto.InternalDispatchTo;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.DocumentRepository;
+import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.List;
 
 @Component
 public class AlbumNameConstraintValidator implements ConstraintValidator<AlbumNameValid, InternalDispatchTo> {
@@ -37,7 +40,16 @@ public class AlbumNameConstraintValidator implements ConstraintValidator<AlbumNa
                context.buildConstraintViolationWithTemplate("stamp for album must not be null").addPropertyNode("stamp").addConstraintViolation();
                return false;
             }
-            return true;
+            else {
+               boolean alreadyExistWithAlbumNameAndStamp = document.getInternalDispatches().keySet().stream()
+                       .anyMatch(internalDispatch -> internalDispatch.getStamp().equals(obj.getStamp()));
+               if (alreadyExistWithAlbumNameAndStamp) {
+                  context.disableDefaultConstraintViolation();
+                  context.buildConstraintViolationWithTemplate("album with this stamp already exist").addPropertyNode("albumName").addConstraintViolation();
+                  return false;
+               }
+               return true;
+            }
          }
       }
       else {
@@ -46,7 +58,7 @@ public class AlbumNameConstraintValidator implements ConstraintValidator<AlbumNa
          }
          else {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("album name must be null cuse its not an album").addPropertyNode("albumName").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("album name must be null cause it's not an album").addPropertyNode("albumName").addConstraintViolation();
             return false;
          }
       }

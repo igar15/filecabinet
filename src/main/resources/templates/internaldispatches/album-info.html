@@ -15,13 +15,16 @@
 </head>
 <body>
 <div class="container">
+
     <a th:href="@{/internaldispatches/list/albums}">Back to Albums list</a>
+
     <br><br>
 
     <h3>Album Directory</h3>
+
     <hr>
 
-    <div th:object="${album}">
+    <div th:object="${internalDispatch}">
 
         <div class="row">
             <div class="col-sm-2 border">
@@ -90,32 +93,29 @@
 
     <br><br>
 
-
     <p class="h4 mb-4">Album documents:</p>
 
-
-
-    <div th:if="${album.documents == null || album.documents.size() == 0}">
+    <div th:if="${internalDispatch.documents == null || internalDispatch.documents.size() == 0}">
         <h2>No documents</h2>
     </div>
 
-    <div th:if="${album.documents != null && album.documents.size() != 0}">
+    <div th:if="${internalDispatch.documents != null && internalDispatch.documents.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-            <th class="align-middle">Decimal number</th>
-            <th class="align-middle">Name</th>
-            <th class="align-middle">Show document</th>
+                <th class="align-middle">Decimal number</th>
+                <th class="align-middle">Name</th>
+                <th class="align-middle">Show document</th>
             </thead>
             <tbody>
-            <tr th:each="tempDocument : ${album.documents}">
-                <td class="align-middle">
-                    <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.id}}" th:target="_blank"><span class="text-dark" th:text="${tempDocument.decimalNumber}"/></a>
-                </td>
-                <td class="align-middle" th:text="${tempDocument.name}"></td>
-                <td class="align-middle text-center">
-                    <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
-                </td>
-            </tr>
+                <tr th:each="tempDocument : ${internalDispatch.documents}">
+                    <td class="align-middle">
+                        <a th:href="@{'/documents/showDocumentInfo/' + ${tempDocument.key.id}}" th:target="_blank" th:text="${tempDocument.key.decimalNumber}"></a>
+                    </td>
+                    <td class="align-middle" th:text="${tempDocument.key.name}"></td>
+                    <td class="align-middle text-center">
+                        <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

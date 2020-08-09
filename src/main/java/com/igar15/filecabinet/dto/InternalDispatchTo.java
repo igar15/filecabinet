@@ -40,14 +40,14 @@ public class InternalDispatchTo {
     @DecNumValid
     private String tempDocumentDecimalNumber;
 
-    @NotNull
+//    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receivedInternalDate;
 
-    @NotBlank
+//    @NotBlank
     private String internalHandlerName;
 
-    @NotBlank
+//    @NotBlank
     private String internalHandlerPhoneNumber;
 
     @NotNull

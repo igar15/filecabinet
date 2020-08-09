@@ -79,17 +79,19 @@ public class Document extends AbstractNamedEntity {
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "document_external_dispatches",
-            joinColumns = @JoinColumn(name = "document_id"),
-            inverseJoinColumns = @JoinColumn(name = "external_dispatch_id"))
-    private Set<ExternalDispatch> externalDispatches;
+    @ElementCollection
+    @CollectionTable(name = "document_external_dispatches",
+            joinColumns = @JoinColumn(name = "document_id"))
+    @MapKeyJoinColumn(name = "external_dispatch_id")
+    @Column(name = "is_active")
+    private Map<ExternalDispatch, Boolean> externalDispatches;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "document_internal_dispatches",
-            joinColumns = @JoinColumn(name = "document_id"),
-            inverseJoinColumns = @JoinColumn(name = "internal_dispatch_id"))
-    private Set<InternalDispatch> internalDispatches;
+    @ElementCollection
+    @CollectionTable(name = "document_internal_dispatches",
+            joinColumns = @JoinColumn(name = "document_id"))
+    @MapKeyJoinColumn(name = "internal_dispatch_id")
+    @Column(name = "is_active")
+    private Map<InternalDispatch, Boolean> internalDispatches;
 
 
 
@@ -122,7 +124,7 @@ public class Document extends AbstractNamedEntity {
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     Set<Document> applicabilities, Form form, Stage stage, Integer sheetsAmount, String format,
                     Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
-                    Set<ExternalDispatch> externalDispatches, Set<InternalDispatch> internalDispatches) {
+                    Map<ExternalDispatch, Boolean> externalDispatches, Map<InternalDispatch, Boolean> internalDispatches) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
@@ -245,19 +247,19 @@ public class Document extends AbstractNamedEntity {
         this.applicabilities = documents;
     }
 
-        public Set<ExternalDispatch> getExternalDispatches() {
+    public Map<ExternalDispatch, Boolean> getExternalDispatches() {
         return externalDispatches;
     }
 
-    public void setExternalDispatches(Set<ExternalDispatch> externalDispatches) {
+    public void setExternalDispatches(Map<ExternalDispatch, Boolean> externalDispatches) {
         this.externalDispatches = externalDispatches;
     }
 
-    public Set<InternalDispatch> getInternalDispatches() {
+    public Map<InternalDispatch, Boolean> getInternalDispatches() {
         return internalDispatches;
     }
 
-    public void setInternalDispatches(Set<InternalDispatch> internalDispatches) {
+    public void setInternalDispatches(Map<InternalDispatch, Boolean> internalDispatches) {
         this.internalDispatches = internalDispatches;
     }
 

@@ -1,6 +1,8 @@
 package com.igar15.filecabinet.service;
 
 import com.igar15.filecabinet.entity.InternalDispatch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,9 +14,9 @@ public interface InternalDispatchService {
 
     List<InternalDispatch> findAll();
 
-    List<InternalDispatch> findAllByDocumentId(int documentId);
+//    List<InternalDispatch> findAllByDocumentId(int documentId);
 
-    List<InternalDispatch> findByIsAlbum(boolean isAlbum);
+    Page<InternalDispatch> findByIsAlbum(boolean isAlbum, Pageable pageable);
 
     void update(InternalDispatch internalDispatch);
 

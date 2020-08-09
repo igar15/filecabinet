@@ -34,36 +34,34 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th class="align-middle">Waybill</th>
-                    <th class="align-middle">Dispatch date</th>
+                    <th class="align-middle">Dispatch handler</th>
                     <th class="align-middle">Status</th>
+                    <th class="align-middle">Active</th>
+                    <th class="align-middle">Dispatch date</th>
                     <th class="align-middle">Dispatch type</th>
                     <th class="align-middle">Stamp</th>
-                    <th class="align-middle">Dispatch handler</th>
+                    <th class="align-middle">Waybill</th>
                     <th class="align-middle">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="tempInternal : ${document.internalDispatches}">
+                    <td class="align-middle text-center" th:text="${tempInternal.key.isAlbum} ? 'Copies archive' : ${tempInternal.key.dispatchHandler.name}"></td>
+                    <td class="align-middle text-center" th:text="${tempInternal.key.status}"></td>
+                    <td class="align-middle text-center" th:text="${tempInternal.value}"></td>
+                    <td class="align-middle text-center" th:text="${tempInternal.key.dispatchDate}"></td>
+                    <td class="align-middle text-center" th:text="${tempInternal.key.isAlbum} ? 'Album (' + ${tempInternal.key.albumName} + ')' : 'Scattering'"></td>
+                    <td class="align-middle text-center" th:text="${tempInternal.key.stamp}"></td>
                     <td class="align-middle text-center">
-                        <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}" th:text="${tempInternal.waybill}"></a>
+                        <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.key.id}}" th:text="${tempInternal.key.waybill}"></a>
                     </td>
-                    <td class="align-middle text-center" th:text="${tempInternal.dispatchDate}"></td>
-                    <td class="align-middle text-center" th:text="${tempInternal.status}"></td>
-                    <td class="align-middle text-center" th:text="${tempInternal.isAlbum} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Rossip'"></td>
-                    <td class="align-middle text-center" th:text="${tempInternal.stamp}"></td>
-                    <td class="align-middle text-center" th:text="${tempInternal.dispatchHandler.name}"></td>
                     <td class="align-middle text-center">
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeInternal/' + ${id} + '/' + ${tempInternal.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                            <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true}"
+                               th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister</a>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div class="text-danger" th:if="${errorMessage != null}">
-        <h6 th:text="${errorMessage}"></h6>
     </div>
 </div>
 </body>

@@ -76,7 +76,7 @@ values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naum
        ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'ЮПИЯ.301265.026'),
        ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', 'I', 1000, '2020-04-18', 'Fatelnikova', '1-34-68', true, 'БА6.151.128');
 
-insert into document_internal_dispatches (document_id,internal_dispatch_id)
-values (1009, 1026),
-       (1009, 1027),
-       (1010, 1028);
+insert into document_internal_dispatches (document_id,internal_dispatch_id, is_active)
+values (1009, 1026, true),
+       (1009, 1027, true),
+       (1010, 1028, true);

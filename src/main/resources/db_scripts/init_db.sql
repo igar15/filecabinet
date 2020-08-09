@@ -123,6 +123,7 @@ create unique index internal_dispatches_waybill_dispatch_date_idx on internal_di
 create table document_internal_dispatches (
     document_id integer not null,
     internal_dispatch_id integer not null,
+    is_active boolean not null,
     primary key (document_id, internal_dispatch_id),
     foreign key (document_id) references documents(id) on delete cascade,
     foreign key (internal_dispatch_id) references internal_dispatches (id)
