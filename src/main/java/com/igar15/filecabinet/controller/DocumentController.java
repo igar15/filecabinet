@@ -146,6 +146,8 @@ public class DocumentController {
         if (document.isNew()) {
             documentService.create(document);
         } else {
+            document.setExternalDispatches(documentService.findById(document.getId()).getExternalDispatches());
+            document.setInternalDispatches(documentService.findById(document.getId()).getInternalDispatches());
             documentService.update(document);
         }
         return "redirect:/documents/showDocumentInfo/" + document.getId();
