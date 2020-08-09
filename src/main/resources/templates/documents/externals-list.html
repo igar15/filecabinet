@@ -43,9 +43,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="tempExternal : ${document.externalDispatches}">
+                <tr th:each="tempExternal : ${document.externalDispatches}" th:class="${tempExternal.value} ? 'table-default' : 'table-danger'">
                     <td class="align-middle text-center" th:text="${tempExternal.key.company.name}"></td>
-                    <td class="align-middle text-center" th:text="${tempExternal.key.status}"></td>
+                    <td class="align-middle text-center" th:text="${tempExternal.key.status.name}"></td>
                     <td class="align-middle text-center" th:text="${tempExternal.value}"></td>
                     <td class="align-middle text-center" th:text="${tempExternal.key.dispatchDate}"></td>
                     <td class="align-middle text-center">
@@ -53,7 +53,7 @@
                     </td>
                     <td class="align-middle text-center" th:text="${tempExternal.key.waybill}"></td>
                     <td class="align-middle text-center">
-                        <a class="btn btn-sm btn-outline-danger"
+                        <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
                            th:href="@{'/documents/deregisterExternal/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister</a>
                     </td>
                 </tr>
