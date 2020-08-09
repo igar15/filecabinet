@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
     Page<InternalDispatch> findByIsAlbum(boolean isAlbum, Pageable pageable);
 
+    @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
+    Page<InternalDispatch> findByDecimalNumber(int id, Pageable pageable);
 
 }

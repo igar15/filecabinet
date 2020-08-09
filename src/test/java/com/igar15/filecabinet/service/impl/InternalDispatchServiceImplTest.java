@@ -3,6 +3,7 @@ package com.igar15.filecabinet.service.impl;
 import com.igar15.filecabinet.DocumentTestData;
 import com.igar15.filecabinet.InternalDispatchTestData;
 import com.igar15.filecabinet.entity.InternalDispatch;
+import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.InternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +22,16 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private InternalDispatchService internalDispatchService;
+
+    @Autowired
+    private InternalDispatchRepository internalDispatchRepository;
+
+    @Test
+    void check() {
+        List<InternalDispatch> byDecimalNumber = internalDispatchRepository.findByDecimalNumber(1009);
+        byDecimalNumber.forEach(internalDispatch -> System.out.println(internalDispatch.getWaybill()));
+
+    }
 
     @Test
     void create() {

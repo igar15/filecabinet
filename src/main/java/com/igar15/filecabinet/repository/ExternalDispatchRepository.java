@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.repository;
 
 import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,6 @@ public interface ExternalDispatchRepository extends JpaRepository<ExternalDispat
 //    List<ExternalDispatch> findByDocuments_Id(int documentId, Sort sort);
 //
 //    List<ExternalDispatch>
+
 
 }
