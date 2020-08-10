@@ -16,7 +16,7 @@ public interface InternalDispatchService {
 
 //    List<InternalDispatch> findAllByDocumentId(int documentId);
 
-    Page<InternalDispatch> findByIsAlbum(boolean isAlbum, Pageable pageable);
+    Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
     void update(InternalDispatch internalDispatch);
 

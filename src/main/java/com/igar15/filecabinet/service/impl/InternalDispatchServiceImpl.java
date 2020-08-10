@@ -41,8 +41,8 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
 //    }
 
     @Override
-    public Page<InternalDispatch> findByIsAlbum(boolean isAlbum, Pageable pageable) {
-        return internalDispatchRepository.findByIsAlbum(true, pageable);
+    public Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable) {
+        return internalDispatchRepository.findByIsAlbumAndIsActive(true, true, pageable);
     }
 
     @Override

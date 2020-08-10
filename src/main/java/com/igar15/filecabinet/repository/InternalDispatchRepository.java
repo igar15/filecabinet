@@ -19,9 +19,11 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
     List<InternalDispatch> findByDispatchHandler_Id(int developerId);
 
-    Page<InternalDispatch> findByIsAlbum(boolean isAlbum, Pageable pageable);
+    Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
     @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
     Page<InternalDispatch> findByDecimalNumber(int id, Pageable pageable);
+
+    Page<InternalDispatch> findByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isActive, Pageable pageable);
 
 }

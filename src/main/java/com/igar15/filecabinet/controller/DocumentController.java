@@ -251,6 +251,17 @@ public class DocumentController {
         return "/documents/internals-list";
     }
 
+    @GetMapping("/deregisterAlbum/{id}/{internalId}")
+    public String deregisterAlbum(@PathVariable("id") int id,
+                                  @PathVariable("internalId") int internalId) {
+        InternalDispatch internalDispatch = internalDispatchService.findById(internalId);
+        internalDispatch.setIsActive(false);
+        internalDispatch.getDocuments().keySet()
+                .forEach(key -> internalDispatch.getDocuments().put(key, false));
+        internalDispatchService.update(internalDispatch);
+        return "redirect:/documents/showInternalDispatches/" + id;
+    }
+
     @GetMapping("/showApplicabilities/{id}")
     public String showApplicabilities(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));

@@ -115,6 +115,7 @@ create table internal_dispatches (
     internal_handler_phone_number varchar not null,
     is_album boolean not null,
     album_name varchar default null,
+    is_active boolean not null,
     foreign key (developer_id) references developers (id) on delete cascade
 );
 create unique index internal_dispatches_stamp_album_name_idx on internal_dispatches (stamp, album_name);

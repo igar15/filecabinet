@@ -56,8 +56,10 @@
                         <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.key.id}}" th:text="${tempInternal.key.waybill}"></a>
                     </td>
                     <td class="align-middle text-center">
-                            <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true}"
+                            <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
                                th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister</a>
+                        <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"
+                           th:href="@{'/documents/deregisterAlbum/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister album</a>
                     </td>
                 </tr>
             </tbody>

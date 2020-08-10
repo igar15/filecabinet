@@ -8,6 +8,7 @@ import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
@@ -79,7 +80,7 @@ public class InternalDispatchController {
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
         model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-        return "/internaldispatches/orm";
+        return "/internaldispatches/form";
     }
 
     @GetMapping("/showInternalDispatchInfo/{id}")
@@ -146,8 +147,18 @@ public class InternalDispatchController {
     }
 
     @GetMapping("/list/albums")
-    public String showAlbums(@SortDefault("albumName") Pageable pageable, Model model) {
-        model.addAttribute("internalDispatches", internalDispatchService.findByIsAlbum(true, pageable));
+    public String showAlbums(@RequestParam(value = "albumName", required = false) String albumName,
+                             @SortDefault("albumName") Pageable pageable,
+                             Model model) {
+        albumName = "".equals(albumName) ? null : albumName;
+        Page<InternalDispatch> internalDispatches = null;
+        if (albumName != null) {
+            internalDispatches = internalDispatchRepository.findByAlbumNameContainsIgnoreCaseAndIsActive(albumName, true, pageable);
+        }
+        else {
+            internalDispatches = internalDispatchService.findByIsAlbumAndIsActive(true, true, pageable);
+        }
+        model.addAttribute("internalDispatches", internalDispatches);
         return "/internaldispatches/list-albums";
     }
 

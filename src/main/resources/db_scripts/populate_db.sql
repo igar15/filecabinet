@@ -71,10 +71,10 @@ values (1009, 1023, true),
        (1010, 1025, true);
 
 insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, developer_id,
-                                 received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name)
-values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naumkin', '1-31-65', false, null),
-       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'ЮПИЯ.301265.026'),
-       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', 'I', 1000, '2020-04-18', 'Fatelnikova', '1-34-68', true, 'БА6.151.128');
+                                 received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name, is_active)
+values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naumkin', '1-31-65', false, null, true),
+       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'ЮПИЯ.301265.026', true),
+       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', 'I', 1000, '2020-04-18', 'Fatelnikova', '1-34-68', true, 'БА6.151.128', true);
 
 insert into document_internal_dispatches (document_id,internal_dispatch_id, is_active)
 values (1009, 1026, true),

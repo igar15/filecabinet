@@ -59,6 +59,10 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "album_name")
     private String albumName;
 
+    @Column(name = "is_active")
+    private boolean isActive = true;
+
+
 
     public InternalDispatch() {
 
@@ -150,4 +154,11 @@ public class InternalDispatch extends Dispatch {
         this.documents = documents;
     }
 
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
+    }
 }

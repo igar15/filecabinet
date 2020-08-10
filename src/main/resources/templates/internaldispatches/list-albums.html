@@ -24,6 +24,18 @@
 
     <hr>
 
+    <div class="container-fluid p-3 my-3 bg-dark text-white">
+        <form action="#" th:action="@{/internaldispatches/list/albums}" method="get">
+            <div class="row">
+                <div class="col-sm-3 m-1">
+                    <input type="text" class="form-control" th:name="albumName" th:value="${param.albumName}" placeholder="Album decimal number">
+                </div>
+                <button type="submit" class="btn btn-info col-2 m-1">Search</button>
+                <a th:href="@{/internaldispatches/list/albums}" class="btn btn-danger col-2 m-1">Clear filter</a>
+            </div>
+        </form>
+    </div>
+
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">
             <tr>
