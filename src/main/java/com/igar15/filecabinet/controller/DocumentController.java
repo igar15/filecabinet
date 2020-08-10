@@ -138,7 +138,7 @@ public class DocumentController {
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("document") Document document, BindingResult bindingResult, Model model) {
-        bindingResult = checkDecimalNumberOnDuplicate(document, bindingResult);
+        checkDecimalNumberOnDuplicate(document, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("developers", developerService.findAll());
             model.addAttribute("companies", companyService.findAll());
@@ -147,9 +147,21 @@ public class DocumentController {
         if (document.isNew()) {
             documentService.create(document);
         } else {
-            document.setExternalDispatches(documentService.findById(document.getId()).getExternalDispatches());
-            document.setInternalDispatches(documentService.findById(document.getId()).getInternalDispatches());
-            documentService.update(document);
+//            document.setExternalDispatches(documentService.findById(document.getId()).getExternalDispatches());
+//            document.setInternalDispatches(documentService.findById(document.getId()).getInternalDispatches());
+//            documentService.update(document);
+//            documentService.updateWithout(document);
+            if (document.getSheetsAmount() == null) {
+                document.setSheetsAmount(0);
+            }
+            if (document.getA4Amount() == null) {
+                document.setA4Amount(0);
+            }
+            documentRepository.updateDocument(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
+                    document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
+                    document.getFormat(), document.getA4Amount(), document.getDeveloper(), document.getOriginalHolder());
+//            documentRepository.updDoc(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
+//                    document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount());
         }
         return "redirect:/documents/showDocumentInfo/" + document.getId();
     }
@@ -369,7 +381,7 @@ public class DocumentController {
                 .allMatch(Objects::isNull);
     }
 
-    private BindingResult checkDecimalNumberOnDuplicate(Document obj, BindingResult bindingResult) {
+    private void checkDecimalNumberOnDuplicate(Document obj, BindingResult bindingResult) {
         boolean isUnique = true;
         Document document = documentRepository.findByDecimalNumber(obj.getDecimalNumber()).orElse(null);
 
@@ -382,7 +394,6 @@ public class DocumentController {
         if (!isUnique) {
             bindingResult.rejectValue("decimalNumber", "error.document", "Document already exist");
         }
-        return bindingResult;
     }
 
 }

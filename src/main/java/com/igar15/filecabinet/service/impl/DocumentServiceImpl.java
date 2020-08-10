@@ -18,6 +18,13 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentRepository documentRepository;
 
     @Override
+    public void updateWithout(Document document) {
+        documentRepository.updateDocument(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
+                document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
+                document.getFormat(), document.getA4Amount(), document.getDeveloper(), document.getOriginalHolder());
+    }
+
+    @Override
     public Document create(Document document) {
         Assert.notNull(document, "document must not be null");
         return documentRepository.save(document);

@@ -20,4 +20,6 @@ public interface DocumentService {
 
     void deleteById(int id);
 
+    void updateWithout(Document document);
+
 }
