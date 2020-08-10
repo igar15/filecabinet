@@ -55,6 +55,9 @@
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
                            th:href="@{'/documents/deregisterExternal/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister</a>
+                        <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
+                           th:href="@{'/documents/deregisterExternalWithIncomings/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister with Incomings</a>
+
                     </td>
                 </tr>
             </tbody>

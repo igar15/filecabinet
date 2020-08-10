@@ -2,6 +2,7 @@ package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.DocumentTestData;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +21,15 @@ class DocumentServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private DocumentRepository documentRepository;
+
+    @Test
+    void find() {
+        List<Document> byApplicabilities_decimalNumber = documentRepository.findByApplicabilities_DecimalNumber("БА6.151.128");
+        byApplicabilities_decimalNumber.forEach(d -> System.out.println(d.getDecimalNumber()));
+    }
 
     @Test
     void create() {

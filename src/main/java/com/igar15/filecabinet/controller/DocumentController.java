@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Controller
@@ -310,6 +311,59 @@ public class DocumentController {
         return "/documents/applicabilities-list";
     }
 
+    @GetMapping("/deregisterExternalWithIncomings/{id}/{externalId}")
+    public String deregisterExternalWithIncomings(@PathVariable("id") int id,
+                                                  @PathVariable("externalId") int externalId,
+                                                  Model model) {
+
+        Document mainDocument = documentService.findById(id);
+        ExternalDispatch mainExternal = externalDispatchService.findById(externalId);
+
+        mainDocument.getExternalDispatches().keySet()
+                .forEach(externalDispatch -> {
+                    if (externalDispatch.getId().equals(externalId)) {
+                        mainDocument.getExternalDispatches().put(externalDispatch, false);
+                    }
+                });
+        documentService.update(mainDocument);
+
+        List<Document> documentsInMainDocument = documentRepository.findByApplicabilities_DecimalNumber(mainDocument.getDecimalNumber());
+        Queue<Document> documents = new LinkedList<>(documentsInMainDocument);
+        while (!documents.isEmpty()) {
+            Document tempDocument = documents.remove();
+            AtomicBoolean needDeregister = new AtomicBoolean(true);
+
+            Set<Document> tempDocumentApplicabilities = tempDocument.getApplicabilities();
+            tempDocumentApplicabilities.forEach(document -> {
+                Map<ExternalDispatch, Boolean> externalDispatches = document.getExternalDispatches();
+                externalDispatches.entrySet().forEach(entry -> {
+                    if (entry.getValue()) {
+                        if (entry.getKey().getCompany().getName().equals(mainExternal.getCompany().getName())) {
+                            needDeregister.set(false);
+                        }
+                    }
+                });
+            });
+
+            if (needDeregister.get()) {
+                tempDocument.getExternalDispatches().keySet()
+                        .forEach(externalDispatch -> {
+                            if (externalDispatch.getCompany().getName().equals(mainExternal.getCompany().getName())) {
+                                tempDocument.getExternalDispatches().put(externalDispatch, false);
+                            }
+                        });
+                documentService.update(tempDocument);
+                documents.addAll(documentRepository.findByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
+            }
+        }
+        model.addAttribute("document", mainDocument);
+        return "/documents/externals-list";
+    }
+
+
+
+
+
     private boolean checkParamsOnNull(String... params) {
         return Arrays.stream(params)
                 .allMatch(Objects::isNull);
@@ -317,7 +371,7 @@ public class DocumentController {
 
     private BindingResult checkDecimalNumberOnDuplicate(Document obj, BindingResult bindingResult) {
         boolean isUnique = true;
-        Document document = documentService.findByDecimalNumber(obj.getDecimalNumber());
+        Document document = documentRepository.findByDecimalNumber(obj.getDecimalNumber()).orElse(null);
 
         if (obj.isNew()) {
             isUnique = document == null;
