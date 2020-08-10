@@ -69,10 +69,10 @@
             <div class="col-sm-5">
                 <input type="text" th:field="*{albumName}" th:class="${#fields.hasErrors('albumName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Album name'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('albumName')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('albumName')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('albumName')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -83,10 +83,10 @@
             <div class="col-sm-5">
                 <input type="text" th:field="*{waybill}" th:class="${#fields.hasErrors('waybill')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Waybill'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('waybill')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('waybill')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('waybill')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -97,10 +97,10 @@
             <div class="col-sm-5">
                 <input type="date" th:field="*{dispatchDate}" th:class="${#fields.hasErrors('dispatchDate')} ? 'form-control is-invalid' : 'form-control'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('dispatchDate')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('dispatchDate')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('dispatchDate')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -116,10 +116,10 @@
                     </div>
                 </div>
                 <span class="help-block" th:if="${#fields.hasErrors('status')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -130,10 +130,10 @@
             <div class="col-sm-5">
                 <input type="text" th:field="*{remark}" th:class="${#fields.hasErrors('remark')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Remark'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('remark')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('remark')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('remark')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -149,10 +149,10 @@
                     </div>
                 </div>
                 <span class="help-block" th:if="${#fields.hasErrors('stamp')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('stamp')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('stamp')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -169,10 +169,10 @@
                     </option>
                 </select>
                 <span class="help-block" th:if="${#fields.hasErrors('dispatchHandler')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('dispatchHandler')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('dispatchHandler')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -180,11 +180,10 @@
         <div class="row">
             <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
         </div>
+
         <br><br>
 
-
     </form>
-
 </div>
 </body>
 </html>

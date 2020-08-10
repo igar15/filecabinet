@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 
@@ -15,31 +15,72 @@
 </head>
 <body>
     <div class="container">
+
         <a th:href="@{/}">Back to Home page</a>
-        <h3>Companies List</h3>
+
+        <br><br>
+
+        <h3>List of Companies</h3>
+
         <hr>
+
+        <div class="container-fluid p-3 my-3 bg-dark text-white">
+            <form action="#" th:action="@{/companies/list}" method="get">
+                <div class="row">
+                    <div class="col-sm-3 m-1">
+                        <input type="text" class="form-control" th:name="companyName" th:value="${param.companyName}" placeholder="Company name">
+                    </div>
+                    <button type="submit" class="btn btn-info col-2 m-1">Search</button>
+                    <a th:href="@{/companies/list}" class="btn btn-danger col-2 m-1">Clear filter</a>
+                </div>
+            </form>
+        </div>
+
+        <br><br>
 
         <a th:href="@{/companies/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Company</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-            <tr>
-                <th>Name</th>
-                <th>Contact person</th>
-                <th>Address</th>
-            </tr>
+                <tr>
+                    <th><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
+                    <th>Contact person</th>
+                    <th>Address</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="tempCompany : ${companies}">
-                <td class="align-middle text-center">
-                    <a th:href="@{'/companies/showCompanyInfo/' + ${tempCompany.id}}"><span class="text-dark" th:text="${tempCompany.name}"/></a>
-                </td>
-                <td class="align-middle text-center" th:text="${tempCompany.contactPerson == null} ? '' : ${tempCompany.contactPerson}"/>
-                <td class="align-middle text-center" th:text="${tempCompany.address.zipcode + ', ' + tempCompany.address.city + ', ' +
-                                                        tempCompany.address.street + ', ' + tempCompany.address.building}"></td>
-            </tr>
+                <tr th:each="tempCompany : ${companies}">
+                    <td class="align-middle text-center">
+                        <a th:href="@{'/companies/showCompanyInfo/' + ${tempCompany.id}}" th:text="${tempCompany.name}"></a>
+                    </td>
+                    <td class="align-middle text-center" th:text="${tempCompany.contactPerson == null} ? '' : ${tempCompany.contactPerson}"/>
+                    <td class="align-middle text-center" th:text="${tempCompany.address.zipcode + ', ' + tempCompany.address.city + ', ' +
+                                                            tempCompany.address.street + ', ' + tempCompany.address.building}"></td>
+                </tr>
             </tbody>
         </table>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                Show <span sd:page-size-selector="javascript"></span> entries
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div sd:pagination-summary="">info</div>
+            </div>
+            <div class="col-sm-6">
+                <nav class="pull-right">
+                    <ul class="pagination" sd:pagination-split="5" sd:pagination="full">
+                        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

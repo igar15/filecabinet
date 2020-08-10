@@ -20,7 +20,7 @@
 
     <br><br>
 
-    <h3>Internal dispatch List</h3>
+    <h3>List of Internal dispatches</h3>
 
     <hr>
 
@@ -29,25 +29,26 @@
 
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">
-        <tr>
-            <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="waybill">Waybill</a></th>
-            <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchDate">Dispatch date</a></th>
-            <th class="align-middle">Dispatch type</th>
-            <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="stamp">Stamp</a></th>
-            <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchHandler">Addressee</a></th>
-        </tr>
+            <tr>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="waybill">Waybill</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchDate">Dispatch date</a></th>
+                <th class="align-middle">Dispatch type</th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="stamp">Stamp</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchHandler">Addressee</a></th>
+            </tr>
         </thead>
-
         <tbody>
-        <tr th:each="tempInternal : ${internalDispatches}">
-            <td class="align-middle text-center">
-                <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}" th:text="${tempInternal.waybill}"></a>
-            </td>
-            <td class="align-middle text-center" th:text="${tempInternal.dispatchDate}"></td>
-            <td class="align-middle text-center" th:text="${tempInternal.isAlbum == true} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Scattered'"></td>
-            <td class="align-middle text-center" th:text="${tempInternal.stamp}"></td>
-            <td class="align-middle text-center" th:text="${tempInternal.dispatchHandler.name}"></td>
-        </tr>
+            <tr th:each="tempInternal : ${internalDispatches}">
+                <td class="align-middle text-center">
+                    <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}" th:text="${tempInternal.waybill}"></a>
+                </td>
+                <td class="align-middle text-center" th:text="${tempInternal.dispatchDate}"></td>
+                <td class="align-middle text-center" th:text="${tempInternal.isAlbum == true} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Scattered'"></td>
+                <td class="align-middle text-center" th:text="${tempInternal.stamp}"></td>
+                <td class="align-middle text-center">
+                    <a th:if="${tempInternal.dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempInternal.dispatchHandler.id}}" th:target="_blank" th:text="${tempInternal.dispatchHandler.name}"></a>
+                </td>
+            </tr>
         </tbody>
     </table>
 

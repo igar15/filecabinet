@@ -22,7 +22,7 @@
 
         <br><br>
 
-        <h3>Documents List</h3>
+        <h3>List of Documents</h3>
 
         <hr>
 
@@ -131,11 +131,11 @@
                     </td>
                     <td class="align-middle" th:text="${tempDocument.name}"></td>
                     <td class="align-middle text-center">
-                        <a th:if="${tempDocument.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempDocument.department.id}}" th:text="${tempDocument.department.name}"></a>
+                        <a th:if="${tempDocument.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempDocument.department.id}}" th:target="_blank" th:text="${tempDocument.department.name}"></a>
                     </td>
                     <td class="align-middle text-center" th:text="${tempDocument.status.name}"></td>
                     <td class="align-middle text-center">
-                        <a th:if="${tempDocument.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempDocument.originalHolder.id}}" th:text="${tempDocument.originalHolder.name}"></a>
+                        <a th:if="${tempDocument.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempDocument.originalHolder.id}}" th:target="_blank" th:text="${tempDocument.originalHolder.name}"></a>
                     </td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
@@ -164,13 +164,6 @@
                 </nav>
             </div>
         </div>
-
-
     </div>
-
-    <div class="container" th:replace="fragments/footer :: footer">
-        <p>footer</p>
-    </div>
-
 </body>
 </html>

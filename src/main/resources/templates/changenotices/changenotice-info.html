@@ -16,7 +16,7 @@
 <body>
     <div class="container">
 
-        <a th:href="@{/changenotices/list}">Back to Change notices list</a>
+        <a th:href="@{/changenotices/list}">To List of Change notices</a>
 
         <br><br>
 
@@ -28,7 +28,7 @@
 
         <div th:object="${changeNotice}">
 
-            <div class="row">
+            <div class="row px-3">
                 <div class="col-sm-2 border">
                     <h6>Name:</h6>
                 </div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row px-3">
                 <div class="col-sm-2 border">
                     <h6>Issue date:</h6>
                 </div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row px-3">
                 <div class="col-sm-2 border">
                     <h6>Change code:</h6>
                 </div>
@@ -55,16 +55,16 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row px-3">
                 <div class="col-sm-2 border">
-                    <h6>Department:</h6>
+                    <h6>Developer:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{department == null} ? '' : *{name} "></h6>
+                    <a class="h6" th:if="*{department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${changeNotice.department.id}}" th:target="_blank" th:text="*{department.name}"></a>
                 </div>
             </div>
 
-            <div class="row mb-1">
+            <div class="row px-3 mb-1">
                 <div class="col-sm-2 border">
                     <h6>Documents:</h6>
                 </div>
@@ -82,9 +82,6 @@
             </div>
 
         </div>
-
-
-
     </div>
 </body>
 </html>

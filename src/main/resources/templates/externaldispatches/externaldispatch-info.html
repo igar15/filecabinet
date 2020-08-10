@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 
-    <a th:href="@{/externaldispatches/list}">Back to External dispatches list</a>
+    <a th:href="@{/externaldispatches/list}">To List of External dispatches</a>
 
     <br><br>
 
@@ -73,12 +73,12 @@
             </div>
         </div>
 
-        <div class="row px-3">
+        <div class="row px-3 mb-1">
             <div class="col-sm-3 border">
                 <h6>Company:</h6>
             </div>
             <div class="col-sm-2 border">
-                <h6 th:text="*{company.name}"></h6>
+                <a class="h6" th:if="*{company != null}" th:href="@{'/companies/showCompanyInfo/' + ${externalDispatch.company.id}}" th:target="_blank" th:text="*{company.name}"></a>
             </div>
         </div>
 
@@ -127,7 +127,9 @@
             </thead>
             <tbody>
                 <tr th:each="entry : ${externalDispatch.documents}" th:class="${entry.value} ? 'table-default' : 'table-danger'">
-                    <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
+                    <td class="align-middle">
+                        <a th:href="@{'/documents/showDocumentInfo/' + ${entry.key.id}}" th:target="_blank" th:text="${entry.key.decimalNumber}"></a>
+                    </td>
                     <td class="align-middle" th:text="${entry.key.name}"></td>
                     <td class="align-middle text-center" th:text="${entry.value}"></td>
                     <td class="align-middle text-center">

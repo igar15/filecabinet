@@ -61,10 +61,10 @@
                     </option>
                 </select>
                 <span class="help-block" th:if="${#fields.hasErrors('dispatchHandler')}">
-                <ul>
-                    <li class="text-danger" th:each="err : ${#fields.errors('dispatchHandler')}" th:text="${err}"/>
-                </ul>
-            </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('dispatchHandler')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -75,10 +75,10 @@
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal handler name'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('internalHandlerName')}">
-                <ul>
-                    <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerName')}" th:text="${err}"/>
-                </ul>
-            </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerName')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -89,10 +89,10 @@
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal handler phone number'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('internalHandlerPhoneNumber')}">
-                <ul>
-                    <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerPhoneNumber')}" th:text="${err}"/>
-                </ul>
-            </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerPhoneNumber')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
 
@@ -103,23 +103,20 @@
             <div class="col-sm-5">
                 <input type="date" th:field="*{receivedInternalDate}" th:class="${#fields.hasErrors('receivedInternalDate')} ? 'form-control is-invalid' : 'form-control'"/>
                 <span class="help-block" th:if="${#fields.hasErrors('receivedInternalDate')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('receivedInternalDate')}" th:text="${err}"/>
-                        </ul>
-                    </span>
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('receivedInternalDate')}" th:text="${err}"/>
+                    </ul>
+                </span>
             </div>
         </div>
-
 
         <div class="row">
             <button type="submit" class="btn-sm btn-primary offset-7">Update</button>
         </div>
+
         <br><br>
 
-
     </form>
-
 </div>
-
 </body>
 </html>

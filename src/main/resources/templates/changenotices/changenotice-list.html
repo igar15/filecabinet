@@ -20,7 +20,7 @@
 
         <br><br>
 
-        <h3>Change notices List</h3>
+        <h3>List of Change notices</h3>
 
         <hr>
 
@@ -62,9 +62,6 @@
                         <input type="date" class="form-control" th:name="before" th:value="${param.before}">
                     </div>
                 </div>
-
-
-
             </form>
         </div>
 
@@ -91,7 +88,7 @@
                     <td class="align-middle text-center" th:text="${tempChangeNotice.issueDate}"></td>
                     <td class="align-middle text-center" th:text="${tempChangeNotice.changeCode}"></td>
                     <td class="align-middle text-center">
-                        <a th:if="${tempChangeNotice.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempChangeNotice.department.id}}" th:text="${tempChangeNotice.department.name}"></a>
+                        <a th:if="${tempChangeNotice.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempChangeNotice.department.id}}" th:target="_blank" th:text="${tempChangeNotice.department.name}"></a>
                     </td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>

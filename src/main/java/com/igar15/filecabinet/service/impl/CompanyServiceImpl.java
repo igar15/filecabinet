@@ -7,7 +7,8 @@ import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -42,8 +43,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Page<Company> findByNameContainsIgnoreCase(String companyName, Pageable pageable) {
+        return companyRepository.findByNameContainsIgnoreCase(companyName, pageable);
+    }
+
+    @Override
     public List<Company> findAll() {
-        return companyRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return companyRepository.findAll();
+    }
+
+    @Override
+    public Page<Company> findAll(Pageable pageable) {
+        return companyRepository.findAll(pageable);
     }
 
     @Override

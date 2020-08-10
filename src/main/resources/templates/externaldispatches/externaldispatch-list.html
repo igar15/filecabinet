@@ -20,7 +20,7 @@
 
     <br><br>
 
-    <h3>External dispatch List</h3>
+    <h3>List of External dispatches</h3>
 
     <hr>
 
@@ -43,7 +43,9 @@
                     <a th:href="@{'/externaldispatches/showExternalDispatchInfo/' + ${tempExternal.id}}" th:text="${tempExternal.letterOutgoingNumber}"></a>
                 </td>
                 <td class="align-middle text-center" th:text="${tempExternal.dispatchDate}"></td>
-                <td class="align-middle text-center" th:text="${tempExternal.company == null} ? '' : ${tempExternal.company.name}"></td>
+                <td class="align-middle text-center">
+                    <a th:if="${tempExternal.company != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempExternal.company.id}}" th:target="_blank" th:text="${tempExternal.company.name}"></a>
+                </td>
                 <td class="align-middle text-center" th:text="${tempExternal.waybill}"></td>
                 <td class="align-middle text-center" th:text="${tempExternal.status}"></td>
                 <td class="align-middle text-center" th:text="${tempExternal.remark}"></td>

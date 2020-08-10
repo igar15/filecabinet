@@ -53,11 +53,10 @@
                     </td>
                     <td class="align-middle text-center" th:text="${tempExternal.key.waybill}"></td>
                     <td class="align-middle text-center">
-                        <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
+                        <a class="btn btn-sm btn-outline-danger mr-2" th:if="${tempExternal.value}"
                            th:href="@{'/documents/deregisterExternal/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister</a>
                         <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
-                           th:href="@{'/documents/deregisterExternalWithIncomings/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Deregister with Incomings</a>
-
+                           th:href="@{'/documents/deregisterExternalWithIncomings/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Dereg. with inc.</a>
                     </td>
                 </tr>
             </tbody>

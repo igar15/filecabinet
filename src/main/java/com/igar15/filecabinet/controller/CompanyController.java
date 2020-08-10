@@ -1,8 +1,12 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Company;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +22,21 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping("/list")
-    public String showAll(Model model) {
-        model.addAttribute("companies", companyService.findAll());
+    public String showAll(@SortDefault("name") Pageable pageable,
+                          @RequestParam(value = "companyName", required = false) String companyName,
+                          Model model) {
+        if(companyName != null) {
+            companyName = companyName.trim();
+        }
+        companyName = "".equals(companyName) ? null : companyName;
+        Page<Company> companies = null;
+        if (companyName != null) {
+            companies = companyService.findByNameContainsIgnoreCase(companyName, pageable);
+        }
+        else {
+            companies = companyService.findAll(pageable);
+        }
+        model.addAttribute("companies", companies);
         return "/companies/company-list";
     }
 
@@ -40,7 +57,8 @@ public class CompanyController {
         else {
             companyService.update(company);
         }
-        return "redirect:/companies/showCompanyInfo/" + company.getId();
+        model.addAttribute("company", company);
+        return "/companies/company-info";
     }
 
     @GetMapping("/showCompanyInfo/{id}")
@@ -49,14 +67,14 @@ public class CompanyController {
         return "/companies/company-info";
     }
 
-    @GetMapping("/showFormForUpdate")
-    public String showFormForUpdate(@RequestParam("companyId") int id, Model model) {
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("company", companyService.findById(id));
         return "/companies/company-form";
     }
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam("companyId") int id) {
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
         companyService.deleteById(id);
         return "redirect:/companies/list";
     }
