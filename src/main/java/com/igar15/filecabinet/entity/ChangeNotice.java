@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Map;
@@ -25,8 +24,8 @@ public class ChangeNotice extends AbstractNamedEntity {
     private LocalDate issueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "developer_id")
-    private Developer developer;
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_change_notices", joinColumns = @JoinColumn(name = "change_notice_id"))
@@ -38,18 +37,18 @@ public class ChangeNotice extends AbstractNamedEntity {
 
     }
 
-    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer) {
+    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Department department) {
         super(id, name);
         this.changeCode = changeCode;
         this.issueDate = issueDate;
-        this.developer = developer;
+        this.department = department;
     }
 
-    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Developer developer, Map<Document, Integer> documents) {
+    public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Department department, Map<Document, Integer> documents) {
         super(id, name);
         this.changeCode = changeCode;
         this.issueDate = issueDate;
-        this.developer = developer;
+        this.department = department;
         this.documents = documents;
     }
 
@@ -62,12 +61,12 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.changeCode = changeCode;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Map<Document, Integer> getDocuments() {

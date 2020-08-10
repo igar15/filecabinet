@@ -3,7 +3,7 @@ package com.igar15.filecabinet.controller;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
-import com.igar15.filecabinet.service.DeveloperService;
+import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
@@ -31,7 +31,7 @@ public class InternalDispatchController {
     private InternalDispatchRepository internalDispatchRepository;
 
     @Autowired
-    private DeveloperService developerService;
+    private DepartmentService departmentService;
 
     @Autowired
     private DocumentService documentService;
@@ -39,21 +39,21 @@ public class InternalDispatchController {
     @GetMapping("/list")
     public String showAll(@SortDefault(value = "dispatchDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         model.addAttribute("internalDispatches", internalDispatchRepository.findAll(pageable));
-        return "/internaldispatches/all-list";
+        return "/internaldispatches/internaldispatch-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("internalDispatch", new InternalDispatch());
-        model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-        return "/internaldispatches/form";
+        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+        return "/internaldispatches/internaldispatch-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-            return "/internaldispatches/form";
+            model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+            return "/internaldispatches/internaldispatch-form";
         }
         else {
             if (internalDispatch.isNew()) {
@@ -72,21 +72,21 @@ public class InternalDispatchController {
                 internalDispatchService.update(internalDispatch);
             }
             model.addAttribute("internalDispatch", internalDispatch);
-            return "/internaldispatches/info";
+            return "/internaldispatches/internaldispatch-info";
         }
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
-        model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
-        return "/internaldispatches/form";
+        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+        return "/internaldispatches/internaldispatch-form";
     }
 
     @GetMapping("/showInternalDispatchInfo/{id}")
     public String showInternalDispatchInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
-        return "/internaldispatches/info";
+        return "/internaldispatches/internaldispatch-info";
     }
 
     @GetMapping("/delete/{id}")
@@ -122,7 +122,7 @@ public class InternalDispatchController {
         }
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("internalDispatch", internalDispatch);
-        return "/internaldispatches/info";
+        return "/internaldispatches/internaldispatch-info";
     }
 
 
@@ -143,7 +143,7 @@ public class InternalDispatchController {
         }
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
         model.addAttribute("internalDispatch", found);
-        return "/internaldispatches/info";
+        return "/internaldispatches/internaldispatch-info";
     }
 
     @GetMapping("/list/albums")
@@ -159,20 +159,20 @@ public class InternalDispatchController {
             internalDispatches = internalDispatchService.findByIsAlbumAndIsActive(true, true, pageable);
         }
         model.addAttribute("internalDispatches", internalDispatches);
-        return "/internaldispatches/list-albums";
+        return "/internaldispatches/internaldispatch-albums";
     }
 
     @GetMapping("/showAlbumInfo/{id}")
     public String showAlbumInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
-        return "/internaldispatches/album-info";
+        return "/internaldispatches/internaldispatch-album-info";
     }
 
     @GetMapping("/showChangeHandlerForm/{id}")
     public String showChangeHandlerForm(@PathVariable("id") int id, Model model) {
-        model.addAttribute("departments", developerService.findByCanTakeAlbums(true));
+        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
-        return "/internaldispatches/album-changehandler";
+        return "/internaldispatches/internaldispatch-album-handler-form";
     }
 
     @PostMapping("/changeHandler")

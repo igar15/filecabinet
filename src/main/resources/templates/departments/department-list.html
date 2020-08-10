@@ -12,31 +12,36 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
 
-    <title>Developers list</title>
+    <title>List of Departments</title>
 </head>
 <body>
     <div class="container">
+
         <a th:href="@{/}">Back to Home page</a>
-        <h3>Developers List</h3>
+
+        <br><br>
+
+        <h3>List of Departments</h3>
+
         <hr>
 
-        <a th:href="@{/developers/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Developer</a>
+        <a th:href="@{/departments/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Department</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
-                <th><a class="sorted" sd:pagination-sort="name">Name</a></th>
-                <th>Chief</th>
-                <th><a class="sorted" sd:pagination-sort="workersAmount">Workers amount</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="chiefName">Chief</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="workersAmount">Workers amount</a></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tempDeveloper : ${page}">
+            <tr th:each="tempDepartment : ${page}">
                 <td class="align-middle text-center">
-                    <a th:href="@{'/developers/showDeveloperInfo/' + ${tempDeveloper.id}}"><span class="text-dark" th:text="${tempDeveloper.name}"/></a>
+                    <a th:href="@{'/departments/showDepartmentInfo/' + ${tempDepartment.id}}" th:text="${tempDepartment.name}"></a>
                 </td>
-                <td class="align-middle text-center" th:text="${tempDeveloper.chiefName}"></td>
-                <td class="align-middle text-center" th:text="${tempDeveloper.workersAmount}"></td>
+                <td class="align-middle text-center" th:text="${tempDepartment.chiefName}"></td>
+                <td class="align-middle text-center" th:text="${tempDepartment.workersAmount}"></td>
             </tr>
             </tbody>
         </table>

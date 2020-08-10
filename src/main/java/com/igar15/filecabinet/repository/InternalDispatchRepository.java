@@ -17,7 +17,7 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
 //    List<InternalDispatch> findByDocuments_Id(int documentId, Sort sort);
 
-    List<InternalDispatch> findByDispatchHandler_Id(int developerId);
+    List<InternalDispatch> findByDispatchHandler_Id(int departmentId);
 
     Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 

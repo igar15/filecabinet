@@ -31,12 +31,12 @@
                         <input type="text" class="form-control" th:name="name" th:value="${param.name}" placeholder="Name">
                     </div>
                     <div class="col-sm-3 offset-3">
-                        <select class="form-control selectpicker" name="developer">
-                            <option value="">Developer (not selected)</option>
-                            <option th:each="drop : ${developers}"
+                        <select class="form-control selectpicker" name="department">
+                            <option value="">Department (not selected)</option>
+                            <option th:each="drop : ${departments}"
                                     th:value="${drop.name}"
                                     th:text="${drop.name}"
-                                    th:selected="${drop.name == developer}">
+                                    th:selected="${drop.name == department}">
                             </option>
                         </select>
                     </div>
@@ -78,7 +78,7 @@
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="issueDate">Issue date</a></th>
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="changeCode">Change code</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="developer">Developer</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department">Department</a></th>
                     <th>Show notice</th>
                 </tr>
             </thead>
@@ -91,7 +91,7 @@
                     <td class="align-middle text-center" th:text="${tempChangeNotice.issueDate}"></td>
                     <td class="align-middle text-center" th:text="${tempChangeNotice.changeCode}"></td>
                     <td class="align-middle text-center">
-                        <a th:if="${tempChangeNotice.developer != null}" th:href="@{'/developers/showDeveloperInfo/' + ${tempChangeNotice.developer.id}}" th:text="${tempChangeNotice.developer.name}"></a>
+                        <a th:if="${tempChangeNotice.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempChangeNotice.department.id}}" th:text="${tempChangeNotice.department.name}"></a>
                     </td>
                     <td class="align-middle text-center">
                         <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>

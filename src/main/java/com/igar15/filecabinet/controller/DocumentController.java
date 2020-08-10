@@ -29,7 +29,7 @@ public class DocumentController {
     private DocumentService documentService;
 
     @Autowired
-    private DeveloperService developerService;
+    private DepartmentService departmentService;
 
     @Autowired
     private ChangeNoticeService changeNoticeService;
@@ -49,7 +49,7 @@ public class DocumentController {
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "decimalNumber", required = false) String decimalNumber,
                           @RequestParam(name = "name", required = false) String name,
-                          @RequestParam(name = "developer", required = false) String developer,
+                          @RequestParam(name = "department", required = false) String department,
                           @RequestParam(name = "originalHolder", required = false) String originalHolder,
                           @RequestParam(name = "inventoryNumber", required = false) String inventoryNumber,
                           @RequestParam(name = "status", required = false) String status,
@@ -65,13 +65,13 @@ public class DocumentController {
         status = "".equals(status) ? null : status;
         stage = "".equals(stage) ? null : stage;
         form = "".equals(form) ? null : form;
-        developer = "".equals(developer) ? null : developer;
+        department = "".equals(department) ? null : department;
         originalHolder = "".equals(originalHolder) ? null : originalHolder;
         LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
         LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
 
-        model.addAttribute("developers", developerService.findAll());
-        model.addAttribute("developer", developer);
+        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("department", department);
         model.addAttribute("originalHolders", companyService.findAll());
         model.addAttribute("originalHolder", originalHolder);
         model.addAttribute("status", status);
@@ -80,17 +80,17 @@ public class DocumentController {
 
         Page<Document> documents = null;
 
-        if (checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer, originalHolder)) {
+        if (checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, department, originalHolder)) {
             documents = documentRepository.findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(afterDate, beforeDate, pageable);
         }
-        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, developer)) {
+        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, department)) {
             documents = documentRepository.findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(originalHolder, afterDate, beforeDate, pageable);
         }
         else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, originalHolder)) {
-            documents = documentRepository.findAllByDeveloper_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, afterDate, beforeDate, pageable);
+            documents = documentRepository.findAllByDepartment_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(department, afterDate, beforeDate, pageable);
         }
         else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form)) {
-            documents = documentRepository.findAllByDeveloper_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(developer, originalHolder, afterDate, beforeDate, pageable);
+            documents = documentRepository.findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(department, originalHolder, afterDate, beforeDate, pageable);
         }
         else {
             Document document = new Document();
@@ -105,7 +105,7 @@ public class DocumentController {
             Form docForm = form == null ? null : Form.valueOf(form);
             document.setDecimalNumber(decimalNumber);
             document.setName(name);
-            document.setDeveloper(developerService.findByName(developer));
+            document.setDepartment(departmentService.findByName(department));
             document.setOriginalHolder(companyService.findByName(originalHolder));
             document.setInventoryNumber(inventoryNumberInt);
             document.setStatus(docStatus);
@@ -125,24 +125,24 @@ public class DocumentController {
             }
         }
         model.addAttribute("documents", documents);
-        return "/documents/all-list";
+        return "/documents/document-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("document", new Document());
-        model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("departments", departmentService.findAll());
         model.addAttribute("companies", companyService.findAll());
-        return "/documents/form";
+        return "/documents/document-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("document") Document document, BindingResult bindingResult, Model model) {
         checkDecimalNumberOnDuplicate(document, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("developers", developerService.findAll());
+            model.addAttribute("departments", departmentService.findAll());
             model.addAttribute("companies", companyService.findAll());
-            return "/documents/form";
+            return "/documents/document-form";
         }
         if (document.isNew()) {
             documentService.create(document);
@@ -159,7 +159,7 @@ public class DocumentController {
             }
             documentRepository.updateDocument(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
                     document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
-                    document.getFormat(), document.getA4Amount(), document.getDeveloper(), document.getOriginalHolder());
+                    document.getFormat(), document.getA4Amount(), document.getDepartment(), document.getOriginalHolder());
 //            documentRepository.updDoc(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
 //                    document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount());
         }
@@ -169,9 +169,9 @@ public class DocumentController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
-        model.addAttribute("developers", developerService.findAll());
+        model.addAttribute("departments", departmentService.findAll());
         model.addAttribute("companies", companyService.findAll());
-        return "/documents/form";
+        return "/documents/document-form";
     }
 
     @GetMapping("/delete/{id}")
@@ -183,13 +183,13 @@ public class DocumentController {
     @GetMapping("/showDocumentInfo/{id}")
     public String showDocumentInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
-        return "/documents/info";
+        return "/documents/document-info";
     }
 
     @GetMapping("/showChanges/{id}")
     public String showChanges(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
-        return "documents/changes-list";
+        return "documents/document-changenotices";
     }
 
     @GetMapping("/removeChange/{id}/{changeId}")
@@ -211,7 +211,7 @@ public class DocumentController {
             }
             model.addAttribute("document", document);
         }
-        return "documents/changes-list";
+        return "documents/document-changenotices";
     }
 
     @GetMapping("/showExternalDispatches/{id}")
@@ -222,7 +222,7 @@ public class DocumentController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         document.setExternalDispatches(sortedMap);
         model.addAttribute("document", document);
-        return "/documents/externals-list";
+        return "/documents/document-externaldispatches";
     }
 
     @GetMapping("/deregisterExternal/{id}/{externalId}")
@@ -236,7 +236,7 @@ public class DocumentController {
                 });
         documentService.update(document);
         model.addAttribute("document", document);
-        return "/documents/externals-list";
+        return "/documents/document-externaldispatches";
     }
 
     @GetMapping("/showInternalDispatches/{id}")
@@ -247,7 +247,7 @@ public class DocumentController {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         document.setInternalDispatches(sortedMap);
         model.addAttribute("document", document);
-        return "/documents/internals-list";
+        return "/documents/document-internaldispatches";
     }
 
     @GetMapping("/deregisterInternal/{id}/{internalId}")
@@ -261,7 +261,7 @@ public class DocumentController {
                 });
         documentService.update(document);
         model.addAttribute("document", document);
-        return "/documents/internals-list";
+        return "/documents/document-internaldispatches";
     }
 
     @GetMapping("/deregisterAlbum/{id}/{internalId}")
@@ -278,7 +278,7 @@ public class DocumentController {
     @GetMapping("/showApplicabilities/{id}")
     public String showApplicabilities(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
-        return ("/documents/applicabilities-list");
+        return ("/documents/document-applicabilities");
     }
 
     @GetMapping("/removeApplicability/{id}/{applicabilityId}")
@@ -289,7 +289,7 @@ public class DocumentController {
                 .collect(Collectors.toSet()));
         documentService.update(document);
         model.addAttribute("document", document);
-        return "/documents/applicabilities-list";
+        return "/documents/document-applicabilities";
     }
 
     @PostMapping("/addApplicability/{id}")
@@ -311,7 +311,7 @@ public class DocumentController {
                     document.getApplicabilities().add(applicability);
                     documentService.update(document);
                     model.addAttribute("document", document);
-                    return "/documents/applicabilities-list";
+                    return "document-applicabilities";
                 }
 
             } catch (NotFoundException e) {
@@ -320,7 +320,7 @@ public class DocumentController {
         }
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("document", document);
-        return "/documents/applicabilities-list";
+        return "/documents/document-applicabilities";
     }
 
     @GetMapping("/deregisterExternalWithIncomings/{id}/{externalId}")
@@ -369,7 +369,7 @@ public class DocumentController {
             }
         }
         model.addAttribute("document", mainDocument);
-        return "/documents/externals-list";
+        return "/documents/document-externaldispatches";
     }
 
 

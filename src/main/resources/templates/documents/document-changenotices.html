@@ -37,7 +37,7 @@
                     <th class="align-middle">Change number</th>
                     <th class="align-middle">Name</th>
                     <th class="align-middle">Issue date</th>
-                    <th class="align-middle">Developer</th>
+                    <th class="align-middle">Department</th>
                     <th class="align-middle">Change code</th>
                     <th class="align-middle">Action</th>
                 </tr>
@@ -49,7 +49,7 @@
                         <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${entry.value.id}}" th:text="${entry.value.name}"></a>
                     </td>
                     <td class="align-middle text-center" th:text="${entry.value.issueDate}"></td>
-                    <td class="align-middle text-center" th:text="${entry.value.developer} == null ? '' : ${entry.value.developer.name}"></td>
+                    <td class="align-middle text-center" th:text="${entry.value.department} == null ? '' : ${entry.value.department.name}"></td>
                     <td class="align-middle text-center" th:text="${entry.value.changeCode}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"

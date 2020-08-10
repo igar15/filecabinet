@@ -9,6 +9,8 @@
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
     <title>Save change notice</title>
 </head>
 <body>
@@ -82,19 +84,19 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Developer:</h6>
+                    <h6>Department:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <select class="form-control selectpicker" th:field="*{developer}">
+                    <select class="form-control selectpicker" th:field="*{department}">
                         <option value="">Nothing selected</option>
-                        <option th:each="dropValue : ${developers}"
+                        <option th:each="dropValue : ${departments}"
                                 th:value="${dropValue.name}"
                                 th:text="${dropValue.name}">
                         </option>
                     </select>
-                    <span class="help-block" th:if="${#fields.hasErrors('developer')}">
+                    <span class="help-block" th:if="${#fields.hasErrors('department')}">
                         <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('developer')}" th:text="${err}"/>
+                            <li class="text-danger" th:each="err : ${#fields.errors('department')}" th:text="${err}"/>
                         </ul>
                     </span>
                 </div>

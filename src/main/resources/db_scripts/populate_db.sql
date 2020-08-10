@@ -6,11 +6,11 @@ delete from internal_dispatches;
 delete from document_change_notices;
 delete from change_notices;
 delete from documents;
-delete from developers;
+delete from departments;
 delete from companies;
 alter sequence global_seq restart with 1000;
 
-insert into developers (name, chief_name, description, workers_amount, is_developer, can_take_albums)
+insert into departments (name, chief_name, description, workers_amount, is_developer, can_take_albums)
 values ('KTK-40', 'KTK-40 chief name', null, null, true, true),
        ('NIO-6', 'NIO-6 chief name', 'Developers from NIO-6 are good folks', 24, true, true),
        ('NIO-8', 'NIO-8 chief name', null, 15, true, true),
@@ -24,7 +24,7 @@ values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357', 'Raev A.A.
        ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033', 'Visher S.K.');
 
 insert into documents (name, decimal_number, inventory_number, receipt_date, status, form,
-                       stage, sheets_amount, format, a4_amount, developer_id, original_holder_id)
+                       stage, sheets_amount, format, a4_amount, department_id, original_holder_id)
 values ('Стойка', 'БА6.151.128', 880572, '2003-01-30', 'ORIGINAL', 'ELECTRONIC', 'O1', null, null, null, 1000, 1006),
        ('Блок Д02-6М1Э Перечень элементов', 'ВУИА.465211.001ПЭ3', 63140, '2015-03-20', 'ORIGINAL', 'PAPER', 'O1', 28, 'A4', 28, 1005, 1006),
        ('Крышка', 'ЮПИЯ.301265.026', 884986, '2014-06-30', 'ORIGINAL', 'ELECTRONIC','O1', null, null, null, 1000, 1006),
@@ -38,7 +38,7 @@ values (1011, 1009),
        (1011, 1010);
 
 
-insert into change_notices (name, change_code, issue_date, developer_id)
+insert into change_notices (name, change_code, issue_date, department_id)
 values ('ВУИА.СЭ.739', 5, '2018-05-24', 1000),
        ('ВУИА.СЭ.744', 8, '2018-06-17', 1000),
        ('ВУИА.ТК.133', 4, '2018-08-30', 1002),
@@ -70,7 +70,7 @@ values (1009, 1023, true),
        (1009, 1024, true),
        (1010, 1025, true);
 
-insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, developer_id,
+insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, department_id,
                                  received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name, is_active)
 values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naumkin', '1-31-65', false, null, true),
        ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'ЮПИЯ.301265.026', true),

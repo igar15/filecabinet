@@ -1,7 +1,7 @@
 package com.igar15.filecabinet.util.formatter;
 
-import com.igar15.filecabinet.entity.Developer;
-import com.igar15.filecabinet.service.DeveloperService;
+import com.igar15.filecabinet.entity.Department;
+import com.igar15.filecabinet.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
@@ -10,18 +10,18 @@ import java.text.ParseException;
 import java.util.Locale;
 
 @Component
-public class DeveloperFormatter implements Formatter<Developer> {
+public class DeveloperFormatter implements Formatter<Department> {
 
     @Autowired
-    private DeveloperService developerService;
+    private DepartmentService departmentService;
 
     @Override
-    public Developer parse(String s, Locale locale) throws ParseException {
-        return developerService.findByName(s);
+    public Department parse(String s, Locale locale) throws ParseException {
+        return departmentService.findByName(s);
     }
 
     @Override
-    public String print(Developer developer, Locale locale) {
-        return developer.getName();
+    public String print(Department department, Locale locale) {
+        return department.getName();
     }
 }

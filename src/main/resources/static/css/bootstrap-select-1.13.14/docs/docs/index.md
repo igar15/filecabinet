@@ -37,7 +37,7 @@ Several quick start options are available:
 ---
 <div class="card border-warning">
 	<div class="card-body">
-		Bootstrap 4 only works with bootstrap-select v1.13.0+. By default, bootstrap-select automatically detects the version of Bootstrap being used. However, there are some instances where the version detection won't work. See the [documentation](https://developer.snapappointments.com/bootstrap-select/options/#bootstrap-version) for more information.
+		Bootstrap 4 only works with bootstrap-select v1.13.0+. By default, bootstrap-select automatically detects the version of Bootstrap being used. However, there are some instances where the version detection won't work. See the [documentation](https://department.snapappointments.com/bootstrap-select/options/#bootstrap-version) for more information.
 	</div>
 </div>
 

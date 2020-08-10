@@ -33,12 +33,12 @@
 </p>
 
 <p align="center">
-	<a href="https://developer.snapappointments.com/bootstrap-select"><img src="https://user-images.githubusercontent.com/2874325/38997831-97e12bbe-43ab-11e8-85f5-b8c05d91c7b1.gif" width="289" height="396" alt="bootstrap-select demo"></a>
+	<a href="https://department.snapappointments.com/bootstrap-select"><img src="https://user-images.githubusercontent.com/2874325/38997831-97e12bbe-43ab-11e8-85f5-b8c05d91c7b1.gif" width="289" height="396" alt="bootstrap-select demo"></a>
 </p>
 
 ## Demo
 
-You can view a live demo and some examples of how to use the various options [here](https://developer.snapappointments.com/bootstrap-select/examples/).
+You can view a live demo and some examples of how to use the various options [here](https://department.snapappointments.com/bootstrap-select/examples/).
 
 ## Quick start
 
@@ -69,7 +69,7 @@ Several quick start options are available:
 
 ## Usage
 
-> Bootstrap 4 only works with bootstrap-select v1.13.0+. By default, bootstrap-select automatically detects the version of Bootstrap being used. However, there are some instances where the version detection won't work. See the [documentation](https://developer.snapappointments.com/bootstrap-select/options/#bootstrap-version) for more information.
+> Bootstrap 4 only works with bootstrap-select v1.13.0+. By default, bootstrap-select automatically detects the version of Bootstrap being used. However, there are some instances where the version detection won't work. See the [documentation](https://department.snapappointments.com/bootstrap-select/options/#bootstrap-version) for more information.
 
 ### Via `selectpicker` class
 Add the `selectpicker` class to your select elements to auto-initialize bootstrap-select.
@@ -101,7 +101,7 @@ $(function () {
 ```
 
 
-Check out the [documentation](https://developer.snapappointments.com/bootstrap-select) for further information.
+Check out the [documentation](https://department.snapappointments.com/bootstrap-select) for further information.
 
 ## Bugs and feature requests
 
@@ -113,7 +113,7 @@ review the [guidelines for contributing](CONTRIBUTING.md)**. Make sure you're us
 
 ## Documentation
 
-Bootstrap-select's documentation, included in this repo in the root directory, is built with MkDocs and hosted at https://developer.snapappointments.com/bootstrap-select. The documentation may also be [run locally](CONTRIBUTING.md#running-documentation-locally).
+Bootstrap-select's documentation, included in this repo in the root directory, is built with MkDocs and hosted at https://department.snapappointments.com/bootstrap-select. The documentation may also be [run locally](CONTRIBUTING.md#running-documentation-locally).
 
 ## Copyright and license
 

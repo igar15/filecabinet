@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.dialect.springdata.SpringDataDialect;
 
 @Configuration
-public class Conf {
+public class AppConfig {
 
     @Bean
     public SpringDataDialect springDataDialect() {

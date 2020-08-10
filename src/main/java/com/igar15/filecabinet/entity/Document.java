@@ -64,8 +64,8 @@ public class Document extends AbstractNamedEntity {
     private Integer a4Amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "developer_id")
-    private Developer developer;
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @NotNull(message = "document original holder must not be null")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -105,7 +105,7 @@ public class Document extends AbstractNamedEntity {
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate,
                     Status status, Set<Document> applicabilities, Form form, Stage stage,
-                    Integer sheetsAmount, String format, Integer a4Amount, Developer developer, Company originalHolder) {
+                    Integer sheetsAmount, String format, Integer a4Amount, Department department, Company originalHolder) {
         super(id, name);
         this.decimalNumber = decimalNumber;
         this.inventoryNumber = inventoryNumber;
@@ -117,13 +117,13 @@ public class Document extends AbstractNamedEntity {
         this.sheetsAmount = sheetsAmount;
         this.format = format;
         this.a4Amount = a4Amount;
-        this.developer = developer;
+        this.department = department;
         this.originalHolder = originalHolder;
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
                     Set<Document> applicabilities, Form form, Stage stage, Integer sheetsAmount, String format,
-                    Integer a4Amount, Developer developer, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
+                    Integer a4Amount, Department department, Company originalHolder, Map<Integer, ChangeNotice> changeNotices,
                     Map<ExternalDispatch, Boolean> externalDispatches, Map<InternalDispatch, Boolean> internalDispatches) {
         super(id, name);
         this.decimalNumber = decimalNumber;
@@ -136,7 +136,7 @@ public class Document extends AbstractNamedEntity {
         this.sheetsAmount = sheetsAmount;
         this.format = format;
         this.a4Amount = a4Amount;
-        this.developer = developer;
+        this.department = department;
         this.originalHolder = originalHolder;
         this.changeNotices = changeNotices;
         this.externalDispatches = externalDispatches;
@@ -167,12 +167,12 @@ public class Document extends AbstractNamedEntity {
         this.stage = stage;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Map<Integer, ChangeNotice> getChangeNotices() {

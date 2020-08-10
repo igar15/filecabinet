@@ -22,8 +22,8 @@ public class InternalDispatch extends Dispatch {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "developer_id")
-    private Developer dispatchHandler;
+    @JoinColumn(name = "department_id")
+    private Department dispatchHandler;
 
     @Transient
     @ManyToMany
@@ -69,7 +69,7 @@ public class InternalDispatch extends Dispatch {
     }
 
     public InternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
-                            Stamp stamp, Developer dispatchHandler, Set<Document> documents, LocalDate receivedInternalDate,
+                            Stamp stamp, Department dispatchHandler, Set<Document> documents, LocalDate receivedInternalDate,
                             String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName) {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
@@ -90,12 +90,12 @@ public class InternalDispatch extends Dispatch {
         this.stamp = stamp;
     }
 
-    public Developer getDispatchHandler() {
+    public Department getDispatchHandler() {
         return dispatchHandler;
     }
 
-    public void setDispatchHandler(Developer developer) {
-        this.dispatchHandler = developer;
+    public void setDispatchHandler(Department department) {
+        this.dispatchHandler = department;
     }
 
     public Set<Document> getDocumentsSet() {

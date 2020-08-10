@@ -20,7 +20,7 @@ public class CompanyController {
     @GetMapping("/list")
     public String showAll(Model model) {
         model.addAttribute("companies", companyService.findAll());
-        return "/companies/list-companies";
+        return "/companies/company-list";
     }
 
     @GetMapping("/showAddForm")
@@ -46,7 +46,7 @@ public class CompanyController {
     @GetMapping("/showCompanyInfo/{id}")
     public String showCompanyInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("company", companyService.findById(id));
-        return "/companies/companyInfo";
+        return "/companies/company-info";
     }
 
     @GetMapping("/showFormForUpdate")

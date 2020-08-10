@@ -36,21 +36,21 @@ public class ExternalDispatchController {
     @GetMapping("/list")
     public String showAll(@SortDefault("dispatchDate") Pageable pageable, Model model) {
         model.addAttribute("externalDispatches", externalDispatchRepository.findAll(pageable));
-        return "/externaldispatches/all-list";
+        return "/externaldispatches/externaldispatch-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("externalDispatch", new ExternalDispatch());
         model.addAttribute("companies", companyService.findAll());
-        return "/externaldispatches/form";
+        return "/externaldispatches/externaldispatch-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid ExternalDispatch externalDispatch, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("companies", companyService.findAll());
-            return "/externaldispatches/form";
+            return "/externaldispatches/externaldispatch-form";
         }
         else {
             if (externalDispatch.isNew()) {
@@ -61,7 +61,7 @@ public class ExternalDispatchController {
                 externalDispatchService.update(externalDispatch);
             }
             model.addAttribute("externalDispatch", externalDispatch);
-            return "/externaldispatches/info";
+            return "/externaldispatches/externaldispatch-info";
         }
     }
 
@@ -69,13 +69,13 @@ public class ExternalDispatchController {
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("externalDispatch", externalDispatchService.findById(id));
         model.addAttribute("companies", companyService.findAll());
-        return "/externaldispatches/form";
+        return "/externaldispatches/externaldispatch-form";
     }
 
     @GetMapping("/showExternalDispatchInfo/{id}")
     public String showExternalDispatchInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("externalDispatch", externalDispatchService.findById(id));
-        return "/externaldispatches/info";
+        return "/externaldispatches/externaldispatch-info";
     }
 
     @GetMapping("/delete/{id}")
@@ -111,7 +111,7 @@ public class ExternalDispatchController {
         }
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("externalDispatch", externalDispatch);
-        return "/externaldispatches/info";
+        return "/externaldispatches/externaldispatch-info";
     }
 
     @GetMapping("/removeDoc/{id}/{documentId}")
@@ -131,7 +131,7 @@ public class ExternalDispatchController {
         }
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
         model.addAttribute("externalDispatch", found);
-        return "/externaldispatches/info";
+        return "/externaldispatches/externaldispatch-info";
     }
 
 }

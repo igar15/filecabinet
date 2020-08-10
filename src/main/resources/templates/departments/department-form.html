@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Save Department</title>
+</head>
+<body>
+    <div class="container">
+
+        <a href="#" onclick="goBack()">Go Back</a>
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+
+        <br><br>
+
+        <h3>Department Directory</h3>
+
+        <hr>
+
+        <p class="h4 mb-3 offset-sm-3">Department Card</p>
+
+        <form class="form-horizontal" th:object="${department}" th:action="@{/departments/save}" method="post">
+
+            <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
+                <p th:text="'Please correct values in error below'">Error Message</p>
+            </div>
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Name:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Name'"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Chief name:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{chiefName}" th:class="${#fields.hasErrors('chiefName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Chief name'"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('chiefName')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('chiefName')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Workers amount:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" th:field="*{workersAmount}" th:class="${#fields.hasErrors('workersAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Workers amount'"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('workersAmount')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('workersAmount')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Description:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <textarea rows="3" th:field="*{description}" th:class="${#fields.hasErrors('description')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Description'"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('description')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('description')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Is Developer:</h6>
+                </div>
+                <div class="col-sm-5 mt-2">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <p>
+                            <input type="radio" th:field="*{isDeveloper}" th:value="1" th:checked="*{isDeveloper}">Yes
+                            <input type="radio" th:field="*{isDeveloper}" th:value="0" th:checked="*{isDeveloper}">No
+                        </p>
+                    </div>
+                    <span class="help-block" th:if="${#fields.hasErrors('isDeveloper')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('isDeveloper')}" th:text="${err}"/>
+                    </ul>
+                </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6>Use albums:</h6>
+                </div>
+                <div class="col-sm-5 mt-2">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <p>
+                            <input type="radio" th:field="*{canTakeAlbums}" th:value="1" th:checked="*{canTakeAlbums}">Yes
+                            <input type="radio" th:field="*{canTakeAlbums}" th:value="0" th:checked="*{canTakeAlbums}">No
+                        </p>
+                    </div>
+                    <span class="help-block" th:if="${#fields.hasErrors('canTakeAlbums')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('canTakeAlbums')}" th:text="${err}"/>
+                    </ul>
+                </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
+            </div>
+
+            <br><br>
+        </form>
+    </div>
+</body>
+</html>

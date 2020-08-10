@@ -1,7 +1,7 @@
 package com.igar15.filecabinet.repository;
 
 import com.igar15.filecabinet.entity.Company;
-import com.igar15.filecabinet.entity.Developer;
+import com.igar15.filecabinet.entity.Department;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
@@ -24,11 +24,11 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Modifying
     @Query("update Document d set d.name=:name, d.decimalNumber =:decimalNumber, d.inventoryNumber=:inventoryNumber, " +
             "d.receiptDate=:receiptDate, d.status=:status, d.form=:form, d.stage=:stage, d.sheetsAmount=:sheetsAmount, " +
-            "d.format=:format, d.a4Amount=:a4Amount, d.developer=:developer, d.originalHolder=:originalHolder where d.id=:id")
+            "d.format=:format, d.a4Amount=:a4Amount, d.department=:department, d.originalHolder=:originalHolder where d.id=:id")
     void updateDocument(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber, @Param("inventoryNumber") int inventoryNumber,
                         @Param("receiptDate") LocalDate receiptDate, @Param("status") Status status, @Param("form") Form form,
                         @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
-                        @Param("a4Amount") int a4Amount, @Param("developer") Developer developer, @Param("originalHolder") Company originalHolder);
+                        @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
 
     @Transactional
     @Modifying
@@ -40,12 +40,12 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Optional<Document> findByDecimalNumber(String decimalNumber);
 
-    @Query("select d from Document d where d.developer.id=:developerId")
-    List<Document> findAllByDeveloperId(@Param("developerId") int developerId);
+    @Query("select d from Document d where d.department.id=:departmentId")
+    List<Document> findAllByDepartmentId(@Param("departmentId") int departmentId);
 
     List<Document> findByApplicabilities_DecimalNumber(String decimalNumber);
 
-    List<Document> findAllByDeveloper_Name(String name);
+    List<Document> findAllByDepartment_Name(String name);
 
     List<Document> findAllByOriginalHolderId(int originalHolderId);
 
@@ -54,12 +54,12 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
-    Page<Document> findAllByDeveloper_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String developerName,
+    Page<Document> findAllByDepartment_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName,
                                                                                                     LocalDate after, LocalDate before, Pageable pageable);
 
     Page<Document> findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String originalHolderName,
                                                                                                          LocalDate after, LocalDate before, Pageable pageable);
 
-    Page<Document> findAllByDeveloper_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String developerName, String originalHolderName,
+    Page<Document> findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName, String originalHolderName,
                                                                                                                           LocalDate after, LocalDate before, Pageable pageable);
 }

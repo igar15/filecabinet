@@ -21,7 +21,7 @@ public class DocumentServiceImpl implements DocumentService {
     public void updateWithout(Document document) {
         documentRepository.updateDocument(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
                 document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
-                document.getFormat(), document.getA4Amount(), document.getDeveloper(), document.getOriginalHolder());
+                document.getFormat(), document.getA4Amount(), document.getDepartment(), document.getOriginalHolder());
     }
 
     @Override

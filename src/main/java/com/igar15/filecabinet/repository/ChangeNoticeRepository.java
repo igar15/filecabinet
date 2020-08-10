@@ -17,15 +17,15 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
 
     ChangeNotice findByName(String name);
 
-    @Query("select c from ChangeNotice c where c.developer.id=:id")
-    List<ChangeNotice> findAllByDeveloperId(@Param("id") int id);
+    @Query("select c from ChangeNotice c where c.department.id=:id")
+    List<ChangeNotice> findAllByDepartmentId(@Param("id") int id);
 
     Page<ChangeNotice> findByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
     Page<ChangeNotice> findByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
-    Page<ChangeNotice> findByDeveloper_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String developer, LocalDate after, LocalDate before, Pageable pageable);
+    Page<ChangeNotice> findByDepartment_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, LocalDate after, LocalDate before, Pageable pageable);
 
-    Page<ChangeNotice> findByDeveloper_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String developer, Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
+    Page<ChangeNotice> findByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
 }

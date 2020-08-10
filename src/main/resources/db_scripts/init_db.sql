@@ -6,13 +6,13 @@ drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
 drop table if exists change_notices;
 drop table if exists documents;
-drop table if exists developers;
+drop table if exists departments;
 drop table if exists companies;
 drop sequence if exists global_seq;
 
 create sequence global_seq start with 1000;
 
-create table developers (
+create table departments (
     id integer primary key default nextval('global_seq'),
     name varchar not null,
     chief_name varchar not null,
@@ -21,7 +21,7 @@ create table developers (
     is_developer boolean not null,
     can_take_albums boolean not null
 );
-create unique index developers_unique_name_idx on developers (name);
+create unique index departments_unique_name_idx on departments (name);
 
 create table companies (
     id integer primary key default nextval('global_seq'),
@@ -46,9 +46,9 @@ create table documents (
     sheets_amount integer default null,
     format varchar default null,
     a4_amount integer default null,
-    developer_id integer default null,
+    department_id integer default null,
     original_holder_id integer default null,
-    foreign key (developer_id) references developers (id),
+    foreign key (department_id) references departments (id),
     foreign key (original_holder_id) references companies (id)
 );
 create unique index documents_unique_decimal_number_idx on documents (decimal_number);
@@ -67,8 +67,8 @@ create table change_notices (
     name varchar not null,
     change_code integer not null,
     issue_date date not null,
-    developer_id integer default null,
-    foreign key (developer_id) references developers (id)
+    department_id integer default null,
+    foreign key (department_id) references departments (id)
 );
 create unique index change_notices_name_idx on change_notices (name);
 
@@ -109,14 +109,14 @@ create table internal_dispatches (
     status varchar not null,
     remark varchar default null,
     stamp varchar default null,
-    developer_id integer not null,
+    department_id integer not null,
     received_internal_date date not null,
     internal_handler_name varchar not null,
     internal_handler_phone_number varchar not null,
     is_album boolean not null,
     album_name varchar default null,
     is_active boolean not null,
-    foreign key (developer_id) references developers (id) on delete cascade
+    foreign key (department_id) references departments (id) on delete cascade
 );
 create unique index internal_dispatches_stamp_album_name_idx on internal_dispatches (stamp, album_name);
 create unique index internal_dispatches_waybill_dispatch_date_idx on internal_dispatches (waybill, dispatch_date);

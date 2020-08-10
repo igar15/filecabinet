@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "developers")
-public class Developer extends AbstractNamedEntity {
+@Table(name = "departments")
+public class Department extends AbstractNamedEntity {
 
     @Column(name = "chief_name")
     @NotBlank
@@ -35,11 +35,11 @@ public class Developer extends AbstractNamedEntity {
     private Boolean canTakeAlbums;
 
 
-    public Developer() {
+    public Department() {
 
     }
 
-    public Developer(Integer id, String name, String chiefName, String description, Integer workersAmount, Boolean isDeveloper, Boolean canTakeAlbums) {
+    public Department(Integer id, String name, String chiefName, String description, Integer workersAmount, Boolean isDeveloper, Boolean canTakeAlbums) {
         super(id, name);
         this.chiefName = chiefName;
         this.description = description;

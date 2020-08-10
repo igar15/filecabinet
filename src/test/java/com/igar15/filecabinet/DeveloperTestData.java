@@ -1,7 +1,7 @@
 package com.igar15.filecabinet;
 
+import com.igar15.filecabinet.entity.Department;
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
-import com.igar15.filecabinet.entity.Developer;
 
 import java.util.List;
 
@@ -13,34 +13,34 @@ public class DeveloperTestData {
     public static final int NOT_FOUND_ID = 10;
     public static final String NOT_FOUND_NAME = "OKB-4";
 
-    public static final Developer DEVELOPER1 = new Developer(DEVELOPER1_ID, "KTK-40", "KTK-40 chief name", null, null, true, true);
-    public static final Developer DEVELOPER2 = new Developer(DEVELOPER1_ID + 1, "NIO-6", "NIO-6 chief name", "Developers from NIO-6 are good folks", 24, true, true);
-    public static final Developer DEVELOPER3 = new Developer(DEVELOPER1_ID + 2, "NIO-8", "NIO-8 chief name", null, 15, true, true);
-    public static final Developer DEVELOPER4 = new Developer(DEVELOPER1_ID + 3, "SKB-3", "SKB-3 chief name", "SKB-3 is a very good department. There are many talent people work here.", 43, true, true);
-    public static final Developer DEVELOPER5 = new Developer(DEVELOPER1_ID + 4, "OTD 49/3", "Elkina R.M.", "technical documents department", 21, false, true);
-    public static final Developer DEVELOPER6 = new Developer(DEVELOPER1_ID + 5, "OTD 33", "OTD 33 chief name", "OTD 33 makes great job for the organization!", 22, true, true);
+    public static final Department DEPARTMENT_1 = new Department(DEVELOPER1_ID, "KTK-40", "KTK-40 chief name", null, null, true, true);
+    public static final Department DEPARTMENT_2 = new Department(DEVELOPER1_ID + 1, "NIO-6", "NIO-6 chief name", "Developers from NIO-6 are good folks", 24, true, true);
+    public static final Department DEPARTMENT_3 = new Department(DEVELOPER1_ID + 2, "NIO-8", "NIO-8 chief name", null, 15, true, true);
+    public static final Department DEPARTMENT_4 = new Department(DEVELOPER1_ID + 3, "SKB-3", "SKB-3 chief name", "SKB-3 is a very good department. There are many talent people work here.", 43, true, true);
+    public static final Department DEPARTMENT_5 = new Department(DEVELOPER1_ID + 4, "OTD 49/3", "Elkina R.M.", "technical documents department", 21, false, true);
+    public static final Department DEPARTMENT_6 = new Department(DEVELOPER1_ID + 5, "OTD 33", "OTD 33 chief name", "OTD 33 makes great job for the organization!", 22, true, true);
 
-    public static final List<Developer> DEVELOPERS = List.of(DEVELOPER1, DEVELOPER2, DEVELOPER3, DEVELOPER6, DEVELOPER5, DEVELOPER4);
+    public static final List<Department> DEPARTMENTS = List.of(DEPARTMENT_1, DEPARTMENT_2, DEPARTMENT_3, DEPARTMENT_6, DEPARTMENT_5, DEPARTMENT_4);
 
-    public static Developer getNew() {
-        return new Developer(null, "SCB-1", "SCB-1 chief name", "test description", 10, true, true);
+    public static Department getNew() {
+        return new Department(null, "SCB-1", "SCB-1 chief name", "test description", 10, true, true);
     }
 
-    public static Developer getUpdated() {
-        return new Developer(DEVELOPER1_ID, "updated name", "updated chief name", "updated description", 15, true, true);
+    public static Department getUpdated() {
+        return new Department(DEVELOPER1_ID, "updated name", "updated chief name", "updated description", 15, true, true);
     }
 
-    public static Developer getNewWithDuplicateName() {
-        return new Developer(null, "KTK-40", "new chief name", "new description", 5, true, true);
+    public static Department getNewWithDuplicateName() {
+        return new Department(null, "KTK-40", "new chief name", "new description", 5, true, true);
     }
 
-    public static List<Developer> getNewsWithWrongValues() {
+    public static List<Department> getNewsWithWrongValues() {
         return List.of(
-                new Developer(null, null, "chief", "description", 3, true, true),
-                new Developer(null, "name", null, "description", 3, true, true),
-                new Developer(null, "  ", null, "description", 3, true, true),
-                new Developer(null, "  ", null, "description", 3, null, true),
-                new Developer(null, "  ", null, "description", 3, true, null)
+                new Department(null, null, "chief", "description", 3, true, true),
+                new Department(null, "name", null, "description", 3, true, true),
+                new Department(null, "  ", null, "description", 3, true, true),
+                new Department(null, "  ", null, "description", 3, null, true),
+                new Department(null, "  ", null, "description", 3, true, null)
         );
     }
 }

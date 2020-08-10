@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 
-    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNotice.id}}">Back to Change notice info</a>
+<!--    <a th:href="@{'/changenotices/showChangeNoticeInfo/' + ${changeNotice.id}}">Back to Change notice info</a>-->
 
     <br><br>
 
@@ -24,7 +24,12 @@
 
     <hr>
 
-    <form th:action="@{'/changenotices/addDoc/' +  ${changeNotice.id}}" method="post">
+    <form th:action="@{/changenotices/addDocForNew/}" th:object="${changeNotice}" method="post">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{issueDate}">
+        <input type="hidden" th:field="*{changeCode}">
+        <input type="hidden" th:field="*{department}">
+
         <div class="row mb-1">
             <div class="col-sm-4">
                 <input type="text" th:class="${docErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${docErrorMessage != null || numberErrorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
@@ -62,7 +67,7 @@
             <th class="align-middle">Decimal number</th>
             <th class="align-middle">Name</th>
             <th class="align-middle">Change number</th>
-            <th class="align-middle">Developer</th>
+            <th class="align-middle">Department</th>
             <th class="align-middle">Action</th>
             </thead>
             <tbody>
@@ -70,7 +75,7 @@
                 <td class="align-middle" th:text="${entry.key.decimalNumber}"></td>
                 <td class="align-middle" th:text="${entry.key.name}"></td>
                 <td class="align-middle text-center" th:text="${entry.value}"></td>
-                <td class="align-middle text-center" th:text="${entry.key.developer == null} ? '' : ${entry.key.developer.name}"></td>
+                <td class="align-middle text-center" th:text="${entry.key.department == null} ? '' : ${entry.key.department.name}"></td>
                 <td class="align-middle text-center">
                     <a class="btn btn-sm btn-outline-danger"
                        th:href="@{'/changenotices/removeDoc/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>

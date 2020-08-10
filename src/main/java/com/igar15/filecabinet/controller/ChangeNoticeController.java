@@ -4,9 +4,8 @@ import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
-import com.igar15.filecabinet.service.DeveloperService;
+import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
-import com.igar15.filecabinet.util.ControllersHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
@@ -29,7 +28,7 @@ public class ChangeNoticeController {
     private ChangeNoticeService changeNoticeService;
 
     @Autowired
-    private DeveloperService developerService;
+    private DepartmentService departmentService;
 
     @Autowired
     private DocumentService documentService;
@@ -37,25 +36,22 @@ public class ChangeNoticeController {
     @Autowired
     private ChangeNoticeRepository changeNoticeRepository;
 
-    @Autowired
-    ControllersHelperUtil controllersHelperUtil;
-
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "name", required = false) String name,
-                          @RequestParam(name = "developer", required = false) String developer,
+                          @RequestParam(name = "department", required = false) String department,
                           @RequestParam(name = "changeCode", required = false) String changeCode,
                           @RequestParam(name = "after", required = false) String after,
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
                           Model model) {
         name = "".equals(name) ? null : name;
-        developer = "".equals(developer) ? null : developer;
+        department = "".equals(department) ? null : department;
         changeCode = "".equals(changeCode) ? null : changeCode;
         LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
         LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
 
-        model.addAttribute("developers", developerService.findAll());
-        model.addAttribute("developer", developer);
+        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("department", department);
 
         Page<ChangeNotice> changeNotices = null;
 
@@ -66,20 +62,20 @@ public class ChangeNoticeController {
             changeCodeInt = - 1;
         }
 
-        if (checkParamsOnNull(name, developer, changeCode)) {
+        if (checkParamsOnNull(name, department, changeCode)) {
             changeNotices = changeNoticeRepository.findByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(afterDate, beforeDate, pageable);
         }
-        else if (checkParamsOnNull(name, developer)) {
+        else if (checkParamsOnNull(name, department)) {
             changeNotices = changeNoticeRepository.findByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(changeCodeInt, afterDate, beforeDate, pageable);
         } else if (checkParamsOnNull(name, changeCode)) {
-            changeNotices = changeNoticeRepository.findByDeveloper_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(developer, afterDate, beforeDate, pageable);
+            changeNotices = changeNoticeRepository.findByDepartment_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, afterDate, beforeDate, pageable);
         } else if (checkParamsOnNull(name)) {
-            changeNotices = changeNoticeRepository.findByDeveloper_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(developer, changeCodeInt, afterDate, beforeDate, pageable);
+            changeNotices = changeNoticeRepository.findByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, changeCodeInt, afterDate, beforeDate, pageable);
         }
         else {
             ChangeNotice changeNotice = new ChangeNotice();
             changeNotice.setName(name);
-            changeNotice.setDeveloper(developerService.findByName(developer));
+            changeNotice.setDepartment(departmentService.findByName(department));
             changeNotice.setChangeCode(changeCodeInt);
             ExampleMatcher matcher = ExampleMatcher.matching()
                     .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
@@ -93,47 +89,47 @@ public class ChangeNoticeController {
             }
         }
         model.addAttribute("changeNotices", changeNotices);
-        return "/changenotices/all-list";
+        return "/changenotices/changenotice-list";
     }
 
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("changeNotice", new ChangeNotice());
-        model.addAttribute("developers", developerService.findAll());
-        return "/changenotices/form";
+        model.addAttribute("departments", departmentService.findAll());
+        return "/changenotices/changenotice-form";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
-        model.addAttribute("developers", developerService.findAll());
-        return "/changenotices/form";
+        model.addAttribute("departments", departmentService.findAll());
+        return "/changenotices/changenotice-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
         bindingResult = checkNameOnDuplicate(changeNotice, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("developers", developerService.findAll());
-            return "/changenotices/form";
+            model.addAttribute("departments", departmentService.findAll());
+            return "/changenotices/changenotice-form";
         }
 
         if (changeNotice.isNew()) {
             model.addAttribute("changeNotice", changeNotice);
-            return "documents-list(for new)";
+            return "/changenotices/changenotice-document-list(for new)";
         }
         else {
             changeNotice.setDocuments(changeNoticeService.findById(changeNotice.getId()).getDocuments());
             changeNoticeService.update(changeNotice);
             model.addAttribute("changeNotice", changeNotice);
-            return "/changenotices/info";
+            return "/changenotices/changenotice-info";
         }
     }
 
     @GetMapping("/showChangeNoticeInfo/{id}")
     public String showChangeNoticeInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
-        return "/changenotices/info";
+        return "/changenotices/changenotice-info";
     }
 
     @GetMapping("/delete/{id}")
@@ -145,7 +141,7 @@ public class ChangeNoticeController {
     @GetMapping("/showDocuments/{id}")
     public String showDocuments(@PathVariable("id") int id, Model model) {
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
-        return "/changenotices/documents-list";
+        return "/changenotices/changenotice-document-list";
     }
 
     @PostMapping("/addDoc/{id}")
@@ -201,7 +197,7 @@ public class ChangeNoticeController {
         model.addAttribute("changeNotice", changeNotice);
         model.addAttribute("docErrorMessage", docErrorMessage);
         model.addAttribute("numberErrorMessage", numberErrorMessage);
-        return "/changenotices/documents-list";
+        return "/changenotices/changenotice-document-list";
     }
 
     @PostMapping("/addDocForNew")
@@ -255,10 +251,10 @@ public class ChangeNoticeController {
         model.addAttribute("docErrorMessage", docErrorMessage);
         model.addAttribute("numberErrorMessage", numberErrorMessage);
         if (docErrorMessage == null && numberErrorMessage == null) {
-            return "/changenotices/documents-list";
+            return "/changenotices/changenotice-document-list";
         }
         else {
-            return "/changenotices/documents-list(for new)";
+            return "/changenotices/changenotice-document-list(for new)";
         }
     }
 
@@ -269,7 +265,7 @@ public class ChangeNoticeController {
             model.addAttribute("changeNotice", changeNotice);
             String errorMessage = "The change notice can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
-            return "/changenotices/documents-list";
+            return "/changenotices/changenotice-document-list";
         }
         Document document = changeNotice.getDocuments().keySet().stream()
                 .filter(doc -> doc.getId().equals(Integer.valueOf(documentId)))
@@ -277,7 +273,7 @@ public class ChangeNoticeController {
         changeNotice.getDocuments().remove(document);
         changeNoticeService.update(changeNotice);
         model.addAttribute("changeNotice", changeNotice);
-        return "/changenotices/documents-list";
+        return "/changenotices/changenotice-document-list";
     }
 
     private boolean checkParamsOnNull(String... params) {
