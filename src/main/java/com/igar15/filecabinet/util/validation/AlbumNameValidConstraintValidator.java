@@ -3,6 +3,7 @@ package com.igar15.filecabinet.util.validation;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,14 @@ public class AlbumNameValidConstraintValidator implements ConstraintValidator<Al
    }
 
    public boolean isValid(String obj, ConstraintValidatorContext context) {
-      Document document = documentService.findByDecimalNumber(obj);
+      Document document = null;
+      try {
+         document = documentService.findByDecimalNumber(obj);
+      } catch (NotFoundException e) {
+      }
+      catch (NullPointerException e) {
+         return true;
+      }
       return document != null;
    }
 }

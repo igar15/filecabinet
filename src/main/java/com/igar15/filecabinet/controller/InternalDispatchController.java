@@ -193,7 +193,11 @@ public class InternalDispatchController {
     }
 
     @PostMapping("/changeHandler")
-    public String changeHandler(InternalDispatch internalDispatch) {
+    public String changeHandler(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
+            return "/internaldispatches/internaldispatch-album-handler-form";
+        }
         internalDispatch.setDocuments(internalDispatchService.findById(internalDispatch.getId()).getDocuments());
         internalDispatchService.update(internalDispatch);
         return "redirect:/internaldispatches/list/albums";
