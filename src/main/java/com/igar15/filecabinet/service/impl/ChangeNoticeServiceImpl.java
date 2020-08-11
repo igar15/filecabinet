@@ -3,16 +3,23 @@ package com.igar15.filecabinet.service.impl;
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
+import com.igar15.filecabinet.service.DepartmentService;
+import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChangeNoticeServiceImpl implements ChangeNoticeService {
+
+    @Autowired
+    DepartmentService departmentService;
 
     @Autowired
     ChangeNoticeRepository changeNoticeRepository;
@@ -30,13 +37,50 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
 
     @Override
     public ChangeNotice findByName(String name) {
-        return changeNoticeRepository.findByName(name);
-//        return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name), name);
+        Assert.notNull(name, "Change notice name must not be null");
+        return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name).orElse(null), name);
     }
 
     @Override
-    public List<ChangeNotice> findAll() {
-        return changeNoticeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    public Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable) {
+        LocalDate afterDate = (after == null) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
+        LocalDate beforeDate = (before == null) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
+
+        Page<ChangeNotice> changeNotices = null;
+
+        Integer changeCodeInt = null;
+        try {
+            changeCodeInt = (changeCode == null) ? null : Integer.valueOf(changeCode);
+        } catch (NumberFormatException e) {
+        }
+
+        if (HelperUtil.checkParamsOnNull(name, department, changeCode)) {
+            changeNotices = changeNoticeRepository.findAllByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(afterDate, beforeDate, pageable);
+        }
+        else if (HelperUtil.checkParamsOnNull(name, department)) {
+            changeNotices = changeNoticeRepository.findAllByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(changeCodeInt, afterDate, beforeDate, pageable);
+        } else if (HelperUtil.checkParamsOnNull(name, changeCode)) {
+            changeNotices = changeNoticeRepository.findAllByDepartment_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, afterDate, beforeDate, pageable);
+        } else if (HelperUtil.checkParamsOnNull(name)) {
+            changeNotices = changeNoticeRepository.findAllByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, changeCodeInt, afterDate, beforeDate, pageable);
+        }
+        else {
+            ChangeNotice changeNotice = new ChangeNotice();
+            changeNotice.setName(name);
+            changeNotice.setDepartment(departmentService.findByName(department));
+            changeNotice.setChangeCode(changeCodeInt);
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
+            Example<ChangeNotice> example = Example.of(changeNotice, matcher);
+            changeNotices = changeNoticeRepository.findAll(example, pageable);
+            if (after != null || before != null) {
+                List<ChangeNotice> collect = changeNotices.get()
+                        .filter(change -> (change.getIssueDate().compareTo(afterDate) >= 0) && (change.getIssueDate().compareTo(beforeDate) <= 0))
+                        .collect(Collectors.toList());
+                changeNotices = new PageImpl<>(collect, pageable, pageable.getOffset());
+            }
+        }
+        return changeNotices;
     }
 
     @Override

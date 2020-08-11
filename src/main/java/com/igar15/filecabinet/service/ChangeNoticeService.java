@@ -1,6 +1,8 @@
 package com.igar15.filecabinet.service;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ public interface ChangeNoticeService {
 
     ChangeNotice create(ChangeNotice changeNotice);
 
-    List<ChangeNotice> findAll();
+    Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable);
 
     ChangeNotice findById(int id);
 

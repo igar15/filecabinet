@@ -36,7 +36,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tempDepartment : ${page}">
+            <tr th:each="tempDepartment : ${departments}">
                 <td class="align-middle text-center">
                     <a th:href="@{'/departments/showDepartmentInfo/' + ${tempDepartment.id}}" th:text="${tempDepartment.name}"></a>
                 </td>

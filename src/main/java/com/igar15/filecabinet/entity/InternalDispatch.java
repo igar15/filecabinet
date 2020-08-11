@@ -21,17 +21,10 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "stamp")
     private Stamp stamp;
 
-    @NotNull
+    @NotNull(message = "Dispatch handler must not be empty")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department dispatchHandler;
-
-    @Transient
-    @ManyToMany
-    @JoinTable(name = "document_internal_dispatches",
-            joinColumns = @JoinColumn(name = "internal_dispatch_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_id"))
-    private Set<Document> documentsSet;
 
     @ElementCollection
     @CollectionTable(name = "document_internal_dispatches",
@@ -40,24 +33,24 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "is_active")
     private Map<Document, Boolean> documents;
 
-    @NotNull
+    @NotNull(message = "Received date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "received_internal_date")
     private LocalDate receivedInternalDate;
 
-    @NotBlank
+    @NotBlank(message = "Handler name must not be blank")
     @Column(name = "internal_handler_name")
     private String internalHandlerName;
 
-    @NotBlank
+    @NotBlank(message = "Handler phone number must not be blank")
     @Column(name = "internal_handler_phone_number")
     private String internalHandlerPhoneNumber;
 
-    @NotNull
+    @NotNull(message = "\"Is album\" mark must not be empty")
     @Column(name = "is_album")
     private Boolean isAlbum;
 
-    @AlbumNameValid
+    @AlbumNameValid(message = "Document does not exist")
     @Column(name = "album_name")
     private String albumName;
 
@@ -65,18 +58,16 @@ public class InternalDispatch extends Dispatch {
     private boolean isActive = true;
 
 
-
     public InternalDispatch() {
-
     }
 
     public InternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
-                            Stamp stamp, Department dispatchHandler, Set<Document> documents, LocalDate receivedInternalDate,
+                            Stamp stamp, Department dispatchHandler, Map<Document, Boolean> documents, LocalDate receivedInternalDate,
                             String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName) {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
         this.dispatchHandler = dispatchHandler;
-        this.documentsSet = documents;
+        this.documents = documents;
         this.receivedInternalDate = receivedInternalDate;
         this.internalHandlerName = internalHandlerName;
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
@@ -98,14 +89,6 @@ public class InternalDispatch extends Dispatch {
 
     public void setDispatchHandler(Department department) {
         this.dispatchHandler = department;
-    }
-
-    public Set<Document> getDocumentsSet() {
-        return documentsSet;
-    }
-
-    public void setDocumentsSet(Set<Document> documents) {
-        this.documentsSet = documents;
     }
 
     public LocalDate getReceivedInternalDate() {

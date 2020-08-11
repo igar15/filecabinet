@@ -1,11 +1,8 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.*;
-import com.igar15.filecabinet.entity.enums.Form;
-import com.igar15.filecabinet.entity.enums.Stage;
-import com.igar15.filecabinet.entity.enums.Status;
-import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.*;
+import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -16,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -43,9 +39,6 @@ public class DocumentController {
     @Autowired
     private InternalDispatchService internalDispatchService;
 
-    @Autowired
-    private DocumentRepository documentRepository;
-
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "decimalNumber", required = false) String decimalNumber,
                           @RequestParam(name = "name", required = false) String name,
@@ -59,19 +52,17 @@ public class DocumentController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault("decimalNumber") Pageable pageable,
                           Model model) {
-        if (decimalNumber != null) {
-            decimalNumber = decimalNumber.trim();
-        }
-        decimalNumber = "".equals(decimalNumber) ? null : decimalNumber;
-        name = "".equals(name) ? null : name;
-        inventoryNumber = "".equals(inventoryNumber) ? null : inventoryNumber;
-        status = "".equals(status) ? null : status;
-        stage = "".equals(stage) ? null : stage;
-        form = "".equals(form) ? null : form;
-        department = "".equals(department) ? null : department;
-        originalHolder = "".equals(originalHolder) ? null : originalHolder;
-        LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
-        LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
+
+        decimalNumber = HelperUtil.stringParamTrimmer(decimalNumber);
+        name = HelperUtil.stringParamTrimmer(name);
+        inventoryNumber = HelperUtil.stringParamTrimmer(inventoryNumber);
+        status = HelperUtil.stringParamTrimmer(status);
+        stage = HelperUtil.stringParamTrimmer(stage);
+        form = HelperUtil.stringParamTrimmer(form);
+        department = HelperUtil.stringParamTrimmer(department);
+        originalHolder = HelperUtil.stringParamTrimmer(originalHolder);
+        after = HelperUtil.stringParamTrimmer(after);
+        before = HelperUtil.stringParamTrimmer(before);
 
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
@@ -81,52 +72,9 @@ public class DocumentController {
         model.addAttribute("stage", stage);
         model.addAttribute("form", form);
 
-        Page<Document> documents = null;
+        Page<Document> documents = documentService.findAll(decimalNumber, name, department, originalHolder, inventoryNumber,
+                status, stage, form, after, before, pageable);
 
-        if (checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, department, originalHolder)) {
-            documents = documentRepository.findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(afterDate, beforeDate, pageable);
-        }
-        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, department)) {
-            documents = documentRepository.findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(originalHolder, afterDate, beforeDate, pageable);
-        }
-        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form, originalHolder)) {
-            documents = documentRepository.findAllByDepartment_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(department, afterDate, beforeDate, pageable);
-        }
-        else if(checkParamsOnNull(decimalNumber, name, inventoryNumber, status, stage, form)) {
-            documents = documentRepository.findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(department, originalHolder, afterDate, beforeDate, pageable);
-        }
-        else {
-            Document document = new Document();
-            Integer inventoryNumberInt = null;
-            try {
-                inventoryNumberInt = inventoryNumber == null ? null : Integer.valueOf(inventoryNumber);
-            } catch (NumberFormatException e) {
-                inventoryNumberInt = -1;
-            }
-            Status docStatus = status == null ? null : Status.valueOf(status);
-            Stage docStage = stage == null ? null : Stage.valueOf(stage);
-            Form docForm = form == null ? null : Form.valueOf(form);
-            document.setDecimalNumber(decimalNumber);
-            document.setName(name);
-            document.setDepartment(departmentService.findByName(department));
-            document.setOriginalHolder(companyService.findByName(originalHolder));
-            document.setInventoryNumber(inventoryNumberInt);
-            document.setStatus(docStatus);
-            document.setStage(docStage);
-            document.setForm(docForm);
-
-            ExampleMatcher matcher = ExampleMatcher.matching()
-                    .withMatcher("decimalNumber", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase())
-                    .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
-            Example<Document> example = Example.of(document, matcher);
-            documents = documentRepository.findAll(example, pageable);
-            if (after != null || !"".equals(after) || before != null || !"".equals(before)) {
-                List<Document> collect = documents.get()
-                        .filter(doc -> (doc.getReceiptDate().compareTo(afterDate) >= 0) && (doc.getReceiptDate().compareTo(beforeDate) <= 0))
-                        .collect(Collectors.toList());
-                documents = new PageImpl<>(collect, pageable, pageable.getOffset());
-            }
-        }
         model.addAttribute("documents", documents);
         return "/documents/document-list";
     }
@@ -140,31 +88,22 @@ public class DocumentController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("document") Document document, BindingResult bindingResult, Model model) {
-        checkDecimalNumberOnDuplicate(document, bindingResult);
+    public String save(@Valid Document document, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("departments", departmentService.findAll());
+            model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
             model.addAttribute("companies", companyService.findAll());
             return "/documents/document-form";
         }
         if (document.isNew()) {
             documentService.create(document);
         } else {
-//            document.setExternalDispatches(documentService.findById(document.getId()).getExternalDispatches());
-//            document.setInternalDispatches(documentService.findById(document.getId()).getInternalDispatches());
-//            documentService.update(document);
-//            documentService.updateWithout(document);
             if (document.getSheetsAmount() == null) {
                 document.setSheetsAmount(0);
             }
             if (document.getA4Amount() == null) {
                 document.setA4Amount(0);
             }
-            documentRepository.updateDocument(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
-                    document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
-                    document.getFormat(), document.getA4Amount(), document.getDepartment(), document.getOriginalHolder());
-//            documentRepository.updDoc(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
-//                    document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount());
+            documentService.updateWithoutChildren(document);
         }
         return "redirect:/documents/showDocumentInfo/" + document.getId();
     }
@@ -172,7 +111,7 @@ public class DocumentController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("companies", companyService.findAll());
         return "/documents/document-form";
     }
@@ -270,11 +209,17 @@ public class DocumentController {
     @GetMapping("/deregisterAlbum/{id}/{internalId}")
     public String deregisterAlbum(@PathVariable("id") int id,
                                   @PathVariable("internalId") int internalId) {
-        InternalDispatch internalDispatch = internalDispatchService.findById(internalId);
-        internalDispatch.setIsActive(false);
-        internalDispatch.getDocuments().keySet()
-                .forEach(key -> internalDispatch.getDocuments().put(key, false));
-        internalDispatchService.update(internalDispatch);
+        InternalDispatch internalDispatch = internalDispatchService.findByIdAndIsAlbum(internalId, true);
+        Document document = documentService.findById(id);
+        if (internalDispatch.getAlbumName().equals(document.getDecimalNumber())) {
+            internalDispatch.setIsActive(false);
+            internalDispatch.getDocuments().keySet()
+                    .forEach(key -> internalDispatch.getDocuments().put(key, false));
+            internalDispatchService.update(internalDispatch);
+        }
+        else {
+            throw new IllegalArgumentException("Can not deregister album! Album name does not equal document decimal number!");
+        }
         return "redirect:/documents/showInternalDispatches/" + id;
     }
 
@@ -301,7 +246,7 @@ public class DocumentController {
                                    Model model) {
         String errorMessage = null;
         Document document = documentService.findById(id);
-        if (newApplicability == null || newApplicability.trim().isEmpty()) {
+        if (HelperUtil.stringParamTrimmer(newApplicability) == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {
@@ -314,7 +259,7 @@ public class DocumentController {
                     document.getApplicabilities().add(applicability);
                     documentService.update(document);
                     model.addAttribute("document", document);
-                    return "document-applicabilities";
+                    return "/documents/document-applicabilities";
                 }
 
             } catch (NotFoundException e) {
@@ -342,7 +287,7 @@ public class DocumentController {
                 });
         documentService.update(mainDocument);
 
-        List<Document> documentsInMainDocument = documentRepository.findByApplicabilities_DecimalNumber(mainDocument.getDecimalNumber());
+        List<Document> documentsInMainDocument = documentService.findAllByApplicabilities_DecimalNumber(mainDocument.getDecimalNumber());
         Queue<Document> documents = new LinkedList<>(documentsInMainDocument);
         while (!documents.isEmpty()) {
             Document tempDocument = documents.remove();
@@ -368,35 +313,11 @@ public class DocumentController {
                             }
                         });
                 documentService.update(tempDocument);
-                documents.addAll(documentRepository.findByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
+                documents.addAll(documentService.findAllByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
             }
         }
         model.addAttribute("document", mainDocument);
         return "/documents/document-externaldispatches";
-    }
-
-
-
-
-
-    private boolean checkParamsOnNull(String... params) {
-        return Arrays.stream(params)
-                .allMatch(Objects::isNull);
-    }
-
-    private void checkDecimalNumberOnDuplicate(Document obj, BindingResult bindingResult) {
-        boolean isUnique = true;
-        Document document = documentRepository.findByDecimalNumber(obj.getDecimalNumber()).orElse(null);
-
-        if (obj.isNew()) {
-            isUnique = document == null;
-        }
-        else if (document != null && !document.getId().equals(obj.getId())) {
-            isUnique = false;
-        }
-        if (!isUnique) {
-            bindingResult.rejectValue("decimalNumber", "error.document", "Document already exist");
-        }
     }
 
 }

@@ -23,5 +23,5 @@ public interface CompanyService {
 
     void deleteById(int id);
 
-    Page<Company> findByNameContainsIgnoreCase(String companyName, Pageable pageable);
+    Page<Company> findAllByNameContainsIgnoreCase(String companyName, Pageable pageable);
 }

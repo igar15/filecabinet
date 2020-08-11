@@ -37,14 +37,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company findByName(String name) {
-//        Assert.notNull(name, "name must not be null");
-//        return ValidationUtil.checkNotFound(companyRepository.findByName(name).orElse(null), name);
-        return companyRepository.findByName(name).orElse(null);
+        Assert.notNull(name, "Company name must not be null");
+        return ValidationUtil.checkNotFound(companyRepository.findByName(name).orElse(null), name);
     }
 
     @Override
-    public Page<Company> findByNameContainsIgnoreCase(String companyName, Pageable pageable) {
-        return companyRepository.findByNameContainsIgnoreCase(companyName, pageable);
+    public Page<Company> findAllByNameContainsIgnoreCase(String companyName, Pageable pageable) {
+        return companyRepository.findAllByNameContainsIgnoreCase(companyName, pageable);
     }
 
     @Override
@@ -64,11 +63,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
         ValidationUtil.checkNotFoundWithId(companyRepository.findById(id).orElse(null), id);
-        List<Document> documents = documentRepository.findAllByOriginalHolderId(id);
-        documents.forEach(document -> document.setOriginalHolder(null));
         companyRepository.deleteById(id);
     }
 }

@@ -4,8 +4,8 @@ import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
+import com.igar15.filecabinet.util.validation.DecimalNumberNotDuplicate;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -15,25 +15,26 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
+@DecimalNumberNotDuplicate
 @Entity
 @Table(name = "documents")
 public class Document extends AbstractNamedEntity {
 
-    @NotBlank(message = "document decimal number must not be blank")
+    @NotBlank(message = "Decimal number must not be blank")
     @Column(name = "decimal_number")
     private String decimalNumber;
 
-    @NotNull(message = "document inventory number must not be empty")
-    @Min(value = 1, message = "document inventory number must be greater than 0")
+    @NotNull(message = "Inventory number must not be empty")
+    @Min(value = 1, message = "Inventory number must be greater than 0")
     @Column(name = "inventory_number")
     private Integer inventoryNumber;
 
-    @NotNull(message = "document receipt date must not be null")
+    @NotNull(message = "Receipt date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "receipt_date")
     private LocalDate receiptDate;
 
-    @NotNull(message = "document status must not be null")
+    @NotNull(message = "Status must not be empty")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -53,22 +54,23 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "stage")
     private Stage stage;
 
-    @Min(value = 0, message = "document sheets amount must be greater than 0")
+    @Min(value = 0, message = "Sheets amount must be greater than 0")
     @Column(name = "sheets_amount")
     private Integer sheetsAmount;
 
     @Column(name = "format")
     private String format;
 
-    @Min(value = 0, message = "document A4 amount must be greater than 0")
+    @Min(value = 0, message = "A4 amount must be greater than 0")
     @Column(name = "a4_amount")
     private Integer a4Amount;
 
+    @NotNull(message = "Developer must not be empty")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @NotNull(message = "document original holder must not be null")
+    @NotNull(message = "Original holder must not be null")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "original_holder_id")
     private Company originalHolder;
@@ -95,31 +97,7 @@ public class Document extends AbstractNamedEntity {
     private Map<InternalDispatch, Boolean> internalDispatches;
 
 
-
-
-    //private List<Sheet> sheets;
-
-
-
     public Document() {
-    }
-
-    public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate,
-                    Status status, Set<Document> applicabilities, Form form, Stage stage,
-                    Integer sheetsAmount, String format, Integer a4Amount, Department department, Company originalHolder) {
-        super(id, name);
-        this.decimalNumber = decimalNumber;
-        this.inventoryNumber = inventoryNumber;
-        this.receiptDate = receiptDate;
-        this.status = status;
-        this.applicabilities = applicabilities;
-        this.form = form;
-        this.stage = stage;
-        this.sheetsAmount = sheetsAmount;
-        this.format = format;
-        this.a4Amount = a4Amount;
-        this.department = department;
-        this.originalHolder = originalHolder;
     }
 
     public Document(Integer id, String name, String decimalNumber, Integer inventoryNumber, LocalDate receiptDate, Status status,
@@ -262,10 +240,5 @@ public class Document extends AbstractNamedEntity {
 
     public void setInternalDispatches(Map<InternalDispatch, Boolean> internalDispatches) {
         this.internalDispatches = internalDispatches;
-    }
-
-    @Override
-    public String toString() {
-        return decimalNumber;
     }
 }

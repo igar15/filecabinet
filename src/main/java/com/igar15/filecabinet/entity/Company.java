@@ -17,7 +17,6 @@ public class Company extends AbstractNamedEntity {
     private String contactPerson;
 
 
-
     public Company() {
         address = new Address();
     }

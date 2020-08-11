@@ -31,7 +31,7 @@ public class CompanyController {
         companyName = "".equals(companyName) ? null : companyName;
         Page<Company> companies = null;
         if (companyName != null) {
-            companies = companyService.findByNameContainsIgnoreCase(companyName, pageable);
+            companies = companyService.findAllByNameContainsIgnoreCase(companyName, pageable);
         }
         else {
             companies = companyService.findAll(pageable);

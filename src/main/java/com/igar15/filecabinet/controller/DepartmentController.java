@@ -1,7 +1,6 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Department;
-import com.igar15.filecabinet.repository.DepartmentRepository;
 import com.igar15.filecabinet.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +19,9 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
     @GetMapping("/list")
     public String showAll(Model model, @SortDefault("name") Pageable pageable) {
-        model.addAttribute("page", departmentRepository.findAll(pageable));
+        model.addAttribute("departments", departmentService.findAll(pageable));
         return "/departments/department-list";
     }
 

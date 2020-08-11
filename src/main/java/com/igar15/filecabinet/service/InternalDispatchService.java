@@ -12,11 +12,11 @@ public interface InternalDispatchService {
 
     InternalDispatch findById(int id);
 
+    InternalDispatch findByIdAndIsAlbum(int id, boolean isAlbum);
+
     List<InternalDispatch> findAll();
 
-//    List<InternalDispatch> findAllByDocumentId(int documentId);
-
-    Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
+    Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
     void update(InternalDispatch internalDispatch);
 

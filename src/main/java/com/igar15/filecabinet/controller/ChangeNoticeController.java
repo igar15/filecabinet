@@ -6,6 +6,7 @@ import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -34,9 +35,6 @@ public class ChangeNoticeController {
     @Autowired
     private DocumentService documentService;
 
-    @Autowired
-    private ChangeNoticeRepository changeNoticeRepository;
-
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "name", required = false) String name,
                           @RequestParam(name = "department", required = false) String department,
@@ -45,53 +43,17 @@ public class ChangeNoticeController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
                           Model model) {
-        if (name != null) {
-            name = name.trim();
-        }
-        name = "".equals(name) ? null : name;
-        department = "".equals(department) ? null : department;
-        changeCode = "".equals(changeCode) ? null : changeCode;
-        LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
-        LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
+        name = HelperUtil.stringParamTrimmer(name);
+        department = HelperUtil.stringParamTrimmer(department);
+        changeCode = HelperUtil.stringParamTrimmer(changeCode);
+        after = HelperUtil.stringParamTrimmer(after);
+        before = HelperUtil.stringParamTrimmer(before);
 
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
 
-        Page<ChangeNotice> changeNotices = null;
+        Page<ChangeNotice> changeNotices = changeNoticeService.findAll(name, department, changeCode, after, before, pageable);
 
-        Integer changeCodeInt = null;
-        try {
-            changeCodeInt = changeCode == null ? null : Integer.valueOf(changeCode);
-        } catch (NumberFormatException e) {
-            changeCodeInt = - 1;
-        }
-
-        if (checkParamsOnNull(name, department, changeCode)) {
-            changeNotices = changeNoticeRepository.findByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(afterDate, beforeDate, pageable);
-        }
-        else if (checkParamsOnNull(name, department)) {
-            changeNotices = changeNoticeRepository.findByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(changeCodeInt, afterDate, beforeDate, pageable);
-        } else if (checkParamsOnNull(name, changeCode)) {
-            changeNotices = changeNoticeRepository.findByDepartment_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, afterDate, beforeDate, pageable);
-        } else if (checkParamsOnNull(name)) {
-            changeNotices = changeNoticeRepository.findByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(department, changeCodeInt, afterDate, beforeDate, pageable);
-        }
-        else {
-            ChangeNotice changeNotice = new ChangeNotice();
-            changeNotice.setName(name);
-            changeNotice.setDepartment(departmentService.findByName(department));
-            changeNotice.setChangeCode(changeCodeInt);
-            ExampleMatcher matcher = ExampleMatcher.matching()
-                    .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());
-            Example<ChangeNotice> example = Example.of(changeNotice, matcher);
-            changeNotices = changeNoticeRepository.findAll(example, pageable);
-            if (after != null || !"".equals(after) || before != null || !"".equals(before)) {
-                List<ChangeNotice> collect = changeNotices.get()
-                        .filter(change -> (change.getIssueDate().compareTo(afterDate) >= 0) && (change.getIssueDate().compareTo(beforeDate) <= 0))
-                        .collect(Collectors.toList());
-                changeNotices = new PageImpl<>(collect, pageable, pageable.getOffset());
-            }
-        }
         model.addAttribute("changeNotices", changeNotices);
         return "/changenotices/changenotice-list";
     }
@@ -106,15 +68,14 @@ public class ChangeNoticeController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         return "/changenotices/changenotice-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
-        bindingResult = checkNameOnDuplicate(changeNotice, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("departments", departmentService.findAll());
+            model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
             return "/changenotices/changenotice-form";
         }
 
@@ -158,15 +119,15 @@ public class ChangeNoticeController {
         String numberErrorMessage = null;
 
         ChangeNotice changeNotice = changeNoticeService.findById(id);
-        if (newDocument == null || newDocument.trim().isEmpty()) {
+        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
             docErrorMessage = "Decimal number must not be empty";
-            if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+            if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
                 numberErrorMessage = "Change number must not be empty";
             }
         }
-        else if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+        else if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
             numberErrorMessage = "Change number must not be empty";
-            if (newDocument == null || newDocument.trim().isEmpty()) {
+            if (HelperUtil.stringParamTrimmer(newDocument) == null) {
                 docErrorMessage = "Decimal number must not be empty";
             }
         }
@@ -217,15 +178,15 @@ public class ChangeNoticeController {
         String docErrorMessage = null;
         String numberErrorMessage = null;
 
-        if (newDocument == null || newDocument.trim().isEmpty()) {
+        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
             docErrorMessage = "Decimal number must not be empty";
-            if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+            if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
                 numberErrorMessage = "Change number must not be empty";
             }
         }
-        else if (newDocumentChangeNumber == null || newDocumentChangeNumber.trim().isEmpty()) {
+        else if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
             numberErrorMessage = "Change number must not be empty";
-            if (newDocument == null || newDocument.trim().isEmpty()) {
+            if (HelperUtil.stringParamTrimmer(newDocument) == null) {
                 docErrorMessage = "Decimal number must not be empty";
             }
         }
@@ -286,27 +247,6 @@ public class ChangeNoticeController {
         changeNoticeService.update(changeNotice);
         model.addAttribute("changeNotice", changeNotice);
         return "/changenotices/changenotice-document-list";
-    }
-
-    private boolean checkParamsOnNull(String... params) {
-        return Arrays.stream(params)
-                .allMatch(Objects::isNull);
-    }
-
-    private BindingResult checkNameOnDuplicate(ChangeNotice obj, BindingResult bindingResult) {
-        boolean isUnique = true;
-        ChangeNotice changeNotice = changeNoticeService.findByName(obj.getName());
-
-        if (obj.isNew()) {
-            isUnique = changeNotice == null;
-        }
-        else if (changeNotice != null && !changeNotice.getId().equals(obj.getId())) {
-            isUnique = false;
-        }
-        if (!isUnique) {
-            bindingResult.rejectValue("name", "error.changeNotice", "Change notice already exist");
-        }
-        return bindingResult;
     }
 
 }

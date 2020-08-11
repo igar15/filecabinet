@@ -25,24 +25,23 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Query("update Document d set d.name=:name, d.decimalNumber =:decimalNumber, d.inventoryNumber=:inventoryNumber, " +
             "d.receiptDate=:receiptDate, d.status=:status, d.form=:form, d.stage=:stage, d.sheetsAmount=:sheetsAmount, " +
             "d.format=:format, d.a4Amount=:a4Amount, d.department=:department, d.originalHolder=:originalHolder where d.id=:id")
-    void updateDocument(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber, @Param("inventoryNumber") int inventoryNumber,
-                        @Param("receiptDate") LocalDate receiptDate, @Param("status") Status status, @Param("form") Form form,
-                        @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
-                        @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
+    void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber, @Param("inventoryNumber") int inventoryNumber,
+                               @Param("receiptDate") LocalDate receiptDate, @Param("status") Status status, @Param("form") Form form,
+                               @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
+                               @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
 
     Optional<Document> findByDecimalNumber(String decimalNumber);
 
-    @Query("select d from Document d where d.department.id=:departmentId")
-    List<Document> findAllByDepartmentId(@Param("departmentId") int departmentId);
+    List<Document> findAllByDepartment_Id(int departmentId);
 
-    List<Document> findByApplicabilities_DecimalNumber(String decimalNumber);
+    List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
 
-    List<Document> findAllByDepartment_Name(String name);
+    List<Document> findAllByDepartment_Name(String departmentName);
 
     List<Document> findAllByOriginalHolderId(int originalHolderId);
 
     @Query("select d from Document d left join d.changeNotices where d.id=:id")
-    Document findByIdWithChangeNotices(@Param("id") int id);
+    Optional<Document> findByIdWithChangeNotices(@Param("id") int id);
 
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 

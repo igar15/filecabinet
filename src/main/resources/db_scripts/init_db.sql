@@ -46,8 +46,8 @@ create table documents (
     sheets_amount integer default null,
     format varchar default null,
     a4_amount integer default null,
-    department_id integer default null,
-    original_holder_id integer default null,
+    department_id integer not null,
+    original_holder_id integer not null,
     foreign key (department_id) references departments (id),
     foreign key (original_holder_id) references companies (id)
 );
@@ -67,7 +67,7 @@ create table change_notices (
     name varchar not null,
     change_code integer not null,
     issue_date date not null,
-    department_id integer default null,
+    department_id integer not null,
     foreign key (department_id) references departments (id)
 );
 create unique index change_notices_name_idx on change_notices (name);
@@ -116,7 +116,7 @@ create table internal_dispatches (
     is_album boolean not null,
     album_name varchar default null,
     is_active boolean not null,
-    foreign key (department_id) references departments (id) on delete cascade
+    foreign key (department_id) references departments (id)
 );
 create unique index internal_dispatches_stamp_album_name_idx on internal_dispatches (stamp, album_name);
 create unique index internal_dispatches_waybill_dispatch_date_idx on internal_dispatches (waybill, dispatch_date);

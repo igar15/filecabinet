@@ -10,6 +10,8 @@ import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,14 +46,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     public Department findByName(String name) {
-//        Assert.notNull(name, "name must not be null");
-//        return ValidationUtil.checkNotFound(departmentRepository.findByName(name).orElse(null), name);
-        return departmentRepository.findByName(name).orElse(null);
+        Assert.notNull(name, "name must not be null");
+        return ValidationUtil.checkNotFound(departmentRepository.findByName(name).orElse(null), name);
     }
 
     @Override
     public List<Department> findAll() {
         return departmentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    }
+
+    @Override
+    public Page<Department> findAll(Pageable pageable) {
+        return departmentRepository.findAll(pageable);
     }
 
     @Override
@@ -71,14 +77,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
         Department found = departmentRepository.findById(id).orElse(null);
         ValidationUtil.checkNotFoundWithId(found, id);
-        List<Document> documents = documentRepository.findAllByDepartmentId(id);
-        List<ChangeNotice> changeNotices = changeNoticeRepository.findAllByDepartmentId(id);
-        documents.forEach(document -> document.setDepartment(null));
-        changeNotices.forEach(changeNotice -> changeNotice.setDepartment(null));
         departmentRepository.deleteById(id);
     }
 }

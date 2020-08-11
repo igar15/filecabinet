@@ -1,6 +1,5 @@
 package com.igar15.filecabinet.entity.abstracts;
 
-import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,16 +11,16 @@ import java.time.LocalDate;
 @MappedSuperclass
 public abstract class Dispatch extends AbstractBaseEntity {
 
-    @NotBlank
+    @NotBlank(message = "Waybill must not be blank")
     @Column(name = "waybill")
     private String waybill;
 
-    @NotNull
+    @NotNull(message = "Dispatch date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dispatch_date")
     private LocalDate dispatchDate;
 
-    @NotNull
+    @NotNull(message = "Status must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -30,9 +29,7 @@ public abstract class Dispatch extends AbstractBaseEntity {
     private String remark;
 
 
-
     public Dispatch() {
-
     }
 
     public Dispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark) {

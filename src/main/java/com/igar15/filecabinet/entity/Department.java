@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class Department extends AbstractNamedEntity {
 
     @Column(name = "chief_name")
-    @NotBlank
+    @NotBlank(message = "Chief name must not be blank")
     @Size(min = 5, max = 100)
     private String chiefName;
 
@@ -26,11 +26,11 @@ public class Department extends AbstractNamedEntity {
     @Min(1)
     private Integer workersAmount;
 
-    @NotNull
+    @NotNull(message = "\"Is developer\" mark must not be empty")
     @Column(name = "is_developer")
     private Boolean isDeveloper;
 
-    @NotNull
+    @NotNull(message = "\"Use albums\" mark must not be empty")
     @Column(name = "can_take_albums")
     private Boolean canTakeAlbums;
 

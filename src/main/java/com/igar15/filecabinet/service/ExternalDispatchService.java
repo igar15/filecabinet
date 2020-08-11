@@ -13,8 +13,6 @@ public interface ExternalDispatchService {
 
     List<ExternalDispatch> findAll();
 
-//    List<ExternalDispatch> findAllByDocumentId(int documentId);
-
     void update(ExternalDispatch externalDispatch);
 
     void deleteById(int id);

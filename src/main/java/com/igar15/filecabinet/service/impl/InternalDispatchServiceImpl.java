@@ -31,18 +31,18 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
     }
 
     @Override
+    public InternalDispatch findByIdAndIsAlbum(int id, boolean isAlbum) {
+        return ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdAndIsAlbum(id, isAlbum).orElse(null), id);
+    }
+
+    @Override
     public List<InternalDispatch> findAll() {
         return internalDispatchRepository.findAll(Sort.by(Sort.Order.desc("dispatchDate")));
     }
 
-//    @Override
-//    public List<InternalDispatch> findAllByDocumentId(int documentId) {
-//        return internalDispatchRepository.findByDocuments_Id(documentId, Sort.by(Sort.Order.desc("dispatchDate")));
-//    }
-
     @Override
-    public Page<InternalDispatch> findByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable) {
-        return internalDispatchRepository.findByIsAlbumAndIsActive(true, true, pageable);
+    public Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable) {
+        return internalDispatchRepository.findAllByIsAlbumAndIsActive(true, true, pageable);
     }
 
     @Override

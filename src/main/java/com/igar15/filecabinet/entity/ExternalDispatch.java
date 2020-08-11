@@ -14,10 +14,10 @@ import java.util.Set;
 @Table(name = "external_dispatches")
 public class ExternalDispatch extends Dispatch {
 
-    @NotBlank
+    @NotBlank(message = "Letter outgoing number must not be blank")
     private String letterOutgoingNumber;
 
-    @NotNull
+    @NotNull(message = "Company must not be empty")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -38,18 +38,8 @@ public class ExternalDispatch extends Dispatch {
     private Map<Document, Boolean> documents;
 
 
-
     public ExternalDispatch() {
-
     }
-
-//    public ExternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark, String letterOutgoingNumber,
-//                            Company company, Set<Document> documents) {
-//        super(id, waybill, dispatchDate, status, remark);
-//        this.letterOutgoingNumber = letterOutgoingNumber;
-//        this.company = company;
-//        this.documentsSet = documents;
-//    }
 
     public ExternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark, String letterOutgoingNumber,
                             Company company, Map<Document, Boolean> documents) {
@@ -58,10 +48,6 @@ public class ExternalDispatch extends Dispatch {
         this.company = company;
         this.documents = documents;
     }
-
-
-
-
 
     public String getLetterOutgoingNumber() {
         return letterOutgoingNumber;

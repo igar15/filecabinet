@@ -7,19 +7,19 @@ import javax.validation.constraints.NotBlank;
 @Embeddable
 public class Address {
 
-    @NotBlank
+    @NotBlank(message = "City must not be blank")
     @Column(name = "city")
     private String city;
 
-    @NotBlank
+    @NotBlank(message = "Street must not be blank")
     @Column(name = "street")
     private String street;
 
-    @NotBlank
+    @NotBlank(message = "Building must not be blank")
     @Column(name = "building")
     private String building;
 
-    @NotBlank
+    @NotBlank(message = "Zipcode must not be blank")
     @Column(name = "zipcode")
     private String zipcode;
 
@@ -64,4 +64,5 @@ public class Address {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
 }

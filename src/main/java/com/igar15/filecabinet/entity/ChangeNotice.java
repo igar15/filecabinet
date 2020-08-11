@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.entity;
 
 import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+import com.igar15.filecabinet.util.validation.ChangeNoticeNameNotDuplicate;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Map;
 
+@ChangeNoticeNameNotDuplicate
 @Entity
 @Table(name="change_notices")
 public class ChangeNotice extends AbstractNamedEntity {
@@ -18,11 +20,12 @@ public class ChangeNotice extends AbstractNamedEntity {
     @Column(name = "change_code")
     private Integer changeCode;
 
-    @NotNull
+    @NotNull(message = "Issue date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "issue_date")
     private LocalDate issueDate;
 
+    @NotNull(message = "Developer must not be empty")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
@@ -34,7 +37,6 @@ public class ChangeNotice extends AbstractNamedEntity {
     private Map<Document, Integer> documents;
 
     public ChangeNotice() {
-
     }
 
     public ChangeNotice(Integer id, String name, Integer changeCode, LocalDate issueDate, Department department) {
@@ -85,8 +87,4 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.issueDate = issueDate;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }
