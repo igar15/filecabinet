@@ -55,9 +55,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> findByCanTakeAlbums(Boolean canTakeAlbums) {
-        Assert.notNull(canTakeAlbums, "can take albums must be not null");
-        return departmentRepository.findByCanTakeAlbums(canTakeAlbums);
+    public List<Department> findAllByCanTakeAlbums(boolean canTakeAlbums) {
+        return departmentRepository.findAllByCanTakeAlbums(canTakeAlbums);
+    }
+
+    @Override
+    public List<Department> findAllByIsDeveloper(boolean isDeveloper) {
+        return departmentRepository.findAllByIsDeveloper(isDeveloper);
     }
 
     @Override

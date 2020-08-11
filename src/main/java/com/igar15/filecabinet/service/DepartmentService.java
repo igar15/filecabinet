@@ -14,7 +14,9 @@ public interface DepartmentService {
 
     List<Department> findAll();
 
-    List<Department> findByCanTakeAlbums(Boolean canTakeAlbums);
+    List<Department> findAllByCanTakeAlbums(boolean canTakeAlbums);
+
+    List<Department> findAllByIsDeveloper(boolean isDeveloper);
 
     void update(Department department);
 

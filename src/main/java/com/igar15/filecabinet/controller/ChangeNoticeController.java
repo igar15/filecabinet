@@ -6,6 +6,7 @@ import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
@@ -44,13 +45,16 @@ public class ChangeNoticeController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
                           Model model) {
+        if (name != null) {
+            name = name.trim();
+        }
         name = "".equals(name) ? null : name;
         department = "".equals(department) ? null : department;
         changeCode = "".equals(changeCode) ? null : changeCode;
         LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
         LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
 
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
 
         Page<ChangeNotice> changeNotices = null;
@@ -95,7 +99,7 @@ public class ChangeNoticeController {
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("changeNotice", new ChangeNotice());
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         return "/changenotices/changenotice-form";
     }
 
@@ -167,7 +171,11 @@ public class ChangeNoticeController {
             }
         }
         else {
-            Document document = documentService.findByDecimalNumber(newDocument);
+            Document document = null;
+            try {
+                document = documentService.findByDecimalNumber(newDocument);
+            } catch (NotFoundException e) {
+            }
             if (document == null) {
                 docErrorMessage = "Document does not exist";
             }
@@ -222,7 +230,11 @@ public class ChangeNoticeController {
             }
         }
         else {
-            Document document = documentService.findByDecimalNumber(newDocument);
+            Document document = null;
+            try {
+                document = documentService.findByDecimalNumber(newDocument);
+            } catch (NotFoundException e) {
+            }
             if (document == null) {
                 docErrorMessage = "Document does not exist";
             }

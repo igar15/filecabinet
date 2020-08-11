@@ -59,6 +59,9 @@ public class DocumentController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault("decimalNumber") Pageable pageable,
                           Model model) {
+        if (decimalNumber != null) {
+            decimalNumber = decimalNumber.trim();
+        }
         decimalNumber = "".equals(decimalNumber) ? null : decimalNumber;
         name = "".equals(name) ? null : name;
         inventoryNumber = "".equals(inventoryNumber) ? null : inventoryNumber;
@@ -70,7 +73,7 @@ public class DocumentController {
         LocalDate afterDate = (after == null || "".equals(after)) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
         LocalDate beforeDate = (before == null || "".equals(before)) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);
 
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
         model.addAttribute("originalHolders", companyService.findAll());
         model.addAttribute("originalHolder", originalHolder);
@@ -131,7 +134,7 @@ public class DocumentController {
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("document", new Document());
-        model.addAttribute("departments", departmentService.findAll());
+        model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("companies", companyService.findAll());
         return "/documents/document-form";
     }

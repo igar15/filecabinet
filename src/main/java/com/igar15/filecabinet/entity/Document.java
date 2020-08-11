@@ -5,6 +5,7 @@ import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.entity.enums.Stage;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -52,14 +53,14 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "stage")
     private Stage stage;
 
-    @Min(value = 1, message = "document sheets amount must be greater than 0")
+    @Min(value = 0, message = "document sheets amount must be greater than 0")
     @Column(name = "sheets_amount")
     private Integer sheetsAmount;
 
     @Column(name = "format")
     private String format;
 
-    @Min(value = 1, message = "document A4 amount must be greater than 0")
+    @Min(value = 0, message = "document A4 amount must be greater than 0")
     @Column(name = "a4_amount")
     private Integer a4Amount;
 

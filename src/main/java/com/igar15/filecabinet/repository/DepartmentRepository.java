@@ -10,6 +10,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
 
     Optional<Department> findByName(String name);
 
-    List<Department> findByCanTakeAlbums(Boolean canTakeAlbums);
+    List<Department> findAllByCanTakeAlbums(boolean canTakeAlbums);
+
+    List<Department> findAllByIsDeveloper(boolean isDeveloper);
 
 }

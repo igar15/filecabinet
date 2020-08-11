@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-sm-3 offset-3">
                         <select class="form-control selectpicker" name="department">
-                            <option value="">Department (not selected)</option>
+                            <option value="">Developer (not selected)</option>
                             <option th:each="drop : ${departments}"
                                     th:value="${drop.name}"
                                     th:text="${drop.name}"
@@ -75,7 +75,7 @@
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="issueDate">Issue date</a></th>
                     <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="changeCode">Change code</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department">Department</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department">Developer</a></th>
                     <th>Show notice</th>
                 </tr>
             </thead>

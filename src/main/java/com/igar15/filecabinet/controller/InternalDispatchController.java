@@ -14,11 +14,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/internaldispatches")
@@ -45,14 +49,24 @@ public class InternalDispatchController {
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("internalDispatch", new InternalDispatch());
-        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+        model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
         return "/internaldispatches/internaldispatch-form";
     }
 
     @PostMapping("/save")
     public String save(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
+
+        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
+                .filter(fer -> !fer.getField().equals("internalHandlerName")
+                        && !fer.getField().equals("internalHandlerPhoneNumber") && !fer.getField().equals("receivedInternalDate"))
+                .collect(Collectors.toList());
+        bindingResult = new BeanPropertyBindingResult(internalDispatch, "internalDispatch");
+        for (FieldError fieldError : errorsToKeep) {
+            bindingResult.addError(fieldError);
+        }
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+            model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
             return "/internaldispatches/internaldispatch-form";
         }
         else {
@@ -79,7 +93,7 @@ public class InternalDispatchController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
-        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+        model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
         return "/internaldispatches/internaldispatch-form";
     }
 
@@ -150,6 +164,9 @@ public class InternalDispatchController {
     public String showAlbums(@RequestParam(value = "albumName", required = false) String albumName,
                              @SortDefault("albumName") Pageable pageable,
                              Model model) {
+        if (albumName != null) {
+            albumName = albumName.trim();
+        }
         albumName = "".equals(albumName) ? null : albumName;
         Page<InternalDispatch> internalDispatches = null;
         if (albumName != null) {
@@ -170,7 +187,7 @@ public class InternalDispatchController {
 
     @GetMapping("/showChangeHandlerForm/{id}")
     public String showChangeHandlerForm(@PathVariable("id") int id, Model model) {
-        model.addAttribute("departments", departmentService.findByCanTakeAlbums(true));
+        model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
         return "/internaldispatches/internaldispatch-album-handler-form";
     }

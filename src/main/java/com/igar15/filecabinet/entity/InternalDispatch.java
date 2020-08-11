@@ -3,6 +3,7 @@ package com.igar15.filecabinet.entity;
 import com.igar15.filecabinet.entity.abstracts.Dispatch;
 import com.igar15.filecabinet.entity.enums.Stamp;
 import com.igar15.filecabinet.entity.enums.Status;
+import com.igar15.filecabinet.util.validation.AlbumNameValid;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -56,6 +57,7 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "is_album")
     private Boolean isAlbum;
 
+    @AlbumNameValid
     @Column(name = "album_name")
     private String albumName;
 

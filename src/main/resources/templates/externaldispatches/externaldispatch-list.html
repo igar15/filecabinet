@@ -47,7 +47,7 @@
                     <a th:if="${tempExternal.company != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempExternal.company.id}}" th:target="_blank" th:text="${tempExternal.company.name}"></a>
                 </td>
                 <td class="align-middle text-center" th:text="${tempExternal.waybill}"></td>
-                <td class="align-middle text-center" th:text="${tempExternal.status}"></td>
+                <td class="align-middle text-center" th:text="${tempExternal.status.name}"></td>
                 <td class="align-middle text-center" th:text="${tempExternal.remark}"></td>
             </tr>
         </tbody>

@@ -30,14 +30,6 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
                         @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
                         @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
 
-    @Transactional
-    @Modifying
-    @Query("update Document d set d.name=:name, d.decimalNumber=:decimalNumber, d.inventoryNumber=:inventoryNumber," +
-            "d.receiptDate=:receiptDate, d.status=:status, d.form=:form, d.stage=:stage, d.sheetsAmount=:sheetsAmount where d.id=:id")
-    int updDoc(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber,
-               @Param("inventoryNumber") int inventoryNumber, @Param("receiptDate") LocalDate receiptDate,
-               @Param("status") Status status, @Param("form") Form form, @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount);
-
     Optional<Document> findByDecimalNumber(String decimalNumber);
 
     @Query("select d from Document d where d.department.id=:departmentId")
