@@ -1,7 +1,5 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.DocumentTestData;
-import com.igar15.filecabinet.InternalDispatchTestData;
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.InternalDispatchService;
@@ -13,10 +11,7 @@ import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
 
-import java.util.List;
-
 import static com.igar15.filecabinet.InternalDispatchTestData.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class InternalDispatchServiceImplTest extends AbstractServiceTest {
 
@@ -62,7 +57,7 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
 
     @Test
     void findAll() {
-        Assertions.assertEquals(INTERNAL_DISPATCHES, internalDispatchService.findAll());
+        Assertions.assertEquals(INTERNAL_DISPATCHES, internalDispatchService.findAll(pageable));
     }
 
 //    @Test

@@ -6,6 +6,7 @@ import com.igar15.filecabinet.repository.ExternalDispatchRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.ExternalDispatchService;
+import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +26,6 @@ public class ExternalDispatchController {
     private ExternalDispatchService externalDispatchService;
 
     @Autowired
-    private ExternalDispatchRepository externalDispatchRepository;
-
-    @Autowired
     private CompanyService companyService;
 
     @Autowired
@@ -35,7 +33,7 @@ public class ExternalDispatchController {
 
     @GetMapping("/list")
     public String showAll(@SortDefault("dispatchDate") Pageable pageable, Model model) {
-        model.addAttribute("externalDispatches", externalDispatchRepository.findAll(pageable));
+        model.addAttribute("externalDispatches", externalDispatchService.findAll(pageable));
         return "/externaldispatches/externaldispatch-list";
     }
 
@@ -91,7 +89,7 @@ public class ExternalDispatchController {
 
         String errorMessage = null;
         ExternalDispatch externalDispatch = externalDispatchService.findById(id);
-        if (newDocument == null || newDocument.trim().isEmpty()) {
+        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {
@@ -119,18 +117,18 @@ public class ExternalDispatchController {
                             @PathVariable("documentId") int documentId,
                             Model model) {
         String errorDeleteMessage = null;
-        ExternalDispatch found = externalDispatchService.findById(id);
+        ExternalDispatch externalDispatch = externalDispatchService.findById(id);
 
-        if (found.getDocuments().size() < 2) {
-            errorDeleteMessage = "External dispatch " + found.getWaybill() + " can not exist without any documents!";
+        if (externalDispatch.getDocuments().size() < 2) {
+            errorDeleteMessage = "External dispatch " + externalDispatch.getWaybill() + " can not exist without any documents!";
         }
         else {
             Document document = documentService.findById(documentId);
-            found.getDocuments().remove(document);
-            externalDispatchService.update(found);
+            externalDispatch.getDocuments().remove(document);
+            externalDispatchService.update(externalDispatch);
         }
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
-        model.addAttribute("externalDispatch", found);
+        model.addAttribute("externalDispatch", externalDispatch);
         return "/externaldispatches/externaldispatch-info";
     }
 

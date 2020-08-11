@@ -1,9 +1,6 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.DocumentTestData;
-import com.igar15.filecabinet.ExternalDispatchTestData;
 import com.igar15.filecabinet.entity.ExternalDispatch;
-import com.igar15.filecabinet.repository.ExternalDispatchRepository;
 import com.igar15.filecabinet.service.ExternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -12,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 import static com.igar15.filecabinet.ExternalDispatchTestData.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ExternalDispatchServiceImplTest extends AbstractServiceTest {
 
@@ -57,7 +52,7 @@ class ExternalDispatchServiceImplTest extends AbstractServiceTest {
 
     @Test
     void findAll() {
-        Assertions.assertEquals(EXTERNAL_DISPATCHES, externalDispatchService.findAll());
+        Assertions.assertEquals(EXTERNAL_DISPATCHES, externalDispatchService.findAll(pageable));
     }
 
 //    @Test

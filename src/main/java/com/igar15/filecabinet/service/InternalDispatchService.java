@@ -14,7 +14,7 @@ public interface InternalDispatchService {
 
     InternalDispatch findByIdAndIsAlbum(int id, boolean isAlbum);
 
-    List<InternalDispatch> findAll();
+    Page<InternalDispatch> findAll(Pageable pageable);
 
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
@@ -22,4 +22,5 @@ public interface InternalDispatchService {
 
     void deleteById(int id);
 
+    Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isAlbum, Pageable pageable);
 }

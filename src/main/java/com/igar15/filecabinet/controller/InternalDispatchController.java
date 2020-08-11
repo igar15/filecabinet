@@ -6,6 +6,7 @@ import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
+import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,6 @@ public class InternalDispatchController {
     private InternalDispatchService internalDispatchService;
 
     @Autowired
-    private InternalDispatchRepository internalDispatchRepository;
-
-    @Autowired
     private DepartmentService departmentService;
 
     @Autowired
@@ -42,7 +40,7 @@ public class InternalDispatchController {
 
     @GetMapping("/list")
     public String showAll(@SortDefault(value = "dispatchDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        model.addAttribute("internalDispatches", internalDispatchRepository.findAll(pageable));
+        model.addAttribute("internalDispatches", internalDispatchService.findAll(pageable));
         return "/internaldispatches/internaldispatch-list";
     }
 
@@ -116,7 +114,7 @@ public class InternalDispatchController {
 
         String errorMessage = null;
         InternalDispatch internalDispatch = internalDispatchService.findById(id);
-        if (newDocument == null || newDocument.trim().isEmpty()) {
+        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {
@@ -164,16 +162,13 @@ public class InternalDispatchController {
     public String showAlbums(@RequestParam(value = "albumName", required = false) String albumName,
                              @SortDefault("albumName") Pageable pageable,
                              Model model) {
-        if (albumName != null) {
-            albumName = albumName.trim();
-        }
-        albumName = "".equals(albumName) ? null : albumName;
+        albumName = HelperUtil.stringParamTrimmer(albumName);
         Page<InternalDispatch> internalDispatches = null;
         if (albumName != null) {
-            internalDispatches = internalDispatchRepository.findByAlbumNameContainsIgnoreCaseAndIsActive(albumName, true, pageable);
+            internalDispatches = internalDispatchService.findAllByAlbumNameContainsIgnoreCaseAndIsActive(albumName, true, pageable);
         }
         else {
-            internalDispatches = internalDispatchService.findByIsAlbumAndIsActive(true, true, pageable);
+            internalDispatches = internalDispatchService.findAllByIsAlbumAndIsActive(true, true, pageable);
         }
         model.addAttribute("internalDispatches", internalDispatches);
         return "/internaldispatches/internaldispatch-albums";
