@@ -28,9 +28,7 @@ public class AlbumNameValidConstraintValidator implements ConstraintValidator<Al
       try {
          document = documentService.findByDecimalNumber(obj);
       } catch (NotFoundException e) {
-      }
-      catch (NullPointerException e) {
-         return true;
+
       }
       return document != null;
    }
