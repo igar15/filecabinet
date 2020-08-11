@@ -11,31 +11,32 @@ delete from companies;
 alter sequence global_seq restart with 1000;
 
 insert into departments (name, chief_name, description, workers_amount, is_developer, can_take_albums)
-values ('KTK-40', 'KTK-40 chief name', null, null, true, true),
-       ('NIO-6', 'NIO-6 chief name', 'Developers from NIO-6 are good folks', 24, true, true),
-       ('NIO-8', 'NIO-8 chief name', null, 15, true, true),
-       ('SKB-3', 'SKB-3 chief name', 'SKB-3 is a very good department. There are many talent people work here.', 43, true, true),
-       ('OTD 49/3', 'Elkina R.M.', 'technical documents department', 21, false, true),
-       ('OTD 33', 'OTD 33 chief name', 'OTD 33 makes great job for the organization!', 22, true, true);
+values ('KTK-40', 'KTK-40 chief name', 'KTK-40 description', 30, true, true),
+       ('NIO-6', 'NIO-6 chief name', 'NIO-6 description', 24, true, true),
+       ('NIO-8', 'NIO-8 chief name', 'NIO-8 description', 15, true, true),
+       ('SKB-3', 'SKB-3 chief name', 'SKB-3 description', 43, true, true),
+       ('OTD 49/3', 'OTD 49/3 chief name', 'OTD 49/3 description', 21, false, true),
+       ('OTD 33', 'OTD 33 chief name', 'OTD 33 description', 22, true, true);
 
 insert into companies (name, city, street, building, zipcode, contact_person)
 values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357', 'Raev A.A.'),
        ('AO "MMZ"', 'Yoshkar-Ola', 'Suvorov street', '15', '424003', 'Bozhko M.V.'),
-       ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033', 'Visher S.K.');
+       ('AO "IEMZ"', 'Izhevsk', 'Pesochnaya street', '3', '426033', 'Visner S.K.');
 
 insert into documents (name, decimal_number, inventory_number, receipt_date, status, form,
                        stage, sheets_amount, format, a4_amount, department_id, original_holder_id)
-values ('Стойка', 'БА6.151.128', 880572, '2003-01-30', 'ORIGINAL', 'ELECTRONIC', 'O1', null, null, null, 1000, 1006),
-       ('Блок Д02-6М1Э Перечень элементов', 'ВУИА.465211.001ПЭ3', 63140, '2015-03-20', 'ORIGINAL', 'PAPER', 'O1', 28, 'A4', 28, 1005, 1006),
-       ('Крышка', 'ЮПИЯ.301265.026', 884986, '2014-06-30', 'ORIGINAL', 'ELECTRONIC','O1', null, null, null, 1000, 1006),
-       ('Крышка Сборочный чертеж', 'ЮПИЯ.301265.026СБ', 939986, '2014-06-30', 'ORIGINAL', 'PAPER', 'O1', 1, 'A1', 8, 1000, 1006),
-       ('Пульт АРМ ОП СЭ01-7Э Схема электрическая принципиальная', 'ВУИА.468362.021Э3', 68199, '2018-09-15', 'ACC_COPY', 'ELECTRONIC', null, null, null, null, 1001, 1007),
-       ('Панель ПСЭ25-22 Перечень элементов', 'ЮПИЯ.468151.031ПЭ3', 929213, '2012-11-18', 'ACC_COPY', 'ELECTRONIC', null, null, null, null, 1002, 1008);
+values ('Стойка', 'БА4.151.128', 880572, '2003-01-30', 'ORIGINAL', 'ELECTRONIC', 'O1', null, null, null, 1000, 1006),
+       ('Стойка Сборочный чертеж', 'БА4.151.128СБ', 63140, '2003-01-30', 'ORIGINAL', 'PAPER', 'O1', 28, 'A4', 28, 1000, 1006),
+       ('Крышка', 'БА5.666.777', 884986, '2004-06-30', 'ORIGINAL', 'ELECTRONIC','O1', null, null, null, 1000, 1006),
+       ('Крышка Сборочный чертеж', 'БА5.666.777СБ', 939986, '2004-06-30', 'ORIGINAL', 'PAPER', 'O1', 1, 'A1', 8, 1000, 1006),
+       ('Вал', 'ВУИА.758341.198', 68199, '2018-09-15', 'ORIGINAL', 'ELECTRONIC', null, null, null, null, 1000, 1006),
+       ('Панель ПСЭ25-22', 'ЮПИЯ.468151.031', 929213, '2012-11-18', 'ACC_COPY', 'ELECTRONIC', null, null, null, null, 1002, 1008);
 
 insert into applicabilities (inner_id, outer_id)
-values (1011, 1009),
+values (1010, 1009),
+       (1011, 1009),
        (1012, 1011),
-       (1011, 1010);
+       (1013, 1011);
 
 
 insert into change_notices (name, change_code, issue_date, department_id)
@@ -67,16 +68,23 @@ values ('wb-465', '2018-04-20', 'ACC_COPY', null, '49/SZ-123789', 1007),
 
 insert into document_external_dispatches (document_id, external_dispatch_id, is_active)
 values (1009, 1023, true),
+       (1010, 1023, true),
+       (1011, 1023, true),
+       (1012, 1023, true),
        (1009, 1024, true),
        (1010, 1025, true);
 
 insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, department_id,
                                  received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name, is_active)
 values ('wb-531', '2017-04-15', 'ACC_COPY', null, 'I', 1000, '2019-02-15', 'Naumkin', '1-31-65', false, null, true),
-       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'ЮПИЯ.301265.026', true),
-       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', 'I', 1000, '2020-04-18', 'Fatelnikova', '1-34-68', true, 'БА6.151.128', true);
+       ('wb-532', '2018-04-20', 'ACC_COPY', 'simple remark', 'V', 1000, '2020-01-15', 'Naumkin', '1-31-65', true, 'БА4.151.128', true),
+       ('wb-556', '2019-06-20', 'ACC_COPY', 'true remark', 'I', 1000, '2020-04-18', 'Fatelnikova', '1-34-68', true, 'ЮПИЯ.468151.031', true);
 
 insert into document_internal_dispatches (document_id,internal_dispatch_id, is_active)
 values (1009, 1026, true),
        (1009, 1027, true),
-       (1010, 1028, true);
+       (1010, 1027, true),
+       (1011, 1027, true),
+       (1012, 1027, true),
+       (1013, 1027, true),
+       (1014, 1028, true);
