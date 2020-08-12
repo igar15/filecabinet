@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.entity;
 
 import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
+import com.igar15.filecabinet.util.validation.DepartmentNameNotDuplicate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@DepartmentNameNotDuplicate
 @Entity
 @Table(name = "departments")
 public class Department extends AbstractNamedEntity {

@@ -8,6 +8,7 @@ import com.igar15.filecabinet.repository.DepartmentRepository;
 import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DepartmentService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     public Department findByName(String name) {
-        Assert.notNull(name, "name must not be null");
+        if (name == null) {
+            throw new NotFoundException("Department with null name not found");
+        }
         return ValidationUtil.checkNotFound(departmentRepository.findByName(name).orElse(null), name);
     }
 
