@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
@@ -8,16 +9,19 @@ import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.service.ExternalDispatchService;
 import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +35,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    ExternalDispatchService externalDispatchService;
 
     @Override
     public void updateWithoutChildren(Document document) {
@@ -160,4 +167,48 @@ public class DocumentServiceImpl implements DocumentService {
         documentRepository.deleteById(id);
     }
 
+    @Transactional
+    @Override
+    public void deregisterExternalWithIncomings(int id, int externalId) {
+        Document mainDocument = documentRepository.findByIdWithExternalDispatches(id).orElse(null);
+        ExternalDispatch mainExternal = externalDispatchService.findById(externalId);
+
+        mainDocument.getExternalDispatches().keySet()
+                .forEach(externalDispatch -> {
+                    if (externalDispatch.getId().equals(externalId)) {
+                        mainDocument.getExternalDispatches().put(externalDispatch, false);
+                    }
+                });
+        documentRepository.save(mainDocument);
+
+        List<Document> documentsInMainDocument = documentRepository.findAllByApplicabilities_DecimalNumber(mainDocument.getDecimalNumber());
+        Queue<Document> documents = new LinkedList<>(documentsInMainDocument);
+        while (!documents.isEmpty()) {
+            Document tempDocument = documents.remove();
+            AtomicBoolean needDeregister = new AtomicBoolean(true);
+
+            Set<Document> tempDocumentApplicabilities = tempDocument.getApplicabilities();
+            tempDocumentApplicabilities.forEach(document -> {
+                Map<ExternalDispatch, Boolean> externalDispatches = document.getExternalDispatches();
+                externalDispatches.entrySet().forEach(entry -> {
+                    if (entry.getValue()) {
+                        if (entry.getKey().getCompany().getName().equals(mainExternal.getCompany().getName())) {
+                            needDeregister.set(false);
+                        }
+                    }
+                });
+            });
+
+            if (needDeregister.get()) {
+                tempDocument.getExternalDispatches().keySet()
+                        .forEach(externalDispatch -> {
+                            if (externalDispatch.getCompany().getName().equals(mainExternal.getCompany().getName())) {
+                                tempDocument.getExternalDispatches().put(externalDispatch, false);
+                            }
+                        });
+                documentRepository.save(tempDocument);
+                documents.addAll(documentRepository.findAllByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
+            }
+        }
+    }
 }

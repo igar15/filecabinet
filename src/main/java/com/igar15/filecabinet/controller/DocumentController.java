@@ -127,16 +127,16 @@ public class DocumentController {
 
     @GetMapping("/removeChange/{id}/{changeId}")
     public String removeChange(@PathVariable("id") int id, @PathVariable("changeId") int changeId, Model model) {
-        ChangeNotice changeNotice = changeNoticeService.findById(changeId);
-        if (changeNotice.getDocuments().size() == 1) {
-            model.addAttribute("document", documentService.findById(id));
-            String errorMessage = "Change notice " + changeNotice.getName() + " can not exist without any documents!";
+        long changeNoticeDocumentsSize = changeNoticeService.countDocumentsById(changeId);
+        if (changeNoticeDocumentsSize == 1) {
+            model.addAttribute("document", documentService.findByIdWithChangeNotices(id));
+            String errorMessage = "Change notice can not exist without any documents!";
             model.addAttribute("errorMessage", errorMessage);
         }
         else {
-            Document document = documentService.findById(id);
+            Document document = documentService.findByIdWithChangeNotices(id);
             Optional<Map.Entry<Integer, ChangeNotice>> found = document.getChangeNotices().entrySet().stream()
-                    .filter(entry -> entry.getValue().equals(changeNotice))
+                    .filter(entry -> entry.getValue().getId().equals(changeId))
                     .findFirst();
             if (found.isPresent()) {
                 document.getChangeNotices().remove(found.get().getKey());
@@ -160,7 +160,7 @@ public class DocumentController {
 
     @GetMapping("/deregisterExternal/{id}/{externalId}")
     public String deregisterExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithExternalDispatches(id);
         document.getExternalDispatches().keySet()
                 .forEach(externalDispatch -> {
                     if (externalDispatch.getId().equals(externalId)) {
@@ -185,7 +185,7 @@ public class DocumentController {
 
     @GetMapping("/deregisterInternal/{id}/{internalId}")
     public String deregisterInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithInternalDispatches(id);
         document.getInternalDispatches().keySet()
                 .forEach(internalDispatch -> {
                     if (internalDispatch.getId().equals(internalId)) {
@@ -200,7 +200,7 @@ public class DocumentController {
     @GetMapping("/deregisterAlbum/{id}/{internalId}")
     public String deregisterAlbum(@PathVariable("id") int id,
                                   @PathVariable("internalId") int internalId) {
-        InternalDispatch internalDispatch = internalDispatchService.findByIdAndIsAlbum(internalId, true);
+        InternalDispatch internalDispatch = internalDispatchService.findByIdAndIsAlbumWithDocuments(internalId, true);
         Document document = documentService.findById(id);
         if (internalDispatch.getAlbumName().equals(document.getDecimalNumber())) {
             internalDispatch.setIsActive(false);
@@ -222,7 +222,7 @@ public class DocumentController {
 
     @GetMapping("/removeApplicability/{id}/{applicabilityId}")
     public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId, Model model) {
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithApplicabilities(id);
         document.setApplicabilities(document.getApplicabilities().stream()
                 .filter(doc -> doc.getId() != applicabilityId)
                 .collect(Collectors.toSet()));
@@ -236,7 +236,7 @@ public class DocumentController {
                                    @RequestParam(name = "newApplicability") String newApplicability,
                                    Model model) {
         String errorMessage = null;
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithApplicabilities(id);
         if (newApplicability == null) {
             errorMessage = "Decimal number must not be empty";
         }
@@ -267,47 +267,10 @@ public class DocumentController {
                                                   @PathVariable("externalId") int externalId,
                                                   Model model) {
 
-        Document mainDocument = documentService.findById(id);
-        ExternalDispatch mainExternal = externalDispatchService.findById(externalId);
+        documentService.deregisterExternalWithIncomings(id, externalId);
 
-        mainDocument.getExternalDispatches().keySet()
-                .forEach(externalDispatch -> {
-                    if (externalDispatch.getId().equals(externalId)) {
-                        mainDocument.getExternalDispatches().put(externalDispatch, false);
-                    }
-                });
-        documentService.update(mainDocument);
-
-        List<Document> documentsInMainDocument = documentService.findAllByApplicabilities_DecimalNumber(mainDocument.getDecimalNumber());
-        Queue<Document> documents = new LinkedList<>(documentsInMainDocument);
-        while (!documents.isEmpty()) {
-            Document tempDocument = documents.remove();
-            AtomicBoolean needDeregister = new AtomicBoolean(true);
-
-            Set<Document> tempDocumentApplicabilities = tempDocument.getApplicabilities();
-            tempDocumentApplicabilities.forEach(document -> {
-                Map<ExternalDispatch, Boolean> externalDispatches = document.getExternalDispatches();
-                externalDispatches.entrySet().forEach(entry -> {
-                    if (entry.getValue()) {
-                        if (entry.getKey().getCompany().getName().equals(mainExternal.getCompany().getName())) {
-                            needDeregister.set(false);
-                        }
-                    }
-                });
-            });
-
-            if (needDeregister.get()) {
-                tempDocument.getExternalDispatches().keySet()
-                        .forEach(externalDispatch -> {
-                            if (externalDispatch.getCompany().getName().equals(mainExternal.getCompany().getName())) {
-                                tempDocument.getExternalDispatches().put(externalDispatch, false);
-                            }
-                        });
-                documentService.update(tempDocument);
-                documents.addAll(documentService.findAllByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
-            }
-        }
-        model.addAttribute("document", mainDocument);
+        Document document = documentService.findByIdWithExternalDispatches(id);
+        model.addAttribute("document", document);
         return "/documents/document-externaldispatches";
     }
 

@@ -50,6 +50,11 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
     }
 
     @Override
+    public InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b) {
+        return (ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdAndIsAlbumWithDocuments(internalId, b).orElse(null), internalId));
+    }
+
+    @Override
     public InternalDispatch findByIdWithDocuments(int id) {
         return ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdWithDocuments(id).orElse(null), id);
     }

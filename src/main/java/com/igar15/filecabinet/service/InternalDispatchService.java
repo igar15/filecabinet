@@ -27,4 +27,6 @@ public interface InternalDispatchService {
     InternalDispatch findByIdWithDocuments(int id);
 
     void updateWithoutChildren(InternalDispatch internalDispatch);
+
+    InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b);
 }

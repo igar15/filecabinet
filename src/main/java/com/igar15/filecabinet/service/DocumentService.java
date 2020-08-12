@@ -36,4 +36,6 @@ public interface DocumentService {
 
 
     Document findByDecimalNumberWithChangeNotices(String newDocument);
+
+    void deregisterExternalWithIncomings(int id, int externalId);
 }

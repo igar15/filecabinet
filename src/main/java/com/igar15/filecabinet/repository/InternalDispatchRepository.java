@@ -24,6 +24,9 @@ public interface InternalDispatchRepository extends JpaRepository<InternalDispat
 
     Optional<InternalDispatch> findByIdAndIsAlbum(int id, boolean isAlbum);
 
+    @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id and i.isAlbum=:isAlbum")
+    Optional<InternalDispatch> findByIdAndIsAlbumWithDocuments(@Param("id") int id, @Param("isAlbum") boolean isAlbum);
+
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
     @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
