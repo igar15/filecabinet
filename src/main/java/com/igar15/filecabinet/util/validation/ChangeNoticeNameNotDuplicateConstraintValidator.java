@@ -22,9 +22,7 @@ public class ChangeNoticeNameNotDuplicateConstraintValidator implements Constrai
    }
 
    public boolean isValid(ChangeNotice obj, ConstraintValidatorContext context) {
-      if (changeNoticeService == null) {
-         return true;
-      }
+
       ChangeNotice changeNotice = null;
       try {
          changeNotice = changeNoticeService.findByName(obj.getName());

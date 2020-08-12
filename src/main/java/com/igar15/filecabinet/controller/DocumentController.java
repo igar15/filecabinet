@@ -9,6 +9,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -76,7 +77,7 @@ public class DocumentController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid Document document, BindingResult bindingResult, Model model) {
+    public String save(@Validated Document document, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
             model.addAttribute("companies", companyService.findAll());

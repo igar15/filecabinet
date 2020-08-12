@@ -20,9 +20,7 @@ public class DecimalNumberNotDuplicateConstraintValidator implements ConstraintV
    }
 
    public boolean isValid(Document obj, ConstraintValidatorContext context) {
-      if (documentService == null) {
-         return true;
-      }
+
       Document document = null;
       try {
          document = documentService.findByDecimalNumber(obj.getDecimalNumber());

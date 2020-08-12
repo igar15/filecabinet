@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,7 +53,7 @@ public class InternalDispatchController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
+    public String save(@Validated InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
 
 //        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
 //                .filter(fer -> !fer.getField().equals("internalHandlerName")

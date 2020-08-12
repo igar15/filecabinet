@@ -23,9 +23,6 @@ public class AlbumNameValidConstraintValidator implements ConstraintValidator<Al
    }
 
    public boolean isValid(InternalDispatch obj, ConstraintValidatorContext context) {
-      if (documentService == null) {
-         return true;
-      }
 
       if (!obj.getIsAlbum()) {
          return true;

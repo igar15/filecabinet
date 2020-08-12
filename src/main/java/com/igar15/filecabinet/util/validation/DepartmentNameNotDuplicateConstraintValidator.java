@@ -19,9 +19,6 @@ public class DepartmentNameNotDuplicateConstraintValidator implements Constraint
    }
 
    public boolean isValid(Department obj, ConstraintValidatorContext context) {
-      if (departmentService == null) {
-         return true;
-      }
 
       Department department = null;
       try {

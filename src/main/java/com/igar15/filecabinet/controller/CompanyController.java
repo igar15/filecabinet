@@ -10,6 +10,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,7 +48,7 @@ public class CompanyController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid Company company, BindingResult bindingResult, Model model) {
+    public String save(@Validated Company company, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/companies/company-form";
         }

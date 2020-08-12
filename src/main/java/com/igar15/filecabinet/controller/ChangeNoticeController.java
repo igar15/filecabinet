@@ -14,6 +14,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -68,7 +69,7 @@ public class ChangeNoticeController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
+    public String save(@Validated ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
             return "/changenotices/changenotice-form";
