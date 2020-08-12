@@ -27,4 +27,13 @@ public interface DocumentService {
     void updateWithoutChildren(Document document);
 
     List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
+
+    Document findByIdWithExternalDispatches(int id);
+
+    Document findByIdWithInternalDispatches(int id);
+
+    Document findByIdWithApplicabilities(int id);
+
+
+    Document findByDecimalNumberWithChangeNotices(String newDocument);
 }

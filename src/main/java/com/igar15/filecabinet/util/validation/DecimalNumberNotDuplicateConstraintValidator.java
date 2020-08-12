@@ -20,12 +20,25 @@ public class DecimalNumberNotDuplicateConstraintValidator implements ConstraintV
    }
 
    public boolean isValid(Document obj, ConstraintValidatorContext context) {
+      if (documentService == null) {
+         return true;
+      }
       Document document = null;
       try {
          document = documentService.findByDecimalNumber(obj.getDecimalNumber());
       } catch (NotFoundException e) {
          return true;
       }
-      return obj.getId().equals(document.getId());
+      if (obj.isNew()) {
+         context.disableDefaultConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Decimal number already exists").addPropertyNode("decimalNumber").addConstraintViolation();
+         return false;
+      }
+      else if (!obj.getId().equals(document.getId())) {
+         context.disableDefaultConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Decimal number already exists").addPropertyNode("decimalNumber").addConstraintViolation();
+         return false;
+      }
+      return true;
    }
 }

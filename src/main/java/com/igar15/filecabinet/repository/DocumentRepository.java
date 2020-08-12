@@ -8,6 +8,7 @@ import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,8 +41,13 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     List<Document> findAllByOriginalHolderId(int originalHolderId);
 
-    @Query("select d from Document d left join d.changeNotices where d.id=:id")
+//    @EntityGraph(attributePaths = {"changeNotices"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select d from Document d left join fetch d.changeNotices where d.id=:id")
     Optional<Document> findByIdWithChangeNotices(@Param("id") int id);
+
+    @Query("select d from Document d left join fetch d.changeNotices where d.decimalNumber=:decimalNumber")
+    Optional<Document> findByDecimalNumberWithChangeNotices(@Param("decimalNumber") String decimalNumber);
+
 
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
@@ -53,4 +59,14 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Page<Document> findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName, String originalHolderName,
                                                                                                                           LocalDate after, LocalDate before, Pageable pageable);
+
+    @Query("select d from Document d left join fetch d.externalDispatches where d.id=:id")
+    Optional<Document> findByIdWithExternalDispatches(@Param("id") int id);
+
+    @Query("select d from Document d left join fetch d.internalDispatches where d.id=:id")
+    Optional<Document> findByIdWithInternalDispatches(@Param("id") int id);
+
+    @Query("select d from Document d left join fetch d.applicabilities where d.id=:id")
+    Optional<Document> findByIdWithApplicabilities(@Param("id") int id);
+
 }

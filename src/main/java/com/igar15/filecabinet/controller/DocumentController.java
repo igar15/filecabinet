@@ -2,7 +2,6 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.*;
 import com.igar15.filecabinet.service.*;
-import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -94,7 +93,8 @@ public class DocumentController {
             }
             documentService.updateWithoutChildren(document);
         }
-        return "redirect:/documents/showDocumentInfo/" + document.getId();
+        model.addAttribute("document", document);
+        return "/documents/document-info";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
@@ -119,7 +119,8 @@ public class DocumentController {
 
     @GetMapping("/showChanges/{id}")
     public String showChanges(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", documentService.findById(id));
+        Document document = documentService.findByIdWithChangeNotices(id);
+        model.addAttribute("document", document);
         return "documents/document-changenotices";
     }
 
@@ -147,7 +148,7 @@ public class DocumentController {
 
     @GetMapping("/showExternalDispatches/{id}")
     public String showExternalDispatches(@PathVariable("id") int id, Model model) {
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithExternalDispatches(id);
         LinkedHashMap<ExternalDispatch, Boolean> sortedMap = document.getExternalDispatches().entrySet().stream()
                 .sorted(Map.Entry.<ExternalDispatch, Boolean>comparingByValue().reversed())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
@@ -172,7 +173,7 @@ public class DocumentController {
 
     @GetMapping("/showInternalDispatches/{id}")
     public String showInternalDispatches(@PathVariable("id") int id, Model model) {
-        Document document = documentService.findById(id);
+        Document document = documentService.findByIdWithInternalDispatches(id);
         LinkedHashMap<InternalDispatch, Boolean> sortedMap = document.getInternalDispatches().entrySet().stream()
                 .sorted(Map.Entry.<InternalDispatch, Boolean>comparingByValue().reversed())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
@@ -214,7 +215,7 @@ public class DocumentController {
 
     @GetMapping("/showApplicabilities/{id}")
     public String showApplicabilities(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", documentService.findById(id));
+        model.addAttribute("document", documentService.findByIdWithApplicabilities(id));
         return ("/documents/document-applicabilities");
     }
 

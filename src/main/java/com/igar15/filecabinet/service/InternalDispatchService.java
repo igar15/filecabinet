@@ -23,4 +23,8 @@ public interface InternalDispatchService {
     void deleteById(int id);
 
     Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isAlbum, Pageable pageable);
+
+    InternalDispatch findByIdWithDocuments(int id);
+
+    void updateWithoutChildren(InternalDispatch internalDispatch);
 }

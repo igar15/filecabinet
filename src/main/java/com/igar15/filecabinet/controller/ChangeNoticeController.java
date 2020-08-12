@@ -79,8 +79,7 @@ public class ChangeNoticeController {
             return "/changenotices/changenotice-document-list(for new)";
         }
         else {
-            changeNotice.setDocuments(changeNoticeService.findById(changeNotice.getId()).getDocuments());
-            changeNoticeService.update(changeNotice);
+            changeNoticeService.updateWithoutChildren(changeNotice);
             model.addAttribute("changeNotice", changeNotice);
             return "/changenotices/changenotice-info";
         }
@@ -100,7 +99,7 @@ public class ChangeNoticeController {
 
     @GetMapping("/showDocuments/{id}")
     public String showDocuments(@PathVariable("id") int id, Model model) {
-        model.addAttribute("changeNotice", changeNoticeService.findById(id));
+        model.addAttribute("changeNotice", changeNoticeService.findByIdWithDocuments(id));
         return "/changenotices/changenotice-document-list";
     }
 
@@ -113,7 +112,7 @@ public class ChangeNoticeController {
         String docErrorMessage = null;
         String numberErrorMessage = null;
 
-        ChangeNotice changeNotice = changeNoticeService.findById(id);
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(id);
         if (newDocument == null) {
             docErrorMessage = "Decimal number must not be empty";
             if (newDocumentChangeNumber == null) {
@@ -129,7 +128,7 @@ public class ChangeNoticeController {
         else {
             Document document = null;
             try {
-                document = documentService.findByDecimalNumber(newDocument);
+                document = documentService.findByDecimalNumberWithChangeNotices(newDocument);
             } catch (NotFoundException e) {
             }
             if (document == null) {
@@ -188,7 +187,7 @@ public class ChangeNoticeController {
         else {
             Document document = null;
             try {
-                document = documentService.findByDecimalNumber(newDocument);
+                document = documentService.findByDecimalNumberWithChangeNotices(newDocument);
             } catch (NotFoundException e) {
             }
             if (document == null) {
@@ -227,8 +226,8 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/removeDoc/{id}/{documentId}")
-    public String removeDoc(@PathVariable("id") int id, @PathVariable("documentId") String documentId, Model model) {
-        ChangeNotice changeNotice = changeNoticeService.findById(id);
+    public String removeDoc(@PathVariable("id") int id, @PathVariable("documentId") int documentId, Model model) {
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(id);
         if (changeNotice.getDocuments().size() == 1) {
             model.addAttribute("changeNotice", changeNotice);
             String errorMessage = "The change notice can not exist without any documents!";
@@ -236,7 +235,7 @@ public class ChangeNoticeController {
             return "/changenotices/changenotice-document-list";
         }
         Document document = changeNotice.getDocuments().keySet().stream()
-                .filter(doc -> doc.getId().equals(Integer.valueOf(documentId)))
+                .filter(doc -> doc.getId().equals(documentId))
                 .findFirst().orElse(null);
         changeNotice.getDocuments().remove(document);
         changeNoticeService.update(changeNotice);

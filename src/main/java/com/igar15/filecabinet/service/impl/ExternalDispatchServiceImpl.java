@@ -31,6 +31,19 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     }
 
     @Override
+    public void updateWithoutChildren(ExternalDispatch externalDispatch) {
+        Assert.notNull(externalDispatch, "external dispatch must not be null");
+        externalDispatchRepository.updateWithoutChildren(externalDispatch.getId(), externalDispatch.getWaybill(),
+                externalDispatch.getDispatchDate(), externalDispatch.getStatus(), externalDispatch.getRemark(),
+                externalDispatch.getLetterOutgoingNumber(), externalDispatch.getCompany());
+    }
+
+    @Override
+    public ExternalDispatch findByIdWithDocuments(int id) {
+        return ValidationUtil.checkNotFoundWithId(externalDispatchRepository.findByIdWithDocuments(id).orElse(null), id);
+    }
+
+    @Override
     public Page<ExternalDispatch> findAll(Pageable pageable) {
         return externalDispatchRepository.findAll(pageable);
     }

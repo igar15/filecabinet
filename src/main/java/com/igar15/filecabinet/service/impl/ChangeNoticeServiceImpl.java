@@ -5,6 +5,7 @@ import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.util.HelperUtil;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -13,6 +14,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +33,32 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
+    public void updateWithoutChildren(ChangeNotice changeNotice) {
+        changeNoticeRepository.updateWithoutChildren(changeNotice.getId(), changeNotice.getName(), changeNotice.getChangeCode(),
+                changeNotice.getIssueDate(), changeNotice.getDepartment());
+    }
+
+    @Override
     public ChangeNotice findById(int id) {
         return ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
     }
 
     @Override
+    public Long countDocumentsById(int id) {
+        return changeNoticeRepository.countDocumentsById(id);
+    }
+
+    @Override
+    public ChangeNotice findByIdWithDocuments(int id) {
+        return ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findByIdWithDocuments(id).orElse(null), id);
+    }
+
+    @Override
     public ChangeNotice findByName(String name) {
-        Assert.notNull(name, "Change notice name must not be null");
+//        Assert.notNull(name, "Change notice name must not be null");
+        if (name == null) {
+            throw new NotFoundException("Change notice not found");
+        }
         return ValidationUtil.checkNotFound(changeNoticeRepository.findByName(name).orElse(null), name);
     }
 

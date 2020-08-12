@@ -26,7 +26,7 @@ public class ChangeNotice extends AbstractNamedEntity {
     private LocalDate issueDate;
 
     @NotNull(message = "Developer must not be empty")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
 

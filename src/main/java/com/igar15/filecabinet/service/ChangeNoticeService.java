@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChangeNoticeService {
 
@@ -20,4 +21,9 @@ public interface ChangeNoticeService {
 
     void deleteById(int id);
 
+    void updateWithoutChildren(ChangeNotice changeNotice);
+
+    ChangeNotice findByIdWithDocuments(int id);
+
+    Long countDocumentsById(int id);
 }

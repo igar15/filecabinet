@@ -82,14 +82,14 @@ public class Document extends AbstractNamedEntity {
     @MapKeyColumn(name = "change")
     private Map<Integer, ChangeNotice> changeNotices;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_external_dispatches",
             joinColumns = @JoinColumn(name = "document_id"))
     @MapKeyJoinColumn(name = "external_dispatch_id")
     @Column(name = "is_active")
     private Map<ExternalDispatch, Boolean> externalDispatches;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_internal_dispatches",
             joinColumns = @JoinColumn(name = "document_id"))
     @MapKeyJoinColumn(name = "internal_dispatch_id")

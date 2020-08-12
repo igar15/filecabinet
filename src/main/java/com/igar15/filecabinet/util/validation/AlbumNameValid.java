@@ -8,11 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(validatedBy = AlbumNameValidConstraintValidator.class)
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AlbumNameValid {
 
-    String albumName() default "";
 
     String message() default "document does not exist";
 

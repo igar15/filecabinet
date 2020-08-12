@@ -22,12 +22,25 @@ public class ChangeNoticeNameNotDuplicateConstraintValidator implements Constrai
    }
 
    public boolean isValid(ChangeNotice obj, ConstraintValidatorContext context) {
+      if (changeNoticeService == null) {
+         return true;
+      }
       ChangeNotice changeNotice = null;
       try {
          changeNotice = changeNoticeService.findByName(obj.getName());
       } catch (NotFoundException e) {
          return true;
       }
-      return obj.getId().equals(changeNotice.getId());
+      if (obj.isNew()) {
+         context.disableDefaultConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Name already exists").addPropertyNode("name").addConstraintViolation();
+         return false;
+      }
+      else if (!obj.getId().equals(changeNotice.getId())) {
+         context.disableDefaultConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Name already exists").addPropertyNode("name").addConstraintViolation();
+         return false;
+      }
+      return true;
    }
 }

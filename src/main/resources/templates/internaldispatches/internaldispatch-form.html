@@ -38,9 +38,6 @@
         </div>
 
         <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{receivedInternalDate}">
-        <input type="hidden" th:field="*{internalHandlerName}">
-        <input type="hidden" th:field="*{internalHandlerPhoneNumber}">
         <input type="hidden" th:field="*{isActive}">
 
         <div class="row mb-3">
@@ -171,6 +168,48 @@
                 <span class="help-block" th:if="${#fields.hasErrors('dispatchHandler')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('dispatchHandler')}" th:text="${err}"/>
+                    </ul>
+                </span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <h6>Internal handler name:</h6>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal Handler Name'"/>
+                <span class="help-block" th:if="${#fields.hasErrors('internalHandlerName')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerName')}" th:text="${err}"/>
+                    </ul>
+                </span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <h6>Internal handler phone number:</h6>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal Handler Phone number'"/>
+                <span class="help-block" th:if="${#fields.hasErrors('internalHandlerPhoneNumber')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerPhoneNumber')}" th:text="${err}"/>
+                    </ul>
+                </span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <h6>Received internal date:</h6>
+            </div>
+            <div class="col-sm-5">
+                <input type="date" th:field="*{receivedInternalDate}" th:class="${#fields.hasErrors('receivedInternalDate')} ? 'form-control is-invalid' : 'form-control'"/>
+                <span class="help-block" th:if="${#fields.hasErrors('receivedInternalDate')}">
+                    <ul>
+                        <li class="text-danger" th:each="err : ${#fields.errors('receivedInternalDate')}" th:text="${err}"/>
                     </ul>
                 </span>
             </div>

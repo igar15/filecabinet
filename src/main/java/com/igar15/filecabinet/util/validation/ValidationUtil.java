@@ -13,6 +13,11 @@ public class ValidationUtil {
         return object;
     }
 
+    public static <T> T checkNotFoundWithProperty(T object, String property) {
+        checkNotFound(object != null, property);
+        return object;
+    }
+
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
     }

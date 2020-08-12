@@ -18,19 +18,11 @@ public class ExternalDispatch extends Dispatch {
     private String letterOutgoingNumber;
 
     @NotNull(message = "Company must not be empty")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @Transient
-    @ManyToMany
-    @JoinTable(name = "document_external_dispatches",
-            joinColumns = @JoinColumn(name = "external_dispatch_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_id"))
-    private Set<Document> documentsSet;
-
-
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_external_dispatches",
         joinColumns = @JoinColumn(name = "external_dispatch_id"))
     @MapKeyJoinColumn(name = "document_id")
@@ -63,14 +55,6 @@ public class ExternalDispatch extends Dispatch {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public Set<Document> getDocumentsSet() {
-        return documentsSet;
-    }
-
-    public void setDocumentsSet(Set<Document> documentsSet) {
-        this.documentsSet = documentsSet;
     }
 
     public Map<Document, Boolean> getDocuments() {

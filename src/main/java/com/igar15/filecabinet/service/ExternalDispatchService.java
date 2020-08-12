@@ -19,4 +19,7 @@ public interface ExternalDispatchService {
 
     void deleteById(int id);
 
+    ExternalDispatch findByIdWithDocuments(int id);
+
+    void updateWithoutChildren(ExternalDispatch externalDispatch);
 }

@@ -9,6 +9,7 @@ import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.HelperUtil;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -56,8 +57,31 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public Document findByIdWithExternalDispatches(int id) {
+        return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithExternalDispatches(id).orElse(null), id);
+    }
+
+    @Override
+    public Document findByIdWithInternalDispatches(int id) {
+        return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithInternalDispatches(id).orElse(null), id);
+    }
+
+    @Override
+    public Document findByIdWithApplicabilities(int id) {
+        return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithApplicabilities(id).orElse(null), id);
+    }
+
+    @Override
+    public Document findByDecimalNumberWithChangeNotices(String newDocument) {
+        return ValidationUtil.checkNotFoundWithProperty(documentRepository.findByDecimalNumberWithChangeNotices(newDocument).orElse(null), newDocument);
+    }
+
+    @Override
     public Document findByDecimalNumber(String decimalNumber) {
-        Assert.notNull(decimalNumber, "decimalNumber must not be null");
+//        Assert.notNull(decimalNumber, "decimalNumber must not be null");
+        if (decimalNumber == null) {
+            throw new NotFoundException("Document not found");
+        }
         return ValidationUtil.checkNotFound(documentRepository.findByDecimalNumber(decimalNumber).orElse(null), decimalNumber);
     }
 

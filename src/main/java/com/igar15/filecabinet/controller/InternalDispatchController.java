@@ -54,14 +54,14 @@ public class InternalDispatchController {
     @PostMapping("/save")
     public String save(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
 
-        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
-                .filter(fer -> !fer.getField().equals("internalHandlerName")
-                        && !fer.getField().equals("internalHandlerPhoneNumber") && !fer.getField().equals("receivedInternalDate"))
-                .collect(Collectors.toList());
-        bindingResult = new BeanPropertyBindingResult(internalDispatch, "internalDispatch");
-        for (FieldError fieldError : errorsToKeep) {
-            bindingResult.addError(fieldError);
-        }
+//        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
+//                .filter(fer -> !fer.getField().equals("internalHandlerName")
+//                        && !fer.getField().equals("internalHandlerPhoneNumber") && !fer.getField().equals("receivedInternalDate"))
+//                .collect(Collectors.toList());
+//        bindingResult = new BeanPropertyBindingResult(internalDispatch, "internalDispatch");
+//        for (FieldError fieldError : errorsToKeep) {
+//            bindingResult.addError(fieldError);
+//        }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
@@ -69,22 +69,12 @@ public class InternalDispatchController {
         }
         else {
             if (internalDispatch.isNew()) {
-                if (internalDispatch.getIsAlbum()) {
-                    Document document = documentService.findByDecimalNumber(internalDispatch.getAlbumName());
-                    internalDispatch.setDocuments(new HashMap<>());
-                    internalDispatch.getDocuments().put(document, true);
-                    internalDispatch.setInternalHandlerName("Kochetova T.");
-                    internalDispatch.setReceivedInternalDate(internalDispatch.getDispatchDate());
-                    internalDispatch.setInternalHandlerPhoneNumber("1-34-15");
-                }
                 internalDispatchService.create(internalDispatch);
             }
             else {
-                internalDispatch.setDocuments(internalDispatchService.findById(internalDispatch.getId()).getDocuments());
-                internalDispatchService.update(internalDispatch);
+                internalDispatchService.updateWithoutChildren(internalDispatch);
             }
-            model.addAttribute("internalDispatch", internalDispatch);
-            return "/internaldispatches/internaldispatch-info";
+            return "redirect:/internaldispatches/showInternalDispatchInfo/" + internalDispatch.getId();
         }
     }
 
@@ -97,7 +87,7 @@ public class InternalDispatchController {
 
     @GetMapping("/showInternalDispatchInfo/{id}")
     public String showInternalDispatchInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
+        model.addAttribute("internalDispatch", internalDispatchService.findByIdWithDocuments(id));
         return "/internaldispatches/internaldispatch-info";
     }
 
@@ -113,7 +103,7 @@ public class InternalDispatchController {
                               Model model) {
 
         String errorMessage = null;
-        InternalDispatch internalDispatch = internalDispatchService.findById(id);
+        InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(id);
         if (newDocument == null) {
             errorMessage = "Decimal number must not be empty";
         }
@@ -143,18 +133,20 @@ public class InternalDispatchController {
                             @PathVariable("documentId") int documentId,
                             Model model) {
         String errorDeleteMessage = null;
-        InternalDispatch found = internalDispatchService.findById(id);
+        InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(id);
 
-        if (found.getDocuments().size() < 2) {
-            errorDeleteMessage = "Internal dispatch " + found.getWaybill() + " can not exist without any documents!";
+        if (internalDispatch.getDocuments().size() == 1) {
+            errorDeleteMessage = "Internal dispatch " + internalDispatch.getWaybill() + " can not exist without any documents!";
         }
         else {
-            Document document = documentService.findById(documentId);
-            found.getDocuments().remove(document);
-            internalDispatchService.update(found);
+            Document found = internalDispatch.getDocuments().keySet().stream()
+                    .filter(document -> document.getId().equals(documentId))
+                    .findFirst().orElse(null);
+            internalDispatch.getDocuments().remove(found);
+            internalDispatchService.update(internalDispatch);
         }
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
-        model.addAttribute("internalDispatch", found);
+        model.addAttribute("internalDispatch", internalDispatch);
         return "/internaldispatches/internaldispatch-info";
     }
 
@@ -176,7 +168,7 @@ public class InternalDispatchController {
 
     @GetMapping("/showAlbumInfo/{id}")
     public String showAlbumInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("internalDispatch", internalDispatchService.findById(id));
+        model.addAttribute("internalDispatch", internalDispatchService.findByIdWithDocuments(id));
         return "/internaldispatches/internaldispatch-album-info";
     }
 
@@ -193,8 +185,7 @@ public class InternalDispatchController {
             model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
             return "/internaldispatches/internaldispatch-album-handler-form";
         }
-        internalDispatch.setDocuments(internalDispatchService.findById(internalDispatch.getId()).getDocuments());
-        internalDispatchService.update(internalDispatch);
+        internalDispatchService.updateWithoutChildren(internalDispatch);
         return "redirect:/internaldispatches/list/albums";
     }
 
