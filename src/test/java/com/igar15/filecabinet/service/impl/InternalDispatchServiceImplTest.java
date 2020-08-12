@@ -55,10 +55,10 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertThrows(NotFoundException.class, () -> internalDispatchService.findById(NOT_FOUND));
     }
 
-    @Test
-    void findAll() {
-        Assertions.assertEquals(INTERNAL_DISPATCHES, internalDispatchService.findAll(pageable));
-    }
+//    @Test
+//    void findAll() {
+//        Assertions.assertEquals(INTERNAL_DISPATCHES, internalDispatchService.findAll(pageable));
+//    }
 
 //    @Test
 //    void findAllByDocumentId() {

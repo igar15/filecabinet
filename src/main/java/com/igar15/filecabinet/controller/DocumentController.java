@@ -53,17 +53,6 @@ public class DocumentController {
                           @SortDefault("decimalNumber") Pageable pageable,
                           Model model) {
 
-        decimalNumber = HelperUtil.stringParamTrimmer(decimalNumber);
-        name = HelperUtil.stringParamTrimmer(name);
-        inventoryNumber = HelperUtil.stringParamTrimmer(inventoryNumber);
-        status = HelperUtil.stringParamTrimmer(status);
-        stage = HelperUtil.stringParamTrimmer(stage);
-        form = HelperUtil.stringParamTrimmer(form);
-        department = HelperUtil.stringParamTrimmer(department);
-        originalHolder = HelperUtil.stringParamTrimmer(originalHolder);
-        after = HelperUtil.stringParamTrimmer(after);
-        before = HelperUtil.stringParamTrimmer(before);
-
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
         model.addAttribute("originalHolders", companyService.findAll());
@@ -246,7 +235,7 @@ public class DocumentController {
                                    Model model) {
         String errorMessage = null;
         Document document = documentService.findById(id);
-        if (HelperUtil.stringParamTrimmer(newApplicability) == null) {
+        if (newApplicability == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {

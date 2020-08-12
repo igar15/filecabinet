@@ -24,6 +24,9 @@ public class AlbumNameValidConstraintValidator implements ConstraintValidator<Al
    }
 
    public boolean isValid(String obj, ConstraintValidatorContext context) {
+      if (documentService == null) {
+         return true;
+      }
       Document document = null;
       try {
          document = documentService.findByDecimalNumber(obj);

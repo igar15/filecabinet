@@ -25,11 +25,11 @@ class DocumentServiceImplTest extends AbstractServiceTest {
     @Autowired
     private DocumentRepository documentRepository;
 
-    @Test
-    void find() {
-        List<Document> byApplicabilities_decimalNumber = documentRepository.findByApplicabilities_DecimalNumber("БА6.151.128");
-        byApplicabilities_decimalNumber.forEach(d -> System.out.println(d.getDecimalNumber()));
-    }
+//    @Test
+//    void find() {
+//        List<Document> byApplicabilities_decimalNumber = documentRepository.findByApplicabilities_DecimalNumber("БА6.151.128");
+//        byApplicabilities_decimalNumber.forEach(d -> System.out.println(d.getDecimalNumber()));
+//    }
 
     @Test
     void create() {
@@ -86,12 +86,12 @@ class DocumentServiceImplTest extends AbstractServiceTest {
         Assertions.assertThrows(NotFoundException.class, () -> documentService.findByDecimalNumber(NOT_FOUND_DECIMAL_NUMBER));
     }
 
-    @Test
-    void findAll() {
-        List<Document> documents = documentService.findAll();
-        Assertions.assertEquals(DOCUMENTS, documents);
-
-    }
+//    @Test
+//    void findAll() {
+//        List<Document> documents = documentService.findAll();
+//        Assertions.assertEquals(DOCUMENTS, documents);
+//
+//    }
 
     @Test
     void update() {

@@ -93,8 +93,12 @@ public class DocumentServiceImpl implements DocumentService {
             Form docForm = form == null ? null : Form.valueOf(form);
             document.setDecimalNumber(decimalNumber);
             document.setName(name);
-            document.setDepartment(departmentService.findByName(department));
-            document.setOriginalHolder(companyService.findByName(originalHolder));
+            if (department != null) {
+                document.setDepartment(departmentService.findByName(department));
+            }
+            if (originalHolder != null) {
+                document.setOriginalHolder(companyService.findByName(originalHolder));
+            }
             document.setInventoryNumber(inventoryNumberInt);
             document.setStatus(docStatus);
             document.setStage(docStage);

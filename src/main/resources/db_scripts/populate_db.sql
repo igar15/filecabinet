@@ -71,8 +71,9 @@ values (1009, 1023, true),
        (1010, 1023, true),
        (1011, 1023, true),
        (1012, 1023, true),
+       (1013, 1023, true),
        (1009, 1024, true),
-       (1010, 1025, true);
+       (1010, 1024, true);
 
 insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, department_id,
                                  received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name, is_active)

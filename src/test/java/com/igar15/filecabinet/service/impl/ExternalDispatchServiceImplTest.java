@@ -50,10 +50,10 @@ class ExternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertThrows(NotFoundException.class, () -> externalDispatchService.findById(NOT_FOUND));
     }
 
-    @Test
-    void findAll() {
-        Assertions.assertEquals(EXTERNAL_DISPATCHES, externalDispatchService.findAll(pageable));
-    }
+//    @Test
+//    void findAll() {
+//        Assertions.assertEquals(EXTERNAL_DISPATCHES, externalDispatchService.findAll(pageable));
+//    }
 
 //    @Test
 //    void findAllByDocumentId() {

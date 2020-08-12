@@ -73,11 +73,11 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(getWithDocuments(), found);
     }
 
-    @Test
-    void findAll() {
-        List<ChangeNotice> changeNotices = changeNoticeService.findAll();
-        Assertions.assertEquals(CHANGE_NOTICES, changeNotices);
-    }
+//    @Test
+//    void findAll() {
+//        List<ChangeNotice> changeNotices = changeNoticeService.findAll();
+//        Assertions.assertEquals(CHANGE_NOTICES, changeNotices);
+//    }
 
     @Test
     void update() {

@@ -67,7 +67,9 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
         else {
             ChangeNotice changeNotice = new ChangeNotice();
             changeNotice.setName(name);
-            changeNotice.setDepartment(departmentService.findByName(department));
+            if (department != null) {
+                changeNotice.setDepartment(departmentService.findByName(department));
+            }
             changeNotice.setChangeCode(changeCodeInt);
             ExampleMatcher matcher = ExampleMatcher.matching()
                     .withMatcher("name", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING).ignoreCase());

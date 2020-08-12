@@ -114,7 +114,7 @@ public class InternalDispatchController {
 
         String errorMessage = null;
         InternalDispatch internalDispatch = internalDispatchService.findById(id);
-        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+        if (newDocument == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {
@@ -162,7 +162,7 @@ public class InternalDispatchController {
     public String showAlbums(@RequestParam(value = "albumName", required = false) String albumName,
                              @SortDefault("albumName") Pageable pageable,
                              Model model) {
-        albumName = HelperUtil.stringParamTrimmer(albumName);
+
         Page<InternalDispatch> internalDispatches = null;
         if (albumName != null) {
             internalDispatches = internalDispatchService.findAllByAlbumNameContainsIgnoreCaseAndIsActive(albumName, true, pageable);

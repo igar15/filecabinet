@@ -89,7 +89,7 @@ public class ExternalDispatchController {
 
         String errorMessage = null;
         ExternalDispatch externalDispatch = externalDispatchService.findById(id);
-        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+        if (newDocument == null) {
             errorMessage = "Decimal number must not be empty";
         }
         else {

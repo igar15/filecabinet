@@ -43,11 +43,6 @@ public class ChangeNoticeController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
                           Model model) {
-        name = HelperUtil.stringParamTrimmer(name);
-        department = HelperUtil.stringParamTrimmer(department);
-        changeCode = HelperUtil.stringParamTrimmer(changeCode);
-        after = HelperUtil.stringParamTrimmer(after);
-        before = HelperUtil.stringParamTrimmer(before);
 
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
@@ -119,15 +114,15 @@ public class ChangeNoticeController {
         String numberErrorMessage = null;
 
         ChangeNotice changeNotice = changeNoticeService.findById(id);
-        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+        if (newDocument == null) {
             docErrorMessage = "Decimal number must not be empty";
-            if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
+            if (newDocumentChangeNumber == null) {
                 numberErrorMessage = "Change number must not be empty";
             }
         }
-        else if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
+        else if (newDocumentChangeNumber == null) {
             numberErrorMessage = "Change number must not be empty";
-            if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+            if (newDocument == null) {
                 docErrorMessage = "Decimal number must not be empty";
             }
         }
@@ -178,15 +173,15 @@ public class ChangeNoticeController {
         String docErrorMessage = null;
         String numberErrorMessage = null;
 
-        if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+        if (newDocument == null) {
             docErrorMessage = "Decimal number must not be empty";
-            if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
+            if (newDocumentChangeNumber == null) {
                 numberErrorMessage = "Change number must not be empty";
             }
         }
-        else if (HelperUtil.stringParamTrimmer(newDocumentChangeNumber) == null) {
+        else if (newDocumentChangeNumber == null) {
             numberErrorMessage = "Change number must not be empty";
-            if (HelperUtil.stringParamTrimmer(newDocument) == null) {
+            if (newDocument == null) {
                 docErrorMessage = "Decimal number must not be empty";
             }
         }
