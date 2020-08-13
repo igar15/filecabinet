@@ -8,7 +8,6 @@ import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,25 +20,7 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("update Document d set d.name=:name, d.decimalNumber =:decimalNumber, d.inventoryNumber=:inventoryNumber, " +
-            "d.receiptDate=:receiptDate, d.status=:status, d.form=:form, d.stage=:stage, d.sheetsAmount=:sheetsAmount, " +
-            "d.format=:format, d.a4Amount=:a4Amount, d.department=:department, d.originalHolder=:originalHolder where d.id=:id")
-    void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber, @Param("inventoryNumber") int inventoryNumber,
-                               @Param("receiptDate") LocalDate receiptDate, @Param("status") Status status, @Param("form") Form form,
-                               @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
-                               @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
-
     Optional<Document> findByDecimalNumber(String decimalNumber);
-
-    List<Document> findAllByDepartment_Id(int departmentId);
-
-    List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
-
-    List<Document> findAllByDepartment_Name(String departmentName);
-
-    List<Document> findAllByOriginalHolderId(int originalHolderId);
 
 //    @EntityGraph(attributePaths = {"changeNotices"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("select d from Document d left join fetch d.changeNotices where d.id=:id")
@@ -48,6 +29,16 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Query("select d from Document d left join fetch d.changeNotices where d.decimalNumber=:decimalNumber")
     Optional<Document> findByDecimalNumberWithChangeNotices(@Param("decimalNumber") String decimalNumber);
 
+    @Query("select d from Document d left join fetch d.externalDispatches where d.id=:id")
+    Optional<Document> findByIdWithExternalDispatches(@Param("id") int id);
+
+    @Query("select d from Document d left join fetch d.internalDispatches where d.id=:id")
+    Optional<Document> findByIdWithInternalDispatches(@Param("id") int id);
+
+    @Query("select d from Document d left join fetch d.applicabilities where d.id=:id")
+    Optional<Document> findByIdWithApplicabilities(@Param("id") int id);
+
+    List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
 
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
@@ -59,14 +50,15 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Page<Document> findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName, String originalHolderName,
                                                                                                                           LocalDate after, LocalDate before, Pageable pageable);
+    @Transactional
+    @Modifying
+    @Query("update Document d set d.name=:name, d.decimalNumber =:decimalNumber, d.inventoryNumber=:inventoryNumber, " +
+            "d.receiptDate=:receiptDate, d.status=:status, d.form=:form, d.stage=:stage, d.sheetsAmount=:sheetsAmount, " +
+            "d.format=:format, d.a4Amount=:a4Amount, d.department=:department, d.originalHolder=:originalHolder where d.id=:id")
+    void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("decimalNumber") String decimalNumber, @Param("inventoryNumber") int inventoryNumber,
+                               @Param("receiptDate") LocalDate receiptDate, @Param("status") Status status, @Param("form") Form form,
+                               @Param("stage") Stage stage, @Param("sheetsAmount") int sheetsAmount, @Param("format") String format,
+                               @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
 
-    @Query("select d from Document d left join fetch d.externalDispatches where d.id=:id")
-    Optional<Document> findByIdWithExternalDispatches(@Param("id") int id);
-
-    @Query("select d from Document d left join fetch d.internalDispatches where d.id=:id")
-    Optional<Document> findByIdWithInternalDispatches(@Param("id") int id);
-
-    @Query("select d from Document d left join fetch d.applicabilities where d.id=:id")
-    Optional<Document> findByIdWithApplicabilities(@Param("id") int id);
 
 }

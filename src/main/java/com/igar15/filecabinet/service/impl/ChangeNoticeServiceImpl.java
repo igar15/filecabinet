@@ -38,19 +38,8 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
-    public void updateWithoutChildren(ChangeNotice changeNotice) {
-        changeNoticeRepository.updateWithoutChildren(changeNotice.getId(), changeNotice.getName(), changeNotice.getChangeCode(),
-                changeNotice.getIssueDate(), changeNotice.getDepartment());
-    }
-
-    @Override
     public ChangeNotice findById(int id) {
         return ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
-    }
-
-    @Override
-    public Long countDocumentsById(int id) {
-        return changeNoticeRepository.countDocumentsById(id);
     }
 
     @Override
@@ -112,15 +101,20 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
+    public Long countDocumentsById(int id) {
+        return changeNoticeRepository.countDocumentsById(id);
+    }
+
+    @Override
     public void update(ChangeNotice changeNotice) {
         Assert.notNull(changeNotice, "changeNotice must not be null");
         ValidationUtil.checkNotFoundWithId(changeNoticeRepository.save(changeNotice), changeNotice.id());
     }
 
     @Override
-    public void deleteById(int id) {
-        ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
-        changeNoticeRepository.deleteById(id);
+    public void updateWithoutChildren(ChangeNotice changeNotice) {
+        changeNoticeRepository.updateWithoutChildren(changeNotice.getId(), changeNotice.getName(), changeNotice.getChangeCode(),
+                changeNotice.getIssueDate(), changeNotice.getDepartment());
     }
 
     @Override
@@ -191,5 +185,11 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
             changeNoticeRepository.save(changeNotice);
         }
         return errorMessage;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
+        changeNoticeRepository.deleteById(id);
     }
 }

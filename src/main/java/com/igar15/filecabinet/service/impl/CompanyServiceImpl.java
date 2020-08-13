@@ -1,7 +1,6 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.Company;
-import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.CompanyRepository;
 import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.CompanyService;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -20,9 +18,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyRepository companyRepository;
-
-    @Autowired
-    private DocumentRepository documentRepository;
 
     @Override
     public Company create(Company company) {
@@ -42,11 +37,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Page<Company> findAllByNameContainsIgnoreCase(String companyName, Pageable pageable) {
-        return companyRepository.findAllByNameContainsIgnoreCase(companyName, pageable);
-    }
-
-    @Override
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
@@ -54,6 +44,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Page<Company> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Company> findAllByNameContainsIgnoreCase(String companyName, Pageable pageable) {
+        return companyRepository.findAllByNameContainsIgnoreCase(companyName, pageable);
     }
 
     @Override

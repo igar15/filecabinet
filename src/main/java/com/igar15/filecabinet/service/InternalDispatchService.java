@@ -12,25 +12,23 @@ public interface InternalDispatchService {
 
     InternalDispatch findById(int id);
 
-    InternalDispatch findByIdAndIsAlbum(int id, boolean isAlbum);
+    InternalDispatch findByIdWithDocuments(int id);
+
+    InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b);
 
     Page<InternalDispatch> findAll(Pageable pageable);
 
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
-    void update(InternalDispatch internalDispatch);
-
-    void deleteById(int id);
-
     Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isAlbum, Pageable pageable);
 
-    InternalDispatch findByIdWithDocuments(int id);
+    void update(InternalDispatch internalDispatch);
 
     void updateWithoutChildren(InternalDispatch internalDispatch);
-
-    InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b);
 
     String addDocument(InternalDispatch internalDispatch, String newDocument);
 
     String removeDocument(InternalDispatch internalDispatch, int documentId);
+
+    void deleteById(int id);
 }

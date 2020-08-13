@@ -1,11 +1,7 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Department;
-import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.repository.DepartmentRepository;
-import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
@@ -15,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -25,12 +20,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-
-    @Autowired
-    private DocumentRepository documentRepository;
-
-    @Autowired
-    private ChangeNoticeRepository changeNoticeRepository;
 
     @Autowired
     InternalDispatchRepository internalDispatchRepository;

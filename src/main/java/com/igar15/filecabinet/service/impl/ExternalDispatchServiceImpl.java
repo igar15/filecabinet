@@ -37,14 +37,6 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     }
 
     @Override
-    public void updateWithoutChildren(ExternalDispatch externalDispatch) {
-        Assert.notNull(externalDispatch, "external dispatch must not be null");
-        externalDispatchRepository.updateWithoutChildren(externalDispatch.getId(), externalDispatch.getWaybill(),
-                externalDispatch.getDispatchDate(), externalDispatch.getStatus(), externalDispatch.getRemark(),
-                externalDispatch.getLetterOutgoingNumber(), externalDispatch.getCompany());
-    }
-
-    @Override
     public ExternalDispatch findByIdWithDocuments(int id) {
         return ValidationUtil.checkNotFoundWithId(externalDispatchRepository.findByIdWithDocuments(id).orElse(null), id);
     }
@@ -61,9 +53,11 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     }
 
     @Override
-    public void deleteById(int id) {
-        ValidationUtil.checkNotFoundWithId(externalDispatchRepository.findById(id).orElse(null), id);
-        externalDispatchRepository.deleteById(id);
+    public void updateWithoutChildren(ExternalDispatch externalDispatch) {
+        Assert.notNull(externalDispatch, "external dispatch must not be null");
+        externalDispatchRepository.updateWithoutChildren(externalDispatch.getId(), externalDispatch.getWaybill(),
+                externalDispatch.getDispatchDate(), externalDispatch.getStatus(), externalDispatch.getRemark(),
+                externalDispatch.getLetterOutgoingNumber(), externalDispatch.getCompany());
     }
 
     @Override
@@ -104,5 +98,11 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
             externalDispatchRepository.save(externalDispatch);
         }
         return errorDeleteMessage;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ValidationUtil.checkNotFoundWithId(externalDispatchRepository.findById(id).orElse(null), id);
+        externalDispatchRepository.deleteById(id);
     }
 }

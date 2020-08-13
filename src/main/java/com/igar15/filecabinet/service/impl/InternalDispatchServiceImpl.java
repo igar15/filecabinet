@@ -10,12 +10,10 @@ import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class InternalDispatchServiceImpl implements InternalDispatchService {
@@ -46,18 +44,13 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
     }
 
     @Override
-    public InternalDispatch findByIdAndIsAlbum(int id, boolean isAlbum) {
-        return ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdAndIsAlbum(id, isAlbum).orElse(null), id);
+    public InternalDispatch findByIdWithDocuments(int id) {
+        return ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdWithDocuments(id).orElse(null), id);
     }
 
     @Override
     public InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b) {
         return (ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdAndIsAlbumWithDocuments(internalId, b).orElse(null), internalId));
-    }
-
-    @Override
-    public InternalDispatch findByIdWithDocuments(int id) {
-        return ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findByIdWithDocuments(id).orElse(null), id);
     }
 
     @Override
@@ -91,12 +84,6 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
                 internalDispatch.getReceivedInternalDate(), internalDispatch.getInternalHandlerName(),
                 internalDispatch.getInternalHandlerPhoneNumber(), internalDispatch.getIsAlbum(), internalDispatch.getAlbumName(),
                 internalDispatch.getIsActive());
-    }
-
-    @Override
-    public void deleteById(int id) {
-        ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findById(id).orElse(null), id);
-        internalDispatchRepository.deleteById(id);
     }
 
     @Override
@@ -137,5 +124,11 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
             internalDispatchRepository.save(internalDispatch);
         }
         return errorDeleteMessage;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findById(id).orElse(null), id);
+        internalDispatchRepository.deleteById(id);
     }
 }

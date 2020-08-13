@@ -13,17 +13,17 @@ public interface ExternalDispatchService {
 
     ExternalDispatch findById(int id);
 
+    ExternalDispatch findByIdWithDocuments(int id);
+
     Page<ExternalDispatch> findAll(Pageable pageable);
 
     void update(ExternalDispatch externalDispatch);
-
-    void deleteById(int id);
-
-    ExternalDispatch findByIdWithDocuments(int id);
 
     void updateWithoutChildren(ExternalDispatch externalDispatch);
 
     String addDocument(ExternalDispatch externalDispatch, String newDocument);
 
     String removeDocument(ExternalDispatch externalDispatch, int documentId);
+
+    void deleteById(int id);
 }

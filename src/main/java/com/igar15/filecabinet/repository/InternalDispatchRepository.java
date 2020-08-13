@@ -18,24 +18,18 @@ import java.util.Optional;
 
 public interface InternalDispatchRepository extends JpaRepository<InternalDispatch, Integer> {
 
-    List<InternalDispatch> findAllByAlbumName(String albumName);
-
-    List<InternalDispatch> findAllByDispatchHandler_Id(int dispatchHandlerId);
-
-    Optional<InternalDispatch> findByIdAndIsAlbum(int id, boolean isAlbum);
+    @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id")
+    Optional<InternalDispatch> findByIdWithDocuments(@Param("id") int id);
 
     @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id and i.isAlbum=:isAlbum")
     Optional<InternalDispatch> findByIdAndIsAlbumWithDocuments(@Param("id") int id, @Param("isAlbum") boolean isAlbum);
 
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
-    @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
-    Page<InternalDispatch> findAllByDocumentId(int documentId, Pageable pageable);
-
     Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isActive, Pageable pageable);
 
-    @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id")
-    Optional<InternalDispatch> findByIdWithDocuments(@Param("id") int id);
+    @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
+    Page<InternalDispatch> findAllByDocumentId(int documentId, Pageable pageable);
 
     @Transactional
     @Modifying

@@ -20,12 +20,8 @@ import java.util.Optional;
 
 public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("update ChangeNotice c set c.name=:name, c.changeCode =:changeCode, c.issueDate=:issueDate, " +
-            "c.department=:department where c.id=:id")
-    void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("changeCode") int changeCode,
-                               @Param("issueDate") LocalDate issueDate, @Param("department") Department department);
+    @Query("select c from ChangeNotice c left join fetch c.documents where c.id=:id")
+    Optional<ChangeNotice> findByIdWithDocuments(@Param("id") int id);
 
     Optional<ChangeNotice> findByName(String name);
 
@@ -39,9 +35,13 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
 
     Page<ChangeNotice> findAllByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
-    @Query("select c from ChangeNotice c left join fetch c.documents where c.id=:id")
-    Optional<ChangeNotice> findByIdWithDocuments(@Param("id") int id);
-
     Long countDocumentsById(int id);
+
+    @Transactional
+    @Modifying
+    @Query("update ChangeNotice c set c.name=:name, c.changeCode =:changeCode, c.issueDate=:issueDate, " +
+            "c.department=:department where c.id=:id")
+    void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("changeCode") int changeCode,
+                               @Param("issueDate") LocalDate issueDate, @Param("department") Department department);
 
 }

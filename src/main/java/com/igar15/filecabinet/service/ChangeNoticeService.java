@@ -9,24 +9,23 @@ public interface ChangeNoticeService {
 
     ChangeNotice create(ChangeNotice changeNotice);
 
-    Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable);
-
     ChangeNotice findById(int id);
-
-    ChangeNotice findByName(String name);
-
-    void update(ChangeNotice changeNotice);
-
-    void deleteById(int id);
-
-    void updateWithoutChildren(ChangeNotice changeNotice);
 
     ChangeNotice findByIdWithDocuments(int id);
 
+    ChangeNotice findByName(String name);
+
+    Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable);
+
     Long countDocumentsById(int id);
+
+    void update(ChangeNotice changeNotice);
+
+    void updateWithoutChildren(ChangeNotice changeNotice);
 
     Object[] addDocument(ChangeNotice changeNotice, String newDocument, String newDocumentChangeNumber);
 
-
     String removeDocument(ChangeNotice changeNotice, int documentId);
+
+    void deleteById(int id);
 }
