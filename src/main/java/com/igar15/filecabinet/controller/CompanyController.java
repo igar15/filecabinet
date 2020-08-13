@@ -23,7 +23,6 @@ public class CompanyController {
     public String showAll(@SortDefault("name") Pageable pageable,
                           @RequestParam(value = "companyName", required = false) String companyName,
                           Model model) {
-
         Page<Company> companies = null;
         if (companyName != null) {
             companies = companyService.findAllByNameContainsIgnoreCase(companyName, pageable);

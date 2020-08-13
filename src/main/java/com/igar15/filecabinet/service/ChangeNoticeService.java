@@ -28,4 +28,5 @@ public interface ChangeNoticeService {
     Object[] addDocument(ChangeNotice changeNotice, String newDocument, String newDocumentChangeNumber);
 
 
+    String removeDocument(ChangeNotice changeNotice, int documentId);
 }

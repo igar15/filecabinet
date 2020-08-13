@@ -22,4 +22,8 @@ public interface ExternalDispatchService {
     ExternalDispatch findByIdWithDocuments(int id);
 
     void updateWithoutChildren(ExternalDispatch externalDispatch);
+
+    String addDocument(ExternalDispatch externalDispatch, String newDocument);
+
+    String removeDocument(ExternalDispatch externalDispatch, int documentId);
 }

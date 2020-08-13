@@ -176,4 +176,20 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
         }
         return new Object[]{docErrorMessage, numberErrorMessage};
     }
+
+    @Override
+    public String removeDocument(ChangeNotice changeNotice, int documentId) {
+        String errorMessage = null;
+        if (changeNotice.getDocuments().size() == 1) {
+            errorMessage = "The change notice can not exist without any documents!";
+        }
+        else {
+            Document document = changeNotice.getDocuments().keySet().stream()
+                    .filter(doc -> doc.getId().equals(documentId))
+                    .findFirst().orElse(null);
+            changeNotice.getDocuments().remove(document);
+            changeNoticeRepository.save(changeNotice);
+        }
+        return errorMessage;
+    }
 }

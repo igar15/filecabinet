@@ -5,6 +5,7 @@ import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -96,5 +97,45 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
     public void deleteById(int id) {
         ValidationUtil.checkNotFoundWithId(internalDispatchRepository.findById(id).orElse(null), id);
         internalDispatchRepository.deleteById(id);
+    }
+
+    @Override
+    public String addDocument(InternalDispatch internalDispatch, String newDocument) {
+        String errorMessage = null;
+        if (newDocument == null) {
+            errorMessage = "Decimal number must not be empty";
+        }
+        else {
+            try {
+                Document document = documentService.findByDecimalNumber(newDocument);
+                if (internalDispatch.getDocuments().containsKey(document)) {
+                    errorMessage = "Document already added";
+                }
+                else {
+                    internalDispatch.getDocuments().put(document, true);
+                    internalDispatchRepository.save(internalDispatch);
+                }
+
+            } catch (NotFoundException e) {
+                errorMessage = "Document not found";
+            }
+        }
+        return errorMessage;
+    }
+
+    @Override
+    public String removeDocument(InternalDispatch internalDispatch, int documentId) {
+        String errorDeleteMessage = null;
+        if (internalDispatch.getDocuments().size() == 1) {
+            errorDeleteMessage = "Internal dispatch " + internalDispatch.getWaybill() + " can not exist without any documents!";
+        }
+        else {
+            Document found = internalDispatch.getDocuments().keySet().stream()
+                    .filter(document -> document.getId().equals(documentId))
+                    .findFirst().orElse(null);
+            internalDispatch.getDocuments().remove(found);
+            internalDispatchRepository.save(internalDispatch);
+        }
+        return errorDeleteMessage;
     }
 }

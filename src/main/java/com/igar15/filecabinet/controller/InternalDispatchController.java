@@ -1,11 +1,8 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.DepartmentService;
-import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
-import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +25,6 @@ public class InternalDispatchController {
 
     @Autowired
     private DepartmentService departmentService;
-
-    @Autowired
-    private DocumentService documentService;
 
     @GetMapping("/list")
     public String showAll(@SortDefault(value = "dispatchDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
@@ -96,49 +90,20 @@ public class InternalDispatchController {
                               @RequestParam("newDocument") String newDocument,
                               Model model) {
 
-        String errorMessage = null;
         InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(id);
-        if (newDocument == null) {
-            errorMessage = "Decimal number must not be empty";
-        }
-        else {
-            try {
-                Document document = documentService.findByDecimalNumber(newDocument);
-                if (internalDispatch.getDocuments().containsKey(document)) {
-                    errorMessage = "Document already added";
-                }
-                else {
-                    internalDispatch.getDocuments().put(document, true);
-                    internalDispatchService.update(internalDispatch);
-                }
-
-            } catch (NotFoundException e) {
-                errorMessage = "Document not found";
-            }
-        }
+        String errorMessage = internalDispatchService.addDocument(internalDispatch, newDocument);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("internalDispatch", internalDispatch);
         return "/internaldispatches/internaldispatch-info";
     }
 
 
-    @GetMapping("/removeDoc/{id}/{documentId}")
-    public String removeDoc(@PathVariable("id") int id,
+    @GetMapping("/removeDocument/{id}/{documentId}")
+    public String removeDocument(@PathVariable("id") int id,
                             @PathVariable("documentId") int documentId,
                             Model model) {
-        String errorDeleteMessage = null;
         InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(id);
-
-        if (internalDispatch.getDocuments().size() == 1) {
-            errorDeleteMessage = "Internal dispatch " + internalDispatch.getWaybill() + " can not exist without any documents!";
-        }
-        else {
-            Document found = internalDispatch.getDocuments().keySet().stream()
-                    .filter(document -> document.getId().equals(documentId))
-                    .findFirst().orElse(null);
-            internalDispatch.getDocuments().remove(found);
-            internalDispatchService.update(internalDispatch);
-        }
+        String errorDeleteMessage = internalDispatchService.removeDocument(internalDispatch, documentId);
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
         model.addAttribute("internalDispatch", internalDispatch);
         return "/internaldispatches/internaldispatch-info";
@@ -148,7 +113,6 @@ public class InternalDispatchController {
     public String showAlbums(@RequestParam(value = "albumName", required = false) String albumName,
                              @SortDefault("albumName") Pageable pageable,
                              Model model) {
-
         Page<InternalDispatch> internalDispatches = null;
         if (albumName != null) {
             internalDispatches = internalDispatchService.findAllByAlbumNameContainsIgnoreCaseAndIsActive(albumName, true, pageable);

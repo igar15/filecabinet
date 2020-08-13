@@ -134,7 +134,7 @@
                     <td class="align-middle text-center" th:text="${entry.value}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/externaldispatches/removeDoc/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/externaldispatches/removeDocument/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
                     </td>
                 </tr>
             </tbody>

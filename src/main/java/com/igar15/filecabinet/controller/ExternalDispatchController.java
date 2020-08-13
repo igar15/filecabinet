@@ -1,11 +1,8 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.service.CompanyService;
-import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.ExternalDispatchService;
-import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -25,9 +22,6 @@ public class ExternalDispatchController {
 
     @Autowired
     private CompanyService companyService;
-
-    @Autowired
-    private DocumentService documentService;
 
     @GetMapping("/list")
     public String showAll(@SortDefault("dispatchDate") Pageable pageable, Model model) {
@@ -83,48 +77,19 @@ public class ExternalDispatchController {
                               @RequestParam("newDocument") String newDocument,
                               Model model) {
 
-        String errorMessage = null;
         ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(id);
-        if (newDocument == null) {
-            errorMessage = "Decimal number must not be empty";
-        }
-        else {
-            try {
-                Document document = documentService.findByDecimalNumber(newDocument);
-                if (externalDispatch.getDocuments().containsKey(document)) {
-                    errorMessage = "Document already added";
-                }
-                else {
-                    externalDispatch.getDocuments().put(document, true);
-                    externalDispatchService.update(externalDispatch);
-                }
-
-            } catch (NotFoundException e) {
-                errorMessage = "Document not found";
-            }
-        }
+        String errorMessage = externalDispatchService.addDocument(externalDispatch, newDocument);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("externalDispatch", externalDispatch);
         return "/externaldispatches/externaldispatch-info";
     }
 
-    @GetMapping("/removeDoc/{id}/{documentId}")
-    public String removeDoc(@PathVariable("id") int id,
+    @GetMapping("/removeDocument/{id}/{documentId}")
+    public String removeDocument(@PathVariable("id") int id,
                             @PathVariable("documentId") int documentId,
                             Model model) {
-        String errorDeleteMessage = null;
         ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(id);
-
-        if (externalDispatch.getDocuments().size() == 1) {
-            errorDeleteMessage = "External dispatch " + externalDispatch.getWaybill() + " can not exist without any documents!";
-        }
-        else {
-            Document found = externalDispatch.getDocuments().keySet().stream()
-                    .filter(document -> document.getId().equals(documentId))
-                    .findFirst().orElse(null);
-            externalDispatch.getDocuments().remove(found);
-            externalDispatchService.update(externalDispatch);
-        }
+        String errorDeleteMessage = externalDispatchService.removeDocument(externalDispatch, documentId);
         model.addAttribute("errorDeleteMessage", errorDeleteMessage);
         model.addAttribute("externalDispatch", externalDispatch);
         return "/externaldispatches/externaldispatch-info";

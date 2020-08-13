@@ -29,4 +29,8 @@ public interface InternalDispatchService {
     void updateWithoutChildren(InternalDispatch internalDispatch);
 
     InternalDispatch findByIdAndIsAlbumWithDocuments(int internalId, boolean b);
+
+    String addDocument(InternalDispatch internalDispatch, String newDocument);
+
+    String removeDocument(InternalDispatch internalDispatch, int documentId);
 }

@@ -1,10 +1,8 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
-import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
-import com.igar15.filecabinet.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
@@ -32,12 +30,9 @@ public class ChangeNoticeController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault(value = "issueDate", direction = Sort.Direction.DESC) Pageable pageable,
                           Model model) {
-
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
-
         Page<ChangeNotice> changeNotices = changeNoticeService.findAll(name, department, changeCode, after, before, pageable);
-
         model.addAttribute("changeNotices", changeNotices);
         return "/changenotices/changenotice-list";
     }
@@ -62,13 +57,12 @@ public class ChangeNoticeController {
             model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
             return "/changenotices/changenotice-form";
         }
+        model.addAttribute("changeNotice", changeNotice);
         if (changeNotice.isNew()) {
-            model.addAttribute("changeNotice", changeNotice);
             return "/changenotices/changenotice-document-list";
         }
         else {
             changeNoticeService.updateWithoutChildren(changeNotice);
-            model.addAttribute("changeNotice", changeNotice);
             return "/changenotices/changenotice-info";
         }
     }
@@ -108,21 +102,12 @@ public class ChangeNoticeController {
         return "/changenotices/changenotice-document-list";
     }
 
-    @GetMapping("/removeDoc/{id}/{documentId}")
-    public String removeDoc(@PathVariable("id") int id, @PathVariable("documentId") int documentId, Model model) {
+    @GetMapping("/removeDocument/{id}/{documentId}")
+    public String removeDocument(@PathVariable("id") int id, @PathVariable("documentId") int documentId, Model model) {
         ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(id);
-        if (changeNotice.getDocuments().size() == 1) {
-            model.addAttribute("changeNotice", changeNotice);
-            String errorMessage = "The change notice can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-            return "/changenotices/changenotice-document-list";
-        }
-        Document document = changeNotice.getDocuments().keySet().stream()
-                .filter(doc -> doc.getId().equals(documentId))
-                .findFirst().orElse(null);
-        changeNotice.getDocuments().remove(document);
-        changeNoticeService.update(changeNotice);
+        String errorMessage = changeNoticeService.removeDocument(changeNotice, documentId);
         model.addAttribute("changeNotice", changeNotice);
+        model.addAttribute("errorMessage", errorMessage);
         return "/changenotices/changenotice-document-list";
     }
 
