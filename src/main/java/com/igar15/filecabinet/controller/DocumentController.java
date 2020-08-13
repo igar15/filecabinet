@@ -2,7 +2,6 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.*;
 import com.igar15.filecabinet.service.*;
-import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
@@ -12,10 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/documents")
@@ -28,16 +23,7 @@ public class DocumentController {
     private DepartmentService departmentService;
 
     @Autowired
-    private ChangeNoticeService changeNoticeService;
-
-    @Autowired
     private CompanyService companyService;
-
-    @Autowired
-    private ExternalDispatchService externalDispatchService;
-
-    @Autowired
-    private InternalDispatchService internalDispatchService;
 
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "decimalNumber", required = false) String decimalNumber,
@@ -52,7 +38,6 @@ public class DocumentController {
                           @RequestParam(name = "before", required = false) String before,
                           @SortDefault("decimalNumber") Pageable pageable,
                           Model model) {
-
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
         model.addAttribute("department", department);
         model.addAttribute("originalHolders", companyService.findAll());
@@ -60,10 +45,8 @@ public class DocumentController {
         model.addAttribute("status", status);
         model.addAttribute("stage", stage);
         model.addAttribute("form", form);
-
         Page<Document> documents = documentService.findAll(decimalNumber, name, department, originalHolder, inventoryNumber,
                 status, stage, form, after, before, pageable);
-
         model.addAttribute("documents", documents);
         return "/documents/document-list";
     }
@@ -86,12 +69,6 @@ public class DocumentController {
         if (document.isNew()) {
             documentService.create(document);
         } else {
-            if (document.getSheetsAmount() == null) {
-                document.setSheetsAmount(0);
-            }
-            if (document.getA4Amount() == null) {
-                document.setA4Amount(0);
-            }
             documentService.updateWithoutChildren(document);
         }
         model.addAttribute("document", document);
@@ -127,47 +104,23 @@ public class DocumentController {
 
     @GetMapping("/removeChange/{id}/{changeId}")
     public String removeChange(@PathVariable("id") int id, @PathVariable("changeId") int changeId, Model model) {
-        long changeNoticeDocumentsSize = changeNoticeService.countDocumentsById(changeId);
-        if (changeNoticeDocumentsSize == 1) {
-            model.addAttribute("document", documentService.findByIdWithChangeNotices(id));
-            String errorMessage = "Change notice can not exist without any documents!";
-            model.addAttribute("errorMessage", errorMessage);
-        }
-        else {
-            Document document = documentService.findByIdWithChangeNotices(id);
-            Optional<Map.Entry<Integer, ChangeNotice>> found = document.getChangeNotices().entrySet().stream()
-                    .filter(entry -> entry.getValue().getId().equals(changeId))
-                    .findFirst();
-            if (found.isPresent()) {
-                document.getChangeNotices().remove(found.get().getKey());
-                documentService.update(document);
-            }
-            model.addAttribute("document", document);
-        }
+        Document document = documentService.findByIdWithChangeNotices(id);
+        String errorMessage = documentService.removeChange(document, changeId);
+        model.addAttribute("document", document);
+        model.addAttribute("errorMessage", errorMessage);
         return "documents/document-changenotices";
     }
 
     @GetMapping("/showExternalDispatches/{id}")
     public String showExternalDispatches(@PathVariable("id") int id, Model model) {
         Document document = documentService.findByIdWithExternalDispatches(id);
-        LinkedHashMap<ExternalDispatch, Boolean> sortedMap = document.getExternalDispatches().entrySet().stream()
-                .sorted(Map.Entry.<ExternalDispatch, Boolean>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        document.setExternalDispatches(sortedMap);
         model.addAttribute("document", document);
         return "/documents/document-externaldispatches";
     }
 
     @GetMapping("/deregisterExternal/{id}/{externalId}")
     public String deregisterExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
-        Document document = documentService.findByIdWithExternalDispatches(id);
-        document.getExternalDispatches().keySet()
-                .forEach(externalDispatch -> {
-                    if (externalDispatch.getId().equals(externalId)) {
-                        document.getExternalDispatches().put(externalDispatch, false);
-                    }
-                });
-        documentService.update(document);
+        Document document = documentService.deregisterExternal(id, externalId);
         model.addAttribute("document", document);
         return "/documents/document-externaldispatches";
     }
@@ -175,24 +128,13 @@ public class DocumentController {
     @GetMapping("/showInternalDispatches/{id}")
     public String showInternalDispatches(@PathVariable("id") int id, Model model) {
         Document document = documentService.findByIdWithInternalDispatches(id);
-        LinkedHashMap<InternalDispatch, Boolean> sortedMap = document.getInternalDispatches().entrySet().stream()
-                .sorted(Map.Entry.<InternalDispatch, Boolean>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        document.setInternalDispatches(sortedMap);
         model.addAttribute("document", document);
         return "/documents/document-internaldispatches";
     }
 
     @GetMapping("/deregisterInternal/{id}/{internalId}")
     public String deregisterInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
-        Document document = documentService.findByIdWithInternalDispatches(id);
-        document.getInternalDispatches().keySet()
-                .forEach(internalDispatch -> {
-                    if (internalDispatch.getId().equals(internalId)) {
-                        document.getInternalDispatches().put(internalDispatch, false);
-                    }
-                });
-        documentService.update(document);
+        Document document = documentService.deregisterInternal(id, internalId);
         model.addAttribute("document", document);
         return "/documents/document-internaldispatches";
     }
@@ -200,17 +142,7 @@ public class DocumentController {
     @GetMapping("/deregisterAlbum/{id}/{internalId}")
     public String deregisterAlbum(@PathVariable("id") int id,
                                   @PathVariable("internalId") int internalId) {
-        InternalDispatch internalDispatch = internalDispatchService.findByIdAndIsAlbumWithDocuments(internalId, true);
-        Document document = documentService.findById(id);
-        if (internalDispatch.getAlbumName().equals(document.getDecimalNumber())) {
-            internalDispatch.setIsActive(false);
-            internalDispatch.getDocuments().keySet()
-                    .forEach(key -> internalDispatch.getDocuments().put(key, false));
-            internalDispatchService.update(internalDispatch);
-        }
-        else {
-            throw new IllegalArgumentException("Can not deregister album! Album name does not equal document decimal number!");
-        }
+        documentService.deregisterAlbum(id, internalId);
         return "redirect:/documents/showInternalDispatches/" + id;
     }
 
@@ -222,11 +154,7 @@ public class DocumentController {
 
     @GetMapping("/removeApplicability/{id}/{applicabilityId}")
     public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId, Model model) {
-        Document document = documentService.findByIdWithApplicabilities(id);
-        document.setApplicabilities(document.getApplicabilities().stream()
-                .filter(doc -> doc.getId() != applicabilityId)
-                .collect(Collectors.toSet()));
-        documentService.update(document);
+        Document document = documentService.removeApplicability(id, applicabilityId);
         model.addAttribute("document", document);
         return "/documents/document-applicabilities";
     }
@@ -235,28 +163,8 @@ public class DocumentController {
     public String addApplicability(@PathVariable("id") int id,
                                    @RequestParam(name = "newApplicability") String newApplicability,
                                    Model model) {
-        String errorMessage = null;
         Document document = documentService.findByIdWithApplicabilities(id);
-        if (newApplicability == null) {
-            errorMessage = "Decimal number must not be empty";
-        }
-        else {
-            try {
-                Document applicability = documentService.findByDecimalNumber(newApplicability);
-                if (document.getApplicabilities().contains(applicability)) {
-                    errorMessage = "Applicability already added";
-                }
-                else {
-                    document.getApplicabilities().add(applicability);
-                    documentService.update(document);
-                    model.addAttribute("document", document);
-                    return "/documents/document-applicabilities";
-                }
-
-            } catch (NotFoundException e) {
-                errorMessage = "Document not found";
-            }
-        }
+        String errorMessage = documentService.addApplicability(document, newApplicability);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("document", document);
         return "/documents/document-applicabilities";
@@ -266,10 +174,7 @@ public class DocumentController {
     public String deregisterExternalWithIncomings(@PathVariable("id") int id,
                                                   @PathVariable("externalId") int externalId,
                                                   Model model) {
-
-        documentService.deregisterExternalWithIncomings(id, externalId);
-
-        Document document = documentService.findByIdWithExternalDispatches(id);
+        Document document = documentService.deregisterExternalWithIncomings(id, externalId);
         model.addAttribute("document", document);
         return "/documents/document-externaldispatches";
     }

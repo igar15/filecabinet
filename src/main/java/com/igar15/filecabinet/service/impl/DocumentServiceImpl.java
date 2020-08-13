@@ -1,15 +1,14 @@
 package com.igar15.filecabinet.service.impl;
 
+import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.repository.DocumentRepository;
-import com.igar15.filecabinet.service.CompanyService;
-import com.igar15.filecabinet.service.DepartmentService;
-import com.igar15.filecabinet.service.DocumentService;
-import com.igar15.filecabinet.service.ExternalDispatchService;
+import com.igar15.filecabinet.service.*;
 import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
@@ -31,6 +30,9 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentRepository documentRepository;
 
     @Autowired
+    private ChangeNoticeService changeNoticeService;
+
+    @Autowired
     DepartmentService departmentService;
 
     @Autowired
@@ -39,9 +41,18 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     ExternalDispatchService externalDispatchService;
 
+    @Autowired
+    InternalDispatchService internalDispatchService;
+
     @Override
     public void updateWithoutChildren(Document document) {
         Assert.notNull(document, "document must not be null");
+        if (document.getSheetsAmount() == null) {
+            document.setSheetsAmount(0);
+        }
+        if (document.getA4Amount() == null) {
+            document.setA4Amount(0);
+        }
         documentRepository.updateWithoutChildren(document.getId(), document.getName(), document.getDecimalNumber(), document.getInventoryNumber(),
                 document.getReceiptDate(), document.getStatus(), document.getForm(), document.getStage(), document.getSheetsAmount(),
                 document.getFormat(), document.getA4Amount(), document.getDepartment(), document.getOriginalHolder());
@@ -65,12 +76,23 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document findByIdWithExternalDispatches(int id) {
-        return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithExternalDispatches(id).orElse(null), id);
+        Document document =  ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithExternalDispatches(id).orElse(null), id);
+        LinkedHashMap<ExternalDispatch, Boolean> sortedMap = document.getExternalDispatches().entrySet().stream()
+                .sorted(Map.Entry.<ExternalDispatch, Boolean>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        document.setExternalDispatches(sortedMap);
+        return document;
     }
+
 
     @Override
     public Document findByIdWithInternalDispatches(int id) {
-        return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithInternalDispatches(id).orElse(null), id);
+        Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithInternalDispatches(id).orElse(null), id);
+        LinkedHashMap<InternalDispatch, Boolean> sortedMap = document.getInternalDispatches().entrySet().stream()
+                .sorted(Map.Entry.<InternalDispatch, Boolean>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        document.setInternalDispatches(sortedMap);
+        return document;
     }
 
     @Override
@@ -169,8 +191,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Transactional
     @Override
-    public void deregisterExternalWithIncomings(int id, int externalId) {
-        Document mainDocument = documentRepository.findByIdWithExternalDispatches(id).orElse(null);
+    public Document deregisterExternalWithIncomings(int id, int externalId) {
+        Document mainDocument = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithExternalDispatches(id).orElse(null), id);
         ExternalDispatch mainExternal = externalDispatchService.findById(externalId);
 
         mainDocument.getExternalDispatches().keySet()
@@ -209,6 +231,101 @@ public class DocumentServiceImpl implements DocumentService {
                 documentRepository.save(tempDocument);
                 documents.addAll(documentRepository.findAllByApplicabilities_DecimalNumber(tempDocument.getDecimalNumber()));
             }
+        }
+        return mainDocument;
+    }
+
+    @Override
+    public String addApplicability(Document document, String newApplicability) {
+        String errorMessage = null;
+        if (newApplicability == null) {
+            errorMessage = "Decimal number must not be empty";
+        }
+        else {
+            try {
+                Document applicability = ValidationUtil.checkNotFound(documentRepository.findByDecimalNumber(newApplicability).orElse(null), newApplicability);
+                if (document.getApplicabilities().contains(applicability)) {
+                    errorMessage = "Applicability already added";
+                }
+                else {
+                    document.getApplicabilities().add(applicability);
+                    documentRepository.save(document);
+                }
+
+            } catch (NotFoundException e) {
+                errorMessage = "Document not found";
+            }
+        }
+        return errorMessage;
+    }
+
+    @Override
+    public Document removeApplicability(int id, int applicabilityId) {
+        Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithApplicabilities(id).orElse(null), id);
+        document.setApplicabilities(document.getApplicabilities().stream()
+                .filter(doc -> doc.getId() != applicabilityId)
+                .collect(Collectors.toSet()));
+        documentRepository.save(document);
+        return document;
+    }
+
+    @Override
+    public String removeChange(Document document, int changeId) {
+        String errorMessage = null;
+        long changeNoticeDocumentsSize = changeNoticeService.countDocumentsById(changeId);
+        if (changeNoticeDocumentsSize == 1) {
+            errorMessage = "Change notice can not exist without any documents!";
+        }
+        else {
+            Optional<Map.Entry<Integer, ChangeNotice>> found = document.getChangeNotices().entrySet().stream()
+                    .filter(entry -> entry.getValue().getId().equals(changeId))
+                    .findFirst();
+            if (found.isPresent()) {
+                document.getChangeNotices().remove(found.get().getKey());
+                documentRepository.save(document);
+            }
+        }
+        return errorMessage;
+    }
+
+    @Override
+    public Document deregisterExternal(int id, int externalId) {
+        Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithExternalDispatches(id).orElse(null), id);
+        document.getExternalDispatches().keySet()
+                .forEach(externalDispatch -> {
+                    if (externalDispatch.getId().equals(externalId)) {
+                        document.getExternalDispatches().put(externalDispatch, false);
+                    }
+                });
+        documentRepository.save(document);
+        return document;
+    }
+
+    @Override
+    public Document deregisterInternal(int id, int internalId) {
+        Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithInternalDispatches(id).orElse(null), id);
+        document.getInternalDispatches().keySet()
+                .forEach(internalDispatch -> {
+                    if (internalDispatch.getId().equals(internalId)) {
+                        document.getInternalDispatches().put(internalDispatch, false);
+                    }
+                });
+        documentRepository.save(document);
+        return document;
+    }
+
+    @Override
+    public void deregisterAlbum(int id, int internalId) {
+        InternalDispatch internalDispatch = internalDispatchService.findByIdAndIsAlbumWithDocuments(internalId, true);
+        Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findById(id).orElse(null), id);
+        if (internalDispatch.getAlbumName().equals(document.getDecimalNumber())) {
+            internalDispatch.setIsActive(false);
+            internalDispatch.getDocuments().keySet()
+                    .forEach(key -> internalDispatch.getDocuments().put(key, false));
+            internalDispatchService.update(internalDispatch);
+        }
+        else {
+            throw new IllegalArgumentException("Can not deregister album! Album name does not equal document decimal number!");
         }
     }
 }

@@ -37,5 +37,17 @@ public interface DocumentService {
 
     Document findByDecimalNumberWithChangeNotices(String newDocument);
 
-    void deregisterExternalWithIncomings(int id, int externalId);
+    Document deregisterExternalWithIncomings(int id, int externalId);
+
+    String addApplicability(Document document, String newApplicability);
+
+    Document removeApplicability(int id, int applicabilityId);
+
+    String removeChange(Document document, int changeId);
+
+    Document deregisterExternal(int id, int externalId);
+
+    Document deregisterInternal(int id, int internalId);
+
+    void deregisterAlbum(int id, int internalId);
 }
