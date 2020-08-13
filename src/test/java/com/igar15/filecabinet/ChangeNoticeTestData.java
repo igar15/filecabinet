@@ -18,21 +18,21 @@ public class ChangeNoticeTestData {
     public static final String NOT_FOUND_NAME = "ВУИА.ТК.777";
 
     public static final ChangeNotice CHANGE_NOTICE1 = new ChangeNotice(CHANGE_NOTICE1_ID, "ВУИА.СЭ.739", 5,
-            LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1);
+            LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1);
     public static final ChangeNotice CHANGE_NOTICE2 = new ChangeNotice(CHANGE_NOTICE1_ID + 1, "ВУИА.СЭ.744", 8,
-            LocalDate.of(2018, 6, 17), DeveloperTestData.DEPARTMENT_1);
+            LocalDate.of(2018, 6, 17), DepartmentTestData.DEPARTMENT_1);
     public static final ChangeNotice CHANGE_NOTICE3 = new ChangeNotice(CHANGE_NOTICE1_ID + 2, "ВУИА.ТК.133", 4,
-            LocalDate.of(2018, 8, 30), DeveloperTestData.DEPARTMENT_3);
+            LocalDate.of(2018, 8, 30), DepartmentTestData.DEPARTMENT_3);
     public static final ChangeNotice CHANGE_NOTICE4 = new ChangeNotice(CHANGE_NOTICE1_ID + 3, "ВУИА.ТК.153", 2,
-            LocalDate.of(2019, 4, 24), DeveloperTestData.DEPARTMENT_3);
+            LocalDate.of(2019, 4, 24), DepartmentTestData.DEPARTMENT_3);
     public static final ChangeNotice CHANGE_NOTICE5 = new ChangeNotice(CHANGE_NOTICE1_ID + 4, "ВУИА.ТК.156", 7,
-            LocalDate.of(2020, 5, 18), DeveloperTestData.DEPARTMENT_3);
+            LocalDate.of(2020, 5, 18), DepartmentTestData.DEPARTMENT_3);
     public static final ChangeNotice CHANGE_NOTICE6 = new ChangeNotice(CHANGE_NOTICE1_ID + 5, "ВУИА.СО.134", 6,
-            LocalDate.of(2016, 12, 19), DeveloperTestData.DEPARTMENT_4);
+            LocalDate.of(2016, 12, 19), DepartmentTestData.DEPARTMENT_4);
     public static final ChangeNotice CHANGE_NOTICE7 = new ChangeNotice(CHANGE_NOTICE1_ID + 6, "ВУИА.СО.135", 6,
-            LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_4);
+            LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_4);
     public static final ChangeNotice CHANGE_NOTICE8 = new ChangeNotice(CHANGE_NOTICE1_ID + 7, "ВУИА.СО.136", 7,
-            LocalDate.of(2018, 5, 27), DeveloperTestData.DEPARTMENT_4);
+            LocalDate.of(2018, 5, 27), DepartmentTestData.DEPARTMENT_4);
 
     public static final List<ChangeNotice> CHANGE_NOTICES = List.of(
             CHANGE_NOTICE6, CHANGE_NOTICE7, CHANGE_NOTICE8, CHANGE_NOTICE1, CHANGE_NOTICE2, CHANGE_NOTICE3, CHANGE_NOTICE4, CHANGE_NOTICE5
@@ -40,17 +40,17 @@ public class ChangeNoticeTestData {
 
     public static ChangeNotice getNew() {
         return new ChangeNotice(null, "ВУИА.СЭ.999", 5,
-                LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1);
+                LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1);
     }
 
     public static ChangeNotice getNewWithDuplicateName() {
         return new ChangeNotice(null, "ВУИА.СЭ.739", 5,
-                LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1);
+                LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1);
     }
 
     public static ChangeNotice getUpdated() {
         return new ChangeNotice(CHANGE_NOTICE1_ID, "ВУИА.СЭ.999", 9,
-                LocalDate.of(2019, 5, 24), DeveloperTestData.DEPARTMENT_1);
+                LocalDate.of(2019, 5, 24), DepartmentTestData.DEPARTMENT_1);
     }
 
     public static ChangeNotice getWithDocuments() {
@@ -64,13 +64,13 @@ public class ChangeNoticeTestData {
     public static List<ChangeNotice> getNewsWithWrongValues() {
         return List.of(
                 new ChangeNotice(null, null, 5,
-                        LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1),
+                        LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1),
                 new ChangeNotice(null, "  ", 5,
-                        LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1),
+                        LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1),
                 new ChangeNotice(null, "ВУИА.СЭ.999", null,
-                        LocalDate.of(2018, 5, 24), DeveloperTestData.DEPARTMENT_1),
+                        LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1),
                 new ChangeNotice(null, "ВУИА.СЭ.999", 3,
-                        null, DeveloperTestData.DEPARTMENT_1)
+                        null, DepartmentTestData.DEPARTMENT_1)
         );
     }
 

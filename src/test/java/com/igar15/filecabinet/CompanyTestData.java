@@ -3,6 +3,7 @@ package com.igar15.filecabinet;
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.entity.Address;
 import com.igar15.filecabinet.entity.Company;
+import org.springframework.data.domain.*;
 
 import java.util.List;
 
@@ -23,6 +24,12 @@ public class CompanyTestData {
 
     public static final List<Company> COMPANIES = List.of(COMPANY3, COMPANY2, COMPANY1);
 
+    public static final Pageable PAGEABLE = PageRequest.of(0, 2, Sort.by("name"));
+
+    public static final Page<Company> PAGE_FOR_ALL = new PageImpl<>(List.of(COMPANY3, COMPANY2), PAGEABLE, 3);
+
+    public static final Page<Company> PAGE_FOR_ALL_BY_NAME = new PageImpl<>(List.of(COMPANY3, COMPANY2), PAGEABLE, 2);
+
     public static Company getNew() {
         return new Company(null, "Submicron", new Address("Zelenograd", "Zelenaya street", "20", "574569"), "Vasya");
     }
@@ -37,14 +44,12 @@ public class CompanyTestData {
 
     public static List<Company> getNewsWithWrongValues() {
         return List.of(
-                new Company(null, "   ", new Address("Zelenograd", "Zelenaya street", "20", "574569"), "Vasya"),
                 new Company(null, null, new Address("Zelenograd", "Zelenaya street", "20", "574569"), "Vasya"),
-                new Company(null, "Almaz", new Address("", "Zelenaya street", "20", "574569"), "Vasya"),
                 new Company(null, "Almaz", new Address(null, "", "20", "574569"), "Vasya"),
-                new Company(null, "Almaz", new Address(null, "Zelenaya street", "", "574569"), "Vasya"),
-                new Company(null, "Almaz", new Address(null, "Zelenaya street", null, "574569"), "Vasya"),
+                new Company(null, "Almaz", new Address("null", null, "", "574569"), "Vasya"),
+                new Company(null, "Almaz", new Address("null", "Zelenaya street", null, "574569"), "Vasya"),
                 new Company(null, "Almaz", new Address(null, "Zelenaya street", "30", "!!!"), "Vasya"),
-                new Company(null, "Almaz", new Address(null, "Zelenaya street", "30", null), "Vasya"),
+                new Company(null, "Almaz", new Address("null", "Zelenaya street", "30", null), "Vasya"),
                 new Company(null, "Almaz", new Address(null, "Zelenaya street", "30", ""), "Vasya")
         );
     }

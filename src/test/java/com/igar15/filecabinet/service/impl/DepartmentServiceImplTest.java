@@ -5,13 +5,15 @@ import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
-import static com.igar15.filecabinet.DeveloperTestData.*;
+import static com.igar15.filecabinet.DepartmentTestData.*;
 
 class DepartmentServiceImplTest extends AbstractServiceTest {
 
@@ -36,13 +38,13 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
     @Test
     void createWithWrongValues() {
         getNewsWithWrongValues().forEach(developer -> {
-            validateRootCause(ConstraintViolationException.class, () -> departmentService.create(developer));
+            validateRootCause(PSQLException.class, () -> departmentService.create(developer));
         });
     }
 
     @Test
     void findById() {
-        Department found = departmentService.findById(DEVELOPER1_ID);
+        Department found = departmentService.findById(DEPARTMENT1_ID);
         Assertions.assertEquals(DEPARTMENT_1, found);
     }
 
@@ -53,7 +55,7 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
 
     @Test
     void findByName() {
-        Department found = departmentService.findByName(DEVELOPER1_NAME);
+        Department found = departmentService.findByName(DEPARTMENT1_NAME);
         Assertions.assertEquals(DEPARTMENT_1, found);
     }
 
@@ -69,16 +71,33 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void findAllWithPageable() {
+        Page<Department> page = departmentService.findAll(PAGEABLE);
+        Assertions.assertEquals(PAGE_FOR_ALL, page);
+    }
+
+    @Test
+    void findAllByCanTakeAlbums() {
+        List<Department> departments = departmentService.findAllByCanTakeAlbums(true);
+
+    }
+
+    @Test
     void update() {
         Department updated = getUpdated();
         departmentService.update(updated);
-        Assertions.assertEquals(updated, departmentService.findById(DEVELOPER1_ID));
+        Assertions.assertEquals(updated, departmentService.findById(DEPARTMENT1_ID));
     }
 
     @Test
     void deleteById() {
-        departmentService.deleteById(DEVELOPER1_ID);
-        Assertions.assertThrows(NotFoundException.class, () -> departmentService.findById(DEVELOPER1_ID));
+        departmentService.deleteById(DEPARTMENT1_ID + 5);
+        Assertions.assertThrows(NotFoundException.class, () -> departmentService.findById(DEPARTMENT1_ID + 5));
+    }
+
+    @Test
+    void deleteByIdWithExistReferences() {
+        Assertions.assertThrows(DataAccessException.class, () -> departmentService.deleteById(DEPARTMENT1_ID));
     }
 
     @Test

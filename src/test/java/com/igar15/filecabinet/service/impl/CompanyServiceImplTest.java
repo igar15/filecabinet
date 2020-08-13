@@ -1,21 +1,18 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.CompanyTestData;
 import com.igar15.filecabinet.entity.Company;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-
-import javax.persistence.AttributeOverride;
-import javax.validation.ConstraintViolationException;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 import static com.igar15.filecabinet.CompanyTestData.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CompanyServiceImplTest extends AbstractServiceTest {
 
@@ -40,7 +37,7 @@ class CompanyServiceImplTest extends AbstractServiceTest {
     @Test
     void createWithWrongValues() {
         getNewsWithWrongValues().forEach(company -> {
-            validateRootCause(ConstraintViolationException.class, () -> companyService.create(company));
+            validateRootCause(PSQLException.class, () -> companyService.create(company));
         });
     }
 
@@ -69,7 +66,19 @@ class CompanyServiceImplTest extends AbstractServiceTest {
     @Test
     void findAll() {
         List<Company> companies = companyService.findAll();
-        Assertions.assertEquals(COMPANIES, companies);
+        Assertions.assertEquals(3, companies.size());
+    }
+
+    @Test
+    void findAllWithPageable() {
+        Page<Company> page = companyService.findAll(PAGEABLE);
+        Assertions.assertEquals(PAGE_FOR_ALL, page);
+    }
+
+    @Test
+    void findAllByNameContainsIgnoreCase() {
+        Page<Company> page = companyService.findAllByNameContainsIgnoreCase("ao", PAGEABLE);
+        Assertions.assertEquals(PAGE_FOR_ALL_BY_NAME, page);
     }
 
     @Test
@@ -81,8 +90,13 @@ class CompanyServiceImplTest extends AbstractServiceTest {
 
     @Test
     void deleteById() {
-        companyService.deleteById(COMPANY1_ID);
-        Assertions.assertThrows(NotFoundException.class, () -> companyService.findById(COMPANY1_ID));
+        companyService.deleteById(COMPANY1_ID + 1);
+        Assertions.assertThrows(NotFoundException.class, () -> companyService.findById(COMPANY1_ID + 1));
+    }
+
+    @Test
+    void deleteByIdWithExistReferences() {
+        Assertions.assertThrows(DataAccessException.class, () -> companyService.deleteById(COMPANY1_ID));
     }
 
     @Test
