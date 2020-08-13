@@ -79,7 +79,13 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
     @Test
     void findAllByCanTakeAlbums() {
         List<Department> departments = departmentService.findAllByCanTakeAlbums(true);
+        Assertions.assertEquals(DEPARTMENTS_ALL_CAN_TAKE_ALBUMS, departments);
+    }
 
+    @Test
+    void findAllByIsDeveloper() {
+        List<Department> departments = departmentService.findAllByIsDeveloper(true);
+        Assertions.assertEquals(DEPARTMENTS_ALL_IS_DEVELOPER, departments);
     }
 
     @Test

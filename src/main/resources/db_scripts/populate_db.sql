@@ -16,7 +16,7 @@ values ('KTK-40', 'KTK-40 chief name', 'KTK-40 description', 30, true, true),
        ('NIO-8', 'NIO-8 chief name', 'NIO-8 description', 15, true, true),
        ('SKB-3', 'SKB-3 chief name', 'SKB-3 description', 43, true, true),
        ('OTD 49/3', 'OTD 49/3 chief name', 'OTD 49/3 description', 21, false, true),
-       ('OTD 33', 'OTD 33 chief name', 'OTD 33 description', 22, true, true);
+       ('OTD 49/7', 'OTD 49/7 chief name', 'OTD 49/7 description', 22, false, false);
 
 insert into companies (name, city, street, building, zipcode, contact_person)
 values ('NTC "NIEMI"', 'Moscow', 'Vereyskaya street', '41', '121357', 'Raev A.A.'),

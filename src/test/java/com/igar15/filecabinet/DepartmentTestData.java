@@ -19,15 +19,17 @@ public class DepartmentTestData {
     public static final Department DEPARTMENT_3 = new Department(DEPARTMENT1_ID + 2, "NIO-8", "NIO-8 chief name", "NIO-8 description", 15, true, true);
     public static final Department DEPARTMENT_4 = new Department(DEPARTMENT1_ID + 3, "SKB-3", "SKB-3 chief name", "SKB-3 description", 43, true, true);
     public static final Department DEPARTMENT_5 = new Department(DEPARTMENT1_ID + 4, "OTD 49/3", "OTD 49/3 chief name", "OTD 49/3 description", 21, false, true);
-    public static final Department DEPARTMENT_6 = new Department(DEPARTMENT1_ID + 5, "OTD 33", "OTD 33 chief name", "OTD 33 description", 22, true, true);
+    public static final Department DEPARTMENT_6 = new Department(DEPARTMENT1_ID + 5, "OTD 49/7", "OTD 49/7 chief name", "OTD 49/7 description", 22, false, false);
 
-    public static final List<Department> DEPARTMENTS = List.of(DEPARTMENT_1, DEPARTMENT_2, DEPARTMENT_3, DEPARTMENT_6, DEPARTMENT_5, DEPARTMENT_4);
+    public static final List<Department> DEPARTMENTS = List.of(DEPARTMENT_1, DEPARTMENT_2, DEPARTMENT_3, DEPARTMENT_5, DEPARTMENT_6, DEPARTMENT_4);
 
-    public static final List<Department> ALL_CAN_TAKE_ALBUMS = List.of()
+    public static final List<Department> DEPARTMENTS_ALL_CAN_TAKE_ALBUMS = List.of(DEPARTMENT_1, DEPARTMENT_2, DEPARTMENT_3, DEPARTMENT_4, DEPARTMENT_5);
+
+    public static final List<Department> DEPARTMENTS_ALL_IS_DEVELOPER = List.of(DEPARTMENT_1, DEPARTMENT_2, DEPARTMENT_3, DEPARTMENT_4);
 
     public static final Pageable PAGEABLE = PageRequest.of(1, 4, Sort.by("name"));
 
-    public static final Page<Department> PAGE_FOR_ALL = new PageImpl<>(List.of(DEPARTMENT_5, DEPARTMENT_4), PAGEABLE, 6);
+    public static final Page<Department> PAGE_FOR_ALL = new PageImpl<>(List.of(DEPARTMENT_6, DEPARTMENT_4), PAGEABLE, 6);
 
     public static Department getNew() {
         return new Department(null, "SCB-1", "SCB-1 chief name", "SCB-1 description", 10, true, true);
