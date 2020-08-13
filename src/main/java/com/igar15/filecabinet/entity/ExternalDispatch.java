@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "external_dispatches")
@@ -24,7 +23,7 @@ public class ExternalDispatch extends Dispatch {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "document_external_dispatches",
-        joinColumns = @JoinColumn(name = "external_dispatch_id"))
+            joinColumns = @JoinColumn(name = "external_dispatch_id"))
     @MapKeyJoinColumn(name = "document_id")
     @Column(name = "is_active")
     private Map<Document, Boolean> documents;

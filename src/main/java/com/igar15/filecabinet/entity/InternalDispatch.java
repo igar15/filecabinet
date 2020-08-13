@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Set;
 
 @AlbumNameValid
 @Entity
@@ -26,13 +25,6 @@ public class InternalDispatch extends Dispatch {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department dispatchHandler;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "document_internal_dispatches",
-            joinColumns = @JoinColumn(name = "internal_dispatch_id"))
-    @MapKeyJoinColumn(name = "document_id")
-    @Column(name = "is_active")
-    private Map<Document, Boolean> documents;
 
     @NotNull(message = "Received date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -57,6 +49,12 @@ public class InternalDispatch extends Dispatch {
     @Column(name = "is_active")
     private boolean isActive = true;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "document_internal_dispatches",
+            joinColumns = @JoinColumn(name = "internal_dispatch_id"))
+    @MapKeyJoinColumn(name = "document_id")
+    @Column(name = "is_active")
+    private Map<Document, Boolean> documents;
 
     public InternalDispatch() {
     }

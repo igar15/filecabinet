@@ -39,12 +39,6 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "status")
     private Status status;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "applicabilities",
-    joinColumns = @JoinColumn(name = "inner_id"),
-    inverseJoinColumns = @JoinColumn(name = "outer_id"))
-    private Set<Document> applicabilities;
-
     @NotNull(message = "document form must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "form")
@@ -74,6 +68,12 @@ public class Document extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "original_holder_id")
     private Company originalHolder;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "applicabilities",
+            joinColumns = @JoinColumn(name = "inner_id"),
+            inverseJoinColumns = @JoinColumn(name = "outer_id"))
+    private Set<Document> applicabilities;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "document_change_notices",

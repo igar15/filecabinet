@@ -23,6 +23,7 @@ public class Address {
     @Column(name = "zipcode")
     private String zipcode;
 
+
     public Address() {
     }
 

@@ -36,6 +36,7 @@ public class ChangeNotice extends AbstractNamedEntity {
     @Column(name = "change")
     private Map<Document, Integer> documents;
 
+
     public ChangeNotice() {
     }
 
@@ -53,7 +54,6 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.department = department;
         this.documents = documents;
     }
-
 
     public Integer getChangeCode() {
         return changeCode;

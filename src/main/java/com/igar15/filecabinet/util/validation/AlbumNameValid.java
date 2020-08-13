@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface AlbumNameValid {
 
 
-    String message() default "document does not exist";
+    String message() default "Document does not exist";
 
     Class<?>[] groups() default {};
 

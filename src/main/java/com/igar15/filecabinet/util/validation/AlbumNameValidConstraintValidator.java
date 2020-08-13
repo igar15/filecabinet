@@ -39,7 +39,6 @@ public class AlbumNameValidConstraintValidator implements ConstraintValidator<Al
          context.buildConstraintViolationWithTemplate("Document does not exist").addPropertyNode("albumName").addConstraintViolation();
          return false;
       }
-
       return true;
    }
 }
