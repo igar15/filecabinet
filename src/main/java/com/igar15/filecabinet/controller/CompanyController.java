@@ -1,7 +1,6 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Company;
-import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/companies")
@@ -26,10 +23,7 @@ public class CompanyController {
     public String showAll(@SortDefault("name") Pageable pageable,
                           @RequestParam(value = "companyName", required = false) String companyName,
                           Model model) {
-        if(companyName != null) {
-            companyName = companyName.trim();
-        }
-        companyName = "".equals(companyName) ? null : companyName;
+
         Page<Company> companies = null;
         if (companyName != null) {
             companies = companyService.findAllByNameContainsIgnoreCase(companyName, pageable);

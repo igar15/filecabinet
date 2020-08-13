@@ -2,11 +2,9 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
-import com.igar15.filecabinet.repository.ExternalDispatchRepository;
 import com.igar15.filecabinet.service.CompanyService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.ExternalDispatchService;
-import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/externaldispatches")

@@ -2,11 +2,9 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
-import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -17,10 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/changenotices")

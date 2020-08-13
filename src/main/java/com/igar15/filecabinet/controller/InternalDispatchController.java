@@ -2,11 +2,9 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.InternalDispatch;
-import com.igar15.filecabinet.repository.InternalDispatchRepository;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
-import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,16 +13,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/internaldispatches")
