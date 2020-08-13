@@ -1,9 +1,11 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.repository.ChangeNoticeRepository;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
+import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.HelperUtil;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
@@ -13,8 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +24,9 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
 
     @Autowired
     DepartmentService departmentService;
+
+    @Autowired
+    DocumentService documentService;
 
     @Autowired
     ChangeNoticeRepository changeNoticeRepository;
@@ -116,5 +121,59 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     public void deleteById(int id) {
         ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findById(id).orElse(null), id);
         changeNoticeRepository.deleteById(id);
+    }
+
+    @Override
+    public Object[] addDocument(ChangeNotice changeNotice, String newDocument, String newDocumentChangeNumber) {
+        String docErrorMessage = null;
+        String numberErrorMessage = null;
+
+        if (newDocument == null) {
+            docErrorMessage = "Decimal number must not be empty";
+            if (newDocumentChangeNumber == null) {
+                numberErrorMessage = "Change number must not be empty";
+            }
+        }
+        else if (newDocumentChangeNumber == null) {
+            numberErrorMessage = "Change number must not be empty";
+            if (newDocument == null) {
+                docErrorMessage = "Decimal number must not be empty";
+            }
+        }
+        else {
+            Document document = null;
+            try {
+                document = documentService.findByDecimalNumberWithChangeNotices(newDocument);
+            } catch (NotFoundException e) {
+            }
+            if (document == null) {
+                docErrorMessage = "Document does not exist";
+            }
+            else if (!changeNotice.isNew() && changeNotice.getDocuments().containsKey(document)) {
+                docErrorMessage = "This change notice already has this document";
+            }
+            else {
+                Integer changeNumber = null;
+                try {
+                    changeNumber = Integer.valueOf(newDocumentChangeNumber);
+                    if (changeNumber < 1) {
+                        numberErrorMessage = "Change number must be greater than 0";
+                    }
+                    else if (document.getChangeNotices().containsKey(changeNumber)){
+                        numberErrorMessage = "Document already has this change number";
+                    }
+                    else {
+                        if (changeNotice.isNew()) {
+                            changeNotice.setDocuments(new HashMap<>());
+                        }
+                        changeNotice.getDocuments().put(document, changeNumber);
+                        changeNoticeRepository.save(changeNotice);
+                    }
+                } catch (NumberFormatException e) {
+                    numberErrorMessage = "Invalid change number";
+                }
+            }
+        }
+        return new Object[]{docErrorMessage, numberErrorMessage};
     }
 }

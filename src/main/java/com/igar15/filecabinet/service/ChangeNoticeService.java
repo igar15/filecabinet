@@ -4,8 +4,6 @@ import com.igar15.filecabinet.entity.ChangeNotice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Optional;
 
 public interface ChangeNoticeService {
 
@@ -26,4 +24,8 @@ public interface ChangeNoticeService {
     ChangeNotice findByIdWithDocuments(int id);
 
     Long countDocumentsById(int id);
+
+    Object[] addDocument(ChangeNotice changeNotice, String newDocument, String newDocumentChangeNumber);
+
+
 }
