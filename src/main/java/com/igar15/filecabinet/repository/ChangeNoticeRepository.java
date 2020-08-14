@@ -35,6 +35,7 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
 
     Page<ChangeNotice> findAllByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
+    @Query("select size(c.documents) from ChangeNotice c where c.id=:id")
     Long countDocumentsById(int id);
 
     @Transactional

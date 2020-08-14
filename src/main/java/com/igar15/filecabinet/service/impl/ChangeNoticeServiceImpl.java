@@ -101,11 +101,6 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
-    public Long countDocumentsById(int id) {
-        return changeNoticeRepository.countDocumentsById(id);
-    }
-
-    @Override
     public void update(ChangeNotice changeNotice) {
         Assert.notNull(changeNotice, "changeNotice must not be null");
         ValidationUtil.checkNotFoundWithId(changeNoticeRepository.save(changeNotice), changeNotice.id());
@@ -174,7 +169,7 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     @Override
     public String removeDocument(ChangeNotice changeNotice, int documentId) {
         String errorMessage = null;
-        if (changeNotice.getDocuments().size() == 1) {
+        if (changeNotice.getDocuments().size() < 2) {
             errorMessage = "The change notice can not exist without any documents!";
         }
         else {

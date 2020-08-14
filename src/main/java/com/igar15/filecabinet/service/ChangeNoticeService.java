@@ -17,8 +17,6 @@ public interface ChangeNoticeService {
 
     Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable);
 
-    Long countDocumentsById(int id);
-
     void update(ChangeNotice changeNotice);
 
     void updateWithoutChildren(ChangeNotice changeNotice);

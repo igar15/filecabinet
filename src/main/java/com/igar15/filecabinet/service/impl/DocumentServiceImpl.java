@@ -184,18 +184,13 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public String removeChange(Document document, int changeId) {
         String errorMessage = null;
-        long changeNoticeDocumentsSize = changeNoticeService.countDocumentsById(changeId);
-        if (changeNoticeDocumentsSize == 1) {
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(changeId);
+        if (changeNotice.getDocuments().size() == 1) {
             errorMessage = "Change notice can not exist without any documents!";
         }
         else {
-            Optional<Map.Entry<Integer, ChangeNotice>> found = document.getChangeNotices().entrySet().stream()
-                    .filter(entry -> entry.getValue().getId().equals(changeId))
-                    .findFirst();
-            if (found.isPresent()) {
-                document.getChangeNotices().remove(found.get().getKey());
-                documentRepository.save(document);
-            }
+            changeNotice.getDocuments().remove(document);
+            changeNoticeService.update(changeNotice);
         }
         return errorMessage;
     }
