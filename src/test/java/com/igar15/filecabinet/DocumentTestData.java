@@ -50,7 +50,7 @@ public class DocumentTestData {
     }
 
     public static Document getNewWithDuplicateDecimalNumber() {
-        return new Document(null, "Стойка 777", "БА6.151.128", 341572,
+        return new Document(null, "Стойка 777", "БА4.151.128", 341572,
                 LocalDate.of(2017, 1, 14), Status.ORIGINAL, null, Form.ELECTRONIC, Stage.O1,
                 null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null);
     }
@@ -80,24 +80,35 @@ public class DocumentTestData {
                 new Document(null, null, "БА6.151.999-05", 777555,
                         LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
                         null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
-                new Document(null, "   ", "БА6.151.999-05", 777555,
-                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
-                        null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
                 new Document(null, "Stoika", null, 777555,
                         LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
                         null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
                 new Document(null, "Stoika", "БА6.151.999-05", null,
                         LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
                         null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
                 new Document(null, "Stoika", "БА6.151.999-05", 12313,
                         null, Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
                         null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
                 new Document(null, "Stoika", "БА6.151.999-05", 1123,
                         LocalDate.of(2020, 1, 14), null, null, Form.ELECTRONIC, Stage.O1,
                         null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
                 new Document(null, "Stoika", "БА6.151.999-05", 23213,
                         LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, null, Stage.O1,
-                        null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null)
+                        null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null),
+
+                new Document(null, "Stoika", "БА6.151.999-05", 23213,
+                        LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
+                        null, null, null, null, CompanyTestData.COMPANY1, null, null, null),
+
+        new Document(null, "Stoika", "БА6.151.999-05", 23213,
+                LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
+                null, null, null, DepartmentTestData.DEPARTMENT_1, null, null, null, null)
+
         );
     }
 }

@@ -7,6 +7,7 @@ import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ class DocumentServiceImplTest extends AbstractServiceTest {
     @Test
     void createWithWrongValues() {
         getNewsWithWrongValues().forEach(document ->  {
-            validateRootCause(ConstraintViolationException.class, () -> documentService.create(document));
+            validateRootCause(PSQLException.class, () -> documentService.create(document));
         });
     }
 
