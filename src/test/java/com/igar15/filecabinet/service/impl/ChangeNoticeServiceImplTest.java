@@ -3,7 +3,9 @@ package com.igar15.filecabinet.service.impl;
 import com.igar15.filecabinet.DepartmentTestData;
 import com.igar15.filecabinet.DocumentTestData;
 import com.igar15.filecabinet.entity.ChangeNotice;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.service.ChangeNoticeService;
+import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.igar15.filecabinet.ChangeNoticeTestData.*;
 
@@ -22,6 +25,9 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private ChangeNoticeService changeNoticeService;
+
+    @Autowired
+    private DocumentService documentService;
 
     @Test
     void create() {
@@ -84,6 +90,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
     @Test
     void findAllWithNameExample() {
         Page<ChangeNotice> page = changeNoticeService.findAll(NAME_EXAMPLE, null, null, null, null, PAGEABLE);
+        page.get().forEach(changeNotice -> Assertions.assertThrows(LazyInitializationException.class, () -> changeNotice.getDocuments().size()));
         Assertions.assertEquals(PAGE_FOR_NAME_EXAMPLE, page);
     }
 
@@ -185,7 +192,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithNullDecimalNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, null, "1");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), null, "1");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_DECIMAL_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_DECIMAL_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -193,7 +200,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithNullChangeNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT1.getDecimalNumber(), null);
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.DOCUMENT1.getDecimalNumber(), null);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_CHANGE_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_CHANGE_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -201,7 +208,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithNullDecimalAndChangeNumbers() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, null, null);
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), null, null);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_DECIMAL_AND_CHANGE_NUMBERS[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_NULL_DECIMAL_AND_CHANGE_NUMBERS[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -209,7 +216,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithWrongDecimalNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.NOT_FOUND_DECIMAL_NUMBER, "1");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.NOT_FOUND_DECIMAL_NUMBER, "1");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_WRONG_DECIMAL_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_WRONG_DECIMAL_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -217,7 +224,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithWrongChangeNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT3.getDecimalNumber(), "0");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.DOCUMENT3.getDecimalNumber(), "0");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_WRONG_CHANGE_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_WRONG_CHANGE_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -225,7 +232,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithDuplicateChangeNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT3.getDecimalNumber(), "1");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.DOCUMENT3.getDecimalNumber(), "1");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_DUPLICATE_CHANGE_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_DUPLICATE_CHANGE_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -233,7 +240,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithDuplicateDecimalNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT1.getDecimalNumber(), "3");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.DOCUMENT1.getDecimalNumber(), "3");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_DUPLICATE_DECIMAL_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_DUPLICATE_DECIMAL_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -241,7 +248,7 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentWithInvalidChangeNumber() {
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT3.getDecimalNumber(), "first");
+        Object[] results = changeNoticeService.addDocument(getForAddDocumentWithWrongValues(), DocumentTestData.DOCUMENT3.getDecimalNumber(), "first");
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_INVALID_CHANGE_NUMBER[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_INVALID_CHANGE_NUMBER[1], results[1]);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
@@ -249,46 +256,52 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
 
     @Test
     void addDocumentForNew() {
-        Object[] results = changeNoticeService.addDocument(getNew(), DocumentTestData.DOCUMENT1.getDecimalNumber(), "3");
+        ChangeNotice changeNotice = getNew();
+        Object[] results = changeNoticeService.addDocument(changeNotice, DocumentTestData.DOCUMENT1.getDecimalNumber(), "3");
+        changeNotice.setId(CHANGE_NOTICE_NEW_ID);
+        changeNotice.setDocuments(new HashMap<>(Map.of(DocumentTestData.DOCUMENT1, 3)));
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_OK_DECIMAL_AND_CHANGE_NUMBERS[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_OK_DECIMAL_AND_CHANGE_NUMBERS[1], results[1]);
         ChangeNotice found = changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE_NEW_ID);
-        Assertions.assertEquals(getNewWithAddedDocument(), found);
-        Assertions.assertEquals(getNewWithAddedDocument().getDocuments(), found.getDocuments());
+        Assertions.assertEquals(changeNotice, found);
+        Assertions.assertEquals(changeNotice.getDocuments(), found.getDocuments());
     }
 
     @Test
     void addDocumentForNotNew() {
-        CHANGE_NOTICE3.setDocuments(new HashMap<>(CHANGE_NOTICE3.getDocuments()));
-        Object[] results = changeNoticeService.addDocument(CHANGE_NOTICE3, DocumentTestData.DOCUMENT1.getDecimalNumber(), "3");
+        ChangeNotice changeNotice = getUpdated();
+        Object[] results = changeNoticeService.addDocument(changeNotice, DocumentTestData.DOCUMENT2.getDecimalNumber(), "3");
+        changeNotice.getDocuments().put(DocumentTestData.DOCUMENT2, 3);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_OK_DECIMAL_AND_CHANGE_NUMBERS[0], results[0]);
         Assertions.assertEquals(ADD_DOCUMENT_RESULTS_FOR_OK_DECIMAL_AND_CHANGE_NUMBERS[1], results[1]);
-        ChangeNotice found = changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE3.getId());
-        Assertions.assertEquals(getNotNewWithAddedDocument(), found);
-        Assertions.assertEquals(getNotNewWithAddedDocument().getDocuments(), found.getDocuments());
+        ChangeNotice found = changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID);
+        Assertions.assertEquals(changeNotice, found);
+        Assertions.assertEquals(changeNotice.getDocuments(), found.getDocuments());
     }
 
     @Test
     void removeDocumentForSizeEqualsOne() {
-        String message = changeNoticeService.removeDocument(CHANGE_NOTICE1, DocumentTestData.DOCUMENT1_ID);
+        String message = changeNoticeService.removeDocument(getUpdated(), DocumentTestData.DOCUMENT1_ID);
         Assertions.assertEquals(REMOVE_DOCUMENT_ERROR_FOR_SIZE_EQUALS_1, message);
         Assertions.assertEquals(1, changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE1_ID).getDocuments().size());
     }
 
     @Test
     void removeDocument() {
-        CHANGE_NOTICE4.setDocuments(new HashMap<>(CHANGE_NOTICE4.getDocuments()));
-        String message = changeNoticeService.removeDocument(CHANGE_NOTICE4, DocumentTestData.DOCUMENT2.getId());
+        ChangeNotice changeNotice = getForRemoveDocument();
+        String message = changeNoticeService.removeDocument(changeNotice, DocumentTestData.DOCUMENT2.getId());
+        changeNotice.getDocuments().remove(DocumentTestData.DOCUMENT2);
         Assertions.assertNull(message);
-        ChangeNotice found = changeNoticeService.findByIdWithDocuments(CHANGE_NOTICE4.getId());
-        Assertions.assertEquals(getWithRemovedDocument(), found);
-        Assertions.assertEquals(getWithRemovedDocument().getDocuments(), found.getDocuments());
+        ChangeNotice found = changeNoticeService.findByIdWithDocuments(changeNotice.getId());
+        Assertions.assertEquals(changeNotice, found);
+        Assertions.assertEquals(changeNotice.getDocuments(), found.getDocuments());
     }
 
     @Test
     void deleteById() {
         changeNoticeService.deleteById(CHANGE_NOTICE1_ID);
         Assertions.assertThrows(NotFoundException.class, () -> changeNoticeService.findById(CHANGE_NOTICE1_ID));
+        Assertions.assertEquals(DocumentTestData.DOCUMENT1, documentService.findById(DocumentTestData.DOCUMENT1_ID));
     }
 
     @Test

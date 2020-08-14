@@ -120,27 +120,19 @@ public class ChangeNoticeTestData {
                 LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1, null);
     }
 
-    public static ChangeNotice getNewWithAddedDocument() {
-        ChangeNotice changeNotice = getNew();
-        changeNotice.setId(CHANGE_NOTICE_NEW_ID);
-        changeNotice.setDocuments(Map.of(DOCUMENT1, 3));
-        return changeNotice;
+    public static ChangeNotice getForAddDocumentWithWrongValues() {
+        return new ChangeNotice(CHANGE_NOTICE1_ID, "ВУИА.СЭ.739", 5,
+                LocalDate.of(2018, 5, 24), DepartmentTestData.DEPARTMENT_1, new HashMap<>(Map.of(DOCUMENT1, 1)));
     }
 
-    public static ChangeNotice getNotNewWithAddedDocument() {
-        CHANGE_NOTICE3.setDocuments(new HashMap<>(CHANGE_NOTICE3.getDocuments()));
-        CHANGE_NOTICE3.getDocuments().put(DOCUMENT1, 3);
-        return CHANGE_NOTICE3;
-    }
-
-    public static ChangeNotice getWithRemovedDocument() {
-        CHANGE_NOTICE4.setDocuments(Map.of(DOCUMENT6, 2));
-        return CHANGE_NOTICE4;
+    public static ChangeNotice getForRemoveDocument() {
+        return new ChangeNotice(CHANGE_NOTICE1_ID + 2, "ВУИА.ТК.133", 4,
+                LocalDate.of(2018, 8, 30), DepartmentTestData.DEPARTMENT_3, new HashMap<>(Map.of(DOCUMENT2, 1, DOCUMENT6, 1)));
     }
 
     public static ChangeNotice getUpdated() {
         return new ChangeNotice(CHANGE_NOTICE1_ID, "ВУИА.СЭ.999", 9,
-                LocalDate.of(2019, 5, 24), DepartmentTestData.DEPARTMENT_1, Map.of(DOCUMENT1, 1));
+                LocalDate.of(2019, 5, 24), DepartmentTestData.DEPARTMENT_1, new HashMap<>(Map.of(DOCUMENT1, 1)));
     }
 
     public static List<ChangeNotice> getNewsWithWrongValues() {
