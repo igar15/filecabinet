@@ -9,7 +9,7 @@
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
-    <title>File Cabinet</title>
+    <title th:text="#{index.page.title}"></title>
 
     <style>
         .row li {
@@ -48,7 +48,7 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-md-12">
-                <h2 class="font-weight-bold text-center">NTC "NIEMI" File Cabinet</h2>
+                <h2 class="font-weight-bold text-center" th:text="#{index.headline}">NTC "NIEMI" File Cabinet</h2>
             </div>
         </div>
 
@@ -57,14 +57,14 @@
             <div class="col-md-4">
                 <a th:href="@{/documents/list}">
                     <img th:src="@{/images/documents.png}"/>
-                    <h4 class="text-center">Documents</h4>
+                    <h4 class="text-center" th:text="#{index.section.documents}">Documents</h4>
                 </a>
             </div>
 
             <div class="col-md-4">
                 <a th:href="@{/departments/list}">
                     <img th:src="@{/images/developers.png}"/>
-                    <h4 class="text-center">Departments</h4>
+                    <h4 class="text-center" th:text="#{index.section.departments}">Departments</h4>
                 </a>
             </div>
 
@@ -72,7 +72,7 @@
             <div class="col-md-4">
                 <a th:href="@{/changenotices/list}">
                     <img th:src="@{/images/changenotices.png}"/>
-                    <h4 class="text-center">Change notices</h4>
+                    <h4 class="text-center" th:text="#{index.section.changenotices}">Change notices</h4>
                 </a>
             </div>
         </div>
@@ -82,21 +82,21 @@
             <div class="col-md-4">
                 <a th:href="@{/externaldispatches/list}">
                     <img th:src="@{/images/externals.png}"/>
-                    <h4 class="text-center">External dispatches</h4>
+                    <h4 class="text-center" th:text="#{index.section.externaldispatches}">External dispatches</h4>
                 </a>
             </div>
 
             <div class="col-md-4">
                 <a th:href="@{/companies/list}">
                     <img th:src="@{/images/companies.png}"/>
-                    <h4 class="text-center">Companies</h4>
+                    <h4 class="text-center" th:text="#{index.section.companies}">Companies</h4>
                 </a>
             </div>
 
             <div class="col-md-4">
                 <a th:href="@{/internaldispatches/list}">
                     <img th:src="@{/images/internals.png}"/>
-                    <h4 class="text-center">Internal dispatches</h4>
+                    <h4 class="text-center" th:text="#{index.section.internaldispatches}">Internal dispatches</h4>
                 </a>
             </div>
         </div>
@@ -110,7 +110,7 @@
             <div class="col-md-4">
                 <a th:href="@{/internaldispatches/list/albums}">
                     <img th:src="@{/images/archive.png}"/>
-                    <h4 class="text-center">Copies Archive</h4>
+                    <h4 class="text-center" th:text="#{index.section.copiesArchive}">Copies Archive</h4>
                 </a>
             </div>
 

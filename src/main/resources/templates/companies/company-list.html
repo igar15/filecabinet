@@ -16,11 +16,11 @@
 <body>
     <div class="container">
 
-        <a th:href="@{/}">Back to Home page</a>
+        <a th:href="@{/}" th:text="#{backToHomePage}">Back to Home page</a>
 
         <br><br>
 
-        <h3>List of Companies</h3>
+        <h3 th:text="#{companies.headline}">List of Companies</h3>
 
         <hr>
 
@@ -38,7 +38,7 @@
 
         <br><br>
 
-        <a th:href="@{/companies/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Company</a>
+        <a th:href="@{/companies/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{companies.addNew}">Add Company</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">

@@ -16,15 +16,15 @@
 <body>
 <div class="container">
 
-    <a th:href="@{/}">Back to Home page</a>
+    <a th:href="@{/}" th:text="#{backToHomePage}">Back to Home page</a>
 
     <br><br>
 
-    <h3>List of External dispatches</h3>
+    <h3 th:text="#{externaldispatches.headline}">List of External dispatches</h3>
 
     <hr>
 
-    <a th:href="@{/externaldispatches/showAddForm}" class="btn btn-primary btn-sm mb-3">Add External Dispatch</a>
+    <a th:href="@{/externaldispatches/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{externaldispatches.addNew}">Add External Dispatch</a>
 
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">

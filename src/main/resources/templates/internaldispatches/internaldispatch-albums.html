@@ -16,11 +16,11 @@
 <body>
 <div class="container">
 
-    <a th:href="@{/}">Back to Home page</a>
+    <a th:href="@{/}" th:text="#{backToHomePage}">Back to Home page</a>
 
     <br><br>
 
-    <h3>List of Albums</h3>
+    <h3 th:text="#{copiesArchive.headline}">List of Albums</h3>
 
     <hr>
 

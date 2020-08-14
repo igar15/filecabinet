@@ -16,11 +16,11 @@
 <body>
     <div class="container">
 
-        <a th:href="@{/}">Back to Home page</a>
+        <a th:href="@{/}" th:text="#{backToHomePage}">Back to Home page</a>
 
         <br><br>
 
-        <h3>List of Change notices</h3>
+        <h3 th:text="#{changenotices.headline}">List of Change notices</h3>
 
         <hr>
 
@@ -67,7 +67,7 @@
 
         <br><br>
 
-        <a th:href="@{/changenotices/showAddForm}" class="btn btn-primary btn-sm mb-3">Add Change notice</a>
+        <a th:href="@{/changenotices/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{changenotices.addNew}">Add Change notice</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
@@ -99,7 +99,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-6">
-                Show <span sd:page-size-selector="javascript"></span> entries
+                <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
             </div>
         </div>
 
