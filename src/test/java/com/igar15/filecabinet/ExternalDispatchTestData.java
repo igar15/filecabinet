@@ -21,13 +21,13 @@ public class ExternalDispatchTestData {
     public static final int NOT_FOUND = 10;
 
     public static final ExternalDispatch EXTERNAL_DISPATCH1 = new ExternalDispatch(EXTERNAL_DISPATCH1_ID, "wb-465", LocalDate.of(2018, 4, 20),
-            Status.ACC_COPY, null, "49/SZ-123789", CompanyTestData.COMPANY2, new HashMap<>(Map.of(DOCUMENT1, true, DOCUMENT2, true, DOCUMENT3, true, DOCUMENT4, true, DOCUMENT5, true)));
+            Status.ACC_COPY, null, "49/SZ-123789", CompanyTestData.COMPANY2, Map.of(DOCUMENT1, true, DOCUMENT2, true, DOCUMENT3, true, DOCUMENT4, true, DOCUMENT5, true));
 
     public static final ExternalDispatch EXTERNAL_DISPATCH2 = new ExternalDispatch(EXTERNAL_DISPATCH1_ID + 1, "wb-467", LocalDate.of(2018, 4, 15),
-            Status.DUPLICATE, "simple remark", "49/SZ-1229", CompanyTestData.COMPANY3, new HashMap<>(Map.of(DOCUMENT1, true, DOCUMENT2, true)));
+            Status.DUPLICATE, "simple remark", "49/SZ-1229", CompanyTestData.COMPANY3, Map.of(DOCUMENT1, true, DOCUMENT2, true));
 
     public static final ExternalDispatch EXTERNAL_DISPATCH3 = new ExternalDispatch(EXTERNAL_DISPATCH1_ID + 2, "wb-546", LocalDate.of(2019, 6, 20),
-            Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY2, new HashMap<>(Map.of(DOCUMENT1, true)));
+            Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY2, Map.of(DOCUMENT1, true));
 
     public static final List<ExternalDispatch> EXTERNAL_DISPATCHES = List.of(EXTERNAL_DISPATCH3, EXTERNAL_DISPATCH1, EXTERNAL_DISPATCH2);
 

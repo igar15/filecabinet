@@ -20,7 +20,7 @@ public interface InternalDispatchService {
 
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
-    Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isAlbum, Pageable pageable);
+    Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isActive, Pageable pageable);
 
     void update(InternalDispatch internalDispatch);
 

@@ -60,12 +60,12 @@ public class InternalDispatchServiceImpl implements InternalDispatchService {
 
     @Override
     public Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable) {
-        return internalDispatchRepository.findAllByIsAlbumAndIsActive(true, true, pageable);
+        return internalDispatchRepository.findAllByIsAlbumAndIsActive(isAlbum, isActive, pageable);
     }
 
     @Override
-    public Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isAlbum, Pageable pageable) {
-        return internalDispatchRepository.findAllByAlbumNameContainsIgnoreCaseAndIsActive(albumName, isAlbum, pageable);
+    public Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isActive, Pageable pageable) {
+        return internalDispatchRepository.findAllByAlbumNameContainsIgnoreCaseAndIsActive(albumName, isActive, pageable);
     }
 
     @Override

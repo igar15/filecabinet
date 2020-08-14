@@ -61,7 +61,7 @@ public class InternalDispatch extends Dispatch {
 
     public InternalDispatch(Integer id, String waybill, LocalDate dispatchDate, Status status, String remark,
                             Stamp stamp, Department dispatchHandler, Map<Document, Boolean> documents, LocalDate receivedInternalDate,
-                            String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName) {
+                            String internalHandlerName, String internalHandlerPhoneNumber, Boolean isAlbum, String albumName, boolean isActive) {
         super(id, waybill, dispatchDate, status, remark);
         this.stamp = stamp;
         this.dispatchHandler = dispatchHandler;
@@ -71,6 +71,7 @@ public class InternalDispatch extends Dispatch {
         this.internalHandlerPhoneNumber = internalHandlerPhoneNumber;
         this.isAlbum = isAlbum;
         this.albumName = albumName;
+        this.isActive = isActive;
     }
 
     public Stamp getStamp() {
