@@ -12,17 +12,17 @@ public interface DocumentService {
 
     Document findById(int id);
 
-    Document findByDecimalNumber(String decimalNumber);
-
     Document findByIdWithChangeNotices(int id);
-
-    Document findByDecimalNumberWithChangeNotices(String newDocument);
 
     Document findByIdWithExternalDispatches(int id);
 
     Document findByIdWithInternalDispatches(int id);
 
     Document findByIdWithApplicabilities(int id);
+
+    Document findByDecimalNumber(String decimalNumber);
+
+    Document findByDecimalNumberWithChangeNotices(String newDocument);
 
     Page<Document> findAll(String decimalNumber, String name, String department, String originalHolder, String inventoryNumber,
                            String status, String stage, String form, String after, String before, Pageable pageable);

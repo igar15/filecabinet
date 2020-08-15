@@ -36,7 +36,8 @@ insert into applicabilities (inner_id, outer_id)
 values (1010, 1009),
        (1011, 1009),
        (1012, 1011),
-       (1013, 1011);
+       (1013, 1011),
+       (1013, 1014);
 
 
 insert into change_notices (name, change_code, issue_date, department_id)

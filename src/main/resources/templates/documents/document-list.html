@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Documents List</title>
+    <title th:text="#{documents.headline}">Documents List</title>
 
 </head>
 <body>
@@ -115,12 +115,12 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="decimalNumber">Decimal number</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department">Developer</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="status">Status</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="originalHolder">Original Holder</a></th>
-                    <th class="align-middle">Show Document</th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="decimalNumber" th:text="#{decimalNumber}">Decimal number</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name" th:text="#{name}">Name</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department" th:text="#{developer}">Developer</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="status" th:text="#{status}">Status</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="originalHolder" th:text="#{originalHolder}">Original Holder</a></th>
+                    <th class="align-middle" th:text="#{showDocument}">Show Document</th>
                 </tr>
             </thead>
 
