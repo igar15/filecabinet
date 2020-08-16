@@ -4,6 +4,8 @@ import com.igar15.filecabinet.CompanyTestData;
 import com.igar15.filecabinet.DepartmentTestData;
 import com.igar15.filecabinet.DocumentTestData;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.entity.enums.Form;
+import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.DocumentService;
@@ -242,22 +244,67 @@ class DocumentServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(page, PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_STATUS);
     }
 
-    // except: stage, form, findAll With All Params Not null (except dates), with all params not null include dates
+    @Test
+    void findAllWithAllParamsNullExceptStage() {
+        Page<Document> page = documentService.findAll(null, null, null, null, null, null,
+                Stage.O1.toString(), null, null, null, PAGEABLE);
+        Assertions.assertEquals(page, PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_STAGE);
+    }
 
+    @Test
+    void findAllWithAllParamsNullExceptForm() {
+        Page<Document> page = documentService.findAll(null, null, null, null, null, null,
+                null, Form.ELECTRONIC.toString(), null, null, PAGEABLE);
+        Assertions.assertEquals(page, PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_FORM);
+    }
 
+    @Test
+    void findAllWithAllParamsNotNullExceptAfterAndBefore() {
+        Page<Document> page = documentService.findAll(DOCUMENT1_DECIMAL_NUMBER, DOCUMENT1.getName(), DepartmentTestData.DEPARTMENT_1.getName(), CompanyTestData.COMPANY1.getName(),
+                DOCUMENT1.getInventoryNumber().toString(), Status.ORIGINAL.toString(), Stage.O1.toString(), Form.ELECTRONIC.toString(), null, null, PAGEABLE);
+        Assertions.assertEquals(page, PAGE_FOR_ALL_PARAMS_NOT_NULL_EXCEPT_AFTER_AND_BEFORE);
+    }
 
-
-
-
-
-
-
+    @Test
+    void findAllWithAllParamsNotNull() {
+        Page<Document> page = documentService.findAll(DOCUMENT1_DECIMAL_NUMBER, DOCUMENT1.getName(), DepartmentTestData.DEPARTMENT_1.getName(), CompanyTestData.COMPANY1.getName(),
+                DOCUMENT1.getInventoryNumber().toString(), Status.ORIGINAL.toString(), Stage.O1.toString(), Form.ELECTRONIC.toString(), "2001-01-30", "2013-07-30", PAGEABLE);
+        Assertions.assertEquals(page, PAGE_FOR_ALL_PARAMS_NOT_NULL);
+    }
 
     @Test
     void update() {
         Document updated = getUpdated();
         documentService.update(updated);
-        Assertions.assertEquals(updated, documentService.findById(DOCUMENT1_ID));
+        Document found = documentService.findByIdWithChangeNotices(DOCUMENT1_ID);
+        Assertions.assertEquals(updated, found);
+        Assertions.assertEquals(updated.getChangeNotices(), found.getChangeNotices());
+        found = documentService.findByIdWithExternalDispatches(DOCUMENT1_ID);
+        Assertions.assertEquals(updated.getExternalDispatches(), found.getExternalDispatches());
+        found = documentService.findByIdWithInternalDispatches(DOCUMENT1_ID);
+        Assertions.assertEquals(updated.getInternalDispatches(), found.getInternalDispatches());
+        found = documentService.findByIdWithApplicabilities(DOCUMENT1_ID);
+        Assertions.assertEquals(updated.getApplicabilities(), found.getApplicabilities());
+    }
+
+    @Test
+    void updateWithoutChildren() {
+        Document updated = getUpdated();
+        documentService.update(updated);
+        updated.setChangeNotices(null);
+        updated.setExternalDispatches(null);
+        updated.setInternalDispatches(null);
+        updated.setApplicabilities(null);
+        documentService.updateWithoutChildren(updated);
+        Document found = documentService.findByIdWithChangeNotices(DOCUMENT1_ID);
+        Assertions.assertEquals(updated, found);
+        Assertions.assertNotNull(found.getChangeNotices());
+        found = documentService.findByIdWithExternalDispatches(DOCUMENT1_ID);
+        Assertions.assertNotNull(found.getExternalDispatches());
+        found = documentService.findByIdWithInternalDispatches(DOCUMENT1_ID);
+        Assertions.assertNotNull(found.getInternalDispatches());
+        found = documentService.findByIdWithApplicabilities(DOCUMENT1_ID);
+        Assertions.assertNotNull(found.getApplicabilities());
     }
 
     @Test

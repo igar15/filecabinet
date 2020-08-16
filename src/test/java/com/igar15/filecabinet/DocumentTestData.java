@@ -89,6 +89,14 @@ public class DocumentTestData {
 
     public static final Page<Document> PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_STATUS = new PageImpl<>(List.of(DOCUMENT6), PAGEABLE, 1);
 
+    public static final Page<Document> PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_STAGE = new PageImpl<>(List.of(DOCUMENT1, DOCUMENT2, DOCUMENT3), PAGEABLE, 4);
+
+    public static final Page<Document> PAGE_FOR_ALL_PARAMS_NULL_EXCEPT_FORM = new PageImpl<>(List.of(DOCUMENT1, DOCUMENT3, DOCUMENT5), PAGEABLE, 4);
+
+    public static final Page<Document> PAGE_FOR_ALL_PARAMS_NOT_NULL_EXCEPT_AFTER_AND_BEFORE = new PageImpl<>(List.of(DOCUMENT1), PAGEABLE, 1);
+
+    public static final Page<Document> PAGE_FOR_ALL_PARAMS_NOT_NULL = new PageImpl<>(List.of(DOCUMENT1), PAGEABLE, 1);
+
 
 
     public static Document getNew() {
@@ -110,9 +118,27 @@ public class DocumentTestData {
     }
 
     public static Document getUpdated() {
-        return new Document(DOCUMENT1_ID, "Стойка 999", "БА6.151.999-05", 777555,
+        Document document = new Document(DOCUMENT1_ID, "Стойка 999", "БА6.151.999-05", 777555,
                 LocalDate.of(2020, 1, 14), Status.DUPLICATE, null, Form.ELECTRONIC, Stage.O1,
                 null, null, null, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null);
+        Map<Integer, ChangeNotice> changeNotices = new HashMap<>();
+        changeNotices.put(1, CHANGE_NOTICE1);
+        changeNotices.put(2, CHANGE_NOTICE2);
+        document.setChangeNotices(changeNotices);
+        Map<ExternalDispatch, Boolean> externalDispatches = new HashMap<>();
+        externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH1, true);
+        externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH2, true);
+        externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH3, true);
+        document.setExternalDispatches(externalDispatches);
+        Map<InternalDispatch, Boolean> internalDispatches = new HashMap<>();
+        internalDispatches.put(InternalDispatchTestData.INTERNAL_DISPATCH1, true);
+        internalDispatches.put(InternalDispatchTestData.INTERNAL_DISPATCH2, true);
+        document.setInternalDispatches(internalDispatches);
+        Set<Document> applicabilities = new HashSet<>();
+        applicabilities.add(DOCUMENT3);
+        applicabilities.add(DOCUMENT6);
+        document.setApplicabilities(applicabilities);
+        return document;
     }
 
     public static Document getWithChangeNotices() {
