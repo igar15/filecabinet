@@ -413,6 +413,19 @@ class DocumentServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void deregisterExternalWithIncomingsBroadApplicability() {
+        externalDispatchService.updateWithoutChildren(ExternalDispatchTestData.getForChangeCompanyForDeregisterExternalWithIncomings());
+        ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch.getDocuments().values().forEach(bool -> Assertions.assertTrue(bool));
+        documentService.deregisterExternalWithIncomings(DOCUMENT1_ID, ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch.getDocuments().entrySet().stream()
+                .filter(entry -> !entry.getKey().equals(DOCUMENT5))
+                .forEach(entry -> Assertions.assertFalse(entry.getValue()));
+        Assertions.assertTrue(externalDispatch.getDocuments().get(DOCUMENT5));
+    }
+
+    @Test
     void deregisterInternal() {
         Document document = getWithInternalDispatches();
         Document found = documentService.findByIdWithInternalDispatches(document.getId());

@@ -67,6 +67,11 @@ public class ExternalDispatchTestData {
                 Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY3, new HashMap<>(Map.of(DOCUMENT6, true)));
     }
 
+    public static ExternalDispatch getForChangeCompanyForDeregisterExternalWithIncomings() {
+        return new ExternalDispatch(EXTERNAL_DISPATCH1_ID + 2, "wb-546", LocalDate.of(2019, 6, 20),
+                Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY2, Map.of(DOCUMENT6, true));
+    }
+
     public static ExternalDispatch getUpdated() {
         return new ExternalDispatch(EXTERNAL_DISPATCH1_ID, "wb-777", LocalDate.of(2020, 4, 15),
                 Status.UNACC_COPY, null, "49/SZ-123789", CompanyTestData.COMPANY3, new HashMap<>(Map.of(DOCUMENT3, true, DOCUMENT4, true, DOCUMENT5, true)));
