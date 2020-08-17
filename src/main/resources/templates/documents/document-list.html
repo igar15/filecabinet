@@ -30,41 +30,41 @@
             <form action="#" th:action="@{/documents/list}" method="get">
                 <div class="row mb-3">
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" th:name="decimalNumber" th:value="${param.decimalNumber}" placeholder="Decimal number">
+                        <input type="text" class="form-control" th:name="decimalNumber" th:value="${param.decimalNumber}" th:placeholder="#{decimalNumber}">
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" th:name="name" th:value="${param.name}" placeholder="Name">
+                        <input type="text" class="form-control" th:name="name" th:value="${param.name}" th:placeholder="#{name}">
                     </div>
                     <div class="col-sm-2">
-                        <input type="number" class="form-control" th:name="inventoryNumber" th:value="${param.inventoryNumber}" placeholder="Inventory number">
+                        <input type="number" class="form-control" th:name="inventoryNumber" th:value="${param.inventoryNumber}" th:placeholder="#{inventoryNumber}">
                     </div>
                     <div class="col-sm-2">
                         <select class="form-control selectpicker" name="status">
-                            <option value="">Status (not selected)</option>
+                            <option value="" th:text="#{status} + ' ' + #{notSelected}">Status (not selected)</option>
                             <option th:each="drop : ${T(com.igar15.filecabinet.entity.enums.Status).values()}"
                                 th:value="${drop}"
-                                th:text="${drop.name}"
-                                th:selected="${drop.name.toUpperCase() == status}">
+                                th:text="#{${'status.' + drop}}"
+                                th:selected="${drop.toString() == status}">
                             </option>
                         </select>
                     </div>
                     <div class="col-sm-2">
                         <select class="form-control selectpicker" name="stage">
-                            <option value="">Stage (not selected)</option>
+                            <option value="" th:text="#{stage} + ' ' + #{notSelected}">Stage (not selected)</option>
                             <option th:each="drop : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}"
                                     th:value="${drop}"
                                     th:text="${drop}"
-                                    th:selected="${drop.name() == stage}">
+                                    th:selected="${drop.toString() == stage}">
                             </option>
                         </select>
                     </div>
                     <div class="col-sm-2">
                         <select class="form-control selectpicker" name="form">
-                            <option value="">Form (not selected)</option>
+                            <option value="" th:text="#{form} + ' ' + #{notSelected}">Form (not selected)</option>
                             <option th:each="drop : ${T(com.igar15.filecabinet.entity.enums.Form).values()}"
                                     th:value="${drop}"
                                     th:text="${drop.name}"
-                                    th:selected="${drop.name.toUpperCase() == form}">
+                                    th:selected="${drop.toString() == form}">
                             </option>
                         </select>
                     </div>
@@ -72,7 +72,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-2">
                         <select class="form-control selectpicker" name="department">
-                            <option value="">Developer (not selected)</option>
+                            <option value="" th:text="#{developer} + ' ' + #{notSelected}">Developer (not selected)</option>
                             <option th:each="drop : ${departments}"
                                     th:value="${drop.name}"
                                     th:text="${drop.name}"
@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-sm-2">
                         <select class="form-control selectpicker" name="originalHolder">
-                            <option value="">Original holder (not selected)</option>
+                            <option value="" th:text="#{originalHolder} + ' ' + #{notSelected}">Original holder (not selected)</option>
                             <option th:each="drop : ${originalHolders}"
                                     th:value="${drop.name}"
                                     th:text="${drop.name}"
@@ -91,20 +91,20 @@
                         </select>
                     </div>
                     <div class="col-sm-1">
-                        <div th:text="'R. Date (After):'" class="h6 thead-dark align-middle text-center"></div>
+                        <div th:text="#{researchDateAfter}" class="h6 thead-dark align-middle text-center"></div>
                     </div>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" th:name="after" th:value="${param.after}">
                     </div>
                     <div class="col-sm-1">
-                        <div th:text="'R. Date (Before):'" class="h6 thead-dark align-middle text-center"></div>
+                        <div th:text="#{researchDateBefore}" class="h6 thead-dark align-middle text-center"></div>
                     </div>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" th:name="before" th:value="${param.before}">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-info col-2">Search</button>
-                <a th:href="@{/documents/list}" class="btn btn-danger col-2">Clear filters</a>
+                <button type="submit" class="btn btn-info col-2" th:text="#{search}">Search</button>
+                <a th:href="@{/documents/list}" class="btn btn-danger col-2" th:text="#{clearFilters}">Clear filters</a>
             </form>
         </div>
 
@@ -146,7 +146,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-6">
-                Show <span sd:page-size-selector="javascript"></span> entries
+                <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
             </div>
         </div>
 
