@@ -63,7 +63,7 @@
                             <option value="" th:text="#{form} + ' ' + #{notSelected}">Form (not selected)</option>
                             <option th:each="drop : ${T(com.igar15.filecabinet.entity.enums.Form).values()}"
                                     th:value="${drop}"
-                                    th:text="${drop.name}"
+                                    th:text="#{${'form.' + drop}}"
                                     th:selected="${drop.toString() == form}">
                             </option>
                         </select>
@@ -133,7 +133,7 @@
                     <td class="align-middle text-center">
                         <a th:if="${tempDocument.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempDocument.department.id}}" th:target="_blank" th:text="${tempDocument.department.name}"></a>
                     </td>
-                    <td class="align-middle text-center" th:text="${tempDocument.status.name}"></td>
+                    <td class="align-middle text-center" th:text="#{${'status.' + tempDocument.status}}"></td>
                     <td class="align-middle text-center">
                         <a th:if="${tempDocument.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempDocument.originalHolder.id}}" th:target="_blank" th:text="${tempDocument.originalHolder.name}"></a>
                     </td>

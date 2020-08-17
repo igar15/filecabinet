@@ -28,11 +28,11 @@
             <form action="#" th:action="@{/changenotices/list}" method="get">
                 <div class="row mb-3">
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" th:name="name" th:value="${param.name}" placeholder="Name">
+                        <input type="text" class="form-control" th:name="name" th:value="${param.name}" th:placeholder="#{changeNoticeNumber}">
                     </div>
                     <div class="col-sm-3 offset-3">
                         <select class="form-control selectpicker" name="department">
-                            <option value="">Developer (not selected)</option>
+                            <option value="" th:text="#{developer} + ' ' + #{notSelected}">Developer (not selected)</option>
                             <option th:each="drop : ${departments}"
                                     th:value="${drop.name}"
                                     th:text="${drop.name}"
@@ -41,22 +41,22 @@
                         </select>
                     </div>
                     <div class="col-sm-2 offset-2">
-                        <input type="number" class="form-control" th:name="changeCode" th:value="${param.changeCode}" placeholder="Change code">
+                        <input type="number" class="form-control" th:name="changeCode" th:value="${param.changeCode}" th:placeholder="#{changeCode}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="submit" class="btn btn-info">Search</button>
-                        <a th:href="@{/changenotices/list}" class="btn btn-danger">Clear filters</a>
+                        <button type="submit" class="btn btn-info" th:text="#{search}">Search</button>
+                        <a th:href="@{/changenotices/list}" class="btn btn-danger" th:text="#{clearFilters}">Clear filters</a>
                     </div>
                     <div class="col-sm-1">
-                        <div th:text="'I. Date (After):'" class="h6 thead-dark align-middle text-center"></div>
+                        <div th:text="#{researchDateAfter}" class="h6 thead-dark align-middle text-center"></div>
                     </div>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" th:name="after" th:value="${param.after}">
                     </div>
                     <div class="col-sm-1">
-                        <div th:text="'I. Date (Before):'" class="h6 thead-dark align-middle text-center"></div>
+                        <div th:text="#{researchDateBefore}" class="h6 thead-dark align-middle text-center"></div>
                     </div>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" th:name="before" th:value="${param.before}">
@@ -72,11 +72,11 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="issueDate">Issue date</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="changeCode">Change code</a></th>
-                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department">Developer</a></th>
-                    <th>Show notice</th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="name" th:text="#{changeNoticeNumber}">Name</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="issueDate" th:text="#{issueDate}">Issue date</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="changeCode" th:text="#{changeCode}">Change code</a></th>
+                    <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="department" th:text="#{developer}">Developer</a></th>
+                    <th th:text="#{showNotice}">Show notice</th>
                 </tr>
             </thead>
 

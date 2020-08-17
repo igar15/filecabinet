@@ -30,9 +30,9 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
-                <th><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
-                <th><a class="sorted text-light" sd:pagination-sort="chiefName">Chief</a></th>
-                <th><a class="sorted text-light" sd:pagination-sort="workersAmount">Workers amount</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="name" th:text="#{name}">Name</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="chiefName" th:text="#{chief}">Chief</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="workersAmount" th:text="#{workersAmount}">Workers amount</a></th>
             </tr>
             </thead>
             <tbody>
@@ -48,7 +48,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-6">
-                Show <span sd:page-size-selector="javascript"></span> entries
+                <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
             </div>
         </div>
 
