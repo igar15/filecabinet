@@ -97,6 +97,16 @@ public class DocumentTestData {
 
     public static final Page<Document> PAGE_FOR_ALL_PARAMS_NOT_NULL = new PageImpl<>(List.of(DOCUMENT1), PAGEABLE, 1);
 
+    public static final String REMOVE_CHANGE_ERROR_MESSAGE = "Change notice can not exist without any documents!";
+
+    public static final String ADD_APPLICABILITY_WITH_EMPTY_DECIMAL_ERROR_MESSAGE = "Decimal number must not be empty";
+
+    public static final String ADD_APPLICABILITY_ALREADY_ADDED_ERROR_MESSAGE = "Applicability already added";
+
+    public static final String ADD_APPLICABILITY_NOT_FOUND_ERROR_MESSAGE = "Document not found";;
+
+
+
 
 
     public static Document getNew() {
@@ -159,7 +169,6 @@ public class DocumentTestData {
         Map<ExternalDispatch, Boolean> externalDispatches = new HashMap<>();
         externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH1, true);
         externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH2, true);
-        externalDispatches.put(ExternalDispatchTestData.EXTERNAL_DISPATCH3, true);
         document.setExternalDispatches(externalDispatches);
         return document;
     }
@@ -183,6 +192,17 @@ public class DocumentTestData {
         applicabilities.add(DOCUMENT3);
         applicabilities.add(DOCUMENT6);
         document.setApplicabilities(applicabilities);
+        return document;
+    }
+
+    public static Document getForRemoveChange() {
+        Document document = new Document(DOCUMENT1_ID + 1, "Стойка Сборочный чертеж", "БА4.151.128СБ", 63140,
+                LocalDate.of(2003, 1, 30), Status.ORIGINAL, null, Form.PAPER, Stage.O1,
+                28, "A4", 28, DepartmentTestData.DEPARTMENT_1, CompanyTestData.COMPANY1, null, null, null);
+        Map<Integer, ChangeNotice> changeNotices = new HashMap<>();
+        changeNotices.put(1, CHANGE_NOTICE3);
+        changeNotices.put(2, CHANGE_NOTICE4);
+        document.setChangeNotices(changeNotices);
         return document;
     }
 

@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.DocumentTestData;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.InternalDispatchService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 
+import static com.igar15.filecabinet.ExternalDispatchTestData.EXTERNAL_DISPATCH1;
 import static com.igar15.filecabinet.InternalDispatchTestData.*;
 
 class InternalDispatchServiceImplTest extends AbstractServiceTest {
@@ -175,6 +177,8 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(internalDispatch, found);
         Assertions.assertEquals(internalDispatch.getDocuments(), found.getDocuments());
         Assertions.assertTrue(found.getDocuments().get(DocumentTestData.DOCUMENT6));
+        Document document = documentService.findByIdWithInternalDispatches(DocumentTestData.DOCUMENT6.getId());
+        Assertions.assertTrue(document.getInternalDispatches().containsKey(internalDispatch));
     }
 
     @Test
@@ -182,17 +186,23 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         InternalDispatch internalDispatch = getForRemoveDocumentSizeEqualsOne();
         String errorDeleteDocumentMessage = internalDispatchService.removeDocument(internalDispatch, DocumentTestData.DOCUMENT1.getId());
         Assertions.assertEquals(ERROR_DELETE_DOCUMENT_MESSAGE, errorDeleteDocumentMessage);
+        Document document = documentService.findByIdWithInternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertTrue(document.getInternalDispatches().containsKey(internalDispatch));
     }
 
     @Test
     void removeDocument() {
         InternalDispatch internalDispatch = getForAddOrRemoveDocument();
+        Document document = documentService.findByIdWithInternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertTrue(document.getInternalDispatches().containsKey(internalDispatch));
         internalDispatchService.removeDocument(internalDispatch, DocumentTestData.DOCUMENT1_ID);
         internalDispatch.getDocuments().remove(DocumentTestData.DOCUMENT1);
         InternalDispatch found = internalDispatchService.findByIdWithDocuments(INTERNAL_DISPATCH2.getId());
         Assertions.assertEquals(internalDispatch, found);
         Assertions.assertEquals(internalDispatch.getDocuments(), found.getDocuments());
         Assertions.assertFalse(found.getDocuments().containsKey(DocumentTestData.DOCUMENT1));
+        document = documentService.findByIdWithInternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertFalse(document.getInternalDispatches().containsKey(internalDispatch));
     }
 
     @Test
@@ -200,6 +210,8 @@ class InternalDispatchServiceImplTest extends AbstractServiceTest {
         internalDispatchService.deleteById(INTERNAL_DISPATCH1_ID);
         Assertions.assertThrows(NotFoundException.class, () -> internalDispatchService.findById(INTERNAL_DISPATCH1_ID));
         Assertions.assertEquals(DocumentTestData.DOCUMENT1, documentService.findById(DocumentTestData.DOCUMENT1_ID));
+        Document document = documentService.findByIdWithInternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertFalse(document.getInternalDispatches().containsKey(INTERNAL_DISPATCH1));
     }
 
     @Test

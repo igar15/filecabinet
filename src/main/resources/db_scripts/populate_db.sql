@@ -63,7 +63,7 @@ values (1009, 1015, 1),
        (1011, 1022, 3);
 
 insert into external_dispatches (waybill, dispatch_date, status, remark, letter_outgoing_number, company_id)
-values ('wb-465', '2018-04-20', 'ACC_COPY', null, '49/SZ-123789', 1008),
+values ('wb-465', '2018-04-20', 'ACC_COPY', null, '49/SZ-123789', 1007),
        ('wb-467', '2018-04-15', 'DUPLICATE', 'simple remark', '49/SZ-1229', 1008),
        ('wb-546', '2019-06-20', 'ACC_COPY', 'true remark', '49/SZ-1289', 1008);
 
@@ -75,7 +75,7 @@ values (1009, 1023, true),
        (1013, 1023, true),
        (1009, 1024, true),
        (1010, 1024, true),
-       (1009, 1025, true);
+       (1014, 1025, true);
 
 insert into internal_dispatches (waybill, dispatch_date, status, remark, stamp, department_id,
                                  received_internal_date, internal_handler_name, internal_handler_phone_number, is_album, album_name, is_active)

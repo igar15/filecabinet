@@ -289,19 +289,26 @@ class ChangeNoticeServiceImplTest extends AbstractServiceTest {
     @Test
     void removeDocument() {
         ChangeNotice changeNotice = getForRemoveDocument();
+        Document document = documentService.findByIdWithChangeNotices(DocumentTestData.DOCUMENT2.getId());
+        Assertions.assertTrue(document.getChangeNotices().containsValue(changeNotice));
         String message = changeNoticeService.removeDocument(changeNotice, DocumentTestData.DOCUMENT2.getId());
         changeNotice.getDocuments().remove(DocumentTestData.DOCUMENT2);
         Assertions.assertNull(message);
         ChangeNotice found = changeNoticeService.findByIdWithDocuments(changeNotice.getId());
         Assertions.assertEquals(changeNotice, found);
         Assertions.assertEquals(changeNotice.getDocuments(), found.getDocuments());
+        document = documentService.findByIdWithChangeNotices(DocumentTestData.DOCUMENT2.getId());
+        Assertions.assertFalse(document.getChangeNotices().containsValue(changeNotice));
     }
 
     @Test
     void deleteById() {
+        Document document = documentService.findByIdWithChangeNotices(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertTrue(document.getChangeNotices().containsValue(CHANGE_NOTICE1));
         changeNoticeService.deleteById(CHANGE_NOTICE1_ID);
         Assertions.assertThrows(NotFoundException.class, () -> changeNoticeService.findById(CHANGE_NOTICE1_ID));
-        Assertions.assertEquals(DocumentTestData.DOCUMENT1, documentService.findById(DocumentTestData.DOCUMENT1_ID));
+        document = documentService.findByIdWithChangeNotices(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertFalse(document.getChangeNotices().containsValue(CHANGE_NOTICE1));
     }
 
     @Test

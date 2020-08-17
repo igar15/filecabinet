@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.DocumentTestData;
+import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.service.DocumentService;
 import com.igar15.filecabinet.service.ExternalDispatchService;
@@ -117,6 +118,8 @@ class ExternalDispatchServiceImplTest extends AbstractServiceTest {
         Assertions.assertEquals(externalDispatch, found);
         Assertions.assertEquals(externalDispatch.getDocuments(), found.getDocuments());
         Assertions.assertTrue(found.getDocuments().get(DocumentTestData.DOCUMENT6));
+        Document document = documentService.findByIdWithExternalDispatches(DocumentTestData.DOCUMENT6.getId());
+        Assertions.assertTrue(document.getExternalDispatches().containsKey(externalDispatch));
     }
 
     @Test
@@ -124,24 +127,33 @@ class ExternalDispatchServiceImplTest extends AbstractServiceTest {
         ExternalDispatch externalDispatch = getForRemoveDocumentWithSizeEqualsOne();
         String errorDeleteDocumentMessage = externalDispatchService.removeDocument(externalDispatch, DocumentTestData.DOCUMENT1_ID);
         Assertions.assertEquals(ERROR_DELETE_DOCUMENT_MESSAGE, errorDeleteDocumentMessage);
+        Assertions.assertTrue(externalDispatch.getDocuments().containsKey(DocumentTestData.DOCUMENT6));
+        Document document = documentService.findByIdWithExternalDispatches(DocumentTestData.DOCUMENT6.getId());
+        Assertions.assertTrue(document.getExternalDispatches().containsKey(externalDispatch));
     }
 
     @Test
     void removeDocument() {
         ExternalDispatch externalDispatch = getForRemoveDocument();
+        Document document = documentService.findByIdWithExternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertTrue(document.getExternalDispatches().containsKey(externalDispatch));
         externalDispatchService.removeDocument(externalDispatch, DocumentTestData.DOCUMENT1_ID);
         externalDispatch.getDocuments().remove(DocumentTestData.DOCUMENT1);
         ExternalDispatch found = externalDispatchService.findByIdWithDocuments(EXTERNAL_DISPATCH1_ID);
         Assertions.assertEquals(externalDispatch, found);
         Assertions.assertEquals(externalDispatch.getDocuments(), found.getDocuments());
         Assertions.assertFalse(found.getDocuments().containsKey(DocumentTestData.DOCUMENT1));
+        document = documentService.findByIdWithExternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertFalse(document.getExternalDispatches().containsKey(externalDispatch));
+
     }
 
     @Test
     void deleteById() {
         externalDispatchService.deleteById(EXTERNAL_DISPATCH1_ID);
         Assertions.assertThrows(NotFoundException.class, () -> externalDispatchService.findById(EXTERNAL_DISPATCH1_ID));
-        Assertions.assertEquals(DocumentTestData.DOCUMENT1, documentService.findById(DocumentTestData.DOCUMENT1_ID));
+        Document document = documentService.findByIdWithExternalDispatches(DocumentTestData.DOCUMENT1_ID);
+        Assertions.assertFalse(document.getExternalDispatches().containsKey(EXTERNAL_DISPATCH1));
     }
 
     @Test

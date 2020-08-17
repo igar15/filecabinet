@@ -27,7 +27,7 @@ public class ExternalDispatchTestData {
             Status.DUPLICATE, "simple remark", "49/SZ-1229", CompanyTestData.COMPANY3, Map.of(DOCUMENT1, true, DOCUMENT2, true));
 
     public static final ExternalDispatch EXTERNAL_DISPATCH3 = new ExternalDispatch(EXTERNAL_DISPATCH1_ID + 2, "wb-546", LocalDate.of(2019, 6, 20),
-            Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY2, Map.of(DOCUMENT1, true));
+            Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY3, Map.of(DOCUMENT6, true));
 
     public static final List<ExternalDispatch> EXTERNAL_DISPATCHES = List.of(EXTERNAL_DISPATCH3, EXTERNAL_DISPATCH1, EXTERNAL_DISPATCH2);
 
@@ -64,7 +64,7 @@ public class ExternalDispatchTestData {
 
     public static ExternalDispatch getForRemoveDocumentWithSizeEqualsOne() {
         return new ExternalDispatch(EXTERNAL_DISPATCH1_ID + 2, "wb-546", LocalDate.of(2019, 6, 20),
-                Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY2, new HashMap<>(Map.of(DOCUMENT1, true)));
+                Status.ACC_COPY, "true remark", "49/SZ-1289", CompanyTestData.COMPANY3, new HashMap<>(Map.of(DOCUMENT6, true)));
     }
 
     public static ExternalDispatch getUpdated() {

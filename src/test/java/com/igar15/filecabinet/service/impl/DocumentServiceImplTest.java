@@ -1,14 +1,19 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.CompanyTestData;
-import com.igar15.filecabinet.DepartmentTestData;
-import com.igar15.filecabinet.DocumentTestData;
+import com.igar15.filecabinet.*;
+import com.igar15.filecabinet.entity.ChangeNotice;
 import com.igar15.filecabinet.entity.Document;
+import com.igar15.filecabinet.entity.ExternalDispatch;
+import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import com.igar15.filecabinet.repository.DocumentRepository;
+import com.igar15.filecabinet.repository.ExternalDispatchRepository;
+import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DocumentService;
+import com.igar15.filecabinet.service.ExternalDispatchService;
+import com.igar15.filecabinet.service.InternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +34,15 @@ class DocumentServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private ChangeNoticeService changeNoticeService;
+
+    @Autowired
+    private ExternalDispatchService externalDispatchService;
+
+    @Autowired
+    private InternalDispatchService internalDispatchService;
 
     @Test
     void create() {
@@ -308,16 +322,140 @@ class DocumentServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void removeChangeWithSizeEqualsOne() {
+        Document document = getWithChangeNotices();
+        String errorMessage = documentService.removeChange(document, ChangeNoticeTestData.CHANGE_NOTICE1_ID);
+        Assertions.assertEquals(REMOVE_CHANGE_ERROR_MESSAGE, errorMessage);
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(ChangeNoticeTestData.CHANGE_NOTICE1_ID);
+        Assertions.assertTrue(changeNotice.getDocuments().containsKey(document));
+    }
+
+    @Test
+    void removeChange() {
+        Document document = getForRemoveChange();
+        String errorMessage = documentService.removeChange(document, ChangeNoticeTestData.CHANGE_NOTICE3.getId());
+        Assertions.assertNull(errorMessage);
+        document.getChangeNotices().remove(1);
+        Document found = documentService.findByIdWithChangeNotices(DOCUMENT2.getId());
+        Assertions.assertEquals(document, found);
+        Assertions.assertEquals(document.getChangeNotices(), found.getChangeNotices());
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(ChangeNoticeTestData.CHANGE_NOTICE3.getId());
+        Assertions.assertFalse(changeNotice.getDocuments().containsKey(document));
+    }
+
+    @Test
+    void addApplicabilityWithEmptyDecimalNumber() {
+        String errorMessage = documentService.addApplicability(DOCUMENT1, null);
+        Assertions.assertEquals(ADD_APPLICABILITY_WITH_EMPTY_DECIMAL_ERROR_MESSAGE, errorMessage);
+    }
+
+    @Test
+    void addApplicabilityAlreadyAdded() {
+        String errorMessage = documentService.addApplicability(getWithApplicabilities(), DOCUMENT3.getDecimalNumber());
+        Assertions.assertEquals(ADD_APPLICABILITY_ALREADY_ADDED_ERROR_MESSAGE, errorMessage);
+    }
+
+    @Test
+    void addApplicabilityNotFound() {
+        String errorMessage = documentService.addApplicability(DOCUMENT2, NOT_FOUND_DECIMAL_NUMBER);
+        Assertions.assertEquals(ADD_APPLICABILITY_NOT_FOUND_ERROR_MESSAGE, errorMessage);
+    }
+
+    @Test
+    void addApplicability() {
+        Document document = getWithApplicabilities();
+        documentService.addApplicability(document, "БА4.151.128");
+        document.getApplicabilities().add(DOCUMENT1);
+        Document found = documentService.findByIdWithApplicabilities(DOCUMENT5.getId());
+        Assertions.assertEquals(document, found);
+        Assertions.assertEquals(document.getApplicabilities(), found.getApplicabilities());
+    }
+
+    @Test
+    void removeApplicability() {
+        Document document = getWithApplicabilities();
+        Document found = documentService.findByIdWithApplicabilities(DOCUMENT5.getId());
+        Assertions.assertTrue(found.getApplicabilities().contains(DOCUMENT3));
+        documentService.removeApplicability(found.getId(), DOCUMENT3.getId());
+        document.getApplicabilities().remove(DOCUMENT3);
+        found = documentService.findByIdWithApplicabilities(DOCUMENT5.getId());
+        Assertions.assertFalse(found.getApplicabilities().contains(DOCUMENT3));
+        found = documentService.findById(DOCUMENT3.getId());
+        Assertions.assertEquals(DOCUMENT3, found);
+    }
+
+    @Test
+    void deregisterExternal() {
+        Document document = getWithExternalDispatches();
+        Document found = documentService.findByIdWithExternalDispatches(document.getId());
+        Assertions.assertTrue(found.getExternalDispatches().get(ExternalDispatchTestData.EXTERNAL_DISPATCH1));
+        documentService.deregisterExternal(found.getId(), ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        document.getExternalDispatches().put(ExternalDispatchTestData.EXTERNAL_DISPATCH1, false);
+        found = documentService.findByIdWithExternalDispatches(document.getId());
+        Assertions.assertEquals(document, found);
+        Assertions.assertEquals(document.getExternalDispatches(), found.getExternalDispatches());
+        Assertions.assertFalse(found.getExternalDispatches().get(ExternalDispatchTestData.EXTERNAL_DISPATCH1));
+        ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        Assertions.assertFalse(externalDispatch.getDocuments().get(found));
+    }
+
+    @Test
+    void deregisterExternalWithIncomings() {
+        ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch.getDocuments().values().forEach(bool -> Assertions.assertTrue(bool));
+        documentService.deregisterExternalWithIncomings(DOCUMENT1_ID, ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        externalDispatch.getDocuments().values().forEach(bool -> Assertions.assertFalse(bool));
+        for (int i = 0; i < 5; i++) {
+            Document document = documentService.findByIdWithExternalDispatches(DOCUMENT1_ID + i);
+            Assertions.assertFalse(document.getExternalDispatches().get(ExternalDispatchTestData.EXTERNAL_DISPATCH1));
+        }
+    }
+
+    @Test
+    void deregisterInternal() {
+        Document document = getWithInternalDispatches();
+        Document found = documentService.findByIdWithInternalDispatches(document.getId());
+        Assertions.assertTrue(found.getInternalDispatches().get(InternalDispatchTestData.INTERNAL_DISPATCH1));
+        documentService.deregisterInternal(found.getId(), InternalDispatchTestData.INTERNAL_DISPATCH1_ID);
+        document.getInternalDispatches().put(InternalDispatchTestData.INTERNAL_DISPATCH1, false);
+        found = documentService.findByIdWithInternalDispatches(document.getId());
+        Assertions.assertEquals(document, found);
+        Assertions.assertEquals(document.getInternalDispatches(), found.getInternalDispatches());
+        Assertions.assertFalse(found.getInternalDispatches().get(InternalDispatchTestData.INTERNAL_DISPATCH1));
+        InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(InternalDispatchTestData.INTERNAL_DISPATCH1_ID);
+        Assertions.assertFalse(internalDispatch.getDocuments().get(found));
+    }
+
+    @Test
+    void deregisterAlbum() {
+        InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(InternalDispatchTestData.INTERNAL_DISPATCH2.getId());
+        internalDispatch.getDocuments().values().forEach(bool -> Assertions.assertTrue(bool));
+        documentService.deregisterAlbum(DOCUMENT1_ID, InternalDispatchTestData.INTERNAL_DISPATCH2.getId());
+        internalDispatch = internalDispatchService.findByIdWithDocuments(InternalDispatchTestData.INTERNAL_DISPATCH2.getId());
+        internalDispatch.getDocuments().values().forEach(bool -> Assertions.assertFalse(bool));
+        for (int i = 0; i < 5; i++) {
+            Document document = documentService.findByIdWithInternalDispatches(DOCUMENT1_ID + i);
+            Assertions.assertFalse(document.getInternalDispatches().get(InternalDispatchTestData.INTERNAL_DISPATCH2));
+        }
+    }
+
+
+
+    @Test
     void deleteById() {
         documentService.deleteById(DOCUMENT1_ID);
         Assertions.assertThrows(NotFoundException.class, () -> documentService.findById(DOCUMENT1_ID));
+        ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(ChangeNoticeTestData.CHANGE_NOTICE1_ID);
+        Assertions.assertFalse(changeNotice.getDocuments().containsKey(DOCUMENT1));
+        ExternalDispatch externalDispatch = externalDispatchService.findByIdWithDocuments(ExternalDispatchTestData.EXTERNAL_DISPATCH1_ID);
+        Assertions.assertFalse(externalDispatch.getDocuments().containsKey(DOCUMENT1));
+        InternalDispatch internalDispatch = internalDispatchService.findByIdWithDocuments(InternalDispatchTestData.INTERNAL_DISPATCH1_ID);
+        Assertions.assertFalse(internalDispatch.getDocuments().containsKey(DOCUMENT1));
     }
 
     @Test
     void deleteByIdNotFound() {
         Assertions.assertThrows(NotFoundException.class, () -> documentService.deleteById(NOT_FOUND_ID));
     }
-
-
-
 }

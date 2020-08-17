@@ -1,7 +1,9 @@
 package com.igar15.filecabinet.service.impl;
 
+import com.igar15.filecabinet.ExternalDispatchTestData;
 import com.igar15.filecabinet.entity.Company;
 import com.igar15.filecabinet.service.CompanyService;
+import com.igar15.filecabinet.service.ExternalDispatchService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,9 @@ class CompanyServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private ExternalDispatchService externalDispatchService;
 
     @Test
     void create() {
