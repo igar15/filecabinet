@@ -77,8 +77,8 @@ create table document_change_notices (
     change_notice_id integer not null,
     change integer default null,
     primary key(document_id, change_notice_id),
-    foreign key (document_id) references documents (id),
-    foreign key (change_notice_id) references change_notices (id)
+    foreign key (document_id) references documents (id) on delete cascade,
+    foreign key (change_notice_id) references change_notices (id) on delete cascade
 );
 
 create table external_dispatches (
