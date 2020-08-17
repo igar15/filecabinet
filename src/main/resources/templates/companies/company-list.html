@@ -28,10 +28,10 @@
             <form action="#" th:action="@{/companies/list}" method="get">
                 <div class="row">
                     <div class="col-sm-3 m-1">
-                        <input type="text" class="form-control" th:name="companyName" th:value="${param.companyName}" placeholder="Company name">
+                        <input type="text" class="form-control" th:name="companyName" th:value="${param.companyName}" th:placeholder="#{companyName}">
                     </div>
-                    <button type="submit" class="btn btn-info col-2 m-1">Search</button>
-                    <a th:href="@{/companies/list}" class="btn btn-danger col-2 m-1">Clear filter</a>
+                    <button type="submit" class="btn btn-info col-2 m-1" th:text="#{search}">Search</button>
+                    <a th:href="@{/companies/list}" class="btn btn-danger col-2 m-1" th:text="#{clearFilters}">Clear filters</a>
                 </div>
             </form>
         </div>
@@ -43,9 +43,9 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th><a class="sorted text-light" sd:pagination-sort="name">Name</a></th>
-                    <th>Contact person</th>
-                    <th>Address</th>
+                    <th><a class="sorted text-light" sd:pagination-sort="name" th:text="#{name}">Name</a></th>
+                    <th th:text="#{contactPerson}">Contact person</th>
+                    <th th:text="#{address}">Address</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +62,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-6">
-                Show <span sd:page-size-selector="javascript"></span> entries
+                <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
             </div>
         </div>
 

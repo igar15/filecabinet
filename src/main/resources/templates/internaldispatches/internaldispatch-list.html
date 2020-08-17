@@ -30,11 +30,11 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-dark text-center">
             <tr>
-                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="waybill">Waybill</a></th>
-                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchDate">Dispatch date</a></th>
-                <th class="align-middle">Dispatch type</th>
-                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="stamp">Stamp</a></th>
-                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchHandler">Addressee</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="waybill" th:text="#{waybill}">Waybill</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchDate" th:text="#{dispatchDate}">Dispatch date</a></th>
+                <th class="align-middle" th:text="#{dispatchType}">Dispatch type</th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="stamp" th:text="#{stamp}">Stamp</a></th>
+                <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="dispatchHandler" th:text="#{addressee}">Addressee</a></th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
                     <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.id}}" th:text="${tempInternal.waybill}"></a>
                 </td>
                 <td class="align-middle text-center" th:text="${tempInternal.dispatchDate}"></td>
-                <td class="align-middle text-center" th:text="${tempInternal.isAlbum == true} ? 'Album (' + ${tempInternal.albumName} + ')' : 'Scattered'"></td>
+                <td class="align-middle text-center" th:text="${tempInternal.isAlbum == true} ? #{album} + ' (' + ${tempInternal.albumName} + ')' : #{scattered}"></td>
                 <td class="align-middle text-center" th:text="${tempInternal.stamp}"></td>
                 <td class="align-middle text-center">
                     <a th:if="${tempInternal.dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempInternal.dispatchHandler.id}}" th:target="_blank" th:text="${tempInternal.dispatchHandler.name}"></a>
@@ -54,7 +54,7 @@
 
     <div class="row mb-3">
         <div class="col-sm-6">
-            Show <span sd:page-size-selector="javascript"></span> entries
+            <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
         </div>
     </div>
 
