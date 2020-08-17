@@ -17,7 +17,7 @@ public class ExternalDispatch extends Dispatch {
     private String letterOutgoingNumber;
 
     @NotNull(message = "Company must not be empty")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 

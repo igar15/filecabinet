@@ -43,7 +43,7 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
 
     @Override
     public Page<ExternalDispatch> findAll(Pageable pageable) {
-        return externalDispatchRepository.findAll(pageable);
+        return externalDispatchRepository.findAllWithCompany(pageable);
     }
 
     @Override

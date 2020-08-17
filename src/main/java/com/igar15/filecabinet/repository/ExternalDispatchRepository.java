@@ -3,6 +3,8 @@ package com.igar15.filecabinet.repository;
 import com.igar15.filecabinet.entity.Company;
 import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.enums.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface ExternalDispatchRepository extends JpaRepository<ExternalDispatch, Integer> {
+
+    @Query(value = "select ex from ExternalDispatch ex left join fetch ex.company", countQuery = "select count(ex) from ExternalDispatch ex left join ex.company")
+    Page<ExternalDispatch> findAllWithCompany(Pageable pageable);
 
     @Query("select ex from ExternalDispatch ex left join fetch ex.documents where ex.id=:id")
     Optional<ExternalDispatch> findByIdWithDocuments(@Param("id") int id);
