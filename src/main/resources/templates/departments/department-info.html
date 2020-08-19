@@ -11,26 +11,26 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Department Info</title>
+    <title th:text="#{departmentInfo}">Department Info</title>
 </head>
 <body>
     <div class="container">
 
-        <a th:href="@{/departments/list}">To List of Departments</a>
+        <a th:href="@{/departments/list}" th:text="#{toListOfDepartments}">To List of Departments</a>
 
         <br><br>
 
-        <h3>Department Directory</h3>
+        <h3 th:text="#{departmentDirectory}">Department Directory</h3>
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${department.name} + ' information'"></p>
+        <p class="h4 mb-4" th:text="${department.name} + ' ' + #{information}"></p>
 
         <div th:object="${department}">
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Name:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{name}"></h6>
@@ -38,8 +38,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Chief name:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{chief} + ':'">Chief name:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{chiefName}"></h6>
@@ -47,8 +47,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Workers amount:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{workersAmount} + ':'">Workers amount:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{workersAmount}"></h6>
@@ -56,8 +56,8 @@
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-2 border">
-                    <h6>Description:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{description} + ':'">Description:</h6>
                 </div>
                 <div class="col-sm-3 text-break border">
                     <h6 th:text="*{description}"></h6>
@@ -65,13 +65,13 @@
             </div>
 
             <div class="row px-5">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
 
                 </div>
                 <div class="col-sm-3 text-right">
-                    <a th:href="@{'/departments/showFormForUpdate/' + ${department.id}}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                    <a th:href="@{'/departments/showFormForUpdate/' + ${department.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                     <a th:href="@{'/departments/delete/' + ${department.id}}" class="btn btn-sm btn-outline-danger mb-1"
-                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>
 

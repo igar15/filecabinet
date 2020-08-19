@@ -18,7 +18,6 @@ public class Department extends AbstractNamedEntity {
 
     @Column(name = "chief_name")
     @NotBlank(message = "Chief name must not be blank")
-    @Size(min = 5, max = 100)
     private String chiefName;
 
     @Column(name = "description")
