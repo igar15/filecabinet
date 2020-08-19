@@ -191,6 +191,12 @@ public class DocumentServiceImpl implements DocumentService {
         else {
             changeNotice.getDocuments().remove(document);
             changeNoticeService.update(changeNotice);
+            Optional<Map.Entry<Integer, ChangeNotice>> changeNoticeEntry = document.getChangeNotices().entrySet().stream()
+                    .filter(entry -> entry.getValue().equals(changeNotice))
+                    .findFirst();
+            if (changeNoticeEntry.isPresent()) {
+                document.getChangeNotices().remove(changeNoticeEntry.get().getKey());
+            }
         }
         return errorMessage;
     }

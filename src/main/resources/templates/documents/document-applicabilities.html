@@ -31,9 +31,13 @@
             <button type="submit" class="btn btn-primary col-2" th:text="#{addApplicability}">Add applicability</button>
         </div>
         <span class="help-block" th:if="${errorMessage != null}">
-            <ul>
-                <li class="text-danger" th:text="${errorMessage}"/>
-            </ul>
+            <div th:switch="${errorMessage}">
+                <ul>
+                    <li class="text-danger" th:case="'Decimal number must not be empty'" th:text="#{addApplicabilityErrorMessage.decimalNumberMustNotBeEmpty}"/>
+                    <li class="text-danger" th:case="'Applicability already added'" th:text="#{addApplicabilityErrorMessage.alreadyAdded}"/>
+                    <li class="text-danger" th:case="'Document not found'" th:text="#{addApplicabilityErrorMessage.notFound}"/>
+                </ul>
+            </div>
         </span>
     </form>
 

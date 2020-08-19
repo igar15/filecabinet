@@ -29,7 +29,7 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "inventory_number")
     private Integer inventoryNumber;
 
-    @NotNull(message = "Receipt date must not be empty")
+    @NotNull(message = "Issue date must not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "receipt_date")
     private LocalDate receiptDate;
@@ -39,7 +39,7 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "status")
     private Status status;
 
-    @NotNull(message = "document form must not be null")
+    @NotNull(message = "Form must not be empty")
     @Enumerated(EnumType.STRING)
     @Column(name = "form")
     private Form form;
@@ -64,7 +64,7 @@ public class Document extends AbstractNamedEntity {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @NotNull(message = "Original holder must not be null")
+    @NotNull(message = "Original holder must not be empty")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "original_holder_id")
     private Company originalHolder;
