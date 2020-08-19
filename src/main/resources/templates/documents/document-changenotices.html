@@ -11,35 +11,35 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Document change notices</title>
+    <title th:text="#{documentChangeNotices}">Document change notices</title>
 </head>
 <body>
 <div class="container">
-    <a th:href="@{'/documents/showDocumentInfo/' + ${document.id}}">Back to Document info</a>
+    <a th:href="@{'/documents/showDocumentInfo/' + ${document.id}}" th:text="#{backToDocumentInfo}">Back to Document info</a>
 
     <br><br>
 
-    <h3>Document Directory</h3>
+    <h3 th:text="#{documentDirectory}">Document Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' change notices'"></p>
+    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.changenotices.section.changenotices}"></p>
 
 
     <div th:if="${document.changeNotices == null || document.changeNotices.size() == 0}">
-        <h6>No changes</h6>
+        <h6 th:text="#{noChanges}">No changes</h6>
     </div>
 
     <div th:if="${document.changeNotices != null && document.changeNotices.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th class="align-middle">Change number</th>
-                    <th class="align-middle">Name</th>
-                    <th class="align-middle">Issue date</th>
-                    <th class="align-middle">Department</th>
-                    <th class="align-middle">Change code</th>
-                    <th class="align-middle">Action</th>
+                    <th class="align-middle" th:text="#{changeNumber}">Change number</th>
+                    <th class="align-middle" th:text="#{changeNoticeNumber}">Name</th>
+                    <th class="align-middle" th:text="#{issueDate}">Issue date</th>
+                    <th class="align-middle" th:text="#{developer}">Department</th>
+                    <th class="align-middle" th:text="#{changeCode}">Change code</th>
+                    <th class="align-middle" th:text="#{action}">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@
                     <td class="align-middle text-center" th:text="${entry.value.changeCode}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeChange/' + ${document.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/documents/removeChange/' + ${document.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>
                 </tr>
             </tbody>

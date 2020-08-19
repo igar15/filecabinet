@@ -11,27 +11,27 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Document Info</title>
+    <title th:text="#{documentInfo}">Document Info</title>
 </head>
 <body>
 
     <div class="container">
 
-        <a th:href="@{/documents/list}">To List of Documents</a>
+        <a th:href="@{/documents/list}" th:text="#{toListOfDocuments}">To List of Documents</a>
 
         <br><br>
 
-        <h3>Document Directory</h3>
+        <h3 th:text="#{documentDirectory}">Document Directory</h3>
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${document.decimalNumber} + ' information'"></p>
+        <p class="h4 mb-4" th:text="${document.decimalNumber} + ' ' + #{information}"></p>
 
         <div th:object="${document}">
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6 >Decimal number:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{decimalNumber} + ':'">Decimal number:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{decimalNumber}"></h6>
@@ -39,8 +39,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Name:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{name}"></h6>
@@ -48,8 +48,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Inventory number:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{inventoryNumber}"></h6>
@@ -57,8 +57,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Receipt date:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{receiptDate}"></h6>
@@ -66,17 +66,17 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Status:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{status} + ':'">Status:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{status.name}"></h6>
+                    <h6 th:text="#{*{'status.' + status}}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Stage:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{stage} + ':'">Stage:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{stage}"></h6>
@@ -84,8 +84,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Developer:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <a class="h6" th:if="${document.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${document.department.id}}" th:target="_blank" th:text="${document.department.name}"></a>
@@ -93,8 +93,8 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Original holder:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{originalHolder} + ':'">Original holder:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <a class="h6" th:if="${document.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${document.originalHolder.id}}" th:target="_blank" th:text="${document.originalHolder.name}"></a>
@@ -102,17 +102,17 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Form:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{form} + ':'">Form:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{form.name}"></h6>
+                    <h6 th:text="#{*{'form.' + form}}"></h6>
                 </div>
             </div>
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-2 border">
-                    <h6>Format:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{format} + ':'">Format:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{format}"></h6>
@@ -120,8 +120,8 @@
             </div>
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-2 border">
-                    <h6>Sheets amount:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{sheetsAmount}"></h6>
@@ -130,8 +130,8 @@
 
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-2 border">
-                    <h6>A4 amount:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{a4Amount} + ':'">A4 amount:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{a4Amount}"></h6>
@@ -139,54 +139,54 @@
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Changes:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{changeNotices} + ':'">Changes:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showChanges/' + ${document.id}}">
+                    <a th:href="@{'/documents/showChanges/' + ${document.id}}" th:text="#{showChanges}">
                         Show changes
                     </a>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>Applicabilities:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{applicability} + ':'">Applicabilities:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showApplicabilities/' + ${document.id}}">
+                    <a th:href="@{'/documents/showApplicabilities/' + ${document.id}}" th:text="#{showApplicability}">
                         Show applicabilities
                     </a>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6>External dispatches:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{externalDispatches} + ':'">External dispatches:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showExternalDispatches/' + ${document.id}}">
+                    <a th:href="@{'/documents/showExternalDispatches/' + ${document.id}}" th:text="#{showExternals}">
                         Show externals
                     </a>
                 </div>
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-2 border">
-                    <h6>Internal dispatches:</h6>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{internalDispatches} + ':'">Internal dispatches:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showInternalDispatches/' + ${document.id}}">
+                    <a th:href="@{'/documents/showInternalDispatches/' + ${document.id}}" th:text="#{showInternals}">
                         Show internals
                     </a>
                 </div>
             </div>
 
             <div class="row mb-1">
-                <div class="col-sm-4 offset-1 text-right">
-                    <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="btn btn-sm btn-outline-info">Update</a>
+                <div class="col-sm-4 offset-2 text-right">
+                    <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
                     <a th:href="@{'/documents/delete/' + ${document.id}}" class="btn btn-sm btn-outline-danger"
-                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>
 

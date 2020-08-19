@@ -11,24 +11,24 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Document applicabilities list</title>
+    <title th:text="#{documentApplicabilityList}">Document applicabilities list</title>
 </head>
 <body>
 <div class="container">
-    <a th:href="@{'/documents/showDocumentInfo/' + ${id}}">Back to Document info</a>
+    <a th:href="@{'/documents/showDocumentInfo/' + ${id}}" th:text="#{backToDocumentInfo}">Back to Document info</a>
 
     <br><br>
 
-    <h3>Document Directory</h3>
+    <h3 th:text="#{documentDirectory}">Document Directory</h3>
 
     <hr>
 
     <form th:action="@{'/documents/addApplicability/' + ${id}}" method="post">
         <div class="row mb-1">
             <div class="col-sm-4">
-                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newApplicability" th:value="${errorMessage != null} ? ${param.newApplicability} : ''" placeholder="Applicability decimal number"/>
+                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newApplicability" th:value="${errorMessage != null} ? ${param.newApplicability} : ''" th:placeholder="#{applicabilityDecimalNumber}"/>
             </div>
-            <button type="submit" class="btn btn-primary col-2">Add applicability</button>
+            <button type="submit" class="btn btn-primary col-2" th:text="#{addApplicability}">Add applicability</button>
         </div>
         <span class="help-block" th:if="${errorMessage != null}">
             <ul>
@@ -39,19 +39,19 @@
 
     <br>
 
-    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' applicabilities'"></p>
+    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.applicabilities.section.applicability}"></p>
 
     <div th:if="${document.applicabilities == null ||document.applicabilities.size() == 0}">
-        <p class="h6">No applicabilities</p>
+        <p class="h6" th:text="#{noApplicability}">No applicability</p>
     </div>
 
     <div th:if="${document.applicabilities != null && document.applicabilities.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
-                    <th class="align-middle">Decimal number</th>
-                    <th class="align-middle">Name</th>
-                    <th class="align-middle">Action</th>
+                    <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
+                    <th class="align-middle" th:text="#{name}">Name</th>
+                    <th class="align-middle" th:text="#{action}">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +62,7 @@
                     <td class="align-middle" th:text="${tempApplicability.name}"></td>
                     <td class="align-middle">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeApplicability/' + ${id} + '/' + ${tempApplicability.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/documents/removeApplicability/' + ${id} + '/' + ${tempApplicability.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>
                 </tr>
             </tbody>

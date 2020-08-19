@@ -11,11 +11,11 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Save Document</title>
+    <title th:text="#{${document.isNew() ? 'saveDocumentFormTitle' : 'updateDocumentFormTitle'}}">Save Document</title>
 </head>
 <body>
     <div class="container">
-        <a href="#" onclick="goBack()">Go Back</a>
+        <a href="#" onclick="goBack()" th:text="#{goBack}">Go Back</a>
         <script>
             function goBack() {
                 window.history.back();
@@ -24,26 +24,26 @@
 
         <br><br>
 
-        <h3>Document Directory</h3>
+        <h3 th:text="#{documentDirectory}">Document Directory</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3">Document Card</p>
+        <p class="h4 mb-3 offset-sm-3" th:text="#{documentCard}">Document Card</p>
 
         <form class="form-horizontal" th:object="${document}" th:action="@{/documents/save}" method="post">
 
             <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
-                <p th:text="'Please correct values in error below'">Error Message</p>
+                <p th:text="#{pleaseCorrectValues}">Error Message</p>
             </div>
 
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Decimal number:</h6>
+                    <h6 th:text="#{decimalNumber} + ':'">Decimal number:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{decimalNumber}" th:class="${#fields.hasErrors('decimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Decimal number'"/>
+                    <input type="text" th:field="*{decimalNumber}" th:class="${#fields.hasErrors('decimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{decimalNumber}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('decimalNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('decimalNumber')}" th:text="${err}"/>
@@ -54,10 +54,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Document name:</h6>
+                    <h6 th:text="#{name} + ':'">Document name:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Document name'"/>
+                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('name')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
@@ -68,10 +68,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Inventory number:</h6>
+                    <h6 th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="number" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Inventory number'"/>
+                    <input type="number" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{inventoryNumber}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('inventoryNumber')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('inventoryNumber')}" th:text="${err}"/>
@@ -82,10 +82,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Receipt date:</h6>
+                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="date" th:field="*{receiptDate}" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Receipt date'"/>
+                    <input type="date" th:field="*{receiptDate}" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{issueDate}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('receiptDate')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('receiptDate')}" th:text="${err}"/>
@@ -96,13 +96,13 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Status:</h6>
+                    <h6 th:text="#{status} + ':'">Status:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
                         <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
                             <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
-                            <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="${radioValue.name}" ></label>
+                            <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="#{${'status.' + radioValue}}"></label>
                         </div>
                     </div>
                     <span class="help-block" th:if="${#fields.hasErrors('status')}">
@@ -115,13 +115,13 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Document form:</h6>
+                    <h6 th:text="#{form} + ':'">Document form:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('form')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
                         <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}" th:field="*{form}">
                             <input type="radio" th:field="*{form}" th:value="${radioValue}"/>
-                            <label class="btn-sm btn-light" th:for="${#ids.prev('form')}" th:text="${radioValue.name}" ></label>
+                            <label class="btn-sm btn-light" th:for="${#ids.prev('form')}" th:text="#{${'form.' + radioValue}}" ></label>
                         </div>
                     </div>
                     <span class="help-block" th:if="${#fields.hasErrors('form')}">
@@ -134,7 +134,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Stage:</h6>
+                    <h6 th:text="#{stage} + ':'">Stage:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons"
@@ -156,10 +156,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Sheets amount:</h6>
+                    <h6 th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="number" th:field="*{sheetsAmount}" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Sheets amount'"/>
+                    <input type="number" th:field="*{sheetsAmount}" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{sheetsAmount}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('sheetsAmount')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('sheetsAmount')}" th:text="${err}"/>
@@ -170,12 +170,12 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Format:</h6>
+                    <h6 th:text="#{format} + ':'">Format:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{format}"
                            th:class="${#fields.hasErrors('format')} ? 'form-control is-invalid' : 'form-control'"
-                           th:placeholder="'Format'"/>
+                           th:placeholder="#{format}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('format')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('format')}" th:text="${err}"/>
@@ -186,10 +186,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>A4 amount:</h6>
+                    <h6 th:text="#{a4Amount} + ':'">A4 amount:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="number" th:field="*{a4Amount}" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'A4 amount'"/>
+                    <input type="number" th:field="*{a4Amount}" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{a4Amount}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('a4Amount')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('a4Amount')}" th:text="${err}"/>
@@ -200,11 +200,11 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Developer:</h6>
+                    <h6 th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{department}">
-                        <option value="">Nothing selected</option>
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                         <option th:each="dropValue : ${departments}"
                                 th:value="${dropValue.name}"
                                 th:text="${dropValue.name}">
@@ -220,11 +220,11 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Original holder:</h6>
+                    <h6 th:text="#{originalHolder} + ':'">Original holder:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{originalHolder}">
-                        <option value="">Nothing selected</option>
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                         <option th:each="dropValue : ${companies}"
                                 th:value="${dropValue.name}"
                                 th:text="${dropValue.name}">
@@ -239,7 +239,7 @@
             </div>
 
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${document.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
             <br><br>
         </form>
