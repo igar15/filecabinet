@@ -8,6 +8,7 @@ import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Optional<Document> findByDecimalNumber(String decimalNumber);
+
 
 //    @EntityGraph(attributePaths = {"changeNotices"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("select d from Document d left join fetch d.changeNotices where d.id=:id")
@@ -40,8 +42,10 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
 
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByDepartment_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName,
                                                                                                     LocalDate after, LocalDate before, Pageable pageable);
 
