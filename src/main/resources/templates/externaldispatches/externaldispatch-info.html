@@ -11,26 +11,26 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>External dispatch info</title>
+    <title th:text="#{externalDispatchInfo}">External dispatch info</title>
 </head>
 <body>
 <div class="container">
 
-    <a th:href="@{/externaldispatches/list}">To List of External dispatches</a>
+    <a th:href="@{/externaldispatches/list}" th:text="#{toListOfExternalDispatches}">To List of External dispatches</a>
 
     <br><br>
 
-    <h3>External dispatch Directory</h3>
+    <h3 th:text="#{externalDispatchDirectory}">External dispatch Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-4" th:text="${externalDispatch.letterOutgoingNumber} + ' information'"></p>
+    <p class="h4 mb-4" th:text="${externalDispatch.letterOutgoingNumber} + ' ' + #{information}"></p>
 
     <div th:object="${externalDispatch}">
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Letter outgoing number:</h6>
+                <h6 th:text="#{letterOutgoingNumber} + ':'">Letter outgoing number:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{letterOutgoingNumber}"></h6>
@@ -39,7 +39,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Dispatch date:</h6>
+                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{dispatchDate}"></h6>
@@ -48,7 +48,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Waybill:</h6>
+                <h6 th:text="#{waybill} + ':'">Waybill:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{waybill}"></h6>
@@ -57,16 +57,16 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Status:</h6>
+                <h6 th:text="#{status} + ':'">Status:</h6>
             </div>
             <div class="col-sm-2 border">
-                <h6 th:text="*{status.name}"></h6>
+                <h6 th:text="#{${'status.' + externalDispatch.status}}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Remark:</h6>
+                <h6 th:text="#{remark} + ':'">Remark:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{remark}"></h6>
@@ -75,7 +75,7 @@
 
         <div class="row px-3 mb-1">
             <div class="col-sm-3 border">
-                <h6>Company:</h6>
+                <h6 th:text="#{company} + ':'">Company:</h6>
             </div>
             <div class="col-sm-2 border">
                 <a class="h6" th:if="*{company != null}" th:href="@{'/companies/showCompanyInfo/' + ${externalDispatch.company.id}}" th:target="_blank" th:text="*{company.name}"></a>
@@ -87,9 +87,9 @@
 
             </div>
             <div class="col-sm-3 text-right">
-                <a th:href="@{'/externaldispatches/showFormForUpdate/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                <a th:href="@{'/externaldispatches/showFormForUpdate/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                 <a th:href="@{'/externaldispatches/delete/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-danger mb-1"
-                   onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                   onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
             </div>
         </div>
 
@@ -102,28 +102,32 @@
     <form th:action="@{'/externaldispatches/addDocument/' + ${externalDispatch.id}}" method="post">
         <div class="row mb-3">
             <div class="col-sm-4">
-                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
+                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" th:placeholder="#{decimalNumber}"/>
             </div>
-            <button type="submit" class="btn btn-primary col-2">Add document</button>
+            <button type="submit" class="btn btn-primary col-2" th:text="#{addDocument}">Add document</button>
         </div>
         <span class="help-block" th:if="${errorMessage != null}">
-            <ul>
-                <li class="text-danger" th:text="${errorMessage}"/>
-            </ul>
+            <div th:switch="${errorMessage}">
+                <ul>
+                    <li class="text-danger" th:case="'Decimal number must not be empty'" th:text="#{addDocumentError.NotEmpty}"/>
+                    <li class="text-danger" th:case="'Document already added'" th:text="#{externalDispatchDocumentsList.addDocumentError.AlreadyAdded}"/>
+                    <li class="text-danger" th:case="'Document not found'" th:text="#{addDocumentError.NotExist}"/>
+                </ul>
+            </div>
         </span>
     </form>
 
     <div th:if="${externalDispatch.documents == null || externalDispatch.documents.size() == 0}">
-        <h6>No documents</h6>
+        <h6 th:text="#{noDocuments}">No documents</h6>
     </div>
 
     <div th:if="${externalDispatch.documents != null && externalDispatch.documents.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-                <th class="align-middle">Decimal number</th>
-                <th class="align-middle">Name</th>
-                <th class="align-middle">Active</th>
-                <th class="align-middle">Action</th>
+                <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
+                <th class="align-middle" th:text="#{name}">Name</th>
+                <th class="align-middle" th:text="#{active}">Active</th>
+                <th class="align-middle" th:text="#{action}">Action</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${externalDispatch.documents}" th:class="${entry.value} ? 'table-default' : 'table-danger'">
@@ -131,10 +135,10 @@
                         <a th:href="@{'/documents/showDocumentInfo/' + ${entry.key.id}}" th:target="_blank" th:text="${entry.key.decimalNumber}"></a>
                     </td>
                     <td class="align-middle" th:text="${entry.key.name}"></td>
-                    <td class="align-middle text-center" th:text="${entry.value}"></td>
+                    <td class="align-middle text-center" th:text="#{${entry.value ? 'yes' : 'no'}}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/externaldispatches/removeDocument/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/externaldispatches/removeDocument/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>
                 </tr>
             </tbody>
@@ -142,7 +146,7 @@
     </div>
 
     <div class="text-danger" th:if="${errorDeleteMessage != null}">
-        <h6 th:text="${errorDeleteMessage}"></h6>
+        <h6 th:text="#{externalDispatchRemoveDocumentErrorMessage}"></h6>
     </div>
 
 </div>

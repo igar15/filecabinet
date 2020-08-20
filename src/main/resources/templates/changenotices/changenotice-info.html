@@ -11,26 +11,26 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Change notice Info</title>
+    <title th:text="#{changeNoticeInfo}">Change notice Info</title>
 </head>
 <body>
     <div class="container">
 
-        <a th:href="@{/changenotices/list}">To List of Change notices</a>
+        <a th:href="@{/changenotices/list}" th:text="#{toListOfChangeNotices}">To List of Change notices</a>
 
         <br><br>
 
-        <h3>Change notice Directory</h3>
+        <h3 th:text="#{changeNoticeDirectory}">Change notice Directory</h3>
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${changeNotice.name} + ' information'"></p>
+        <p class="h4 mb-4" th:text="${changeNotice.name} + ' ' + #{information}"></p>
 
         <div th:object="${changeNotice}">
 
             <div class="row px-3">
                 <div class="col-sm-2 border">
-                    <h6>Name:</h6>
+                    <h6 th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{name}"></h6>
@@ -39,7 +39,7 @@
 
             <div class="row px-3">
                 <div class="col-sm-2 border">
-                    <h6>Issue date:</h6>
+                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{issueDate}"></h6>
@@ -48,7 +48,7 @@
 
             <div class="row px-3">
                 <div class="col-sm-2 border">
-                    <h6>Change code:</h6>
+                    <h6 th:text="#{changeCode} + ':'">Change code:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{changeCode}"></h6>
@@ -57,7 +57,7 @@
 
             <div class="row px-3">
                 <div class="col-sm-2 border">
-                    <h6>Developer:</h6>
+                    <h6 th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-3 border">
                     <a class="h6" th:if="*{department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${changeNotice.department.id}}" th:target="_blank" th:text="*{department.name}"></a>
@@ -66,18 +66,18 @@
 
             <div class="row px-3 mb-1">
                 <div class="col-sm-2 border">
-                    <h6>Documents:</h6>
+                    <h6 th:text="#{documents} + ':'">Documents:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}">Show documents</a>
+                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}" th:text="#{showDocuments}">Show documents</a>
                 </div>
             </div>
 
             <div class="row mb-1">
                 <div class="col-sm-4 offset-1 text-right">
-                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-info">Update</a>
+                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
                     <a th:href="@{'/changenotices/delete/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-danger"
-                       onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>
 
