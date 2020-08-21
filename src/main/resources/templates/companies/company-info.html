@@ -11,26 +11,26 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Company Info</title>
+    <title th:text="#{companyInfo}">Company Info</title>
 </head>
 <body>
 <div class="container">
 
-    <a th:href="@{/companies/list}">To List of Companies</a>
+    <a th:href="@{/companies/list}" th:text="#{toListOfCompanies}">To List of Companies</a>
 
     <br><br>
 
-    <h3>Company Directory</h3>
+    <h3 th:text="#{companyDirectory}">Company Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-4" th:text="${company.name} + ' information'"></p>
+    <p class="h4 mb-4" th:text="${company.name} + ' ' + #{information}"></p>
 
     <div th:object="${company}">
 
         <div class="row px-3">
             <div class="col-sm-2 border">
-                <h6>Name:</h6>
+                <h6 th:text="#{name} + ':'">Name:</h6>
             </div>
             <div class="col-sm-4 border">
                 <h6 th:text="*{name}"></h6>
@@ -39,7 +39,7 @@
 
         <div class="row px-3">
             <div class="col-sm-2 border">
-                <h6>Address:</h6>
+                <h6 th:text="#{address} + ':'">Address:</h6>
             </div>
             <div class="col-sm-4 border">
                 <h6 th:text="*{address.zipcode + ', ' + address.city + ', ' + address.street + ', ' + address.building}"></h6>
@@ -48,7 +48,7 @@
 
         <div class="row px-3 mb-1">
             <div class="col-sm-2 border">
-                <h6>Contact person:</h6>
+                <h6 th:text="#{contactPerson} + ':'">Contact person:</h6>
             </div>
             <div class="col-sm-4 border">
                 <h6 th:text="*{contactPerson}"></h6>
@@ -60,9 +60,9 @@
 
             </div>
             <div class="col-sm-3 text-right">
-                <a th:href="@{'/companies/showFormForUpdate/' + ${company.id}}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                <a th:href="@{'/companies/showFormForUpdate/' + ${company.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                 <a th:href="@{'/companies/delete/' + ${company.id}}" class="btn btn-sm btn-outline-danger mb-1"
-                   onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                   onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
             </div>
         </div>
     </div>

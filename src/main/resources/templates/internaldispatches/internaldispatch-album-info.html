@@ -11,16 +11,16 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Album info</title>
+    <title th:text="#{albumInfo}">Album info</title>
 </head>
 <body>
 <div class="container">
 
-    <a th:href="@{/internaldispatches/list/albums}">To List of Album</a>
+    <a th:href="@{/internaldispatches/list/albums}" th:text="#{toListOfAlbums}">To List of Albums</a>
 
     <br><br>
 
-    <h3>Album Directory</h3>
+    <h3 th:text="#{albumDirectory}">Album Directory</h3>
 
     <hr>
 
@@ -28,7 +28,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Album name:</h6>
+                <h6 th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{albumName}"></h6>
@@ -37,7 +37,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Stamp:</h6>
+                <h6 th:text="#{stamp} + ':'">Stamp:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{stamp}"></h6>
@@ -46,7 +46,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Dispatch date:</h6>
+                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{dispatchDate}"></h6>
@@ -55,7 +55,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Current handler:</h6>
+                <h6 th:text="#{currentHandler} + ':'">Current handler:</h6>
             </div>
             <div class="col-sm-2 border">
                 <a class="h6" th:if="*{dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${internalDispatch.dispatchHandler.id}}" th:target="_blank" th:text="*{dispatchHandler.name}"></a>
@@ -64,7 +64,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Internal handler name:</h6>
+                <h6 th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{internalHandlerName}"></h6>
@@ -73,7 +73,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Internal handler phone number:</h6>
+                <h6 th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{internalHandlerPhoneNumber}"></h6>
@@ -82,7 +82,7 @@
 
         <div class="row px-3">
             <div class="col-sm-3 border">
-                <h6>Received date:</h6>
+                <h6 th:text="#{receivedDate} + ':'">Received date:</h6>
             </div>
             <div class="col-sm-2 border">
                 <h6 th:text="*{receivedInternalDate}"></h6>
@@ -92,18 +92,18 @@
 
     <br><br>
 
-    <p class="h4 mb-4">Album documents:</p>
+    <p class="h4 mb-4" th:text="#{albumDocuments}">Album documents:</p>
 
     <div th:if="${internalDispatch.documents == null || internalDispatch.documents.size() == 0}">
-        <h2>No documents</h2>
+        <h2 th:text="#{noDocuments}">No documents</h2>
     </div>
 
     <div th:if="${internalDispatch.documents != null && internalDispatch.documents.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-                <th class="align-middle">Decimal number</th>
-                <th class="align-middle">Name</th>
-                <th class="align-middle">Show document</th>
+                <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
+                <th class="align-middle" th:text="#{name}">Name</th>
+                <th class="align-middle" th:text="#{showDocument}">Show document</th>
             </thead>
             <tbody>
                 <tr th:each="tempDocument : ${internalDispatch.documents}">

@@ -11,12 +11,12 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Save Company</title>
+    <title th:text="#{${company.isNew() ? 'saveCompanyFormTitle' : 'updateCompanyFormTitle'}}">Save Company</title>
 </head>
 <body>
     <div class="container">
 
-        <a href="#" onclick="goBack()">Go Back</a>
+        <a href="#" onclick="goBack()" th:text="#{goBack}">Go Back</a>
         <script>
             function goBack() {
                 window.history.back();
@@ -25,26 +25,26 @@
 
         <br><br>
 
-        <h3>Company Directory</h3>
+        <h3 th:text="#{companyDirectory}">Company Directory</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3">Company Card</p>
+        <p class="h4 mb-3 offset-sm-3" th:text="#{companyCard}">Company Card</p>
 
         <form class="form-horizontal" th:object="${company}" th:action="@{/companies/save}" method="post">
 
             <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
-                <p th:text="'Please correct values in error below'">Error Message</p>
+                <p th:text="#{pleaseCorrectValues}">Error Message</p>
             </div>
 
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Name:</h6>
+                    <h6 th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Name'"/>
+                    <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('name')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
@@ -55,10 +55,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Zipcode:</h6>
+                    <h6 th:text="#{zipCode} + ':'">Zipcode:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{address.zipcode}" th:class="${#fields.hasErrors('address.zipcode')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Zipcode'"/>
+                    <input type="text" th:field="*{address.zipcode}" th:class="${#fields.hasErrors('address.zipcode')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{zipCode}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('address.zipcode')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('address.zipcode')}" th:text="${err}"/>
@@ -69,10 +69,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>City:</h6>
+                    <h6 th:text="#{city}">City:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{address.city}" th:class="${#fields.hasErrors('address.city')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'City'"/>
+                    <input type="text" th:field="*{address.city}" th:class="${#fields.hasErrors('address.city')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{city}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('address.city')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('address.city')}" th:text="${err}"/>
@@ -83,10 +83,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Street:</h6>
+                    <h6 th:text="#{street}">Street:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{address.street}" th:class="${#fields.hasErrors('address.street')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Street'"/>
+                    <input type="text" th:field="*{address.street}" th:class="${#fields.hasErrors('address.street')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{street}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('address.street')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('address.street')}" th:text="${err}"/>
@@ -97,10 +97,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Building:</h6>
+                    <h6 th:text="#{building} + ':'">Building:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{address.building}" th:class="${#fields.hasErrors('address.building')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Building'"/>
+                    <input type="text" th:field="*{address.building}" th:class="${#fields.hasErrors('address.building')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{building}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('address.building')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('address.building')}" th:text="${err}"/>
@@ -111,10 +111,10 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6>Contact person:</h6>
+                    <h6 th:text="#{contactPerson} + ':'">Contact person:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" th:field="*{contactPerson}" th:class="${#fields.hasErrors('contactPerson')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Contact person'"/>
+                    <input type="text" th:field="*{contactPerson}" th:class="${#fields.hasErrors('contactPerson')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{contactPerson}"/>
                     <span class="help-block" th:if="${#fields.hasErrors('contactPerson')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('contactPerson')}" th:text="${err}"/>
@@ -124,7 +124,7 @@
             </div>
 
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${company.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
 
             <br><br>

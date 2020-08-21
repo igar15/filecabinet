@@ -11,12 +11,12 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Save Internal Dispatch</title>
+    <title th:text="#{${internalDispatch.isNew() ? 'saveInternalDispatchFormTitle' : 'updateInternalDispatchFormTitle'}}">Save Internal Dispatch</title>
 </head>
 <body>
 <div class="container">
 
-    <a href="#" onclick="goBack()">Go Back</a>
+    <a href="#" onclick="goBack()" th:text="#{goBack}">Go Back</a>
     <script>
         function goBack() {
             window.history.back();
@@ -25,30 +25,30 @@
 
     <br><br>
 
-    <h3>Internal Dispatch Directory</h3>
+    <h3 th:text="#{internalDispatchDirectory}">Internal Dispatch Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-3 offset-sm-3">Internal dispatch card</p>
+    <p class="h4 mb-3 offset-sm-3" th:text="#{internalDispatchCard}">Internal dispatch card</p>
 
     <form class="form-horizontal" th:object="${internalDispatch}" th:action="@{/internaldispatches/save}" method="post">
 
         <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
-            <p th:text="'Please correct values in error below'">Error Message</p>
+            <p th:text="#{pleaseCorrectValues}">Error Message</p>
         </div>
 
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{isActive}">
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Is Album:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{isAlbum} + ':'">Is Album:</h6>
             </div>
             <div class="col-sm-5 mt-2">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <p>
-                        <input type="radio" th:field="*{isAlbum}" th:value="1" th:checked="*{isAlbum}">Yes
-                        <input type="radio" th:field="*{isAlbum}" th:value="0" th:checked="*{isAlbum}">No
+                        <input type="radio" th:field="*{isAlbum}" th:value="1" th:checked="*{isAlbum}" th:text="#{yes}">
+                        <input type="radio" th:field="*{isAlbum}" th:value="0" th:checked="*{isAlbum}" th:text="#{no}">
                     </p>
                 </div>
                 <span class="help-block" th:if="${#fields.hasErrors('isAlbum')}">
@@ -60,11 +60,11 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Album name:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
             </div>
             <div class="col-sm-5">
-                <input type="text" th:field="*{albumName}" th:class="${#fields.hasErrors('albumName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Album name'"/>
+                <input type="text" th:field="*{albumName}" th:class="${#fields.hasErrors('albumName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{albumDecimalNumber}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('albumName')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('albumName')}" th:text="${err}"/>
@@ -74,11 +74,11 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Waybill:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{waybill} + ':'">Waybill:</h6>
             </div>
             <div class="col-sm-5">
-                <input type="text" th:field="*{waybill}" th:class="${#fields.hasErrors('waybill')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Waybill'"/>
+                <input type="text" th:field="*{waybill}" th:class="${#fields.hasErrors('waybill')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{waybill}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('waybill')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('waybill')}" th:text="${err}"/>
@@ -88,8 +88,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Dispatch date:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="date" th:field="*{dispatchDate}" th:class="${#fields.hasErrors('dispatchDate')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -102,14 +102,14 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Status:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{status} + ':'">Status:</h6>
             </div>
             <div class="col-sm-5">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
                     <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
                         <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
-                        <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="${radioValue.name}" ></label>
+                        <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="#{${'status.' + radioValue}}" ></label>
                     </div>
                 </div>
                 <span class="help-block" th:if="${#fields.hasErrors('status')}">
@@ -121,11 +121,11 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Remark:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{remark} + ':'">Remark:</h6>
             </div>
             <div class="col-sm-5">
-                <input type="text" th:field="*{remark}" th:class="${#fields.hasErrors('remark')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Remark'"/>
+                <input type="text" th:field="*{remark}" th:class="${#fields.hasErrors('remark')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{remark}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('remark')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('remark')}" th:text="${err}"/>
@@ -135,8 +135,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Stamp:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{stamp} + ':'">Stamp:</h6>
             </div>
             <div class="col-sm-5">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('stamp')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
@@ -154,12 +154,12 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Dispatch handler:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{dispatchHandler} + ':'">Dispatch handler:</h6>
             </div>
             <div class="col-sm-5">
                 <select class="form-control selectpicker" th:field="*{dispatchHandler}">
-                    <option value="">Nothing selected</option>
+                    <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                     <option th:each="dropValue : ${departments}"
                             th:value="${dropValue.name}"
                             th:text="${dropValue.name}">
@@ -174,11 +174,11 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Internal handler name:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
             </div>
             <div class="col-sm-5">
-                <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal Handler Name'"/>
+                <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{internalHandlerName}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('internalHandlerName')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerName')}" th:text="${err}"/>
@@ -188,11 +188,11 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Internal handler phone number:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
             </div>
             <div class="col-sm-5">
-                <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal Handler Phone number'"/>
+                <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{internalHandlerPhoneNumber}"/>
                 <span class="help-block" th:if="${#fields.hasErrors('internalHandlerPhoneNumber')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('internalHandlerPhoneNumber')}" th:text="${err}"/>
@@ -202,8 +202,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Received internal date:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{receivedDate} + ':'">Received date:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="date" th:field="*{receivedInternalDate}" th:class="${#fields.hasErrors('receivedInternalDate')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -217,7 +217,7 @@
 
 
         <div class="row">
-            <button type="submit" class="btn-sm btn-primary offset-7" th:text="*{id} == null ? 'Save' : 'Update'">Save</button>
+            <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${internalDispatch.isNew() ? 'create'  : 'update'}}">Save</button>
         </div>
 
         <br><br>

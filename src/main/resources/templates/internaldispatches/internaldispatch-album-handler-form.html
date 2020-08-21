@@ -11,13 +11,13 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Change handler</title>
+    <title th:text="#{changeHandler}">Change handler</title>
 </head>
 <body>
 
 <div class="container">
 
-    <a href="#" onclick="goBack()">Go Back</a>
+    <a href="#" onclick="goBack()" th:text="#{goBack}">Go Back</a>
     <script>
         function goBack() {
             window.history.back();
@@ -26,16 +26,16 @@
 
     <br><br>
 
-    <h3>Album Directory</h3>
+    <h3 th:text="#{albumDirectory}">Album Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-3 offset-sm-3">Album handler info</p>
+    <p class="h4 mb-3 offset-sm-3" th:text="#{albumHandlerInfo}">Album handler info</p>
 
     <form class="form-horizontal" th:object="${internalDispatch}" th:action="@{/internaldispatches/changeHandler}" method="post">
 
         <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
-            <p th:text="'Please correct values in error below'">Error Message</p>
+            <p th:text="#{pleaseCorrectValues}">Error Message</p>
         </div>
 
         <input type="hidden" th:field="*{id}">
@@ -49,12 +49,12 @@
         <input type="hidden" th:field="*{isActive}">
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Dispatch handler:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{dispatchHandler} + ':'">Dispatch handler:</h6>
             </div>
             <div class="col-sm-5">
                 <select class="form-control selectpicker" th:field="*{dispatchHandler}">
-                    <option value="">Nothing selected</option>
+                    <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                     <option th:each="dropValue : ${departments}"
                             th:value="${dropValue.name}"
                             th:text="${dropValue.name}">
@@ -69,8 +69,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Internal handler name:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal handler name'"/>
@@ -83,8 +83,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Internal handler phone number:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Internal handler phone number'"/>
@@ -97,8 +97,8 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6>Received internal date:</h6>
+            <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                <h6 th:text="#{receivedDate} + ':'">Received date:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="date" th:field="*{receivedInternalDate}" th:class="${#fields.hasErrors('receivedInternalDate')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -111,7 +111,7 @@
         </div>
 
         <div class="row">
-            <button type="submit" class="btn-sm btn-primary offset-7">Update</button>
+            <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{update}">Update</button>
         </div>
 
         <br><br>

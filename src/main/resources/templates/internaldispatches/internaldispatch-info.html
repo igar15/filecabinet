@@ -11,27 +11,27 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Internal Dispatch Info</title>
+    <title th:text="#{internalDispatchInfo}">Internal Dispatch Info</title>
 </head>
 <body>
 <div class="container">
 
-    <a th:href="@{/internaldispatches/list}">To List of Internal dispatches</a>
+    <a th:href="@{/internaldispatches/list}" th:text="#{toListOfInternalDispatches}">To List of Internal dispatches</a>
 
     <br><br>
 
-    <h3>Internal Dispatch Directory</h3>
+    <h3 th:text="#{internalDispatchDirectory}">Internal Dispatch Directory</h3>
 
     <hr>
 
-    <p class="h4 mb-4" th:text="${internalDispatch.waybill} + ' information'"></p>
+    <p class="h4 mb-4" th:text="${internalDispatch.waybill} + ' ' + #{information}"></p>
 
 
     <div th:object="${internalDispatch}">
 
         <div class="row px-3" th:if="*{albumName != null}">
-            <div class="col-sm-2 border">
-                <h6>Album name:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
             </div>
             <div class="col-sm-3 border">
                 <h6 th:text="*{albumName}"></h6>
@@ -39,8 +39,8 @@
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6>Waybill:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{waybill} + ':'">Waybill:</h6>
             </div>
             <div class="col-sm-3 border">
                 <h6 th:text="*{waybill}"></h6>
@@ -48,8 +48,8 @@
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6>Dispatch date:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
             <div class="col-sm-3 border">
                 <h6 th:text="*{dispatchDate}"></h6>
@@ -57,17 +57,17 @@
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6>Status:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{status} + ':'">Status:</h6>
             </div>
             <div class="col-sm-3 border">
-                <h6 th:text="*{status.name}"></h6>
+                <h6 th:text="#{${'status.' + internalDispatch.status}}"></h6>
             </div>
         </div>
 
         <div class="row px-3" th:if="*{remark != null}">
-            <div class="col-sm-2 border">
-                <h6>Remark:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{remark} + ':'">Remark:</h6>
             </div>
             <div class="col-sm-3 border">
                 <h6 th:text="*{remark}"></h6>
@@ -75,8 +75,8 @@
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6>Stamp:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{stamp} + ':'">Stamp:</h6>
             </div>
             <div class="col-sm-3 border">
                 <h6 th:text="*{stamp}"></h6>
@@ -84,8 +84,8 @@
         </div>
 
         <div class="row px-3 mb-1">
-            <div class="col-sm-2 border">
-                <h6>Dispatch handler:</h6>
+            <div class="col-sm-3 border">
+                <h6 th:text="#{dispatchHandler} + ':'">Dispatch handler:</h6>
             </div>
             <div class="col-sm-3 border">
                 <a class="h6" th:if="*{dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${internalDispatch.dispatchHandler.id}}" th:target="_blank" th:text="*{dispatchHandler.name}"></a>
@@ -93,13 +93,13 @@
         </div>
 
         <div class="row px-5">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
 
             </div>
             <div class="col-sm-3 text-right">
-                <a th:href="@{'/internaldispatches/showFormForUpdate/' + ${internalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1">Update</a>
+                <a th:href="@{'/internaldispatches/showFormForUpdate/' + ${internalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                 <a th:href="@{'/internaldispatches/delete/' + ${internalDispatch.id}}" class="btn btn-sm btn-outline-danger mb-1"
-                   onclick="if (!(confirm('Are you sure?'))) return false">Delete</a>
+                   onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
             </div>
         </div>
     </div>
@@ -109,28 +109,32 @@
     <form th:action="@{'/internaldispatches/addDocument/' + ${internalDispatch.id}}" method="post">
         <div class="row mb-3">
             <div class="col-sm-4">
-                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" placeholder="Decimal number"/>
+                <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" th:placeholder="#{decimalNumber}"/>
             </div>
-            <button type="submit" class="btn btn-primary col-2">Add document</button>
+            <button type="submit" class="btn btn-primary col-2" th:text="#{addDocument}">Add document</button>
         </div>
         <span class="help-block" th:if="${errorMessage != null}">
-            <ul>
-                <li class="text-danger" th:text="${errorMessage}"/>
-            </ul>
+            <div th:switch="${errorMessage}">
+                <ul>
+                    <li class="text-danger" th:case="'Decimal number must not be empty'" th:text="#{addDocumentError.NotEmpty}"/>
+                    <li class="text-danger" th:case="'Document already added'" th:text="#{internalDispatchDocumentsList.addDocumentError.AlreadyAdded}"/>
+                    <li class="text-danger" th:case="'Document not found'" th:text="#{addDocumentError.NotExist}"/>
+                </ul>
+            </div>
         </span>
     </form>
 
     <div th:if="${internalDispatch.documents == null || internalDispatch.documents.size() == 0}">
-        <h6>No documents</h6>
+        <h6 th:text="#{noDocuments}">No documents</h6>
     </div>
 
     <div th:if="${internalDispatch.documents != null && internalDispatch.documents.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
-                <th class="align-middle">Decimal number</th>
-                <th class="align-middle">Name</th>
-                <th class="align-middle">Active</th>
-                <th class="align-middle">Action</th>
+                <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
+                <th class="align-middle" th:text="#{name}">Name</th>
+                <th class="align-middle" th:text="#{active}">Active</th>
+                <th class="align-middle" th:text="#{action}">Action</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${internalDispatch.documents}" th:class="${entry.value} ? 'table-default' : 'table-danger'">
@@ -138,10 +142,10 @@
                         <a th:href="@{'/documents/showDocumentInfo/' + ${entry.key.id}}" th:target="_blank" th:text="${entry.key.decimalNumber}"></a>
                     </td>
                     <td class="align-middle" th:text="${entry.key.name}"></td>
-                    <td class="align-middle text-center" th:text="${entry.value}"></td>
+                    <td class="align-middle text-center" th:text="#{${entry.value ? 'yes' : 'no'}}"></td>
                     <td class="align-middle text-center">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/internaldispatches/removeDocument/' + ${internalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false">Remove</a>
+                           th:href="@{'/internaldispatches/removeDocument/' + ${internalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>
                 </tr>
             </tbody>
@@ -149,7 +153,7 @@
     </div>
 
     <div class="text-danger" th:if="${errorDeleteMessage != null}">
-        <h6 th:text="${errorDeleteMessage}"></h6>
+        <h6 th:text="#{internalDispatchErrorDeleteMessage}"></h6>
     </div>
 
 </div>
