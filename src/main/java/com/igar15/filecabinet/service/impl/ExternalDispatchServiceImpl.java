@@ -88,7 +88,7 @@ public class ExternalDispatchServiceImpl implements ExternalDispatchService {
     public String removeDocument(ExternalDispatch externalDispatch, int documentId) {
         String errorDeleteMessage = null;
         if (externalDispatch.getDocuments().size() == 1) {
-            errorDeleteMessage = "External dispatch can not exist without any documents!";
+            errorDeleteMessage = "External dispatch " + externalDispatch.getWaybill() + " can not exist without any documents!";
         }
         else {
             Document found = externalDispatch.getDocuments().keySet().stream()
