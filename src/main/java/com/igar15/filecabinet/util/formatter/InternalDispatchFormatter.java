@@ -2,6 +2,7 @@ package com.igar15.filecabinet.util.formatter;
 
 import com.igar15.filecabinet.entity.InternalDispatch;
 import com.igar15.filecabinet.repository.InternalDispatchRepository;
+import com.igar15.filecabinet.service.InternalDispatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
@@ -13,11 +14,11 @@ import java.util.Locale;
 public class InternalDispatchFormatter implements Formatter<InternalDispatch> {
 
     @Autowired
-    private InternalDispatchRepository internalDispatchRepository;
+    private InternalDispatchService internalDispatchService;
 
     @Override
     public InternalDispatch parse(String s, Locale locale) throws ParseException {
-        return internalDispatchRepository.findById(Integer.valueOf(s)).orElse(null);
+        return internalDispatchService.findById(Integer.parseInt(s));
     }
 
     @Override

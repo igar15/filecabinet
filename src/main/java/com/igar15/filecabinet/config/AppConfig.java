@@ -1,4 +1,4 @@
-package com.igar15.filecabinet.util;
+package com.igar15.filecabinet.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
