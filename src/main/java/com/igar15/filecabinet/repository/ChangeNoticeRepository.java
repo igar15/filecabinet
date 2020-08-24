@@ -8,6 +8,7 @@ import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,12 +28,16 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
 
     List<ChangeNotice> findAllByDepartment_Id(int departmentId);
 
+    @EntityGraph(attributePaths = "department")
     Page<ChangeNotice> findAllByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
 
+    @EntityGraph(attributePaths = "department")
     Page<ChangeNotice> findAllByChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
+    @EntityGraph(attributePaths = "department")
     Page<ChangeNotice> findAllByDepartment_NameAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, LocalDate after, LocalDate before, Pageable pageable);
 
+    @EntityGraph(attributePaths = "department")
     Page<ChangeNotice> findAllByDepartment_NameAndChangeCodeAndIssueDateGreaterThanEqualAndIssueDateLessThanEqual(String department, Integer changeCode, LocalDate after, LocalDate before, Pageable pageable);
 
     @Query("select size(c.documents) from ChangeNotice c where c.id=:id")

@@ -11,4 +11,7 @@ public class AppConfig {
     public SpringDataDialect springDataDialect() {
         return new SpringDataDialect();
     }
+
+
+
 }
