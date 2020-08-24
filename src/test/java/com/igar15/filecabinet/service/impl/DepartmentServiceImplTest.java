@@ -4,13 +4,14 @@ import com.igar15.filecabinet.entity.Department;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static com.igar15.filecabinet.DepartmentTestData.*;
@@ -19,6 +20,15 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        cacheManager.getCache("departments").clear();
+    }
+
 
     @Test
     void create() {
@@ -77,7 +87,7 @@ class DepartmentServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void findAllByCanTakeAlbums() {
+    public void findAllByCanTakeAlbums() {
         List<Department> departments = departmentService.findAllByCanTakeAlbums(true);
         Assertions.assertEquals(DEPARTMENTS_ALL_CAN_TAKE_ALBUMS, departments);
     }
