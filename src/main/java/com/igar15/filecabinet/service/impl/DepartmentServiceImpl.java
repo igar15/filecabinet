@@ -21,7 +21,6 @@ import java.util.List;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
-    private static final Logger log = LoggerFactory.getLogger(DepartmentServiceImpl.class);
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -32,7 +31,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @CacheEvict(value = "departments", allEntries = true)
     public Department create(Department department) {
-        log.debug("Department Service >> Creating department {}", department);
         Assert.notNull(department, "department must not be null");
         return departmentRepository.save(department);
     }
@@ -40,14 +38,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Cacheable("departments")
     public Department findById(int id) {
-        log.debug("Department Service >> Finding department by Id {}", id);
         return ValidationUtil.checkNotFoundWithId(departmentRepository.findById(id).orElse(null), id);
     }
 
     @Override
     @Cacheable("departments")
     public Department findByName(String name) {
-        log.debug("Department Service >> Finding department by Name {}", name);
         if (name == null) {
             throw new NotFoundException("Department with null name not found");
         }
@@ -57,35 +53,30 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Cacheable("departments")
     public List<Department> findAll() {
-        log.debug("Department Service >> Finding all departments");
         return departmentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Override
     @Cacheable("departments")
     public Page<Department> findAll(Pageable pageable) {
-        log.debug("Department Service >> Finding all departments with pagination {}", pageable);
         return departmentRepository.findAll(pageable);
     }
 
     @Override
     @Cacheable("departments")
     public List<Department> findAllByCanTakeAlbums(boolean canTakeAlbums) {
-        log.debug("Department Service >> Finding all departments by CanTakeAlbums {}", canTakeAlbums);
         return departmentRepository.findAllByCanTakeAlbums(canTakeAlbums);
     }
 
     @Override
     @Cacheable("departments")
     public List<Department> findAllByIsDeveloper(boolean isDeveloper) {
-        log.debug("Department Service >> Finding all departments by IsDeveloper {}", isDeveloper);
         return departmentRepository.findAllByIsDeveloper(isDeveloper);
     }
 
     @Override
     @CacheEvict(value = "departments", allEntries = true)
     public void update(Department department) {
-        log.debug("Department Service >> Updating department {}", department);
         Assert.notNull(department, "department must not be null");
         ValidationUtil.checkNotFoundWithId(departmentRepository.save(department), department.id());
     }
@@ -93,7 +84,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @CacheEvict(value = "departments", allEntries = true)
     public void deleteById(int id) {
-        log.debug("Department Service >> Deleting department by Id {}", id);
         Department found = departmentRepository.findById(id).orElse(null);
         ValidationUtil.checkNotFoundWithId(found, id);
         departmentRepository.deleteById(id);
