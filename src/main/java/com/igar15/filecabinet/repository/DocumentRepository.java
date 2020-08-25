@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.Document;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -23,24 +24,27 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     Optional<Document> findByDecimalNumber(String decimalNumber);
 
-
-//    @EntityGraph(attributePaths = {"changeNotices"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select d from Document d left join fetch d.changeNotices where d.id=:id")
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
+    @Query("select d from Document d left join fetch d.changeNotices c left join fetch c.department  where d.id=:id")
     Optional<Document> findByIdWithChangeNotices(@Param("id") int id);
 
     @Query("select d from Document d left join fetch d.changeNotices where d.decimalNumber=:decimalNumber")
     Optional<Document> findByDecimalNumberWithChangeNotices(@Param("decimalNumber") String decimalNumber);
 
-    @Query("select d from Document d left join fetch d.externalDispatches where d.id=:id")
+    @Query("select d from Document d left join fetch d.department left join fetch d.originalHolder left join fetch d.externalDispatches where d.id=:id")
     Optional<Document> findByIdWithExternalDispatches(@Param("id") int id);
 
-    @Query("select d from Document d left join fetch d.internalDispatches where d.id=:id")
+    @Query("select d from Document d left join fetch d.department left join fetch d.originalHolder left join fetch d.internalDispatches where d.id=:id")
     Optional<Document> findByIdWithInternalDispatches(@Param("id") int id);
 
-    @Query("select d from Document d left join fetch d.applicabilities where d.id=:id")
+//    @EntityGraph(attributePaths = {"department", "originalHolder"})
+    @Query("select d from Document d left join fetch d.department left join fetch d.originalHolder left join fetch d.applicabilities a left join fetch a.department where d.id=:id")
     Optional<Document> findByIdWithApplicabilities(@Param("id") int id);
 
     List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);
+
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
+    Page<Document> findAll(Example example, Pageable pageable);
 
     @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);
@@ -48,10 +52,10 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByDepartment_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName,
                                                                                                     LocalDate after, LocalDate before, Pageable pageable);
-
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String originalHolderName,
                                                                                                          LocalDate after, LocalDate before, Pageable pageable);
-
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
     Page<Document> findAllByDepartment_NameAndOriginalHolder_NameAndReceiptDateGreaterThanEqualAndReceiptDateLessThanEqual(String departmentName, String originalHolderName,
                                                                                                                           LocalDate after, LocalDate before, Pageable pageable);
     @Transactional

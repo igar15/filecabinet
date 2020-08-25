@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.enums.Stamp;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,15 +19,21 @@ import java.util.Optional;
 
 public interface InternalDispatchRepository extends JpaRepository<InternalDispatch, Integer> {
 
+    @EntityGraph(attributePaths = "dispatchHandler")
     @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id")
     Optional<InternalDispatch> findByIdWithDocuments(@Param("id") int id);
 
     @Query("select i from InternalDispatch i left join fetch i.documents where i.id=:id and i.isAlbum=:isAlbum")
     Optional<InternalDispatch> findByIdAndIsAlbumWithDocuments(@Param("id") int id, @Param("isAlbum") boolean isAlbum);
 
+    @EntityGraph(attributePaths = "dispatchHandler")
     Page<InternalDispatch> findAllByIsAlbumAndIsActive(boolean isAlbum, boolean isActive, Pageable pageable);
 
+    @EntityGraph(attributePaths = "dispatchHandler")
     Page<InternalDispatch> findAllByAlbumNameContainsIgnoreCaseAndIsActive(String albumName, boolean isActive, Pageable pageable);
+
+    @EntityGraph(attributePaths = "dispatchHandler")
+    Page<InternalDispatch> findAll(Pageable pageable);
 
     @Query("select i from InternalDispatch i join i.documents d where ?1 in (key(d))")
     Page<InternalDispatch> findAllByDocumentId(int documentId, Pageable pageable);

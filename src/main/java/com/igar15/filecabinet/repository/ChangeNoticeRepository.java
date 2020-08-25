@@ -6,6 +6,7 @@ import com.igar15.filecabinet.entity.Department;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -27,6 +28,9 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
     Optional<ChangeNotice> findByName(String name);
 
     List<ChangeNotice> findAllByDepartment_Id(int departmentId);
+
+    @EntityGraph(attributePaths = "department")
+    Page<ChangeNotice> findAll(Example example, Pageable pageable);
 
     @EntityGraph(attributePaths = "department")
     Page<ChangeNotice> findAllByIssueDateGreaterThanEqualAndIssueDateLessThanEqual(LocalDate after, LocalDate before, Pageable pageable);

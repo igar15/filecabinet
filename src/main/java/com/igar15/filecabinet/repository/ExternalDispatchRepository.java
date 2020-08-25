@@ -5,6 +5,7 @@ import com.igar15.filecabinet.entity.ExternalDispatch;
 import com.igar15.filecabinet.entity.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,7 @@ public interface ExternalDispatchRepository extends JpaRepository<ExternalDispat
     @Query(value = "select ex from ExternalDispatch ex left join fetch ex.company", countQuery = "select count(ex) from ExternalDispatch ex left join ex.company")
     Page<ExternalDispatch> findAllWithCompany(Pageable pageable);
 
+    @EntityGraph(attributePaths = "company")
     @Query("select ex from ExternalDispatch ex left join fetch ex.documents where ex.id=:id")
     Optional<ExternalDispatch> findByIdWithDocuments(@Param("id") int id);
 
