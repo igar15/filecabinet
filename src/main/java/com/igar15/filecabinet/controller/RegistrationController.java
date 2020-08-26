@@ -38,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping("user/register")
-    public String registerUser(@Valid User user, BindingResult result, HttpServletRequest request) {
+    public String registerUser(@Valid User user, BindingResult result, HttpServletRequest request, Model model) {
         if (result.hasErrors()) {
             return "registrationPage";
         }
@@ -47,6 +47,8 @@ public class RegistrationController {
 
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
+            model.addAttribute("emailMessage", "We sent confirmation-letter to your email. Please confirm it.");
+
         } catch (EmailExistsException e) {
             result.addError(new FieldError("user", "email", e.getMessage()));
             return "registrationPage";

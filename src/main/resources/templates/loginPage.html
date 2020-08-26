@@ -22,6 +22,7 @@
 
     <div th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}" class="alert alert-danger">Login Error</div>
     <div th:if="${message}" th:text="${message}" class="alert alert-success">Message</div>
+    <div th:if="${emailMessage}" th:text="${emailMessage}" class="alert alert-info">Email sending message</div>
     <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger">Error Message</div>
     <div th:if="${param.logout}" class="alert alert-danger">You have been logged out.</div>
 
