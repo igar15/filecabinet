@@ -9,6 +9,9 @@
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+
     <title th:text="#{index.page.title}"></title>
 
     <style>
@@ -46,6 +49,9 @@
 <br><br>
 
     <div class="container">
+        <a th:href="@{/logout}" class="pull-right">Logout</a>
+
+
         <div class="row mb-5">
             <div class="col-md-12">
                 <h2 class="font-weight-bold text-center" th:text="#{index.headline}">NTC "NIEMI" File Cabinet</h2>

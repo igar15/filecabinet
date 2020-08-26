@@ -8,6 +8,7 @@ delete from change_notices;
 delete from documents;
 delete from departments;
 delete from companies;
+delete from users;
 alter sequence global_seq restart with 1000;
 
 insert into departments (name, chief_name, description, workers_amount, is_developer, can_take_albums)

@@ -8,6 +8,7 @@ drop table if exists change_notices;
 drop table if exists documents;
 drop table if exists departments;
 drop table if exists companies;
+drop table if exists users;
 drop sequence if exists global_seq;
 
 create sequence global_seq start with 1000;
@@ -129,4 +130,12 @@ create table document_internal_dispatches (
     foreign key (document_id) references documents(id) on delete cascade,
     foreign key (internal_dispatch_id) references internal_dispatches (id) on delete cascade
 );
+
+create table users (
+    id integer primary key default nextval('global_seq'),
+    email varchar not null,
+    password varchar not null,
+    created date not null
+);
+create unique index users_email_idx on users (email);
 
