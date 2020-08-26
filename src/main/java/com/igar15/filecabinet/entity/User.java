@@ -36,7 +36,13 @@ public class User extends AbstractBaseEntity {
     @Column(name = "created")
     private LocalDateTime created = LocalDateTime.now();
 
+    @Column(name = "enabled")
+    private Boolean enabled;
 
+    public User() {
+        super();
+        enabled = false;
+    }
 
     public String getEmail() {
         return email;
@@ -68,5 +74,13 @@ public class User extends AbstractBaseEntity {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
