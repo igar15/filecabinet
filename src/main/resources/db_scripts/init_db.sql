@@ -135,7 +135,7 @@ create table users (
     id integer primary key default nextval('global_seq'),
     email varchar not null,
     password varchar not null,
-    created date not null
+    created timestamp not null
 );
 create unique index users_email_idx on users (email);
 

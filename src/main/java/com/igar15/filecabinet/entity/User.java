@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @PasswordMatches
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 public class User extends AbstractBaseEntity {
 
     @Email
-    @NotBlank(message = "Email is required.")
+    @NotEmpty(message = "Email is required.")
     @Column(name = "email")
     private String email;
 

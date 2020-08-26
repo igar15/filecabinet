@@ -28,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/user/register")
-    public String registerUser(@Valid User user, BindingResult result) {
+    public String registerUser(@Valid final User user, BindingResult result) {
         if (result.hasErrors()) {
             return "registrationPage";
         }
@@ -40,6 +40,7 @@ public class RegistrationController {
         }
         return "redirect:/login";
     }
+
 
 
 
