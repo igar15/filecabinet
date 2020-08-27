@@ -1,10 +1,13 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.PasswordResetToken;
+import com.igar15.filecabinet.entity.SecurityQuestion;
 import com.igar15.filecabinet.entity.User;
 import com.igar15.filecabinet.entity.VerificationToken;
 import com.igar15.filecabinet.registration.OnRegistrationCompleteEvent;
 import com.igar15.filecabinet.repository.PasswordResetTokenRepository;
+import com.igar15.filecabinet.repository.SecurityQuestionDefinitionRepository;
+import com.igar15.filecabinet.repository.SecurityQuestionRepository;
 import com.igar15.filecabinet.service.UserService;
 import com.igar15.filecabinet.util.exception.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,32 +42,55 @@ public class RegistrationController {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private SecurityQuestionDefinitionRepository securityQuestionDefinitionRepository;
+
+    @Autowired
+    private SecurityQuestionRepository securityQuestionRepository;
+
 
 
 
     @GetMapping("/signup")
     public String registrationForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
         return "registrationPage";
     }
 
     @PostMapping("user/register")
-    public String registerUser(@Valid User user, BindingResult result, HttpServletRequest request, Model model) {
+    public String registerUser(@Valid User user,
+                               @RequestParam("questionId") Integer questionId,
+                               @RequestParam("answer") String answer,
+                               BindingResult result,
+                               HttpServletRequest request,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
+            model.addAttribute("questionId", questionId);
+            model.addAttribute("answer", answer);
             return "registrationPage";
         }
         try {
             User registered = userService.registerNewUser(user);
 
+            securityQuestionDefinitionRepository.findById(questionId)
+                    .ifPresent(securityQuestionDefinition -> securityQuestionRepository.save(new SecurityQuestion(user, securityQuestionDefinition, answer)));
+
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
-            model.addAttribute("emailMessage", "We sent confirmation-letter to your email. Please confirm it.");
-
         } catch (EmailExistsException e) {
             result.addError(new FieldError("user", "email", e.getMessage()));
+            model.addAttribute("user", user);
+            model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
+            model.addAttribute("questionId", questionId);
+            model.addAttribute("answer", answer);
             return "registrationPage";
         }
-        return "loginPage";
+        redirectAttributes.addFlashAttribute("message", "You should receive a confirmation email shortly");
+        return "redirect:/login";
     }
 
     @GetMapping("/registrationConfirm")
@@ -139,6 +164,7 @@ public class RegistrationController {
         }
 
         model.addAttribute("token", token);
+        model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
         return "resetPassword";
     }
 
@@ -146,12 +172,15 @@ public class RegistrationController {
     public String savePassword(@RequestParam("password") String password,
                                @RequestParam("passwordConfirmation") String passwordConfirmation,
                                @RequestParam("token") String token,
+                               @RequestParam("questionId") Integer questionId,
+                               @RequestParam("answer") String answer,
                                RedirectAttributes redirectAttributes,
                                Model model) {
 
         if (!password.equals(passwordConfirmation)) {
             model.addAttribute("errorMessage", "Passwords do not match");
             model.addAttribute("token", token);
+            model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
             return "resetPassword";
         }
 
@@ -163,6 +192,12 @@ public class RegistrationController {
             if (user == null) {
                 redirectAttributes.addFlashAttribute("message", "Unknown user");
             } else {
+                if (securityQuestionRepository.findByQuestionDefinitionIdAndUserIdAndAnswer(questionId, user.getId(), answer) == null) {
+                    model.addAttribute("errorMessage", "Answer to security question is incorrect");
+                    model.addAttribute("token", token);
+                    model.addAttribute("questions", securityQuestionDefinitionRepository.findAll());
+                    return "resetPassword";
+                }
                 userService.changeUserPassword(user, password);
                 redirectAttributes.addFlashAttribute("message", "Password reset successfully");
             }
