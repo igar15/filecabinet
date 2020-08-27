@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,11 +59,11 @@ public class RegistrationController {
         return "registrationPage";
     }
 
-    @PostMapping("user/register")
+    @PostMapping("/user/register")
     public String registerUser(@Valid User user,
-                               @RequestParam("questionId") Integer questionId,
-                               @RequestParam("answer") String answer,
                                BindingResult result,
+                               @RequestParam(name = "questionId") Integer questionId,
+                               @RequestParam(name = "answer") String answer,
                                HttpServletRequest request,
                                RedirectAttributes redirectAttributes,
                                Model model) {
@@ -77,7 +78,7 @@ public class RegistrationController {
             User registered = userService.registerNewUser(user);
 
             securityQuestionDefinitionRepository.findById(questionId)
-                    .ifPresent(securityQuestionDefinition -> securityQuestionRepository.save(new SecurityQuestion(user, securityQuestionDefinition, answer)));
+                    .ifPresent(questionDefinition -> securityQuestionRepository.save(new SecurityQuestion(user, questionDefinition, answer)));
 
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
@@ -92,6 +93,7 @@ public class RegistrationController {
         redirectAttributes.addFlashAttribute("message", "You should receive a confirmation email shortly");
         return "redirect:/login";
     }
+
 
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(Model model, @RequestParam("token") String token, RedirectAttributes redirectAttributes) {

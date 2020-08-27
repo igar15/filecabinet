@@ -3,6 +3,7 @@ package com.igar15.filecabinet.entity;
 
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
 import com.igar15.filecabinet.util.validation.PasswordMatches;
+import com.igar15.filecabinet.util.validation.ValidPassword;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ public class User extends AbstractBaseEntity {
     @Column(name = "email")
     private String email;
 
+    @ValidPassword
     @NotBlank(message = "Password is required.")
     @Column(name = "password")
     private String password;

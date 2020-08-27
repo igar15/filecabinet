@@ -33,7 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**").permitAll()
                 .antMatchers("/signup",
                         "/user/register",
                         "/registrationConfirm*",
@@ -41,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/forgotPassword*",
                         "/user/resetPassword*",
                         "/user/changePassword*",
-                        "/user/savePassword*").permitAll()
+                        "/user/savePassword*",
+                        "/css/**",
+                        "/js/**").permitAll()
                 .antMatchers("/**/delete/**").hasAnyRole("OTD-WORKER", "ADMIN")
                 .anyRequest().authenticated()
 

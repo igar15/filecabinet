@@ -59,6 +59,14 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+
+<!--		 Password Validation -->
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 <!--				security-->
 
 		<dependency>
