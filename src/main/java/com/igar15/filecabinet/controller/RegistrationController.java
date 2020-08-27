@@ -1,26 +1,29 @@
 package com.igar15.filecabinet.controller;
 
+import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
 import com.igar15.filecabinet.entity.VerificationToken;
 import com.igar15.filecabinet.registration.OnRegistrationCompleteEvent;
+import com.igar15.filecabinet.repository.PasswordResetTokenRepository;
 import com.igar15.filecabinet.service.UserService;
 import com.igar15.filecabinet.util.exception.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.UUID;
 
 @Controller
 public class RegistrationController {
@@ -30,6 +33,15 @@ public class RegistrationController {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private Environment env;
+
+
+
 
     @GetMapping("/signup")
     public String registrationForm(Model model) {
@@ -79,6 +91,98 @@ public class RegistrationController {
         redirectAttributes.addFlashAttribute("message", "Your account verified successfully");
         return "redirect:/login";
     }
+
+    @GetMapping("/forgotPassword")
+    public String showForgotPasswordPage() {
+        return "forgotPassword";
+    }
+
+    @PostMapping("/user/resetPassword")
+    public String resetPassword(HttpServletRequest request,
+                                @RequestParam("email") String userEmail,
+                                RedirectAttributes redirectAttributes) {
+        User user = userService.findUserByEmail(userEmail);
+        if (user != null) {
+            String token = UUID.randomUUID().toString();
+            userService.createPasswordResetTokenForUser(user, token);
+            final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            final SimpleMailMessage email = constructResetTokenEmail(appUrl, token, user);
+            mailSender.send(email);
+        }
+        redirectAttributes.addFlashAttribute("message", "You should receive an Password Reset Email shortly");
+        return "redirect:/login";
+    }
+
+    @GetMapping("/user/changePassword")
+    public String showChangePasswordPage(@RequestParam("id") int id,
+                                         @RequestParam("token") String token,
+                                         RedirectAttributes redirectAttributes,
+                                         Model model) {
+        PasswordResetToken passToken = userService.getPasswordResetToken(token);
+        if (passToken == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Invalid password reset token");
+            return "redirect:/login";
+        }
+        User user = passToken.getUser();
+        if (user.getId() != id) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Invalid password reset token");
+            return "redirect:/login";
+        }
+
+        final Calendar cal = Calendar.getInstance();
+        if ((passToken.getExpiryDate()
+                .getTime()
+                - cal.getTime()
+                .getTime()) <= 0) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Your password reset token has expired");
+            return "redirect:/login";
+        }
+
+        model.addAttribute("token", token);
+        return "resetPassword";
+    }
+
+    @PostMapping("/user/savePassword")
+    public String savePassword(@RequestParam("password") String password,
+                               @RequestParam("passwordConfirmation") String passwordConfirmation,
+                               @RequestParam("token") String token,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
+
+        if (!password.equals(passwordConfirmation)) {
+            model.addAttribute("errorMessage", "Passwords do not match");
+            model.addAttribute("token", token);
+            return "resetPassword";
+        }
+
+        PasswordResetToken p = userService.getPasswordResetToken(token);
+        if (p == null) {
+            redirectAttributes.addFlashAttribute("message", "Invalid token");
+        } else {
+            User user = p.getUser();
+            if (user == null) {
+                redirectAttributes.addFlashAttribute("message", "Unknown user");
+            } else {
+                userService.changeUserPassword(user, password);
+                redirectAttributes.addFlashAttribute("message", "Password reset successfully");
+            }
+        }
+        return "redirect:/login";
+    }
+
+
+    private SimpleMailMessage constructResetTokenEmail(final String contextPath, final String token, final User user) {
+        final String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+        final SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setSubject("Reset Password");
+        email.setText("Please open the following URL to reset your password: \r\n" + url);
+        email.setFrom(env.getProperty("support.email"));
+        return email;
+    }
+
+
+
 
 
 

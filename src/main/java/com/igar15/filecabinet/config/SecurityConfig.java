@@ -34,7 +34,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
-                .antMatchers("/signup", "/user/register", "/registrationConfirm*", "badUser*").permitAll()
+                .antMatchers("/signup",
+                        "/user/register",
+                        "/registrationConfirm*",
+                        "/badUser*",
+                        "/forgotPassword*",
+                        "/user/resetPassword*",
+                        "/user/changePassword*",
+                        "/user/savePassword*").permitAll()
                 .antMatchers("/**/delete/**").hasAnyRole("OTD-WORKER", "ADMIN")
                 .anyRequest().authenticated()
 

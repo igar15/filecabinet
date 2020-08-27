@@ -8,6 +8,7 @@ drop table if exists change_notices;
 drop table if exists documents;
 drop table if exists departments;
 drop table if exists companies;
+drop table if exists password_reset_tokens;
 drop table if exists verification_tokens;
 drop table if exists users;
 drop sequence if exists global_seq;
@@ -142,6 +143,14 @@ create table users (
 create unique index users_email_idx on users (email);
 
 create table verification_tokens (
+    id integer primary key default nextval('global_seq'),
+    token varchar not null,
+    user_id integer not null,
+    expiry_date timestamp not null,
+    foreign key (user_id) references users (id)
+);
+
+create table password_reset_tokens (
     id integer primary key default nextval('global_seq'),
     token varchar not null,
     user_id integer not null,

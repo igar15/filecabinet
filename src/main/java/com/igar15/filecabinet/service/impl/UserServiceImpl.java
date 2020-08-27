@@ -1,7 +1,9 @@
 package com.igar15.filecabinet.service.impl;
 
+import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
 import com.igar15.filecabinet.entity.VerificationToken;
+import com.igar15.filecabinet.repository.PasswordResetTokenRepository;
 import com.igar15.filecabinet.repository.UserRepository;
 import com.igar15.filecabinet.repository.VerificationTokenRepository;
 import com.igar15.filecabinet.service.UserService;
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,8 +52,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(passwordResetToken);
+    }
+
+    @Override
+    public void changeUserPassword(final User user, final String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Override
     public VerificationToken getVerificationToken(final String token) {
         return verificationTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public PasswordResetToken getPasswordResetToken(String token) {
+        return passwordResetTokenRepository.findByToken(token);
     }
 
     @Override
