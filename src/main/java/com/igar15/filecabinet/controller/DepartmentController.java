@@ -5,6 +5,7 @@ import com.igar15.filecabinet.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +26,14 @@ public class DepartmentController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured("ROLE_ADMIN")
     public String showAddForm(Model model) {
         model.addAttribute("department", new Department());
         return "/departments/department-form";
     }
 
     @PostMapping("/save")
+    @Secured("ROLE_ADMIN")
     public String save(@Validated Department department, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/departments/department-form";
@@ -45,6 +48,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured("ROLE_ADMIN")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("department", departmentService.findById(id));
         return "/departments/department-form";
@@ -57,6 +61,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public String delete(@PathVariable("id") int id) {
         departmentService.deleteById(id);
         return "redirect:/departments/list";
