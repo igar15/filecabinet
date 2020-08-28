@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <<meta charset="UTF-8">
 
@@ -32,7 +32,15 @@
                 <a class="nav-item nav-link" href="#" th:href="@{/internaldispatches/list/albums}">Albums</a>
             </div>
         </div>
-        <a class="nav pull-right" th:href="@{/logout}">Logout</a>
+        <ul class="nav pull-right">
+            <li>
+                <a th:href="@{/profile}" class="nav-link" > Hi, <span sec:authentication="principal.username">Bob</span> </a>
+            </li>
+            <li>
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+
+        </ul>
     </nav>
 </div>
 

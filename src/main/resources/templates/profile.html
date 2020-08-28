@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+
+Current user name:
+<span sec:authentication="principal.username">John</span>
+
+<br/>
+Current user name 2: <span sec:authentication="name">John</span>
+
+<br/>
+<br/>
+Current user roles:
+<span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+
+<br/>
+Current user roles 2:
+<span sec:authentication="authorities">[ROLE_USER, ROLE_ADMIN]</span>
+
+</body>
+</html>

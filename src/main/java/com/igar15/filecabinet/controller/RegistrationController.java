@@ -119,11 +119,6 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
-    @GetMapping("/forgotPassword")
-    public String showForgotPasswordPage() {
-        return "forgotPassword";
-    }
-
     @PostMapping("/user/resetPassword")
     public String resetPassword(HttpServletRequest request,
                                 @RequestParam("email") String userEmail,
