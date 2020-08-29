@@ -26,8 +26,7 @@ public class UserController {
         Page<User> users = null;
         if (email == null) {
             users = userService.findAll(pageable);
-        }
-        else {
+        } else {
             users = userService.findAllByEmail(email, pageable);
         }
 
@@ -74,6 +73,12 @@ public class UserController {
         return "redirect:/users/list";
     }
 
-
-
+    @GetMapping("/changeStatus/{id}")
+    public String changeStatus(@PathVariable("id") int id, Model model) {
+        User user = userService.findById(id);
+        user.setEnabled(!user.getEnabled());
+        userService.changeStatus(user);
+        model.addAttribute("user", user);
+        return "users/user-info";
+    }
 }

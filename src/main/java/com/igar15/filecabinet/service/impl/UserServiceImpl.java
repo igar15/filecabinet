@@ -71,6 +71,21 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public void changeStatus(User user) {
+        userRepository.changeStatus(user.getEnabled(), user.getId());
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
