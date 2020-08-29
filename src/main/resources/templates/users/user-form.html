@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title th:text="#{${user.isNew() ? 'saveUserFormTitle' : 'updateUserFormTitle'}}">Save User</title>
+</head>
+<body>
+
+    <div class="container" th:replace="fragments/menu :: menu">
+        <p>menu</p>
+    </div>
+
+    <div class="container">
+
+        <br><br>
+
+        <h3 th:text="#{userDirectory}">User Directory</h3>
+
+        <hr>
+
+        <p class="h4 mb-3 offset-sm-3" th:text="#{userCard}">User Card</p>
+
+        <form class="form-horizontal" th:object="${user}" th:action="@{/users/save}" method="post">
+
+            <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
+                <p th:text="#{pleaseCorrectValues}">Error Message</p>
+            </div>
+
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{created}">
+            <input type="hidden" th:field="*{enabled}">
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6 th:text="#{email} + ':'" class="pull-right">Email:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{email}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('email')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6 th:text="#{password} + ':'" class="pull-right">Password:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{password}"/>
+<!--                    <span class="help-block" th:if="${#fields.hasErrors('password')}">-->
+<!--                        <div th:each="err : ${#fields.errors('password')}">-->
+<!--                            <div th:switch="${err}">-->
+<!--                                <ul>-->
+<!--                                    <li class="text-danger" th:case="'1'" th:text="#{tooShortPass}"/>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </span>-->
+                    <span class="help-block" th:if="${#fields.hasErrors('password')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6 th:text="#{passwordConfirmation} + ':'" class="pull-right">Password confirmation:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <input type="password" th:field="*{passwordConfirmation}" th:class="${#fields.hasErrors('passwordConfirmation')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{passwordConfirmation}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('passwordConfirmation')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('passwordConfirmation')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+<!--            <div class="row mb-3">-->
+<!--                <div class="col-sm-2 form-control-plaintext offset-sm-1">-->
+<!--                    <h6 th:text="#{role} + ':'" class="pull-right">Role:</h6>-->
+<!--                </div>-->
+<!--                <div class="col-sm-5">-->
+<!--                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('role')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">-->
+<!--                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Role).values()}" th:field="*{role}">-->
+<!--                            <input type="radio" th:field="*{role}" th:value="${radioValue}"/>-->
+<!--                            <label class="btn-sm btn-light" th:for="${#ids.prev('role')}" th:text="${radioValue}"></label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <span class="help-block" th:if="${#fields.hasErrors('role')}">-->
+<!--                        <ul>-->
+<!--                            <li class="text-danger" th:each="err : ${#fields.errors('role')}" th:text="${err}"/>-->
+<!--                        </ul>-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="row mb-3">
+                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                    <h6 th:text="#{role} + ':'" class="pull-right">Role:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <select class="form-control selectpicker" th:field="*{role}">
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
+                        <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Role).values()}"
+                                th:value="${dropValue}"
+                                th:text="${dropValue}">
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('role')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('role')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${user.isNew() ? 'create'  : 'update'}}">Save</button>
+            </div>
+
+            <br><br>
+        </form>
+    </div>
+
+
+</body>
+</html>

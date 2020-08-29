@@ -104,3 +104,6 @@ values (1029, 'What is the last name of the teacher who gave you your first fail
        (1032, 'When you were young, what did you want to be when you grew up?'),
        (1033, 'Where were you New Year''s 2000?'),
        (1034, 'Who was your childhood hero?');
+
+insert into users (id, email, password, created, enabled, role)
+values (1035, '123', '$2y$12$aVl6v4hnF1xUsUVQD3iZSu3Nrm4Q9jRcyCoaNfQVzAu7DA9Dca.gm', '2020-08-29', true, 'ROLE_ADMIN');

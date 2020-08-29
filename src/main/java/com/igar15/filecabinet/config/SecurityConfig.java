@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/savePassword*",
                         "/css/**",
                         "/js/**").permitAll()
-                .antMatchers("/**/delete/**").hasAnyRole("OTD-WORKER", "ADMIN")
+//                .antMatchers("/**/delete/**").hasAnyRole("OTD-WORKER", "ADMIN")
                 .anyRequest().authenticated()
 
                 .and()

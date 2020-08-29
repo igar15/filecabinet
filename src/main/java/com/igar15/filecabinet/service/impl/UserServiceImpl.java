@@ -8,7 +8,11 @@ import com.igar15.filecabinet.repository.UserRepository;
 import com.igar15.filecabinet.repository.VerificationTokenRepository;
 import com.igar15.filecabinet.service.UserService;
 import com.igar15.filecabinet.util.exception.EmailExistsException;
+import com.igar15.filecabinet.util.exception.NotFoundException;
+import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +35,41 @@ public class UserServiceImpl implements UserService {
 
     //
 
+
     @Override
-    public User findUserByEmail(final String email) {
-        return userRepository.findByEmail(email);
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
+
+    @Override
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByEmail(final String email) {
+        if (email == null) {
+            throw new NotFoundException("User with null email not found");
+        }
+        return ValidationUtil.checkNotFound(userRepository.findByEmail(email).orElse(null), email);
+    }
+
+    @Override
+    public User findById(int id) {
+        return ValidationUtil.checkNotFoundWithId(userRepository.findById(id).orElse(null), id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        ValidationUtil.checkNotFoundWithId(userRepository.findById(id).orElse(null), id);
+        userRepository.deleteById(id);
+    }
+
+
+
+
+
 
     @Override
     public User registerNewUser(final User user) throws EmailExistsException {
@@ -81,7 +116,7 @@ public class UserServiceImpl implements UserService {
     //
 
     private boolean emailExist(final String email) {
-        final User user = userRepository.findByEmail(email);
+        final User user = userRepository.findByEmail(email).orElse(null);
         return user != null;
     }
 
@@ -89,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public User updateExistingUser(User user) throws EmailExistsException {
         final Integer id = user.getId();
         final String email = user.getEmail();
-        final User emailOwner = userRepository.findByEmail(email);
+        final User emailOwner = userRepository.findByEmail(email).orElse(null);
 
         if (emailOwner != null && !id.equals(emailOwner.getId())) {
             throw new EmailExistsException("Email not available.");

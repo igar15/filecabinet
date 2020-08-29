@@ -16,8 +16,17 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
    public boolean isValid(final Object obj, final ConstraintValidatorContext context) {
       final User user = (User) obj;
       if (user.getPassword() == null) return true;
-      return user.getPassword()
+      boolean isPasswordsMatches = user.getPassword()
               .equals(user.getPasswordConfirmation());
+      if (isPasswordsMatches) {
+         return true;
+      }
+      else {
+         context.disableDefaultConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Passwords do not match").addPropertyNode("passwordConfirmation").addConstraintViolation();
+         context.buildConstraintViolationWithTemplate("Passwords do not match").addPropertyNode("password").addConstraintViolation();
+         return false;
+      }
    }
 
 }

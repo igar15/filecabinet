@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title th:text="#{listOfUsers}">List of Users</title>
+</head>
+<body>
+
+    <div class="container" th:replace="fragments/menu :: menu">
+        <p>menu</p>
+    </div>
+
+    <div class="container">
+
+        <br><br>
+
+        <h3 th:text="#{listOfUsers}">List of Users</h3>
+
+        <hr>
+
+        <a th:href="@{/users/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{addUser}">Add User</a>
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <tr>
+                <th><a class="sorted text-light" sd:pagination-sort="email" th:text="#{email}">Email</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="created" th:text="#{creationDate}">Creation date</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="enabled" th:text="#{status}">Status</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="role" th:text="#{role}">Role</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tempUser : ${users}">
+                <td class="align-middle text-center">
+                    <a th:href="@{'/users/showUserInfo/' + ${tempUser.id}}" th:text="${tempUser.email}"></a>
+                </td>
+                <td class="align-middle text-center" th:text="${#temporals.format(tempUser.created, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <td class="align-middle text-center" th:text="#{${tempUser.enabled ? 'enabled' : 'disabled'}}"></td>
+                <td class="align-middle text-center" th:text="${tempUser.role}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <span th:text="#{showEntries}"></span> <span sd:page-size-selector="javascript"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div sd:pagination-summary="">info</div>
+            </div>
+            <div class="col-sm-6">
+                <nav class="pull-right">
+                    <ul class="pagination" sd:pagination-split="5" sd:pagination="full">
+                        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

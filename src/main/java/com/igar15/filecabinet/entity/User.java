@@ -2,26 +2,27 @@ package com.igar15.filecabinet.entity;
 
 
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
+import com.igar15.filecabinet.entity.enums.Role;
+import com.igar15.filecabinet.util.validation.EmailNotDuplicate;
 import com.igar15.filecabinet.util.validation.PasswordMatches;
 import com.igar15.filecabinet.util.validation.ValidPassword;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@EmailNotDuplicate
 @PasswordMatches
 @Entity
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
     @Email
-    @NotEmpty(message = "Email is required.")
+    @NotBlank(message = "Email name is required.")
     @Column(name = "email")
     private String email;
 
@@ -41,9 +42,14 @@ public class User extends AbstractBaseEntity {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
     public User() {
         super();
-        enabled = false;
+        enabled = true;
     }
 
     public String getEmail() {
@@ -84,5 +90,13 @@ public class User extends AbstractBaseEntity {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

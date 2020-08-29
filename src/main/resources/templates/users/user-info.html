@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title th:text="#{userInfo}">User info</title>
+</head>
+<body>
+
+    <div class="container" th:replace="fragments/menu :: menu">
+        <p>menu</p>
+    </div>
+
+    <div class="container">
+
+        <br><br>
+
+        <h3 th:text="#{userDirectory}">User Directory</h3>
+
+        <hr>
+
+        <p class="h4 mb-4" th:text="${user.email} + ' ' + #{information}"></p>
+
+        <div th:object="${user}">
+
+            <div class="row px-3">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{email} + ':'">Email:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{email}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{creationDate} + ':'">Creation date:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="${#temporals.format(user.created, 'dd-MM-yyyy HH:mm:ss')}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{status} + ':'">Status:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{${user.enabled ? 'enabled' : 'disabled'}}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3 mb-1">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{role} + ':'">Role:</h6>
+                </div>
+                <div class="col-sm-3 text-break border">
+                    <h6 th:text="*{role}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-5">
+                <div class="col-sm-3">
+
+                </div>
+                <div class="col-sm-3 text-right">
+                    <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
+                    <a th:href="@{'/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1"
+                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

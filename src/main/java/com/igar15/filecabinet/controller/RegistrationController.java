@@ -123,7 +123,7 @@ public class RegistrationController {
     public String resetPassword(HttpServletRequest request,
                                 @RequestParam("email") String userEmail,
                                 RedirectAttributes redirectAttributes) {
-        User user = userService.findUserByEmail(userEmail);
+        User user = userService.findByEmail(userEmail);
         if (user != null) {
             String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);

@@ -10,9 +10,9 @@ drop table if exists departments;
 drop table if exists companies;
 drop table if exists password_reset_tokens;
 drop table if exists verification_tokens;
-drop table if exists users;
 drop table if exists security_questions;
 drop table if exists security_question_definitions;
+drop table if exists users;
 drop sequence if exists global_seq;
 
 create sequence global_seq start with 1000;
@@ -140,7 +140,8 @@ create table users (
     email varchar not null,
     password varchar not null,
     created timestamp not null,
-    enabled boolean not null
+    enabled boolean not null,
+    role varchar not null
 );
 create unique index users_email_idx on users (email);
 

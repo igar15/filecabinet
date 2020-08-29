@@ -18,21 +18,19 @@ import java.util.List;
 @Transactional
 public class FileCabinetUserDetailService implements UserDetailsService {
 
-    private static final String ROLE_USER = "ROLE_USER";
-
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("No user found with username: " + email);
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, true, getAuthorities(ROLE_USER));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, true, getAuthorities(user));
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(String roleUser) {
-        return List.of(new SimpleGrantedAuthority(roleUser));
+    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        return List.of(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 }
