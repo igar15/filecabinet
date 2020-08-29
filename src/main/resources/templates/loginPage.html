@@ -12,46 +12,46 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <title>Login Page</title>
+    <title th:text="#{loginPage}">Login Page</title>
 
 </head>
 <body>
 
 <div class="container">
-    <h1>Login page</h1>
+    <h1 th:text="#{loginPage}">Login page</h1>
 
-    <div th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}" class="alert alert-danger">Login Error</div>
+    <div th:if="${param.error}" class="alert alert-danger" th:text="#{invalidNameAndPass}">Invalid username and password.</div>
     <div th:if="${message}" th:text="${message}" class="alert alert-success">Message</div>
     <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger">Error Message</div>
-    <div th:if="${param.logout}" class="alert alert-danger">You have been logged out.</div>
+    <div th:if="${param.logout}" class="alert alert-danger" th:text="#{loggedOut}">You have been logged out.</div>
 
 
     <form th:action="@{/goLogin}" method="post" class="form-horizontal">
         <div class="form-group">
-            <label class="control-label col-xs-2" for="username"> User Name: </label>
+            <label class="control-label col-xs-2" for="username" th:text="#{email} + ':'"> Email: </label>
 
             <div class="col-xs-10">
                 <input id="username" type="text" name="username"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-xs-2" for="password"> Password: </label>
+            <label class="control-label col-xs-2" for="password" th:text="#{password} + ':'"> Password: </label>
 
             <div class="col-xs-10">
                 <input id="password" type="password" name="password"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-xs-2" for="remember"> Remember Me? </label>
+            <label class="control-label col-xs-2" for="remember" th:text="#{rememberMe}"> Remember Me? </label>
             <div class="col-xs-10">
                 <input id="remember" type="checkbox" name="remember" value="true" />
             </div>
         </div>
         <div class="form-actions col-xs-offset-2 col-xs-10">
-            <input type="submit" class="btn btn-primary" value="Sign In"/>
-            <a th:href="@{/signup}" class="btn btn-secondary">Sign Up</a>
+            <button type="submit" class="btn btn-primary" th:text="#{signIn}"/>
+            <a th:href="@{/signup}" class="btn btn-secondary" th:text="#{signUp}">Sign Up</a>
             <br><br>
-            <a th:href="@{/forgotPassword}">Reset Password</a>
+            <a th:href="@{/forgotPassword}" th:text="#{resetPassword}">Reset Password</a>
 
         </div>
     </form>
