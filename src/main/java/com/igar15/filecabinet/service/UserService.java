@@ -45,5 +45,5 @@ public interface UserService {
     void saveRegisteredUser(User user);
 
 
-
+    Page<User> findAllByEmail(String email, Pageable pageable);
 }
