@@ -131,7 +131,7 @@ public class UserController {
                                         RedirectAttributes redirectAttributes,
                                         Model model) {
         if (!password.equals(passwordConfirmation)) {
-            model.addAttribute("errorMessage", "Passwords do not match");
+            model.addAttribute("notMatches", "Passwords do not match");
             return "users/user-change-password-form";
         }
 
@@ -221,7 +221,7 @@ public class UserController {
                                Model model) {
 
         if (!password.equals(passwordConfirmation)) {
-            model.addAttribute("errorMessage", "Passwords do not match");
+            model.addAttribute("notMatches", "Passwords do not match");
             model.addAttribute("token", token);
             return "changePassword";
         }
