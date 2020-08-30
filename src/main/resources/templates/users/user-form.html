@@ -9,9 +9,9 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
-    <script th:src="@{/js/pwstrength.js}"></script>
-
     <script th:src="@{/js/jquery-1.7.2.js}"></script>
+
+    <script th:src="@{/js/pwstrength.js}"></script>
 
     <title th:text="#{${user.isNew() ? 'saveUserFormTitle' : 'updateUserFormTitle'}}">Save User</title>
 </head>
@@ -181,19 +181,19 @@
                 function() {
                     options = {
                         common : {
-                            minChar : 8
+                            minChar : 4
                         },
                         ui : {
                             showVerdictsInsideProgressBar : true,
                             showErrors : true,
                             errorMessages : {
                                 wordLength : 'Your password is too short',
-                                wordNotEmail : 'Do not use your email as your password',
-                                wordSequences : 'Your password contains sequences',
-                                wordLowercase : 'Use lower case characters',
-                                wordUppercase : 'Use upper case characters',
-                                wordOneNumber : 'Use numbers',
-                                wordOneSpecialChar : 'Use special characters: [~!@#$%^&amp;*,_?]'
+                                wordNotEmail : 'Do not use your email as your password'
+                                // wordSequences : 'Your password contains sequences',
+                                // wordLowercase : 'Use lower case characters',
+                                // wordUppercase : 'Use upper case characters',
+                                // wordOneNumber : 'Use numbers',
+                                // wordOneSpecialChar : 'Use special characters: [~!@#$%^&amp;*,_?]'
                             }
                         }
                     };
