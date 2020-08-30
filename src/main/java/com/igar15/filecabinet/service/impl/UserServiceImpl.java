@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
         userRepository.updateUserWithoutPassword(user.getName(), user.getEmail(), user.getDepartment(), user.getRole(), user.getId());
     }
 
+    @Override
+    public void updateUserPassword(int id, String password) {
+        userRepository.updateUserPassword(passwordEncoder.encode(password), id);
+    }
+
 
 
 

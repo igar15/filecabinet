@@ -86,10 +86,11 @@
             </div>
 
             <div class="row px-5">
-                <div class="col-sm-2">
+                <div class="col-sm-1">
 
                 </div>
-                <div class="col-sm-4 text-right">
+                <div class="col-sm-5 text-right">
+                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{resetPassword}">Reset password</a>
                     <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                     <a th:href="@{'/users/changeStatus/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1" th:text="#{${user.enabled ? 'ban' : 'unBan'}}">Ban/Unban</a>
                     <a th:href="@{'/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1"

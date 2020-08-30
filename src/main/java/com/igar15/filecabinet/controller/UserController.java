@@ -113,6 +113,28 @@ public class UserController {
         return "redirect:/users/showUserInfo/" + user.getId();
     }
 
+    @GetMapping("/showFormForChangePassword/{id}")
+    public String showFormForChangePassword(@PathVariable("id") int id) {
+        return "users/user-change-password-form";
+    }
+
+    @PostMapping("/changePasswordForUser/{id}")
+    public String changePasswordForUser(@PathVariable("id") int id,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("passwordConfirmation") String passwordConfirmation,
+                                        RedirectAttributes redirectAttributes,
+                                        Model model) {
+        if (!password.equals(passwordConfirmation)) {
+            model.addAttribute("errorMessage", "Passwords do not match");
+            return "users/user-change-password-form";
+        }
+        userService.updateUserPassword(id, password);
+        return "redirect:/users/showUserInfo/" + id;
+    }
+
+
+
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.deleteById(id);

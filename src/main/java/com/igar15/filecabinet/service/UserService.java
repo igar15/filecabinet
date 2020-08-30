@@ -47,4 +47,6 @@ public interface UserService {
     void changeStatus(User user);
 
     void updateWithoutPassword(User user);
+
+    void updateUserPassword(int id, String password);
 }
