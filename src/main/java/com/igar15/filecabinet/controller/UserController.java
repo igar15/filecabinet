@@ -44,6 +44,9 @@ public class UserController {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private PasswordValidator passwordValidator;
+
 
     @GetMapping("/list")
     public String showAll(@RequestParam(value = "email", required = false) String email,
@@ -239,13 +242,12 @@ public class UserController {
 
 
     private String validPassword(String password) {
-        PasswordValidator validator = new PasswordValidator(Arrays.asList(new LengthRule(4, 30), new WhitespaceRule()));
-        RuleResult result = validator.validate(new PasswordData(password));
+        RuleResult result = passwordValidator.validate(new PasswordData(password));
         if (result.isValid()) {
             return "Password reset successfully";
         }
         StringBuilder stringBuilder = new StringBuilder();
-        validator.getMessages(result).forEach(message -> stringBuilder.append(message).append("\n"));
+        passwordValidator.getMessages(result).forEach(message -> stringBuilder.append(message).append("\n"));
         return stringBuilder.toString();
     }
 
