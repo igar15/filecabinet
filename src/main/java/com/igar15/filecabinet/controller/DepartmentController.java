@@ -61,7 +61,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/delete/{id}")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @Secured("ROLE_ADMIN")
     public String delete(@PathVariable("id") int id) {
         departmentService.deleteById(id);
         return "redirect:/departments/list";

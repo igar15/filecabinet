@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -26,7 +26,9 @@
 
         <hr>
 
-        <a th:href="@{/departments/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{departments.addNew}">Add Department</a>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/departments/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{departments.addNew}">Add Department</a>
+        </div>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
