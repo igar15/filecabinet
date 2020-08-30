@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
 
-    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <meta charset="UTF-8">
 
-    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
 
 
     <title th:text="#{index.page.title}"></title>
@@ -41,16 +43,34 @@
 </head>
 <body>
 
-<!--<div class="jumbotron" th:replace="fragments/jumbotron :: jumbotron">-->
-<!--    <div class="container">-->
-<!--        <h1>Spring Framework Guru</h1>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="container">
+
+    <nav class="navbar navbar-expand navbar-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <ul class="nav-item dropdown ml-auto">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">
+                Dropdown link
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#" th:href="@{'/users/showUserInfoByEmail/' + ${#authentication.name}}" th:text="#{userInfo}">User info</a>
+                <a class="dropdown-item" href="#" th:href="@{/logout}" th:text="#{logout}">Logout</a>
+            </div>
+        </ul>
+    </nav>
+
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/css/bootstrap-4.5.0-dist/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
+
+
+</div>
+
 <br><br>
 
     <div class="container">
-        <a th:href="@{/logout}" class="pull-right">Logout</a>
-
 
         <div class="row mb-5">
             <div class="col-md-12">
