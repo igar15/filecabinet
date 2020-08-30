@@ -9,9 +9,6 @@ drop table if exists documents;
 drop table if exists departments;
 drop table if exists companies;
 drop table if exists password_reset_tokens;
-drop table if exists verification_tokens;
-drop table if exists security_questions;
-drop table if exists security_question_definitions;
 drop table if exists users;
 drop sequence if exists global_seq;
 
@@ -145,14 +142,6 @@ create table users (
 );
 create unique index users_email_idx on users (email);
 
-create table verification_tokens (
-    id integer primary key default nextval('global_seq'),
-    token varchar not null,
-    user_id integer not null,
-    expiry_date timestamp not null,
-    foreign key (user_id) references users (id)
-);
-
 create table password_reset_tokens (
     id integer primary key default nextval('global_seq'),
     token varchar not null,
@@ -160,20 +149,3 @@ create table password_reset_tokens (
     expiry_date timestamp not null,
     foreign key (user_id) references users (id)
 );
-
-create table security_question_definitions (
-    id integer primary key default nextval('global_seq'),
-    text varchar not null
-);
-
-create table security_questions (
-    id integer primary key default nextval('global_seq'),
-    user_id integer not null ,
-    question_definition_id integer not null,
-    answer varchar not null,
-    foreign key (user_id) references users (id),
-    foreign key (question_definition_id) references security_question_definitions (id)
-);
-create unique index security_questions_user_id_question_definition_id on security_questions (user_id, question_definition_id);
-
-

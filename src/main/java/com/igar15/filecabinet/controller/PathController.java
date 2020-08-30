@@ -2,7 +2,6 @@ package com.igar15.filecabinet.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class PathController {
@@ -12,9 +11,9 @@ public class PathController {
         return "loginPage";
     }
 
-    @GetMapping("/forgotPassword")
-    public String showForgotPasswordPage() {
-        return "forgotPassword";
+    @GetMapping("/resetPassword")
+    public String showResetPasswordPage() {
+        return "resetPassword";
     }
 
     @GetMapping("/profile")

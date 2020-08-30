@@ -2,10 +2,8 @@ package com.igar15.filecabinet.service.impl;
 
 import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
-import com.igar15.filecabinet.entity.VerificationToken;
 import com.igar15.filecabinet.repository.PasswordResetTokenRepository;
 import com.igar15.filecabinet.repository.UserRepository;
-import com.igar15.filecabinet.repository.VerificationTokenRepository;
 import com.igar15.filecabinet.service.UserService;
 import com.igar15.filecabinet.util.exception.EmailExistsException;
 import com.igar15.filecabinet.util.exception.NotFoundException;
@@ -24,8 +22,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     PasswordResetTokenRepository passwordResetTokenRepository;
@@ -100,11 +96,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public void createVerificationTokenForUser(final User user, final String token) {
-        final VerificationToken myToken = new VerificationToken(token, user);
-        verificationTokenRepository.save(myToken);
-    }
 
     @Override
     public void createPasswordResetTokenForUser(User user, String token) {
@@ -118,10 +109,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Override
-    public VerificationToken getVerificationToken(final String token) {
-        return verificationTokenRepository.findByToken(token);
-    }
 
     @Override
     public PasswordResetToken getPasswordResetToken(String token) {

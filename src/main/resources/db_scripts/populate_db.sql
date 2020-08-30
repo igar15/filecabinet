@@ -8,11 +8,8 @@ delete from change_notices;
 delete from documents;
 delete from departments;
 delete from companies;
-delete from verification_tokens;
 delete from password_reset_tokens;
-delete from security_questions;
 delete from users;
-delete from security_question_definitions;
 alter sequence global_seq restart with 1000;
 
 insert into departments (name, chief_name, description, workers_amount, is_developer, can_take_albums)
@@ -96,14 +93,6 @@ values (1009, 1026, true),
        (1012, 1027, true),
        (1013, 1027, true),
        (1014, 1028, true);
-
-insert into security_question_definitions (id, text)
-values (1029, 'What is the last name of the teacher who gave you your first failing grade?'),
-       (1030, 'What is the first name of the person you first kissed?'),
-       (1031, 'What is the name of the place your wedding reception was held?'),
-       (1032, 'When you were young, what did you want to be when you grew up?'),
-       (1033, 'Where were you New Year''s 2000?'),
-       (1034, 'Who was your childhood hero?');
 
 insert into users (id, email, password, created, enabled, role)
 values (1035, '123', '$2y$12$aVl6v4hnF1xUsUVQD3iZSu3Nrm4Q9jRcyCoaNfQVzAu7DA9Dca.gm', '2020-08-29', true, 'ROLE_ADMIN');

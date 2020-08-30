@@ -39,10 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/register",
                         "/registrationConfirm*",
                         "/badUser*",
-                        "/forgotPassword*",
-                        "/user/resetPassword*",
-                        "/user/changePassword*",
-                        "/user/savePassword*",
+                        "/resetPassword*",
+                        "/users/resetPassword*",
+                        "/users/changePassword*",
+                        "/users/savePassword*",
                         "/css/**",
                         "/js/**").permitAll()
 //                .antMatchers("/**/delete/**").hasAnyRole("OTD-WORKER", "ADMIN")
