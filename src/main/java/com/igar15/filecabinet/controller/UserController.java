@@ -4,6 +4,7 @@ import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.UserService;
+import org.passay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -128,6 +130,12 @@ public class UserController {
             model.addAttribute("errorMessage", "Passwords do not match");
             return "users/user-change-password-form";
         }
+
+        String validPasswordMessage = validPassword(password);
+        if (!validPasswordMessage.equals("Password reset successfully")) {
+            model.addAttribute("errorMessage", validPasswordMessage);
+            return "users/user-change-password-form";
+        }
         userService.updateUserPassword(id, password);
         return "redirect:/users/showUserInfo/" + id;
     }
@@ -216,13 +224,30 @@ public class UserController {
             if (user == null) {
                 redirectAttributes.addFlashAttribute("message", "Unknown user");
             } else {
-                userService.changeUserPassword(user, password);
-                redirectAttributes.addFlashAttribute("message", "Password reset successfully");
+                String validPasswordMessage = validPassword(password);
+                if (!validPasswordMessage.equals("Password reset successfully")) {
+                    model.addAttribute("errorMessage", validPasswordMessage);
+                    model.addAttribute("token", token);
+                    return "changePassword";
+                }
+                    userService.changeUserPassword(user, password);
+                    redirectAttributes.addFlashAttribute("message", validPasswordMessage);
             }
         }
         return "redirect:/login";
     }
 
+
+    private String validPassword(String password) {
+        PasswordValidator validator = new PasswordValidator(Arrays.asList(new LengthRule(4, 30), new WhitespaceRule()));
+        RuleResult result = validator.validate(new PasswordData(password));
+        if (result.isValid()) {
+            return "Password reset successfully";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        validator.getMessages(result).forEach(message -> stringBuilder.append(message).append("\n"));
+        return stringBuilder.toString();
+    }
 
 
 
