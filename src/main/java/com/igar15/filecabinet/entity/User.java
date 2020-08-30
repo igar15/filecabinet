@@ -26,6 +26,15 @@ public class User extends AbstractBaseEntity {
     @Column(name = "email")
     private String email;
 
+    @NotBlank
+    @Column(name = "name")
+    private String name;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
     @ValidPassword
     @NotBlank(message = "Password is required.")
     @Column(name = "password")
@@ -98,5 +107,21 @@ public class User extends AbstractBaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

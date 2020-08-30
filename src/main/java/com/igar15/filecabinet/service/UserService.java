@@ -45,4 +45,6 @@ public interface UserService {
     Page<User> findAllByEmail(String email, Pageable pageable);
 
     void changeStatus(User user);
+
+    void updateWithoutPassword(User user);
 }

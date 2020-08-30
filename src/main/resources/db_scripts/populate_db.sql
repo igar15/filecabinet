@@ -6,10 +6,10 @@ delete from internal_dispatches;
 delete from document_change_notices;
 delete from change_notices;
 delete from documents;
-delete from departments;
-delete from companies;
 delete from password_reset_tokens;
 delete from users;
+delete from departments;
+delete from companies;
 alter sequence global_seq restart with 1000;
 
 insert into departments (name, chief_name, description, workers_amount, is_developer, can_take_albums)
@@ -94,5 +94,5 @@ values (1009, 1026, true),
        (1013, 1027, true),
        (1014, 1028, true);
 
-insert into users (id, email, password, created, enabled, role)
-values (1035, '123', '$2y$12$aVl6v4hnF1xUsUVQD3iZSu3Nrm4Q9jRcyCoaNfQVzAu7DA9Dca.gm', '2020-08-29', true, 'ROLE_ADMIN');
+insert into users (id, email, name, department_id, password, created, enabled, role)
+values (1035, 'igar15@yandex.ru', 'Shlyakhtenkov Igor', 1004, '$2y$12$xkbP.LsqRdXHl2tf9gGYheGVgcf7mJrArAQskGLCp0AsK.XXwTHg6', '2020-08-29', true, 'ROLE_ADMIN');

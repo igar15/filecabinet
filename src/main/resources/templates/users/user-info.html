@@ -27,9 +27,18 @@
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${user.email} + ' ' + #{information}"></p>
+        <p class="h4 mb-4" th:text="${user.name} + ' ' + #{information}"></p>
 
         <div th:object="${user}">
+
+            <div class="row px-3">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{userName} + ':'">User name:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{name}"></h6>
+                </div>
+            </div>
 
             <div class="row px-3">
                 <div class="col-sm-3 border">
@@ -37,6 +46,15 @@
                 </div>
                 <div class="col-sm-3 border">
                     <h6 th:text="*{email}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{department} + ':'">Department:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <h6 th:text="*{department.name}"></h6>
                 </div>
             </div>
 

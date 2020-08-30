@@ -6,10 +6,10 @@ drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
 drop table if exists change_notices;
 drop table if exists documents;
-drop table if exists departments;
-drop table if exists companies;
 drop table if exists password_reset_tokens;
 drop table if exists users;
+drop table if exists departments;
+drop table if exists companies;
 drop sequence if exists global_seq;
 
 create sequence global_seq start with 1000;
@@ -135,10 +135,13 @@ create table document_internal_dispatches (
 create table users (
     id integer primary key default nextval('global_seq'),
     email varchar not null,
+    name varchar not null,
+    department_id integer not null,
     password varchar not null,
     created timestamp not null,
     enabled boolean not null,
-    role varchar not null
+    role varchar not null,
+    foreign key (department_id) references departments (id)
 );
 create unique index users_email_idx on users (email);
 

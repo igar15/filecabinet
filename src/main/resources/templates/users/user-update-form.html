@@ -27,7 +27,7 @@
 
         <p class="h4 mb-3 offset-sm-3" th:text="#{userCard}">User Card</p>
 
-        <form class="form-horizontal" th:object="${user}" th:action="@{/users/save}" method="post">
+        <form class="form-horizontal" th:object="${user}" th:action="@{/users/updateWithoutPassword}" method="post">
 
             <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
                 <p th:text="#{pleaseCorrectValues}">Error Message</p>
@@ -67,43 +67,6 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{password} + ':'" class="pull-right">Password:</h6>
-                </div>
-                <div class="col-sm-5">
-                    <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{password}"/>
-<!--                    <span class="help-block" th:if="${#fields.hasErrors('password')}">-->
-<!--                        <div th:each="err : ${#fields.errors('password')}">-->
-<!--                            <div th:switch="${err}">-->
-<!--                                <ul>-->
-<!--                                    <li class="text-danger" th:case="'1'" th:text="#{tooShortPass}"/>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </span>-->
-                    <span class="help-block" th:if="${#fields.hasErrors('password')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{passwordConfirmation} + ':'" class="pull-right">Password confirmation:</h6>
-                </div>
-                <div class="col-sm-5">
-                    <input type="password" th:field="*{passwordConfirmation}" th:class="${#fields.hasErrors('passwordConfirmation')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{passwordConfirmation}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('passwordConfirmation')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('passwordConfirmation')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
                     <h6 class="pull-right" th:text="#{department} + ':'">Department:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -121,25 +84,6 @@
                     </span>
                 </div>
             </div>
-
-<!--            <div class="row mb-3">-->
-<!--                <div class="col-sm-2 form-control-plaintext offset-sm-1">-->
-<!--                    <h6 th:text="#{role} + ':'" class="pull-right">Role:</h6>-->
-<!--                </div>-->
-<!--                <div class="col-sm-5">-->
-<!--                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('role')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">-->
-<!--                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Role).values()}" th:field="*{role}">-->
-<!--                            <input type="radio" th:field="*{role}" th:value="${radioValue}"/>-->
-<!--                            <label class="btn-sm btn-light" th:for="${#ids.prev('role')}" th:text="${radioValue}"></label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <span class="help-block" th:if="${#fields.hasErrors('role')}">-->
-<!--                        <ul>-->
-<!--                            <li class="text-danger" th:each="err : ${#fields.errors('role')}" th:text="${err}"/>-->
-<!--                        </ul>-->
-<!--                    </span>-->
-<!--                </div>-->
-<!--            </div>-->
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">

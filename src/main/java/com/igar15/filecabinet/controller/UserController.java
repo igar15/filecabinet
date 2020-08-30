@@ -2,6 +2,7 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
+import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -12,14 +13,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -27,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -37,7 +45,7 @@ public class UserController {
 
     @GetMapping("/list")
     public String showAll(@RequestParam(value = "email", required = false) String email,
-                          @SortDefault("email") Pageable pageable,
+                          @SortDefault("name") Pageable pageable,
                           Model model) {
         Page<User> users = null;
         if (email == null) {
@@ -53,12 +61,14 @@ public class UserController {
     @GetMapping("/showAddForm")
     public String showAddForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("departments", departmentService.findAll());
         return "users/user-form";
     }
 
     @PostMapping("/save")
     public String save(@Validated User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("departments", departmentService.findAll());
             return "users/user-form";
         }
         userService.create(user);
@@ -80,7 +90,27 @@ public class UserController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        return "users/user-form";
+        model.addAttribute("departments", departmentService.findAll());
+        return "users/user-update-form";
+    }
+
+    @PostMapping("/updateWithoutPassword")
+    public String updateWithoutPassword(@Validated User user, BindingResult bindingResult, Model model) {
+        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
+                .filter(fer -> !fer.getField().equals("password")
+                        && !fer.getField().equals("passwordConfirmation"))
+                .collect(Collectors.toList());
+        bindingResult = new BeanPropertyBindingResult(user, "user");
+        for (FieldError fieldError : errorsToKeep) {
+            bindingResult.addError(fieldError);
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("departments", departmentService.findAll());
+            return "users/user-update-form";
+        }
+        userService.updateWithoutPassword(user);
+        return "redirect:/users/showUserInfo/" + user.getId();
     }
 
     @GetMapping("/delete/{id}")

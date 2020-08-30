@@ -41,7 +41,9 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
+                <th><a class="sorted text-light" sd:pagination-sort="name" th:text="#{userName}">User Name</a></th>
                 <th><a class="sorted text-light" sd:pagination-sort="email" th:text="#{email}">Email</a></th>
+                <th><a class="sorted text-light" sd:pagination-sort="department" th:text="#{department}">Department</a></th>
                 <th><a class="sorted text-light" sd:pagination-sort="created" th:text="#{creationDate}">Creation date</a></th>
                 <th><a class="sorted text-light" sd:pagination-sort="enabled" th:text="#{status}">Status</a></th>
                 <th><a class="sorted text-light" sd:pagination-sort="role" th:text="#{role}">Role</a></th>
@@ -50,8 +52,10 @@
             <tbody>
             <tr th:each="tempUser : ${users}">
                 <td class="align-middle text-center">
-                    <a th:href="@{'/users/showUserInfo/' + ${tempUser.id}}" th:text="${tempUser.email}"></a>
+                    <a th:href="@{'/users/showUserInfo/' + ${tempUser.id}}" th:text="${tempUser.name}"></a>
                 </td>
+                <td class="align-middle text-center" th:text="${tempUser.email}"></td>
+                <td class="align-middle text-center" th:text="${tempUser.department.name}"></td>
                 <td class="align-middle text-center" th:text="${#temporals.format(tempUser.created, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td class="align-middle text-center" th:text="#{${tempUser.enabled ? 'enabled' : 'disabled'}}"></td>
                 <td class="align-middle text-center" th:text="${tempUser.role}"></td>
