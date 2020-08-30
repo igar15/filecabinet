@@ -4,6 +4,7 @@ import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.UserService;
+import com.igar15.filecabinet.util.exception.NotFoundException;
 import org.passay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -165,15 +166,21 @@ public class UserController {
     public String resetPassword(HttpServletRequest request,
                                 @RequestParam("email") String userEmail,
                                 RedirectAttributes redirectAttributes) {
-        User user = userService.findByEmail(userEmail);
+        User user = null;
+        try {
+            user = userService.findByEmail(userEmail);
+        } catch (NotFoundException e) {
+            redirectAttributes.addFlashAttribute("notRegistered", "User with such email not registered");
+        }
+
         if (user != null) {
             String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);
             final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             final SimpleMailMessage email = constructResetTokenEmail(appUrl, token, user);
             mailSender.send(email);
+            redirectAttributes.addFlashAttribute("emailSent", "You should receive an Password Reset Email shortly");
         }
-        redirectAttributes.addFlashAttribute("message", "You should receive an Password Reset Email shortly");
         return "redirect:/login";
     }
 

@@ -22,10 +22,10 @@
     <h1 class="offset-3 px-3" th:text="#{loginPage}">Login page</h1>
     <br>
 
-    <div th:if="${param.error}" class="alert alert-danger col-sm-5 offset-3" th:text="#{invalidNameAndPass}">Invalid username and password.</div>
-    <div th:if="${message}" th:text="${message}" class="alert alert-success offset-3">Message</div>
-    <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger offset-3">Error Message</div>
-    <div th:if="${param.logout}" class="alert alert-danger offset-3" th:text="#{loggedOut}">You have been logged out.</div>
+    <div th:if="${param.error}" class="alert alert-danger col-sm-5 offset-3 text-center" th:text="#{invalidNameAndPass}">Invalid username and password.</div>
+    <div th:if="${emailSent}" th:text="#{emailSent}" class="alert alert-success col-sm-5 offset-3 text-center">Email Sent</div>
+    <div th:if="${notRegistered}" th:text="#{notRegistered}" class="alert alert-danger col-sm-5 offset-3 text-center">Not registered</div>
+    <div th:if="${param.logout}" class="alert alert-danger col-sm-5 offset-3 text-center" th:text="#{loggedOut}">You have been logged out.</div>
 
 
     <form th:action="@{/goLogin}" method="post">

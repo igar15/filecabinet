@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -90,7 +90,7 @@
 
                 </div>
                 <div class="col-sm-5 text-right">
-                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{resetPassword}">Reset password</a>
+                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{changePassword}">Change password</a>
                     <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
                     <a th:href="@{'/users/changeStatus/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1" th:text="#{${user.enabled ? 'ban' : 'unBan'}}">Ban/Unban</a>
                     <a th:href="@{'/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1"
