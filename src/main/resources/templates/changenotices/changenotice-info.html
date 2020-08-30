@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -14,11 +14,14 @@
     <title th:text="#{changeNoticeInfo}">Change notice Info</title>
 </head>
 <body>
+
+    <div class="container" th:replace="fragments/menu :: menu">
+        <p>menu</p>
+    </div>
+
     <div class="container">
 
-        <a th:href="@{/changenotices/list}" th:text="#{toListOfChangeNotices}">To List of Change notices</a>
-
-        <br><br>
+        <br>
 
         <h3 th:text="#{changeNoticeDirectory}">Change notice Directory</h3>
 

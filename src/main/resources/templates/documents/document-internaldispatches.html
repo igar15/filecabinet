@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -14,10 +14,15 @@
     <title th:text="#{internalDispatchesList}">Internal dispatches list</title>
 </head>
 <body>
-<div class="container">
-    <a th:href="@{'/documents/showDocumentInfo/' + ${id}}" th:text="#{backToDocumentInfo}">Back to Document info</a>
 
-    <br><br>
+    <div class="container" th:replace="fragments/menu :: menu">
+        <p>menu</p>
+    </div>
+
+
+<div class="container">
+
+    <br>
 
     <h3 th:text="#{documentDirectory}">Document Directory</h3>
 
