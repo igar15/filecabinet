@@ -156,7 +156,7 @@ public class UserController {
     @GetMapping("/changeStatus/{id}")
     public String changeStatus(@PathVariable("id") int id, Model model) {
         User user = userService.findById(id);
-        user.setEnabled(!user.getEnabled());
+        user.setNonLocked(!user.getNonLocked());
         userService.changeStatus(user);
         model.addAttribute("user", user);
         return "users/user-info";

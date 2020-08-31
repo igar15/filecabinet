@@ -6,6 +6,7 @@ import com.igar15.filecabinet.util.exception.EmailExistsException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -19,6 +20,8 @@ public interface UserService {
     User findById(int id);
 
     void deleteById(int id);
+
+    List<User> findAllByNonLocked(boolean nonLocked);
 
 
 

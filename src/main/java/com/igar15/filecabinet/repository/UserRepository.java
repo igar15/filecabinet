@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -30,8 +31,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-    @Query("update User u set u.enabled=:enabled where u.id=:id")
-    void changeStatus(@Param("enabled") boolean enabled, @Param("id") int id);
+    @Query("update User u set u.nonLocked=:nonLocked where u.id=:id")
+    void changeStatus(@Param("nonLocked") boolean nonLocked, @Param("id") int id);
 
     @Transactional
     @Modifying
@@ -42,4 +43,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Query("update User u set u.password=:password where u.id=:id")
     void updateUserPassword(@Param("password") String password, @Param("id") int id);
+
+    List<User> findAllByNonLocked(boolean nonLocked);
 }

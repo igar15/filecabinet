@@ -27,7 +27,7 @@ public class FileCabinetUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("No user found with username: " + email);
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, true, getAuthorities(user));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getEnabled(), true, true, user.getNonLocked(), getAuthorities(user));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {

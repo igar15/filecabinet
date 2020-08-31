@@ -57,7 +57,7 @@
                 <td class="align-middle text-center" th:text="${tempUser.email}"></td>
                 <td class="align-middle text-center" th:text="${tempUser.department.name}"></td>
                 <td class="align-middle text-center" th:text="${#temporals.format(tempUser.created, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                <td class="align-middle text-center" th:text="#{${tempUser.enabled ? 'enabled' : 'disabled'}}"></td>
+                <td class="align-middle text-center" th:text="#{${tempUser.nonLocked ? 'nonBanned' : 'banned'}}"></td>
                 <td class="align-middle text-center" th:text="${tempUser.role}"></td>
             </tr>
             </tbody>

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -35,6 +37,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<User> findAllByNonLocked(boolean nonLocked) {
+        return userRepository.findAllByNonLocked(nonLocked);
     }
 
     @Override
@@ -69,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeStatus(User user) {
-        userRepository.changeStatus(user.getEnabled(), user.getId());
+        userRepository.changeStatus(user.getNonLocked(), user.getId());
     }
 
     @Override
