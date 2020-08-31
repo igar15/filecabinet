@@ -10,12 +10,16 @@ import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,6 +28,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     PasswordResetTokenRepository passwordResetTokenRepository;
@@ -89,7 +95,29 @@ public class UserServiceImpl implements UserService {
         userRepository.updateUserPassword(passwordEncoder.encode(password), id);
     }
 
+    @Override
+    public Page<User> findAllActive(Pageable pageable, String email) {
+        Page<User> page = null;
 
+        final List<Object> principals = sessionRegistry.getAllPrincipals();
+        final org.springframework.security.core.userdetails.User[] users = principals.toArray(new org.springframework.security.core.userdetails.User[principals.size()]);
+
+        List<User> activeUsers = Arrays.stream(users)
+                .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
+                .map(u -> userRepository.findByEmail(u.getUsername()).orElse(null))
+                .collect(Collectors.toList());
+
+        if (email == null) {
+            page = new PageImpl<>(activeUsers, pageable, pageable.getOffset());
+        }
+        else {
+            List<User> activeUsersByEmail = activeUsers.stream()
+                    .filter(user -> user.getEmail().equals(email))
+                    .collect(Collectors.toList());
+            page = new PageImpl<>(activeUsersByEmail, pageable, pageable.getOffset());
+        }
+        return page;
+    }
 
 
 

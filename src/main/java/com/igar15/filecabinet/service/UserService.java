@@ -23,6 +23,8 @@ public interface UserService {
 
     List<User> findAllByNonLocked(boolean nonLocked);
 
+    Page<User> findAllActive(Pageable pageable, String email);
+
 
 
 

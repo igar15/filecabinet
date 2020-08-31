@@ -59,8 +59,17 @@ public class UserController {
         } else {
             users = userService.findAllByEmail(email, pageable);
         }
-
+        model.addAttribute("pageMark", "all");
         model.addAttribute("users", users);
+        return "users/user-list";
+    }
+
+    @GetMapping("/list/active")
+    public String showAllActive(@RequestParam(value = "email", required = false) String email,
+                                @SortDefault("name") Pageable pageable,
+                                Model model) {
+        model.addAttribute("users", userService.findAllActive(pageable, email));
+        model.addAttribute("pageMark", "active");
         return "users/user-list";
     }
 
