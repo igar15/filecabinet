@@ -140,6 +140,7 @@ create table users (
     password varchar not null,
     created timestamp not null,
     enabled boolean not null,
+    non_locked boolean not null,
     role varchar not null,
     foreign key (department_id) references departments (id)
 );

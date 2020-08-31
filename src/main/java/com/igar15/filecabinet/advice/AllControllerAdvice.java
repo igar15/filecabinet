@@ -14,11 +14,4 @@ public class AllControllerAdvice {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
-
-    @InitBinder
-    public void initBinderDecimalNumber(WebDataBinder webDataBinder) {
-        StringUpperCaseEditor stringUpperCaseEditor = new StringUpperCaseEditor();
-        webDataBinder.registerCustomEditor(String.class, "decimalNumber", stringUpperCaseEditor);
-        webDataBinder.registerCustomEditor(String.class, "name", stringUpperCaseEditor);
-    }
 }

@@ -2,6 +2,7 @@ package com.igar15.filecabinet.entity;
 
 
 import com.igar15.filecabinet.entity.abstracts.AbstractBaseEntity;
+import com.igar15.filecabinet.entity.abstracts.AbstractNamedEntity;
 import com.igar15.filecabinet.entity.enums.Role;
 import com.igar15.filecabinet.util.validation.EmailNotDuplicate;
 import com.igar15.filecabinet.util.validation.PasswordMatches;
@@ -19,16 +20,12 @@ import java.time.LocalDateTime;
 @PasswordMatches
 @Entity
 @Table(name = "users")
-public class User extends AbstractBaseEntity {
+public class User extends AbstractNamedEntity {
 
     @Email
     @NotBlank(message = "Email name is required.")
     @Column(name = "email")
     private String email;
-
-    @NotBlank
-    @Column(name = "name")
-    private String name;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +48,9 @@ public class User extends AbstractBaseEntity {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "non_locked")
+    private Boolean nonLocked;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -59,6 +59,7 @@ public class User extends AbstractBaseEntity {
     public User() {
         super();
         enabled = true;
+        nonLocked = true;
     }
 
     public String getEmail() {
@@ -109,19 +110,19 @@ public class User extends AbstractBaseEntity {
         this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Department getDepartment() {
         return department;
     }
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Boolean getNonLocked() {
+        return nonLocked;
+    }
+
+    public void setNonLocked(Boolean nonLocked) {
+        this.nonLocked = nonLocked;
     }
 }
