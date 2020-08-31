@@ -27,17 +27,18 @@
 
         <hr>
 
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-light bg-light justify-content-between">
             <form class="form-inline" th:action="${pageMark} == 'all' ? @{/users/list} : @{/users/list/active}" method="get">
                 <input class="form-control mr-sm-2" type="search" th:placeholder="#{search}" aria-label="Search" th:name="email" th:value="${param.email}">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{search}">Search</button>
             </form>
+            <a th:href="${pageMark} == 'all' ? @{/users/list/active} : @{/users/list}" class="btn btn-primary btn-sm" th:text="#{${pageMark == 'all' ? 'showActiveUsers' : 'showAll'}}">Show active users</a>
+
         </nav>
 
         <br>
 
         <a th:href="@{/users/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{addUser}">Add User</a>
-        <a th:href="${pageMark} == 'all' ? @{/users/list/active} : @{/users/list}" class="btn btn-primary btn-sm mb-3" th:text="#{${pageMark == 'all' ? 'showActiveUsers' : 'showAll'}}">Show active users</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
