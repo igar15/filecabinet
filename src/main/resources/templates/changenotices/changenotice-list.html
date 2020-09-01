@@ -27,7 +27,9 @@
 
         <hr>
 
-        <div class="container-fluid p-3 my-3 bg-dark text-white">
+        <a th:href="@{/changenotices/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{changenotices.addNew}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Add Change notice</a>
+
+        <div class="container-fluid p-3 bg-dark text-white">
             <form action="#" th:action="@{/changenotices/list}" method="get">
                 <div class="row mb-3">
                     <div class="col-sm-2">
@@ -67,10 +69,6 @@
                 </div>
             </form>
         </div>
-
-        <br><br>
-
-        <a th:href="@{/changenotices/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{changenotices.addNew}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Add Change notice</a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">

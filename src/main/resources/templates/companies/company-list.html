@@ -27,22 +27,15 @@
 
         <hr>
 
-        <div class="container-fluid p-3 my-3 bg-dark text-white">
-            <form action="#" th:action="@{/companies/list}" method="get">
-                <div class="row">
-                    <div class="col-sm-3 m-1">
-                        <input type="text" class="form-control" th:name="companyName" th:value="${param.companyName}" th:placeholder="#{companyName}">
-                    </div>
-                    <button type="submit" class="btn btn-info col-2 m-1" th:text="#{search}">Search</button>
-                    <a th:href="@{/companies/list}" class="btn btn-danger col-2 m-1" th:text="#{clearFilters}">Clear filters</a>
-                </div>
-            </form>
-        </div>
-
-        <br><br>
 
         <a th:href="@{/companies/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{companies.addNew}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Add Company</a>
 
+        <nav class="navbar navbar-light bg-dark">
+            <form class="form-inline" th:action="@{/companies/list}" method="get">
+                <input class="form-control mr-sm-2" type="search" th:placeholder="#{search}" aria-label="Search" th:name="companyName" th:value="${param.companyName}">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit" th:text="#{search}">Search</button>
+            </form>
+        </nav>
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
                 <tr>
