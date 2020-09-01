@@ -53,5 +53,5 @@ public interface UserService {
 
     void updateWithoutPassword(User user);
 
-    void updateUserPassword(int id, String password);
+    void updateUserPassword(String email, String password);
 }

@@ -2,6 +2,7 @@ package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.PasswordResetToken;
 import com.igar15.filecabinet.entity.User;
+import com.igar15.filecabinet.entity.enums.Role;
 import com.igar15.filecabinet.service.DepartmentService;
 import com.igar15.filecabinet.service.UserService;
 import com.igar15.filecabinet.util.exception.NotFoundException;
@@ -13,7 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -103,9 +108,13 @@ public class UserController {
     }
 
     @GetMapping("/showUserInfoByEmail/{email}")
-
-
     public String showUserInfo(@PathVariable("email") String email, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
+        if (!userEmail.equals(email) && !isAdmin) {
+            throw new AccessDeniedException("Access denied!");
+        }
         model.addAttribute("user", userService.findByEmail(email));
         return "users/user-info";
     }
@@ -138,21 +147,31 @@ public class UserController {
         return "redirect:/users/showUserInfo/" + user.getId();
     }
 
-    @GetMapping("/showFormForChangePassword/{id}")
-    public String showFormForChangePassword(@PathVariable("id") int id) {
-
-
-        return "users/user-change-password-form";
+    @GetMapping("/showFormForChangePassword/{email}")
+    public String showFormForChangePassword(@PathVariable("email") String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
+        if (userEmail.equals(email) || isAdmin) {
+            return "users/user-change-password-form";
+        }
+        else {
+            throw new AccessDeniedException("Access denied!");
+        }
     }
 
-    @PostMapping("/changePasswordForUser/{id}")
-    public String changePasswordForUser(@PathVariable("id") int id,
+    @PostMapping("/changePasswordForUser/{email}")
+    public String changePasswordForUser(@PathVariable("email") String email,
                                         @RequestParam("password") String password,
                                         @RequestParam("passwordConfirmation") String passwordConfirmation,
                                         RedirectAttributes redirectAttributes,
                                         Model model) {
-
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
+        if (!userEmail.equals(email) && !isAdmin) {
+            throw new AccessDeniedException("Access denied!");
+        }
 
         if (!password.equals(passwordConfirmation)) {
             model.addAttribute("notMatches", "Passwords do not match");
@@ -164,8 +183,8 @@ public class UserController {
             model.addAttribute("errorMessage", validPasswordMessage);
             return "users/user-change-password-form";
         }
-        userService.updateUserPassword(id, password);
-        return "redirect:/users/showUserInfo/" + id;
+        userService.updateUserPassword(email, password);
+        return "redirect:/users/showUserInfoByEmail/" + email;
     }
 
     @GetMapping("/delete/{id}")

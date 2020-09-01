@@ -41,8 +41,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-    @Query("update User u set u.password=:password where u.id=:id")
-    void updateUserPassword(@Param("password") String password, @Param("id") int id);
+    @Query("update User u set u.password=:password where u.email=:email")
+    void updateUserPassword(@Param("password") String password, @Param("email") String email);
 
     List<User> findAllByNonLocked(boolean nonLocked);
 }
