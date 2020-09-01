@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div class="row px-5">
+        <div class="row px-5" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
             <div class="col-sm-3">
 
             </div>
@@ -109,7 +109,7 @@
 
     <br><br>
 
-    <form th:action="@{'/internaldispatches/addDocument/' + ${internalDispatch.id}}" method="post">
+    <form th:action="@{'/internaldispatches/addDocument/' + ${internalDispatch.id}}" method="post" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
         <div class="row mb-3">
             <div class="col-sm-4">
                 <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocument" th:value="${errorMessage != null} ? ${param.newDocument} : ''" th:placeholder="#{decimalNumber}"/>
@@ -137,7 +137,7 @@
                 <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
                 <th class="align-middle" th:text="#{name}">Name</th>
                 <th class="align-middle" th:text="#{active}">Active</th>
-                <th class="align-middle" th:text="#{action}">Action</th>
+                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${internalDispatch.documents}" th:class="${entry.value} ? 'table-default' : 'table-danger'">
@@ -146,7 +146,7 @@
                     </td>
                     <td class="align-middle" th:text="${entry.key.name}"></td>
                     <td class="align-middle text-center" th:text="#{${entry.value ? 'yes' : 'no'}}"></td>
-                    <td class="align-middle text-center">
+                    <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                         <a class="btn btn-sm btn-outline-danger"
                            th:href="@{'/internaldispatches/removeDocument/' + ${internalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>

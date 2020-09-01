@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -28,7 +28,7 @@
 
     <hr>
 
-    <form th:action="@{'/documents/addApplicability/' + ${id}}" method="post">
+    <form th:action="@{'/documents/addApplicability/' + ${id}}" method="post" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
         <div class="row mb-1">
             <div class="col-sm-4">
                 <input type="text" th:class="${errorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newApplicability" th:value="${errorMessage != null} ? ${param.newApplicability} : ''" th:placeholder="#{applicabilityDecimalNumber}"/>
@@ -60,7 +60,7 @@
                 <tr>
                     <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
                     <th class="align-middle" th:text="#{name}">Name</th>
-                    <th class="align-middle" th:text="#{action}">Action</th>
+                    <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,7 +69,7 @@
                         <a th:href="@{'/documents/showDocumentInfo/' + ${tempApplicability.id}}"><span class="text-dark" th:text="${tempApplicability.decimalNumber}"/></a>
                     </td>
                     <td class="align-middle" th:text="${tempApplicability.name}"></td>
-                    <td class="align-middle">
+                    <td class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                         <a class="btn btn-sm btn-outline-danger"
                            th:href="@{'/documents/removeApplicability/' + ${id} + '/' + ${tempApplicability.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>

@@ -5,6 +5,7 @@ import com.igar15.filecabinet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +53,7 @@ public class DocumentController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showAddForm(Model model) {
         model.addAttribute("document", new Document());
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -60,6 +62,7 @@ public class DocumentController {
     }
 
     @PostMapping("/save")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String save(@Validated Document document, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -76,6 +79,7 @@ public class DocumentController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("document", documentService.findById(id));
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -84,6 +88,7 @@ public class DocumentController {
     }
 
     @GetMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String delete(@PathVariable("id") int id) {
         documentService.deleteById(id);
         return "redirect:/documents/list";
@@ -103,6 +108,7 @@ public class DocumentController {
     }
 
     @GetMapping("/removeChange/{id}/{changeId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String removeChange(@PathVariable("id") int id, @PathVariable("changeId") int changeId, Model model) {
         Document document = documentService.findByIdWithChangeNotices(id);
         String errorMessage = documentService.removeChange(document, changeId);
@@ -119,6 +125,7 @@ public class DocumentController {
     }
 
     @GetMapping("/deregisterExternal/{id}/{externalId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String deregisterExternal(@PathVariable("id") int id, @PathVariable("externalId") int externalId, Model model) {
         Document document = documentService.deregisterExternal(id, externalId);
         model.addAttribute("document", document);
@@ -133,6 +140,7 @@ public class DocumentController {
     }
 
     @GetMapping("/deregisterInternal/{id}/{internalId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String deregisterInternal(@PathVariable("id") int id, @PathVariable("internalId") int internalId, Model model) {
         Document document = documentService.deregisterInternal(id, internalId);
         model.addAttribute("document", document);
@@ -140,6 +148,7 @@ public class DocumentController {
     }
 
     @GetMapping("/deregisterAlbum/{id}/{internalId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String deregisterAlbum(@PathVariable("id") int id,
                                   @PathVariable("internalId") int internalId) {
         documentService.deregisterAlbum(id, internalId);
@@ -153,6 +162,7 @@ public class DocumentController {
     }
 
     @GetMapping("/removeApplicability/{id}/{applicabilityId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String removeApplicability(@PathVariable("id") int id, @PathVariable("applicabilityId") int applicabilityId, Model model) {
         Document document = documentService.removeApplicability(id, applicabilityId);
         model.addAttribute("document", document);
@@ -160,6 +170,7 @@ public class DocumentController {
     }
 
     @PostMapping("/addApplicability/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String addApplicability(@PathVariable("id") int id,
                                    @RequestParam(name = "newApplicability") String newApplicability,
                                    Model model) {
@@ -171,6 +182,7 @@ public class DocumentController {
     }
 
     @GetMapping("/deregisterExternalWithIncomings/{id}/{externalId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String deregisterExternalWithIncomings(@PathVariable("id") int id,
                                                   @PathVariable("externalId") int externalId,
                                                   Model model) {

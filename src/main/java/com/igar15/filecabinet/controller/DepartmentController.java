@@ -26,14 +26,14 @@ public class DepartmentController {
     }
 
     @GetMapping("/showAddForm")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showAddForm(Model model) {
         model.addAttribute("department", new Department());
         return "/departments/department-form";
     }
 
     @PostMapping("/save")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String save(@Validated Department department, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/departments/department-form";
@@ -48,7 +48,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("department", departmentService.findById(id));
         return "/departments/department-form";
@@ -61,7 +61,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/delete/{id}")
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String delete(@PathVariable("id") int id) {
         departmentService.deleteById(id);
         return "redirect:/departments/list";

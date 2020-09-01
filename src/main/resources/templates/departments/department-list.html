@@ -26,7 +26,7 @@
 
         <hr>
 
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
             <a th:href="@{/departments/showAddForm}" class="btn btn-primary btn-sm mb-3" th:text="#{departments.addNew}">Add Department</a>
         </div>
 

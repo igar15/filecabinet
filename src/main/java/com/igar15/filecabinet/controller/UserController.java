@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -50,6 +51,7 @@ public class UserController {
 
 
     @GetMapping("/list")
+    @Secured("ROLE_ADMIN")
     public String showAll(@RequestParam(value = "email", required = false) String email,
                           @SortDefault("name") Pageable pageable,
                           Model model) {
@@ -65,6 +67,7 @@ public class UserController {
     }
 
     @GetMapping("/list/active")
+    @Secured("ROLE_ADMIN")
     public String showAllActive(@RequestParam(value = "email", required = false) String email,
                                 @SortDefault("name") Pageable pageable,
                                 Model model) {
@@ -74,6 +77,7 @@ public class UserController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured("ROLE_ADMIN")
     public String showAddForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("departments", departmentService.findAll());
@@ -81,6 +85,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
+    @Secured("ROLE_ADMIN")
     public String save(@Validated User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAll());
@@ -91,18 +96,22 @@ public class UserController {
     }
 
     @GetMapping("/showUserInfo/{id}")
+    @Secured("ROLE_ADMIN")
     public String showUserInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "users/user-info";
     }
 
     @GetMapping("/showUserInfoByEmail/{email}")
+
+
     public String showUserInfo(@PathVariable("email") String email, Model model) {
         model.addAttribute("user", userService.findByEmail(email));
         return "users/user-info";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured("ROLE_ADMIN")
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.findById(id));
         model.addAttribute("departments", departmentService.findAll());
@@ -110,6 +119,7 @@ public class UserController {
     }
 
     @PostMapping("/updateWithoutPassword")
+    @Secured("ROLE_ADMIN")
     public String updateWithoutPassword(@Validated User user, BindingResult bindingResult, Model model) {
         List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
                 .filter(fer -> !fer.getField().equals("password")
@@ -130,6 +140,8 @@ public class UserController {
 
     @GetMapping("/showFormForChangePassword/{id}")
     public String showFormForChangePassword(@PathVariable("id") int id) {
+
+
         return "users/user-change-password-form";
     }
 
@@ -139,6 +151,9 @@ public class UserController {
                                         @RequestParam("passwordConfirmation") String passwordConfirmation,
                                         RedirectAttributes redirectAttributes,
                                         Model model) {
+
+
+
         if (!password.equals(passwordConfirmation)) {
             model.addAttribute("notMatches", "Passwords do not match");
             return "users/user-change-password-form";
@@ -153,16 +168,15 @@ public class UserController {
         return "redirect:/users/showUserInfo/" + id;
     }
 
-
-
-
     @GetMapping("/delete/{id}")
+    @Secured("ROLE_ADMIN")
     public String delete(@PathVariable("id") int id) {
         userService.deleteById(id);
         return "redirect:/users/list";
     }
 
     @GetMapping("/changeStatus/{id}")
+    @Secured("ROLE_ADMIN")
     public String changeStatus(@PathVariable("id") int id, Model model) {
         User user = userService.findById(id);
         user.setNonLocked(!user.getNonLocked());

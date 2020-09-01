@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class InternalDispatchController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showAddForm(Model model) {
         model.addAttribute("internalDispatch", new InternalDispatch());
         model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
@@ -40,6 +42,7 @@ public class InternalDispatchController {
     }
 
     @PostMapping("/save")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String save(@Validated InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
 
 //        List<FieldError> errorsToKeep = bindingResult.getFieldErrors().stream()
@@ -67,6 +70,7 @@ public class InternalDispatchController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
         model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
@@ -80,12 +84,14 @@ public class InternalDispatchController {
     }
 
     @GetMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String delete(@PathVariable("id") int id) {
        internalDispatchService.deleteById(id);
         return "redirect:/internaldispatches/list";
     }
 
     @PostMapping("/addDocument/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String addDocument(@PathVariable("id") int id,
                               @RequestParam("newDocument") String newDocument,
                               Model model) {
@@ -99,6 +105,7 @@ public class InternalDispatchController {
 
 
     @GetMapping("/removeDocument/{id}/{documentId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String removeDocument(@PathVariable("id") int id,
                             @PathVariable("documentId") int documentId,
                             Model model) {
@@ -131,6 +138,7 @@ public class InternalDispatchController {
     }
 
     @GetMapping("/showChangeHandlerForm/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showChangeHandlerForm(@PathVariable("id") int id, Model model) {
         model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));
         model.addAttribute("internalDispatch", internalDispatchService.findById(id));
@@ -138,6 +146,7 @@ public class InternalDispatchController {
     }
 
     @PostMapping("/changeHandler")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String changeHandler(@Valid InternalDispatch internalDispatch, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByCanTakeAlbums(true));

@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="row px-5" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="row px-5" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                 <div class="col-sm-3">
 
                 </div>

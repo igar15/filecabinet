@@ -6,6 +6,7 @@ import com.igar15.filecabinet.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +39,7 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showAddForm(Model model) {
         model.addAttribute("changeNotice", new ChangeNotice());
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -45,6 +47,7 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
         model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -52,6 +55,7 @@ public class ChangeNoticeController {
     }
 
     @PostMapping("/save")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String save(@Validated ChangeNotice changeNotice, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("departments", departmentService.findAllByIsDeveloper(true));
@@ -74,6 +78,7 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String delete(@PathVariable("id") int id) {
         changeNoticeService.deleteById(id);
         return "redirect:/changenotices/list";
@@ -86,6 +91,7 @@ public class ChangeNoticeController {
     }
 
     @PostMapping("/addDocument")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String addDocument(@RequestParam(value = "newDocument") String newDocument,
                                 @RequestParam(value = "newDocumentChangeNumber") String newDocumentChangeNumber,
                                 ChangeNotice changeNotice,
@@ -103,6 +109,7 @@ public class ChangeNoticeController {
     }
 
     @GetMapping("/removeDocument/{id}/{documentId}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String removeDocument(@PathVariable("id") int id, @PathVariable("documentId") int documentId, Model model) {
         ChangeNotice changeNotice = changeNoticeService.findByIdWithDocuments(id);
         String errorMessage = changeNoticeService.removeDocument(changeNotice, documentId);

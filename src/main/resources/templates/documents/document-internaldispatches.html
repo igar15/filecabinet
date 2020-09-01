@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -46,7 +46,7 @@
                     <th class="align-middle" th:text="#{dispatchType}">Dispatch type</th>
                     <th class="align-middle" th:text="#{stamp}">Stamp</th>
                     <th class="align-middle" th:text="#{waybill}">Waybill</th>
-                    <th class="align-middle" th:text="#{action}">Action</th>
+                    <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +62,7 @@
                     <td class="align-middle text-center">
                         <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.key.id}}" th:text="${tempInternal.key.waybill}"></a>
                     </td>
-                    <td class="align-middle text-center">
+                    <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                         <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
                            th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregister}">Deregister</a>
                         <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"

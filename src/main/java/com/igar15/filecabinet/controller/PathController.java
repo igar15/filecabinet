@@ -16,11 +16,4 @@ public class PathController {
         return "resetPassword";
     }
 
-    @GetMapping("/profile")
-    public String showProfilePage() {
-        return "profile";
-    }
-
-
-
 }

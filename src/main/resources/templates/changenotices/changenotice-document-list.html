@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -27,7 +27,7 @@
 
     <hr>
 
-    <form th:action="@{/changenotices/addDocument}" th:object="${changeNotice}" method="post">
+    <form th:action="@{/changenotices/addDocument}" th:object="${changeNotice}" method="post" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{name}">
         <input type="hidden" th:field="*{issueDate}">
@@ -81,7 +81,7 @@
                 <th class="align-middle" th:text="#{name}">Name</th>
                 <th class="align-middle" th:text="#{changeNumber}">Change number</th>
                 <th class="align-middle" th:text="#{developer}">Developer</th>
-                <th class="align-middle" th:text="#{action}">Action</th>
+                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${changeNotice.documents.entrySet()}">
@@ -89,7 +89,7 @@
                     <td class="align-middle" th:text="${entry.key.name}"></td>
                     <td class="align-middle text-center" th:text="${entry.value}"></td>
                     <td class="align-middle text-center" th:text="${entry.key.department == null} ? '' : ${entry.key.department.name}"></td>
-                    <td class="align-middle text-center">
+                    <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                         <a class="btn btn-sm btn-outline-danger"
                            th:href="@{'/changenotices/removeDocument/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
                     </td>

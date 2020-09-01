@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,12 +36,14 @@ public class CompanyController {
     }
 
     @GetMapping("/showAddForm")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showAddForm(Model model) {
         model.addAttribute("company", new Company());
         return "/companies/company-form";
     }
 
     @PostMapping("/save")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String save(@Validated Company company, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/companies/company-form";
@@ -62,12 +65,14 @@ public class CompanyController {
     }
 
     @GetMapping("/showFormForUpdate/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String showFormForUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("company", companyService.findById(id));
         return "/companies/company-form";
     }
 
     @GetMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_OTD_WORKER"})
     public String delete(@PathVariable("id") int id) {
         companyService.deleteById(id);
         return "redirect:/companies/list";
