@@ -4,6 +4,9 @@ drop table if exists document_external_dispatches;
 drop table if exists external_dispatches;
 drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
+drop table if exists electronic_image_documents;
+drop table if exists electronic_image_change_notices;
+drop table if exists electronic_image_data;
 drop table if exists change_notices;
 drop table if exists db_files;
 drop table if exists documents;
@@ -164,3 +167,32 @@ create table db_files (
     foreign key (document_id) references documents (id) on delete cascade
 );
 create unique index db_files_document_id_idx on db_files (document_id);
+
+create table electronic_image_data (
+    id integer primary key default nextval('global_seq'),
+    data bytea not null
+);
+
+create table electronic_image_documents (
+    id integer primary key default nextval('global_seq'),
+    file_name varchar not null,
+    file_type varchar not null,
+    electronic_image_data_id integer default null,
+    non_annulled boolean not null,
+    change_number integer not null,
+    document_id integer not null,
+    foreign key (electronic_image_data_id) references electronic_image_data (id),
+    foreign key (document_id) references documents (id) on delete cascade
+);
+create unique index electronic_image_documents_document_id_non_annulled_idx on electronic_image_documents (document_id, non_annulled) where non_annulled = true;
+
+create table electronic_image_change_notices (
+    id integer primary key default nextval('global_seq'),
+    file_name varchar not null,
+    file_type varchar not null,
+    electronic_image_data_id integer not null,
+    change_notice_id integer not null,
+    foreign key (electronic_image_data_id) references electronic_image_data (id),
+    foreign key (change_notice_id) references change_notices (id) on delete cascade
+);
+create unique index electronic_image_change_notices_change_notice_id_idx on electronic_image_change_notices (change_notice_id);

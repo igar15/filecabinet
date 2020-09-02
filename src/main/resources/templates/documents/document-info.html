@@ -185,17 +185,6 @@
                 </div>
             </div>
 
-            <div class="row px-3 mb-1">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{electronicImage} + ':'">Electronic image:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/files/showFiles/' + ${document.id} + '/' + ${document.decimalNumber}}" th:text="#{showElectronicImage}">
-                        Show internals
-                    </a>
-                </div>
-            </div>
-
             <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                 <div class="col-sm-4 offset-2 text-right">
                     <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
@@ -205,6 +194,49 @@
             </div>
 
         </div>
+    <br>
+
+    <p class="h4 mb-4" th:text="${document.decimalNumber} + ' ' + #{electronicImage}"></p>
+
+    <div th:if="${electronicImageDocument == null}">
+        <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
+
+        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>
+
+        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>
+
+        <form th:action="@{'/electronicImageDocuments/save/' + ${document.id}}" method="post" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="file">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+                <input type="number" th:name="changeNumber" th:value="param.changeNumber" th:placeholder="#{changeNumber}">
+                <input type="submit" class="btn brn-sm btn-secondary" value="Add">
+            </div>
+        </form>
+
+        <script>
+            // Add the following code if you want the name of the file appear on select
+            $(".custom-file-input").on("change", function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        </script>
     </div>
+
+
+    <div class="row px-3 mb-1" th:if="${electronicImageDocument != null}">
+        <div class="col-sm-3 border">
+            <h6 th:text="${electronicImageDocument.fileName}">Electronic image file name</h6>
+        </div>
+        <div class="col-sm-3 border">
+            <a class="btn btn-sm btn-outline-info"
+               th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${electronicImageDocument.id}}" th:target="_blank" th:text="#{show}">Show</a>
+
+            <a class="btn btn-sm btn-outline-danger"
+               th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

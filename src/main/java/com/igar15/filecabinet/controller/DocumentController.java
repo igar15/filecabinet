@@ -26,6 +26,9 @@ public class DocumentController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private ElectronicImageDocumentService electronicImageDocumentService;
+
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "decimalNumber", required = false) String decimalNumber,
                           @RequestParam(name = "name", required = false) String name,
@@ -96,7 +99,9 @@ public class DocumentController {
 
     @GetMapping("/showDocumentInfo/{id}")
     public String showDocumentInfo(@PathVariable("id") int id, Model model) {
+        ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByNonAnnulledAndByDocumentId(true, id);
         model.addAttribute("document", documentService.findById(id));
+        model.addAttribute("electronicImageDocument", electronicImageDocument);
         return "/documents/document-info";
     }
 
