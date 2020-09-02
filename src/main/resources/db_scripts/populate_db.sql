@@ -5,6 +5,7 @@ delete from external_dispatches;
 delete from internal_dispatches;
 delete from document_change_notices;
 delete from change_notices;
+delete from db_files;
 delete from documents;
 delete from password_reset_tokens;
 delete from users;

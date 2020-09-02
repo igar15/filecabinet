@@ -5,6 +5,7 @@ drop table if exists external_dispatches;
 drop table if exists internal_dispatches;
 drop table if exists document_change_notices;
 drop table if exists change_notices;
+drop table if exists db_files;
 drop table if exists documents;
 drop table if exists password_reset_tokens;
 drop table if exists users;
@@ -153,3 +154,13 @@ create table password_reset_tokens (
     expiry_date timestamp not null,
     foreign key (user_id) references users (id)
 );
+
+create table db_files (
+    id integer primary key default nextval('global_seq'),
+    file_name varchar not null,
+    file_type varchar not null,
+    data bytea not null,
+    document_id integer not null,
+    foreign key (document_id) references documents (id) on delete cascade
+);
+create unique index db_files_document_id_idx on db_files (document_id);

@@ -185,6 +185,17 @@
                 </div>
             </div>
 
+            <div class="row px-3 mb-1">
+                <div class="col-sm-3 border">
+                    <h6 th:text="#{electronicImage} + ':'">Electronic image:</h6>
+                </div>
+                <div class="col-sm-3 border">
+                    <a th:href="@{'/files/showFiles/' + ${document.id} + '/' + ${document.decimalNumber}}" th:text="#{showElectronicImage}">
+                        Show internals
+                    </a>
+                </div>
+            </div>
+
             <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                 <div class="col-sm-4 offset-2 text-right">
                     <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
