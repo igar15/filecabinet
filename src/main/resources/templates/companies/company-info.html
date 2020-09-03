@@ -19,6 +19,7 @@
         <p>menu</p>
     </div>
 
+
 <div class="container">
 
     <br>
@@ -29,31 +30,32 @@
 
     <p class="h4 mb-4" th:text="${company.name} + ' ' + #{information}"></p>
 
+
     <div th:object="${company}">
 
         <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6 th:text="#{name} + ':'">Name:</h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Name:</h6>
             </div>
-            <div class="col-sm-4 border">
+            <div class="col-sm-4 border bg-light">
                 <h6 th:text="*{name}"></h6>
             </div>
         </div>
 
-        <div class="row px-3">
-            <div class="col-sm-2 border">
-                <h6 th:text="#{address} + ':'">Address:</h6>
+        <div class="row h-100 px-3">
+            <div class="col-sm-2 border my-auto bg-light">
+                <h6 class="font-weight-bold pull-right" th:text="#{address} + ':'">Address:</h6>
             </div>
-            <div class="col-sm-4 border">
+            <div class="col-sm-4 border bg-light">
                 <h6 th:text="*{address.zipcode + ', ' + address.city + ', ' + address.street + ', ' + address.building}"></h6>
             </div>
         </div>
 
         <div class="row px-3 mb-1">
-            <div class="col-sm-2 border">
-                <h6 th:text="#{contactPerson} + ':'">Contact person:</h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="font-weight-bold pull-right" th:text="#{contactPerson} + ':'">Contact person:</h6>
             </div>
-            <div class="col-sm-4 border">
+            <div class="col-sm-4 border bg-light">
                 <h6 th:text="*{contactPerson}"></h6>
             </div>
         </div>
@@ -63,8 +65,8 @@
 
             </div>
             <div class="col-sm-3 text-right">
-                <a th:href="@{'/companies/showFormForUpdate/' + ${company.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
-                <a th:href="@{'/companies/delete/' + ${company.id}}" class="btn btn-sm btn-outline-danger mb-1"
+                <a th:href="@{'/companies/showFormForUpdate/' + ${company.id}}" class="badge badge-info mb-1" th:text="#{update}">Update</a>
+                <a th:href="@{'/companies/delete/' + ${company.id}}" class="badge badge-danger mb-1"
                    onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
             </div>
         </div>

@@ -39,7 +39,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
@@ -53,7 +53,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{zipCode} + ':'">Zipcode:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{zipCode} + ':'">Zipcode:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.zipcode}" th:class="${#fields.hasErrors('address.zipcode')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{zipCode}"/>
@@ -67,7 +67,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{city}">City:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{city}">City:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.city}" th:class="${#fields.hasErrors('address.city')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{city}"/>
@@ -81,7 +81,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{street}">Street:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{street}">Street:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.street}" th:class="${#fields.hasErrors('address.street')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{street}"/>
@@ -95,7 +95,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{building} + ':'">Building:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{building} + ':'">Building:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.building}" th:class="${#fields.hasErrors('address.building')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{building}"/>
@@ -109,7 +109,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{contactPerson} + ':'">Contact person:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{contactPerson} + ':'">Contact person:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{contactPerson}" th:class="${#fields.hasErrors('contactPerson')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{contactPerson}"/>
