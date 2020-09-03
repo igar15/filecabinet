@@ -201,16 +201,39 @@
     <div th:if="${electronicImageDocument == null}">
         <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
 
-        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>
+<!--        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>-->
 
-        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>
+<!--        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>-->
 
         <form th:action="@{'/electronicImageDocuments/save/' + ${document.id}}" method="post" enctype="multipart/form-data">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" name="file">
-                <label class="custom-file-label" for="customFile">Choose file</label>
-                <input type="number" th:name="changeNumber" th:value="param.changeNumber" th:placeholder="#{changeNumber}">
-                <input type="submit" class="btn brn-sm btn-secondary" value="Add">
+            <div class="row mb-1 px-3">
+                <div class="col-sm-3 custom-file">
+                    <input type="file" th:class="${addFileError == null} ? 'custom-file-input' : 'custom-file-input is-invalid'" id="customFile" name="file">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+
+                <div class="col-sm-3">
+                    <input type="number" th:class="${changeNumberError == null} ? 'form-control' : 'form-control is-invalid'" th:name="changeNumber" th:value="${changeNumberError != null} ? ${changeNumber} : ''" th:placeholder="#{changeNumber}"/>
+                </div>
+                <button type="submit" class="btn btn-primary col-2" th:text="#{add}">Add electronic image</button>
+            </div>
+            <div class="row">
+                <span class="help-block col-sm-4">
+                    <div th:switch="${addFileError}" th:if="${addFileError != null}">
+                        <ul class="px-4">
+                            <li class="text-danger" th:case="'File should not be empty!'" th:text="#{addFileError.fileShouldNotBeEmpty}"/>
+                            <li class="text-danger" th:case="'File should have pdf type!'" th:text="#{addFileError.fileShouldHavePdfType}"/>
+                        </ul>
+                    </div>
+                </span>
+                <span class="help-block col-sm-5" th:if="${changeNumberError != null}">
+                    <div th:switch="${changeNumberError}">
+                        <ul class="px-6">
+                            <li class="text-danger" th:case="'Change number should not be empty!'" th:text="${changeNumberError}"/>
+                            <li class="text-danger" th:case="'Change number already exist'" th:text="${changeNumberError}"/>
+                        </ul>
+                    </div>
+                </span>
             </div>
         </form>
 
@@ -224,17 +247,28 @@
     </div>
 
 
-    <div class="row px-3 mb-1" th:if="${electronicImageDocument != null}">
-        <div class="col-sm-3 border">
+    <div class="row px-3 mb-3" th:if="${electronicImageDocument != null}">
+        <div class="col-sm-2 border">
             <h6 th:text="${electronicImageDocument.fileName}">Electronic image file name</h6>
         </div>
-        <div class="col-sm-3 border">
+        <div class="col-sm-2 border">
+            <h6 th:text="#{change} + ' ' +  ${electronicImageDocument.changeNumber}">Electronic image change number</h6>
+        </div>
+        <div class="col-sm-4 border">
             <a class="btn btn-sm btn-outline-info"
                th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${electronicImageDocument.id}}" th:target="_blank" th:text="#{show}">Show</a>
 
             <a class="btn btn-sm btn-outline-danger"
+               th:href="@{'/electronicImageDocuments/annull/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{annull}">Annull</a>
+
+
+            <a class="btn btn-sm btn-outline-danger"
                th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
         </div>
+    </div>
+
+    <div class="row px-3">
+        <a th:href="@{'/electronicImageDocuments/showPreviousVersions/' + ${document.id} + '/' + ${document.decimalNumber}}" th:target="_blank" th:text="#{showPreviousVersions}">Show previous versions</a>
     </div>
 
 </div>

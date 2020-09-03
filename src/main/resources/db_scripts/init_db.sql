@@ -185,6 +185,8 @@ create table electronic_image_documents (
     foreign key (document_id) references documents (id) on delete cascade
 );
 create unique index electronic_image_documents_document_id_non_annulled_idx on electronic_image_documents (document_id, non_annulled) where non_annulled = true;
+create unique index electronic_image_documents_document_id_change_number_idx on electronic_image_documents (document_id, change_number);
+
 
 create table electronic_image_change_notices (
     id integer primary key default nextval('global_seq'),

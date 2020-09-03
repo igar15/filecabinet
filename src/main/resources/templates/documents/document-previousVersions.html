@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <title>Document previous versions</title>
+</head>
+<body>
+
+<div class="container" th:replace="fragments/menu :: menu">
+    <p>menu</p>
+</div>
+
+<div class="container">
+
+    <br>
+
+    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+
+    <hr>
+
+    <p class="h4 mb-3" th:text="${decimalNumber} + ' ' + #{previousVersions}"></p>
+
+    <div th:if="${electronicImageDocuments == null || electronicImageDocuments.size() == 0}">
+        <p class="h6" th:text="#{noPreviousVersions}">No Previous versions</p>
+    </div>
+
+    <div th:if="${electronicImageDocuments != null && electronicImageDocuments.size() != 0}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
+            <tr>
+                <th class="align-middle" th:text="#{electronicImage}">Electronic image</th>
+                <th class="align-middle" th:text="#{changeNumber}">Change number</th>
+                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tempElectronicImage : ${electronicImageDocuments}">
+                <td class="align-middle" th:text="${tempElectronicImage.fileName}"></td>
+                <td class="align-middle" th:text="${tempElectronicImage.changeNumber}"></td>
+                <td class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
+                    <a class="btn btn-sm btn-outline-info"
+                       th:href="@{'/electronicImageDocuments/showFile/' + ${documentId} + '/' + ${tempElectronicImage.id}}" th:target="_blank" th:text="#{show}">Show</a>
+
+                    <a class="btn btn-sm btn-outline-danger"
+                       th:href="@{'/electronicImageDocuments/deletePrevious/' + ${documentId} + '/' + ${tempElectronicImage.id} + '/' + ${decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,8 +1,8 @@
 package com.igar15.filecabinet.controller;
 
-import com.igar15.filecabinet.entity.DbFile;
 import com.igar15.filecabinet.entity.ElectronicImageDocument;
 import com.igar15.filecabinet.service.ElectronicImageDocumentService;
+import com.igar15.filecabinet.util.exception.ChangeNumberDuplicateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -31,14 +31,30 @@ public class ElectronicImageDocumentController {
                        @RequestParam("changeNumber") Integer changeNumber,
                        RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("emptyFileError", "File should not be empty!");
+            redirectAttributes.addFlashAttribute("addFileError", "File should not be empty!");
+            if (changeNumber == null) {
+                redirectAttributes.addFlashAttribute("changeNumberError", "Change number should not be empty!");
+            }
             return "redirect:/documents/showDocumentInfo/" + documentId;
         }
         else if (!file.getContentType().endsWith("/pdf")) {
-            redirectAttributes.addFlashAttribute("typeFileError", "File should have pdf type!");
+            redirectAttributes.addFlashAttribute("addFileError", "File should have pdf type!");
+            if (changeNumber == null) {
+                redirectAttributes.addFlashAttribute("changeNumberError", "Change number should not be empty!");
+            }
             return "redirect:/documents/showDocumentInfo/" + documentId;
         }
-        electronicImageDocumentService.create(file, changeNumber, documentId);
+        else if (changeNumber == null) {
+            redirectAttributes.addFlashAttribute("changeNumberError", "Change number should not be empty!");
+            return "redirect:/documents/showDocumentInfo/" + documentId;
+        }
+        try {
+            electronicImageDocumentService.create(file, changeNumber, documentId);
+        } catch (ChangeNumberDuplicateException e) {
+            redirectAttributes.addFlashAttribute("changeNumberError", e.getMessage());
+            redirectAttributes.addFlashAttribute("changeNumber", changeNumber);
+            return "redirect:/documents/showDocumentInfo/" + documentId;
+        }
         return "redirect:/documents/showDocumentInfo/" + documentId;
     }
 
@@ -59,6 +75,32 @@ public class ElectronicImageDocumentController {
                 .contentType(MediaType.parseMediaType(electronicImageDocument.getFileType()))
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(electronicImageDocument.getElectronicImageData().getData()));
+    }
+
+    @GetMapping("/annull/{documentId}/{id}")
+    public String annull(@PathVariable("documentId") int documentId,
+                         @PathVariable("id") int id) {
+        electronicImageDocumentService.annull(documentId, id);
+        return "redirect:/documents/showDocumentInfo/" + documentId;
+    }
+
+    @GetMapping("/showPreviousVersions/{documentId}/{decimalNumber}")
+    public String showPreviousVersions(@PathVariable("documentId") int documentId,
+                                       @PathVariable("decimalNumber") String decimalNumber,
+                                       Model model) {
+        List<ElectronicImageDocument> electronicImageDocuments = electronicImageDocumentService.findAllByNonAnnulledAndDocumentId(false, documentId);
+        model.addAttribute("documentId", documentId);
+        model.addAttribute("decimalNumber", decimalNumber);
+        model.addAttribute("electronicImageDocuments", electronicImageDocuments);
+        return "documents/document-previousVersions";
+    }
+
+    @GetMapping("/deletePrevious/{documentId}/{id}/{decimalNumber}")
+    public String deletePrevious(@PathVariable("documentId") int documentId,
+                                 @PathVariable("id") int id,
+                                 @PathVariable("decimalNumber") String decimalNumber) {
+        electronicImageDocumentService.delete(documentId, id);
+        return "redirect:/electronicImageDocuments/showPreviousVersions/" + documentId + "/" + URLEncoder.encode(decimalNumber, StandardCharsets.UTF_8);
     }
 
 }

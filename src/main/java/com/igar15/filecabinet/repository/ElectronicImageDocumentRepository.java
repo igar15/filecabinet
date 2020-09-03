@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ElectronicImageDocumentRepository extends JpaRepository<ElectronicImageDocument, Integer> {
@@ -24,5 +25,14 @@ public interface ElectronicImageDocumentRepository extends JpaRepository<Electro
     Optional<ElectronicImageDocument> findByIdAndDocumentIdWithElectronicImageData(@Param("documentId") int documentId, @Param("id") int id);
 
     @Query("select e from ElectronicImageDocument e where e.document.id=:documentId and e.id=:id")
-    Optional<ElectronicImageDocument> findByIdAndDocumentId(int documentId, int id);
+    Optional<ElectronicImageDocument> findByIdAndDocumentId(@Param("documentId") int documentId, @Param("id") int id);
+
+    @Transactional
+    @Modifying
+    @Query("update ElectronicImageDocument e set e.nonAnnulled=:nonAnnulled where e.document.id=:documentId and e.id=:id")
+    void annull(@Param("documentId") int documentId, @Param("id") int id, @Param("nonAnnulled") boolean nonAnnulled);
+
+    Optional<ElectronicImageDocument> findByChangeNumberAndDocument_Id(int changeNumber, int documentId);
+
+    List<ElectronicImageDocument> findAllByNonAnnulledAndDocument_Id(boolean nonAnnulled, int documentId);
 }
