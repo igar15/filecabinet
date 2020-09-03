@@ -23,11 +23,11 @@
 
         <br>
 
-        <h3 th:text="#{companyDirectory}">Company Directory</h3>
+        <h3 class="font-weight-bold text-secondary" th:text="#{index.section.companies}">Companies</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3" th:text="#{companyCard}">Company Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-3" th:text="#{companyCard}">Company Card</p>
 
         <form class="form-horizontal" th:object="${company}" th:action="@{/companies/save}" method="post">
 
@@ -67,7 +67,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 class="font-weight-bold pull-right" th:text="#{city}">City:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{city} + ':'">City:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.city}" th:class="${#fields.hasErrors('address.city')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{city}"/>
@@ -81,7 +81,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 class="font-weight-bold pull-right" th:text="#{street}">Street:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{street} + ':'">Street:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{address.street}" th:class="${#fields.hasErrors('address.street')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{street}"/>
