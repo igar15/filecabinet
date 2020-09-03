@@ -45,7 +45,9 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#" th:href="@{'/users/showUserInfoByEmail/' + ${#authentication.name}}" th:text="#{userInfo}">User info</a>
-                <a class="dropdown-item" href="#" th:href="@{/logout}" th:text="#{logout}">Logout</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="dropdown-item" th:text="#{logout}">Logout</button>
+                </form>
             </div>
         </ul>
     </nav>

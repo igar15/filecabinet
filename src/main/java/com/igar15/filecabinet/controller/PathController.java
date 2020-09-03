@@ -16,4 +16,9 @@ public class PathController {
         return "resetPassword";
     }
 
+    @GetMapping("/access-denied")
+    public String showAccessDeniedPage() {
+        return "access-denied";
+    }
+
 }

@@ -93,10 +93,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll().logoutUrl("/logout")
 
-                .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).and().sessionFixation().none()
-
                 .and()
-                .csrf().disable();
+                .exceptionHandling().accessDeniedPage("/access-denied")
+
+                .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).and().sessionFixation().none();
+//
+//                .and()
+//                .csrf().disable();
     }
 
     private class RealTimeLockVoter implements AccessDecisionVoter<Object> {
