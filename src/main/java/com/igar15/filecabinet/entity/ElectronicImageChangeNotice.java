@@ -12,6 +12,13 @@ public class ElectronicImageChangeNotice extends ElectronicImage {
     @JoinColumn(name = "change_notice_id")
     private ChangeNotice changeNotice;
 
+    public ElectronicImageChangeNotice() {
+    }
+
+    public ElectronicImageChangeNotice(String fileName, String contentType, ElectronicImageData electronicImageData, ChangeNotice changeNotice) {
+        super(fileName, contentType, electronicImageData);
+        this.changeNotice = changeNotice;
+    }
 
 
     public ChangeNotice getChangeNotice() {

@@ -192,7 +192,7 @@ create table electronic_image_change_notices (
     id integer primary key default nextval('global_seq'),
     file_name varchar not null,
     file_type varchar not null,
-    electronic_image_data_id integer not null,
+    electronic_image_data_id integer default null,
     change_notice_id integer not null,
     foreign key (electronic_image_data_id) references electronic_image_data (id),
     foreign key (change_notice_id) references change_notices (id) on delete cascade

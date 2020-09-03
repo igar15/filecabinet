@@ -1,8 +1,10 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.ChangeNotice;
+import com.igar15.filecabinet.entity.ElectronicImageChangeNotice;
 import com.igar15.filecabinet.service.ChangeNoticeService;
 import com.igar15.filecabinet.service.DepartmentService;
+import com.igar15.filecabinet.service.ElectronicImageChangeNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.SortDefault;
@@ -22,6 +24,9 @@ public class ChangeNoticeController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private ElectronicImageChangeNoticeService electronicImageChangeNoticeService;
 
     @GetMapping("/list")
     public String showAll(@RequestParam(name = "name", required = false) String name,
@@ -73,6 +78,8 @@ public class ChangeNoticeController {
 
     @GetMapping("/showChangeNoticeInfo/{id}")
     public String showChangeNoticeInfo(@PathVariable("id") int id, Model model) {
+        ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByChangeNoticeId(id);
+        model.addAttribute("electronicImageChangeNotice", electronicImageChangeNotice);
         model.addAttribute("changeNotice", changeNoticeService.findById(id));
         return "/changenotices/changenotice-info";
     }
