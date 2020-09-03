@@ -98,12 +98,14 @@
             <!--        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>-->
 
             <form th:action="@{'/electronicImageChangeNotices/save/' + ${changeNotice.id}}" method="post" enctype="multipart/form-data">
-                <div class="row mb-1 px-3">
+                <div class="row mb-1 px-3 align-items-center">
                     <div class="col-sm-3 custom-file">
                         <input type="file" th:class="${addFileError == null} ? 'custom-file-input' : 'custom-file-input is-invalid'" id="customFile" name="file">
                         <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-primary col-sm-2" th:text="#{add}">Add electronic image</button>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn btn-primary" th:text="#{add}">Add electronic image</button>
+                    </div>
                 </div>
 <!--                <div class="row">-->
                 <span class="help-block">
@@ -128,11 +130,15 @@
         </div>
 
 
-        <div class="row px-3 mb-3" th:if="${electronicImageChangeNotice != null}">
-            <div class="col-sm-2 border">
-                <h6 th:text="${electronicImageChangeNotice.fileName}">Electronic image file name</h6>
+        <div class="row px-3 mb-3 align-items-center" th:if="${electronicImageChangeNotice != null}">
+            <div class="col-sm-2">
+                <p class="my-auto pull-right" th:text="${electronicImageChangeNotice.fileName}">Electronic image file name</p>
             </div>
-            <div class="col-sm-4 border">
+            <div class="col-sm-4">
+                <a th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}"
+                   th:target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-binoculars"></i></a>
+
+
                 <a class="btn btn-sm btn-outline-info"
                    th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" th:target="_blank" th:text="#{show}">Show</a>
 

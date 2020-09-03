@@ -6,7 +6,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 
 @MappedSuperclass
-public class ElectronicImage extends AbstractBaseEntity {
+public abstract class ElectronicImage extends AbstractBaseEntity {
 
     @Column(name = "file_name")
     private String fileName;
@@ -22,7 +22,8 @@ public class ElectronicImage extends AbstractBaseEntity {
     }
 
     public ElectronicImage(String fileName, String fileType, ElectronicImageData electronicImageData) {
-        this.fileName = fileName;
+        fileName = fileName.toUpperCase().substring(0, fileName.length() - 4);
+        this.fileName = fileName + ".pdf";
         this.fileType = fileType;
         this.electronicImageData = electronicImageData;
     }
