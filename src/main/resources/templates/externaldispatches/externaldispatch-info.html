@@ -23,7 +23,7 @@
 
     <br>
 
-    <h3 th:text="#{externalDispatchDirectory}">External dispatch Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.externaldispatches}">External dispatches</h3>
 
     <hr>
 
@@ -32,66 +32,66 @@
     <div th:object="${externalDispatch}">
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{letterOutgoingNumber} + ':'">Letter outgoing number:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{letterOutgoingNumber} + ':'">Letter outgoing number:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{letterOutgoingNumber}"></h6>
-            </div>
-        </div>
-
-        <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
-            </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{dispatchDate}"></h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{letterOutgoingNumber}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{waybill} + ':'">Waybill:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{waybill}"></h6>
-            </div>
-        </div>
-
-        <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{status} + ':'">Status:</h6>
-            </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="#{${'status.' + externalDispatch.status}}"></h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{dispatchDate}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{remark} + ':'">Remark:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{waybill} + ':'">Waybill:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{remark}"></h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{waybill}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{status} + ':'">Status:</h6>
+            </div>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="#{${'status.' + externalDispatch.status}}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{remark} + ':'">Remark:</h6>
+            </div>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{remark}"></h6>
             </div>
         </div>
 
         <div class="row px-3 mb-1">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{company} + ':'">Company:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{company} + ':'">Company:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <a class="h6" th:if="*{company != null}" th:href="@{'/companies/showCompanyInfo/' + ${externalDispatch.company.id}}" th:target="_blank" th:text="*{company.name}"></a>
+            <div class="col-sm-2 border bg-light column-height-30px">
+                <a class="btn btn-link pl-1 mt-n1" th:if="*{company != null}" th:href="@{'/companies/showCompanyInfo/' + ${externalDispatch.company.id}}" th:target="_blank" th:text="*{company.name}"></a>
             </div>
         </div>
 
-        <div class="row px-5" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-            <div class="col-sm-2">
+        <div class="row mb-1 px-3" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
+            <div class="col-sm-2 m-2">
 
             </div>
             <div class="col-sm-3 text-right">
-                <a th:href="@{'/externaldispatches/showFormForUpdate/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
-                <a th:href="@{'/externaldispatches/delete/' + ${externalDispatch.id}}" class="btn btn-sm btn-outline-danger mb-1"
+                <a th:href="@{'/externaldispatches/showFormForUpdate/' + ${externalDispatch.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
+                <a th:href="@{'/externaldispatches/delete/' + ${externalDispatch.id}}" class="badge badge-danger mb-1 width-60px"
                    onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
             </div>
         </div>
@@ -130,7 +130,7 @@
                 <th class="align-middle" th:text="#{decimalNumber}">Decimal number</th>
                 <th class="align-middle" th:text="#{name}">Name</th>
                 <th class="align-middle" th:text="#{active}">Active</th>
-                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+                <th class="align-middle" th:text="#{remove}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Remove</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${externalDispatch.documents}" th:class="${entry.value} ? 'table-default' : 'table-danger'">
@@ -140,8 +140,8 @@
                     <td class="align-middle" th:text="${entry.key.name}"></td>
                     <td class="align-middle text-center" th:text="#{${entry.value ? 'yes' : 'no'}}"></td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/externaldispatches/removeDocument/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
+                        <a class="btn btn-sm btn-danger"
+                           th:href="@{'/externaldispatches/removeDocument/' + ${externalDispatch.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </tbody>

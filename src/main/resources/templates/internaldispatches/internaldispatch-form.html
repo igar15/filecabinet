@@ -23,11 +23,11 @@
 
     <br>
 
-    <h3 th:text="#{internalDispatchDirectory}">Internal Dispatch Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.internaldispatches}">Internal dispatches</h3>
 
     <hr>
 
-    <p class="h4 mb-3 offset-sm-3" th:text="#{internalDispatchCard}">Internal dispatch card</p>
+    <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-4" th:text="#{internalDispatchCard}">Internal dispatch card</p>
 
     <form class="form-horizontal" th:object="${internalDispatch}" th:action="@{/internaldispatches/save}" method="post">
 
@@ -40,7 +40,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{isAlbum} + ':'">Is Album:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{isAlbum} + ':'">Is Album:</h6>
             </div>
             <div class="col-sm-5 mt-2">
                     <p>
@@ -57,7 +57,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{albumName}" th:class="${#fields.hasErrors('albumName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{albumDecimalNumber}"/>
@@ -71,7 +71,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{waybill} + ':'">Waybill:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{waybill} + ':'">Waybill:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{waybill}" th:class="${#fields.hasErrors('waybill')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{waybill}"/>
@@ -85,7 +85,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="date" th:field="*{dispatchDate}" th:class="${#fields.hasErrors('dispatchDate')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -119,7 +119,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{remark} + ':'">Remark:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{remark} + ':'">Remark:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{remark}" th:class="${#fields.hasErrors('remark')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{remark}"/>
@@ -154,7 +154,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{dispatchHandler} + ':'">Dispatch handler:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{dispatchHandler} + ':'">Dispatch handler:</h6>
             </div>
             <div class="col-sm-5">
                 <select class="form-control selectpicker" th:field="*{dispatchHandler}">
@@ -174,7 +174,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerName}" th:class="${#fields.hasErrors('internalHandlerName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{internalHandlerName}"/>
@@ -188,7 +188,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="text" th:field="*{internalHandlerPhoneNumber}" th:class="${#fields.hasErrors('internalHandlerPhoneNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{internalHandlerPhoneNumber}"/>
@@ -202,7 +202,7 @@
 
         <div class="row mb-3">
             <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{receivedDate} + ':'">Received date:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{receivedDate} + ':'">Received date:</h6>
             </div>
             <div class="col-sm-5">
                 <input type="date" th:field="*{receivedInternalDate}" th:class="${#fields.hasErrors('receivedInternalDate')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -216,7 +216,7 @@
 
 
         <div class="row">
-            <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${internalDispatch.isNew() ? 'create'  : 'update'}}">Save</button>
+            <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{${internalDispatch.isNew() ? 'create'  : 'update'}}">Save</button>
         </div>
 
         <br><br>

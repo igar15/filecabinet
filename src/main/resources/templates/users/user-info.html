@@ -21,80 +21,87 @@
 
     <div class="container">
 
-        <br><br>
+        <br>
 
-        <h3 th:text="#{userDirectory}">User Directory</h3>
+        <h3 class="font-weight-bold text-secondary" th:text="#{users}">Users</h3>
 
         <hr>
 
-        <p class="h4 mb-4" th:text="${user.name} + ' ' + #{information}"></p>
+        <p class="h4 mb-4" th:text="${user.email} + ' ' + #{information}"></p>
 
         <div th:object="${user}">
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{userName} + ':'">User name:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{userName} + ':'">User name:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{name}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{email} + ':'">Email:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{email}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{name}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{department} + ':'">Department:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{email} + ':'">Email:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{department.name}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{creationDate} + ':'">Creation date:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="${#temporals.format(user.created, 'dd-MM-yyyy HH:mm:ss')}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{email}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{status} + ':'">Status:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{department} + ':'">Department:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{${user.enabled ? 'enabled' : 'disabled'}}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{department.name}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{creationDate} + ':'">Creation date:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="${#temporals.format(user.created, 'dd-MM-yyyy HH:mm:ss')}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{status} + ':'">Status:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="#{${user.enabled ? 'enabled' : 'disabled'}}"></h6>
                 </div>
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{role} + ':'">Role:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{role} + ':'">Role:</h6>
                 </div>
-                <div class="col-sm-3 text-break border">
-                    <h6 th:text="*{role}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{role}"></h6>
                 </div>
             </div>
 
             <div class="row px-5">
-                <div class="col-sm-1">
+                <div class="col-sm-1 m-2">
 
                 </div>
                 <div class="col-sm-5 text-right">
-                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.email}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{changePassword}">Change password</a>
-                    <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Update</a>
-                    <a th:href="@{'/users/changeStatus/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1" th:text="#{${user.nonLocked ? 'ban' : 'unBan'}}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Ban/Unban</a>
-                    <a th:href="@{'/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1"
-                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Delete</a>
+                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.email}}" class="badge badge-secondary mb-1 width-70px" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')" th:text="#{changePassword}">Change password</a>
+                    <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="badge badge-info mb-1 width-70px" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')" th:text="#{update}">Update</a>
+                    <a th:href="@{'/users/changeStatus/' + ${user.id}}" class="badge badge-warning mb-1 width-70px" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')" th:text="#{${user.nonLocked ? 'ban' : 'unBan'}}">Ban/Unban</a>
+                    <a th:href="@{'/users/delete/' + ${user.id}}" class="badge badge-danger mb-1 width-70px"
+                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Delete</a>
+
+
+                    <!--                    <a th:href="@{'/users/showFormForChangePassword/' + ${user.email}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{changePassword}">Change password</a>-->
+<!--                    <a th:href="@{'/users/showFormForUpdate/' + ${user.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Update</a>-->
+<!--                    <a th:href="@{'/users/changeStatus/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1" th:text="#{${user.nonLocked ? 'ban' : 'unBan'}}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Ban/Unban</a>-->
+<!--                    <a th:href="@{'/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger mb-1"-->
+<!--                       onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Delete</a>-->
                 </div>
             </div>
 

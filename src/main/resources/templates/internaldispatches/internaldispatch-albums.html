@@ -23,7 +23,7 @@
 
     <br>
 
-    <h3 th:text="#{copiesArchive.headline}">List of Albums</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{albums}">Albums</h3>
 
     <hr>
 
@@ -44,7 +44,7 @@
                 <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="internalHandlerName" th:text="#{handlerName}">Handler name</a></th>
                 <th class="align-middle" th:text="#{handlerPhoneNumber}">Handler phone number</th>
                 <th class="align-middle"><a class="sorted text-light" sd:pagination-sort="receivedInternalDate" th:text="#{receivedDate}">Received date</a></th>
-                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+                <th class="align-middle" th:text="#{changeHandler}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Change handler</th>
             </tr>
         </thead>
         <tbody>
@@ -58,8 +58,8 @@
                 <td class="align-middle text-center" th:text="${tempAlbum.internalHandlerPhoneNumber}"></td>
                 <td class="align-middle text-center" th:text="${tempAlbum.receivedInternalDate}"></td>
                 <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                    <a class="btn btn-sm btn-outline-danger"
-                       th:href="@{'/internaldispatches/showChangeHandlerForm/' + ${tempAlbum.id}}" th:text="#{changeHandler}">Change handler</a>
+                    <a class="btn btn-sm btn-warning"
+                       th:href="@{'/internaldispatches/showChangeHandlerForm/' + ${tempAlbum.id}}"><i class="fa fa-refresh"></i></a>
                 </td>
             </tr>
         </tbody>

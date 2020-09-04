@@ -23,72 +23,72 @@
 
     <br>
 
-    <h3 th:text="#{albumDirectory}">Album Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{albums}">Albums</h3>
 
     <hr>
 
     <div th:object="${internalDispatch}">
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{albumDecimalNumber} + ':'">Album decimal number:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{albumName}"></h6>
-            </div>
-        </div>
-
-        <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{stamp} + ':'">Stamp:</h6>
-            </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{stamp}"></h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{albumName}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{stamp} + ':'">Stamp:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{dispatchDate}"></h6>
-            </div>
-        </div>
-
-        <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{currentHandler} + ':'">Current handler:</h6>
-            </div>
-            <div class="col-sm-2 border">
-                <a class="h6" th:if="*{dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${internalDispatch.dispatchHandler.id}}" th:target="_blank" th:text="*{dispatchHandler.name}"></a>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{stamp}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{internalHandlerName} + ':'">Internal handler name:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{dispatchDate} + ':'">Dispatch date:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{internalHandlerName}"></h6>
-            </div>
-        </div>
-
-        <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{internalHandlerPhoneNumber} + ':'">Internal handler phone number:</h6>
-            </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{internalHandlerPhoneNumber}"></h6>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{dispatchDate}"></h6>
             </div>
         </div>
 
         <div class="row px-3">
-            <div class="col-sm-3 border">
-                <h6 th:text="#{receivedDate} + ':'">Received date:</h6>
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{currentHandler} + ':'">Current handler:</h6>
             </div>
-            <div class="col-sm-2 border">
-                <h6 th:text="*{receivedInternalDate}"></h6>
+            <div class="col-sm-2 border bg-light column-height-30px">
+                <a class="btn btn-link pl-1 mt-n1" th:if="*{dispatchHandler != null}" th:href="@{'/departments/showDepartmentInfo/' + ${internalDispatch.dispatchHandler.id}}" th:target="_blank" th:text="*{dispatchHandler.name}"></a>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{handlerName} + ':'">Handler name:</h6>
+            </div>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{internalHandlerName}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{handlerPhoneNumber} + ':'">Handler phone number:</h6>
+            </div>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{internalHandlerPhoneNumber}"></h6>
+            </div>
+        </div>
+
+        <div class="row px-3">
+            <div class="col-sm-3 border bg-light">
+                <h6 class="font-weight-bold pull-right m-1" th:text="#{receivedDate} + ':'">Received date:</h6>
+            </div>
+            <div class="col-sm-2 border bg-light">
+                <h6 class="m-1" th:text="*{receivedInternalDate}"></h6>
             </div>
         </div>
     </div>
