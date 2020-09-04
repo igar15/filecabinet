@@ -5,7 +5,7 @@
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 
-    <script th:src="@{/js/jquery-1.7.2.js}"></script>
+<!--    <script th:src="@{/js/jquery.min.js}"></script>-->
 
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
@@ -98,12 +98,13 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{status} + ':'">Status:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
-                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
-                            <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
-                            <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="#{${'status.' + radioValue}}"></label>
-                        </div>
-                    </div>
+                    <select th:class="${#fields.hasErrors('status')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{status}">
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
+                        <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}"
+                                th:value="${dropValue}"
+                                th:text="#{${'status.' + dropValue}}">
+                        </option>
+                    </select>
                     <span class="help-block" th:if="${#fields.hasErrors('status')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
@@ -114,15 +115,16 @@
 
             <div class="row mb-3">
                 <div class="col-sm-3 form-control-plaintext offset-sm-1">
-                    <h6 class="font-weight-bold pull-right" th:text="#{form} + ':'">Document form:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{form} + ':'">Form:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('form')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
-                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}" th:field="*{form}">
-                            <input type="radio" th:field="*{form}" th:value="${radioValue}"/>
-                            <label class="btn-sm btn-light" th:for="${#ids.prev('form')}" th:text="#{${'form.' + radioValue}}" ></label>
-                        </div>
-                    </div>
+                    <select th:class="${#fields.hasErrors('form')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{form}">
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
+                        <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Form).values()}"
+                                th:value="${dropValue}"
+                                th:text="#{${'form.' + dropValue}}">
+                        </option>
+                    </select>
                     <span class="help-block" th:if="${#fields.hasErrors('form')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('form')}" th:text="${err}"/>
@@ -136,15 +138,13 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{stage} + ':'">Stage:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons"
-                         th:class="${#fields.hasErrors('stage')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
-                        <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}"
-                             th:field="*{stage}">
-                            <input type="radio" th:field="*{stage}" th:value="${radioValue}"/>
-                            <label class="btn-sm btn-light" th:for="${#ids.prev('stage')}"
-                                   th:text="${radioValue}"></label>
-                        </div>
-                    </div>
+                    <select th:class="${#fields.hasErrors('stage')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{stage}">
+                        <option value="" th:text="#{nothingSelected}">Nothing selected</option>
+                        <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Stage).values()}"
+                                th:value="${dropValue}"
+                                th:text="${dropValue}">
+                        </option>
+                    </select>
                     <span class="help-block" th:if="${#fields.hasErrors('stage')}">
                         <ul>
                             <li class="text-danger" th:each="err : ${#fields.errors('stage')}" th:text="${err}"/>
@@ -202,7 +202,7 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <select class="form-control selectpicker" th:field="*{department}">
+                    <select th:class="${#fields.hasErrors('department')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{department}">
                         <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                         <option th:each="dropValue : ${departments}"
                                 th:value="${dropValue.name}"
@@ -222,7 +222,7 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{originalHolder} + ':'">Original holder:</h6>
                 </div>
                 <div class="col-sm-5">
-                    <select class="form-control selectpicker" th:field="*{originalHolder}">
+                    <select th:class="${#fields.hasErrors('originalHolder')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{originalHolder}">
                         <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                         <option th:each="dropValue : ${companies}"
                                 th:value="${dropValue.name}"

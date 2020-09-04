@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
     <style>
-        .custom {
-            width: 170px !important;
+        .button-width-105px {
+            width: 105px !important;
         }
     </style>
 
@@ -54,7 +54,7 @@
                     <th class="align-middle" th:text="#{dispatchType}">Dispatch type</th>
                     <th class="align-middle" th:text="#{stamp}">Stamp</th>
                     <th class="align-middle" th:text="#{waybill}">Waybill</th>
-                    <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+                    <th class="align-middle" th:text="#{deregister}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,10 +71,10 @@
                         <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.key.id}}" th:text="${tempInternal.key.waybill}"></a>
                     </td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-danger custom" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
-                           th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregister}">Deregister</a>
-                        <a class="btn btn-sm btn-danger custom" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"
-                           th:href="@{'/documents/deregisterAlbum/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregisterAlbum}">Deregister album</a>
+                        <a class="btn btn-sm btn-danger button-width-105px" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
+                           th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{separately}">Deregister</a>
+                        <a class="btn btn-sm btn-danger button-width-105px" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"
+                           th:href="@{'/documents/deregisterAlbum/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{albumWithIncomings}">Deregister album</a>
                     </td>
                 </tr>
             </tbody>

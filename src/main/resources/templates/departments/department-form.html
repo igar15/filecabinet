@@ -84,12 +84,10 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{isDeveloper} + ':'">Is Developer:</h6>
                 </div>
                 <div class="col-sm-5 mt-2">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <p>
                             <input type="radio" th:field="*{isDeveloper}" th:value="1" th:checked="*{isDeveloper}" th:text="#{yes}">
                             <input type="radio" th:field="*{isDeveloper}" th:value="0" th:checked="*{isDeveloper}" th:text="#{no}">
                         </p>
-                    </div>
                     <span class="help-block" th:if="${#fields.hasErrors('isDeveloper')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('isDeveloper')}" th:text="${err}"/>
@@ -103,12 +101,10 @@
                     <h6 class="font-weight-bold pull-right" th:text="#{useAlbums} + ':'">Use albums:</h6>
                 </div>
                 <div class="col-sm-5 mt-2">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <p>
                             <input type="radio" th:field="*{canTakeAlbums}" th:value="1" th:checked="*{canTakeAlbums}" th:text="#{yes}">
                             <input type="radio" th:field="*{canTakeAlbums}" th:value="0" th:checked="*{canTakeAlbums}" th:text="#{no}">
                         </p>
-                    </div>
                     <span class="help-block" th:if="${#fields.hasErrors('canTakeAlbums')}">
                     <ul>
                         <li class="text-danger" th:each="err : ${#fields.errors('canTakeAlbums')}" th:text="${err}"/>

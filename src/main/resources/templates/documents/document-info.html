@@ -186,7 +186,10 @@
             </div>
 
             <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                <div class="col-sm-4 offset-2 text-right">
+                <div class="col-sm-2 m-2">
+
+                </div>
+                <div class="col-sm-4 text-right">
                     <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
                     <a th:href="@{'/documents/delete/' + ${document.id}}" class="badge badge-danger mb-1 width-60px"
                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>

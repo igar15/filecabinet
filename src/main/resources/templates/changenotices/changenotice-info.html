@@ -35,7 +35,7 @@
                 <div class="col-sm-2 border bg-light">
                     <h6 class="font-weight-bold pull-right m-1" th:text="#{name} + ':'">Name:</h6>
                 </div>
-                <div class="col-sm-3 border">
+                <div class="col-sm-3 border bg-light">
                     <h6 class="m-1" th:text="*{name}"></h6>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 <div class="col-sm-2 border bg-light">
                     <h6 class="font-weight-bold pull-right m-1" th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
-                <div class="col-sm-3 border">
+                <div class="col-sm-3 borde bg-light">
                     <h6 class="m-1" th:text="*{issueDate}"></h6>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="col-sm-2 border bg-light">
                     <h6 class="font-weight-bold pull-right m-1" th:text="#{changeCode} + ':'">Change code:</h6>
                 </div>
-                <div class="col-sm-3 border">
+                <div class="col-sm-3 border bg-light">
                     <h6 class="m-1" th:text="*{changeCode}"></h6>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 <div class="col-sm-2 border bg-light">
                     <h6 class="font-weight-bold pull-right m-1" th:text="#{developer} + ':'">Developer:</h6>
                 </div>
-                <div class="col-sm-3 border column-height-30px">
+                <div class="col-sm-3 border bg-light column-height-30px">
                     <a class="btn btn-link pl-1 pt-0" th:if="*{department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${changeNotice.department.id}}" th:target="_blank" th:text="*{department.name}"></a>
                 </div>
             </div>
@@ -71,13 +71,16 @@
                 <div class="col-sm-2 border bg-light">
                     <h6 class="font-weight-bold pull-right m-1" th:text="#{documents} + ':'">Documents:</h6>
                 </div>
-                <div class="col-sm-3 border column-height-30px">
+                <div class="col-sm-3 border bg-light column-height-30px">
                     <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}" th:text="#{showDocuments}">Show documents</a>
                 </div>
             </div>
 
-            <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                <div class="col-sm-4 offset-1 text-right">
+            <div class="row px-3 mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
+                <div class="col-sm-2 m-2">
+
+                </div>
+                <div class="col-sm-3 text-right">
                     <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
                     <a th:href="@{'/changenotices/delete/' + ${changeNotice.id}}" class="badge badge-danger mb-1 width-60px"
                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
@@ -117,6 +120,7 @@
 
                 <div class="row px-3">
                     <div class="col-sm-1 m-2">
+
                     </div>
                     <div class="col-sm-4">
                         <button type="submit" class="badge badge-primary pull-right" th:text="#{addImage}">Add electronic image</button>
@@ -145,23 +149,19 @@
             </script>
         </div>
 
-
-        <div class="row px-3 mb-3 align-items-center" th:if="${electronicImageChangeNotice != null}">
-            <div class="col-sm-2">
-                <p class="my-auto pull-right" th:text="${electronicImageChangeNotice.fileName}">Electronic image file name</p>
+        <div class="row align-items-center h-100 px-3 mb-3" th:if="${electronicImageChangeNotice != null}">
+            <div class="col-sm-4">
+                <h6 class="pull-right m-1" th:text="${electronicImageChangeNotice.fileName}">Electronic image file name</h6>
             </div>
             <div class="col-sm-4">
-                <a th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}"
-                   th:target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-binoculars"></i></a>
+                <a class="btn btn-sm btn-success mr-2"
+                   th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
 
-
-                <a class="btn btn-sm btn-outline-info"
-                   th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" th:target="_blank" th:text="#{show}">Show</a>
-
-                <a class="btn btn-sm btn-outline-danger"
-                   th:href="@{'/electronicImageChangeNotices/delete/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+                <a class="btn btn-sm btn-danger"
+                   th:href="@{'/electronicImageChangeNotices/delete/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
             </div>
         </div>
+
 
     </div>
 </body>

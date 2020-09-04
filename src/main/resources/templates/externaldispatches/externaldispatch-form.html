@@ -67,20 +67,21 @@
 
         <div class="row mb-3">
             <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                <h6 th:text="#{status} + ':'">Status:</h6>
+                <h6 class="font-weight-bold pull-right" th:text="#{status} + ':'">Status:</h6>
             </div>
             <div class="col-sm-5">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
-                    <div th:each="radioValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}" th:field="*{status}">
-                        <input type="radio" th:field="*{status}" th:value="${radioValue}"/>
-                        <label class="btn-sm btn-light" th:for="${#ids.prev('status')}" th:text="#{${'status.' + radioValue}}" ></label>
-                    </div>
-                </div>
+                <select th:class="${#fields.hasErrors('status')} ? 'form-control selectpicker is-invalid' : 'form-control selectpicker'" th:field="*{status}">
+                    <option value="" th:text="#{nothingSelected}">Nothing selected</option>
+                    <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Status).values()}"
+                            th:value="${dropValue}"
+                            th:text="#{${'status.' + dropValue}}">
+                    </option>
+                </select>
                 <span class="help-block" th:if="${#fields.hasErrors('status')}">
-                    <ul>
-                        <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
-                    </ul>
-                </span>
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('status')}" th:text="${err}"/>
+                        </ul>
+                    </span>
             </div>
         </div>
 
