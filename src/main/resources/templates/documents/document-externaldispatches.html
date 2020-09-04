@@ -11,6 +11,12 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
 
+    <style>
+        .button-width-85px {
+            width: 85px !important;
+        }
+    </style>
+
     <title>External dispatches list</title>
 </head>
 <body>
@@ -24,13 +30,14 @@
 
     <br>
 
-    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
     <hr>
 
     <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.externaldispatches.section.externalDispatches}"></p>
 
     <div th:if="${document.externalDispatches == null || document.externalDispatches.size() == 0}">
+        <br>
         <h6 th:text="#{noExternalDispatches}">No external dispatches</h6>
     </div>
 
@@ -44,7 +51,7 @@
                     <th class="align-middle" th:text="#{dispatchDate}">Dispatch date</th>
                     <th class="align-middle" th:text="#{letterOutgoingNumber}">Letter outgoing number</th>
                     <th class="align-middle" th:text="#{waybill}">Waybill</th>
-                    <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+                    <th class="align-middle" th:text="#{deregister}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,10 +65,10 @@
                     </td>
                     <td class="align-middle text-center" th:text="${tempExternal.key.waybill}"></td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger mr-2" th:if="${tempExternal.value}"
-                           th:href="@{'/documents/deregisterExternal/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregister}">Deregister</a>
-                        <a class="btn btn-sm btn-outline-danger" th:if="${tempExternal.value}"
-                           th:href="@{'/documents/deregisterExternalWithIncomings/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregisterWithIncomings}">Dereg. with inc.</a>
+                        <a class="btn btn-sm btn-danger button-width-85px mr-2" th:if="${tempExternal.value}"
+                           th:href="@{'/documents/deregisterExternal/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{separately}">Separately</a>
+                        <a class="btn btn-sm btn-danger button-width-85px" th:if="${tempExternal.value}"
+                           th:href="@{'/documents/deregisterExternalWithIncomings/' + ${id} + '/' + ${tempExternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{withIncomings}">With inc.</a>
                     </td>
                 </tr>
             </tbody>

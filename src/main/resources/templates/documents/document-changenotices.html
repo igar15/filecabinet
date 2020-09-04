@@ -24,7 +24,7 @@
 
     <br>
 
-    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
     <hr>
 
@@ -32,7 +32,8 @@
 
 
     <div th:if="${document.changeNotices == null || document.changeNotices.size() == 0}">
-        <h6 th:text="#{noChanges}">No changes</h6>
+        <br>
+        <h6 class="font-weight-bold" th:text="#{noChanges}">No changes</h6>
     </div>
 
     <div th:if="${document.changeNotices != null && document.changeNotices.size() != 0}">
@@ -44,7 +45,7 @@
                     <th class="align-middle" th:text="#{issueDate}">Issue date</th>
                     <th class="align-middle" th:text="#{developer}">Department</th>
                     <th class="align-middle" th:text="#{changeCode}">Change code</th>
-                    <th class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')" th:text="#{action}">Action</th>
+                    <th class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')" th:text="#{remove}">Remove</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,8 +58,8 @@
                     <td class="align-middle text-center" th:text="${entry.value.department} == null ? '' : ${entry.value.department.name}"></td>
                     <td class="align-middle text-center" th:text="${entry.value.changeCode}"></td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeChange/' + ${document.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
+                        <a class="btn btn-sm btn-danger"
+                           th:href="@{'/documents/removeChange/' + ${document.id} + '/' + ${entry.value.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </tbody>

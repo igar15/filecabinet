@@ -114,6 +114,15 @@ img {
     line-height: 30px;
 }
 
+.width-60px {
+    width: 60px !important;
+}
+.font-15px {
+    font-size: 15px;
+}
+.column-height-30px {
+    height: 30px !important;
+}
 
 table.table thead .sorted:after{
     display: inline-block;

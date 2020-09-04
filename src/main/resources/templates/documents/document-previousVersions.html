@@ -23,35 +23,36 @@
 
     <br>
 
-    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
     <hr>
 
     <p class="h4 mb-3" th:text="${decimalNumber} + ' ' + #{previousVersions}"></p>
 
     <div th:if="${electronicImageDocuments == null || electronicImageDocuments.size() == 0}">
-        <p class="h6" th:text="#{noPreviousVersions}">No Previous versions</p>
+        <br>
+        <p class="h6 font-weight-bold" th:text="#{noPreviousVersions}">No Previous versions</p>
     </div>
 
     <div th:if="${electronicImageDocuments != null && electronicImageDocuments.size() != 0}">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark text-center">
             <tr>
-                <th class="align-middle" th:text="#{electronicImage}">Electronic image</th>
+                <th class="align-middle" th:text="#{previousVersions.electronicImage}">Electronic image</th>
                 <th class="align-middle" th:text="#{changeNumber}">Change number</th>
                 <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="tempElectronicImage : ${electronicImageDocuments}">
-                <td class="align-middle" th:text="${tempElectronicImage.fileName}"></td>
-                <td class="align-middle" th:text="${tempElectronicImage.changeNumber}"></td>
-                <td class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                    <a class="btn btn-sm btn-outline-info"
-                       th:href="@{'/electronicImageDocuments/showFile/' + ${documentId} + '/' + ${tempElectronicImage.id}}" th:target="_blank" th:text="#{show}">Show</a>
+                <td class="align-middle text-center" th:text="${tempElectronicImage.fileName}"></td>
+                <td class="align-middle text-center" th:text="${tempElectronicImage.changeNumber}"></td>
+                <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
+                    <a class="btn btn-sm btn-success"
+                       th:href="@{'/electronicImageDocuments/showFile/' + ${documentId} + '/' + ${tempElectronicImage.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
 
-                    <a class="btn btn-sm btn-outline-danger"
-                       th:href="@{'/electronicImageDocuments/deletePrevious/' + ${documentId} + '/' + ${tempElectronicImage.id} + '/' + ${decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+                    <a class="btn btn-sm btn-danger"
+                       th:href="@{'/electronicImageDocuments/deletePrevious/' + ${documentId} + '/' + ${tempElectronicImage.id} + '/' + ${decimalNumber}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
                 </td>
             </tr>
             </tbody>

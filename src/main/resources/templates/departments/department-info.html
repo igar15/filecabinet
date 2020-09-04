@@ -23,7 +23,7 @@
 
         <br>
 
-        <h3 th:text="#{departmentDirectory}">Department Directory</h3>
+        <h3 class="font-weight-bold text-secondary" th:text="#{index.section.departments}">Departments</h3>
 
         <hr>
 
@@ -32,38 +32,38 @@
         <div th:object="${department}">
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{name} + ':'">Name:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{name}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{chief} + ':'">Chief name:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{chiefName}"></h6>
+                <div class="col-sm-4 border bg-light">
+                    <h6 class="m-1" th:text="*{name}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{workersAmount} + ':'">Workers amount:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{chief} + ':'">Chief name:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{workersAmount}"></h6>
+                <div class="col-sm-4 border bg-light">
+                    <h6 class="m-1" th:text="*{chiefName}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{workersAmount} + ':'">Workers amount:</h6>
+                </div>
+                <div class="col-sm-4 border bg-light">
+                    <h6 class="m-1" th:text="*{workersAmount}"></h6>
                 </div>
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{description} + ':'">Description:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{description} + ':'">Description:</h6>
                 </div>
-                <div class="col-sm-3 text-break border">
-                    <h6 th:text="*{description}"></h6>
+                <div class="col-sm-4 text-break border bg-light">
+                    <h6 class="m-1" th:text="*{description}"></h6>
                 </div>
             </div>
 
@@ -71,9 +71,9 @@
                 <div class="col-sm-3">
 
                 </div>
-                <div class="col-sm-3 text-right">
-                    <a th:href="@{'/departments/showFormForUpdate/' + ${department.id}}" class="btn btn-sm btn-outline-info mb-1" th:text="#{update}">Update</a>
-                    <a th:href="@{'/departments/delete/' + ${department.id}}" class="btn btn-sm btn-outline-danger mb-1"
+                <div class="col-sm-4 text-right">
+                    <a th:href="@{'/departments/showFormForUpdate/' + ${department.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
+                    <a th:href="@{'/departments/delete/' + ${department.id}}" class="badge badge-danger mb-1 width-60px"
                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>

@@ -32,54 +32,54 @@
         <div th:object="${changeNotice}">
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
+                <div class="col-sm-2 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{name}"></h6>
+                    <h6 class="m-1" th:text="*{name}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
+                <div class="col-sm-2 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{issueDate}"></h6>
+                    <h6 class="m-1" th:text="*{issueDate}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6 th:text="#{changeCode} + ':'">Change code:</h6>
+                <div class="col-sm-2 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{changeCode} + ':'">Change code:</h6>
                 </div>
                 <div class="col-sm-3 border">
-                    <h6 th:text="*{changeCode}"></h6>
+                    <h6 class="m-1" th:text="*{changeCode}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-2 border">
-                    <h6 th:text="#{developer} + ':'">Developer:</h6>
+                <div class="col-sm-2 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{developer} + ':'">Developer:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a class="h6" th:if="*{department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${changeNotice.department.id}}" th:target="_blank" th:text="*{department.name}"></a>
+                <div class="col-sm-3 border column-height-30px">
+                    <a class="btn btn-link pl-1 pt-0" th:if="*{department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${changeNotice.department.id}}" th:target="_blank" th:text="*{department.name}"></a>
                 </div>
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-2 border">
-                    <h6 th:text="#{documents} + ':'">Documents:</h6>
+                <div class="col-sm-2 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{documents} + ':'">Documents:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}" th:text="#{showDocuments}">Show documents</a>
+                <div class="col-sm-3 border column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/changenotices/showDocuments/' + ${changeNotice.id}}" th:text="#{showDocuments}">Show documents</a>
                 </div>
             </div>
 
             <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                 <div class="col-sm-4 offset-1 text-right">
-                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
-                    <a th:href="@{'/changenotices/delete/' + ${changeNotice.id}}" class="btn btn-sm btn-outline-danger"
+                    <a th:href="@{'/changenotices/showFormForUpdate/' + ${changeNotice.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
+                    <a th:href="@{'/changenotices/delete/' + ${changeNotice.id}}" class="badge badge-danger mb-1 width-60px"
                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>
@@ -92,22 +92,20 @@
 
         <div th:if="${electronicImageChangeNotice == null}">
             <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
+            <br>
 
             <!--        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>-->
 
             <!--        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>-->
 
             <form th:action="@{'/electronicImageChangeNotices/save/' + ${changeNotice.id}}" method="post" enctype="multipart/form-data">
-                <div class="row mb-1 px-3 align-items-center">
-                    <div class="col-sm-3 custom-file">
+                <div class="row mb-2 px-3">
+                    <div class="col-sm-5 custom-file">
                         <input type="file" th:class="${addFileError == null} ? 'custom-file-input' : 'custom-file-input is-invalid'" id="customFile" name="file">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="submit" class="btn btn btn-primary" th:text="#{add}">Add electronic image</button>
+                        <label class="custom-file-label" for="customFile" th:text="#{chooseFile}">Choose file</label>
                     </div>
                 </div>
-<!--                <div class="row">-->
+
                 <span class="help-block">
                     <div th:switch="${addFileError}" th:if="${addFileError != null}">
                         <ul>
@@ -116,6 +114,24 @@
                         </ul>
                     </div>
                 </span>
+
+                <div class="row px-3">
+                    <div class="col-sm-1 m-2">
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="badge badge-primary pull-right" th:text="#{addImage}">Add electronic image</button>
+                    </div>
+                </div>
+
+                <!--                <div class="row">-->
+<!--                <span class="help-block">-->
+<!--                    <div th:switch="${addFileError}" th:if="${addFileError != null}">-->
+<!--                        <ul>-->
+<!--                            <li class="text-danger" th:case="'File should not be empty!'" th:text="#{addFileError.fileShouldNotBeEmpty}"/>-->
+<!--                            <li class="text-danger" th:case="'File should have pdf type!'" th:text="#{addFileError.fileShouldHavePdfType}"/>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </span>-->
 
 <!--                </div>-->
             </form>

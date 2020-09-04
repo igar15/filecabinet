@@ -24,7 +24,7 @@
 
         <br>
 
-        <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
         <hr>
 
@@ -33,153 +33,153 @@
         <div th:object="${document}">
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{decimalNumber} + ':'">Decimal number:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{decimalNumber} + ':'">Decimal number:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{decimalNumber}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{name}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{decimalNumber}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{name} + ':'">Name:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{inventoryNumber}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{receiptDate}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{name}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{status} + ':'">Status:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{*{'status.' + status}}"></h6>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{stage} + ':'">Stage:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{stage}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{inventoryNumber}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{developer} + ':'">Developer:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a class="h6" th:if="${document.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${document.department.id}}" th:target="_blank" th:text="${document.department.name}"></a>
-                </div>
-            </div>
-
-            <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{originalHolder} + ':'">Original holder:</h6>
-                </div>
-                <div class="col-sm-3 border">
-                    <a class="h6" th:if="${document.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${document.originalHolder.id}}" th:target="_blank" th:text="${document.originalHolder.name}"></a>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{receiptDate}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{form} + ':'">Form:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{status} + ':'">Status:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{*{'form.' + form}}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="#{*{'status.' + status}}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{stage} + ':'">Stage:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{stage}"></h6>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{developer} + ':'">Developer:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1" th:if="${document.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${document.department.id}}" th:target="_blank" th:text="${document.department.name}"></a>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{originalHolder} + ':'">Original holder:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1" th:if="${document.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${document.originalHolder.id}}" th:target="_blank" th:text="${document.originalHolder.name}"></a>
+                </div>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{form} + ':'">Form:</h6>
+                </div>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="#{*{'form.' + form}}"></h6>
                 </div>
             </div>
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{format} + ':'">Format:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{format} + ':'">Format:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{format}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{format}"></h6>
                 </div>
             </div>
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{sheetsAmount}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{sheetsAmount}"></h6>
                 </div>
             </div>
 
 
             <div class="row px-3" th:if="${document.form.name() == 'PAPER'}">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{a4Amount} + ':'">A4 amount:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{a4Amount} + ':'">A4 amount:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <h6 th:text="*{a4Amount}"></h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="m-1" th:text="*{a4Amount}"></h6>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{changeNotices} + ':'">Changes:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{changeNotices} + ':'">Changes:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showChanges/' + ${document.id}}" th:text="#{showChanges}">
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/documents/showChanges/' + ${document.id}}" th:text="#{showChanges}">
                         Show changes
                     </a>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{applicability} + ':'">Applicabilities:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{applicability} + ':'">Applicabilities:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showApplicabilities/' + ${document.id}}" th:text="#{showApplicability}">
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/documents/showApplicabilities/' + ${document.id}}" th:text="#{showApplicability}">
                         Show applicabilities
                     </a>
                 </div>
             </div>
 
             <div class="row px-3">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{externalDispatches} + ':'">External dispatches:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{externalSubscribers} + ':'">External subscribers:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showExternalDispatches/' + ${document.id}}" th:text="#{showExternals}">
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/documents/showExternalDispatches/' + ${document.id}}" th:text="#{showExternals}">
                         Show externals
                     </a>
                 </div>
             </div>
 
             <div class="row px-3 mb-1">
-                <div class="col-sm-3 border">
-                    <h6 th:text="#{internalDispatches} + ':'">Internal dispatches:</h6>
+                <div class="col-sm-3 border bg-light">
+                    <h6 class="font-weight-bold pull-right m-1" th:text="#{internalSubscribers} + ':'">Internal subscribers:</h6>
                 </div>
-                <div class="col-sm-3 border">
-                    <a th:href="@{'/documents/showInternalDispatches/' + ${document.id}}" th:text="#{showInternals}">
+                <div class="col-sm-3 border bg-light column-height-30px">
+                    <a class="btn btn-link pl-1 mt-n1 font-15px" th:href="@{'/documents/showInternalDispatches/' + ${document.id}}" th:text="#{showInternals}">
                         Show internals
                     </a>
                 </div>
@@ -187,8 +187,8 @@
 
             <div class="row mb-1" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
                 <div class="col-sm-4 offset-2 text-right">
-                    <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="btn btn-sm btn-outline-info" th:text="#{update}">Update</a>
-                    <a th:href="@{'/documents/delete/' + ${document.id}}" class="btn btn-sm btn-outline-danger"
+                    <a th:href="@{'/documents/showFormForUpdate/' + ${document.id}}" class="badge badge-info mb-1 width-60px" th:text="#{update}">Update</a>
+                    <a th:href="@{'/documents/delete/' + ${document.id}}" class="badge badge-danger mb-1 width-60px"
                        onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
                 </div>
             </div>
@@ -200,23 +200,25 @@
     <p class="h4 mb-4" th:text="${document.decimalNumber} + ' ' + #{electronicImage}"></p>
 
     <div th:if="${electronicImageDocument == null}">
-        <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
 
-<!--        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>-->
+        <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
+        <br>
+
+
+        <!--        <p th:if="${emptyFileError != null}" class="text-danger">File should not be empty!</p>-->
 
 <!--        <p th:if="${typeFileError != null}" class="text-danger">File should be pdf!</p>-->
 
         <form th:action="@{'/electronicImageDocuments/save/' + ${document.id}}" method="post" enctype="multipart/form-data">
-            <div class="row mb-1 px-3">
-                <div class="col-sm-3 custom-file">
+            <div class="row mb-2 px-3">
+                <div class="col-sm-4 custom-file">
                     <input type="file" th:class="${addFileError == null} ? 'custom-file-input' : 'custom-file-input is-invalid'" id="customFile" name="file">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <label class="custom-file-label" for="customFile" th:text="#{chooseFile}">Choose file</label>
                 </div>
 
-                <div class="col-sm-3">
-                    <input type="number" th:class="${changeNumberError == null} ? 'form-control' : 'form-control is-invalid'" th:name="changeNumber" th:value="${changeNumberError != null} ? ${changeNumber} : ''" th:placeholder="#{changeNumber}"/>
+                <div class="col-sm-2">
+                    <input type="number" th:class="${changeNumberError == null} ? 'form-control' : 'form-control is-invalid'" th:name="changeNumber" th:value="${changeNumberError != null} ? ${changeNumber} : ''" th:placeholder="#{changeNumberTruncate}"/>
                 </div>
-                <button type="submit" class="btn btn-primary col-2" th:text="#{add}">Add electronic image</button>
             </div>
             <div class="row">
                 <span class="help-block col-sm-4">
@@ -236,6 +238,30 @@
                     </div>
                 </span>
             </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="submit" class="badge badge-primary pull-right" th:text="#{addImage}">Add electronic image</button>
+                </div>
+            </div>
+<!--            <button type="submit" class="btn btn-sm btn-primary" th:text="#{add}">Add electronic image</button>-->
+<!--            <div class="row">-->
+<!--                <span class="help-block col-sm-4">-->
+<!--                    <div th:switch="${addFileError}" th:if="${addFileError != null}">-->
+<!--                        <ul class="px-4">-->
+<!--                            <li class="text-danger" th:case="'File should not be empty!'" th:text="#{addFileError.fileShouldNotBeEmpty}"/>-->
+<!--                            <li class="text-danger" th:case="'File should have pdf type!'" th:text="#{addFileError.fileShouldHavePdfType}"/>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </span>-->
+<!--                <span class="help-block col-sm-5" th:if="${changeNumberError != null}">-->
+<!--                    <div th:switch="${changeNumberError}">-->
+<!--                        <ul class="px-6">-->
+<!--                            <li class="text-danger" th:case="'Change number should not be empty!'" th:text="${changeNumberError}"/>-->
+<!--                            <li class="text-danger" th:case="'Change number already exist'" th:text="${changeNumberError}"/>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </span>-->
+<!--            </div>-->
         </form>
 
         <script>
@@ -248,29 +274,31 @@
     </div>
 
 
-    <div class="row px-3 mb-3" th:if="${electronicImageDocument != null}">
-        <div class="col-sm-2 border">
-            <h6 th:text="${electronicImageDocument.fileName}">Electronic image file name</h6>
+    <div class="row align-items-center h-100 px-3 mb-3" th:if="${electronicImageDocument != null}">
+        <div class="col-sm-4">
+            <h6 class="pull-right m-1" th:text="${electronicImageDocument.fileName} + ' (' + #{change} + ' ' + ${electronicImageDocument.changeNumber} + ')'">Electronic image file name</h6>
         </div>
-        <div class="col-sm-2 border">
-            <h6 th:text="#{change} + ' ' +  ${electronicImageDocument.changeNumber}">Electronic image change number</h6>
-        </div>
-        <div class="col-sm-4 border">
-            <a class="btn btn-sm btn-outline-info"
-               th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${electronicImageDocument.id}}" th:target="_blank" th:text="#{show}">Show</a>
+        <div class="col-sm-4">
+            <a class="btn btn-sm btn-success mr-2"
+               th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${electronicImageDocument.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
 
-            <a class="btn btn-sm btn-outline-danger"
-               th:href="@{'/electronicImageDocuments/annull/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{annull}">Annull</a>
+            <a class="btn btn-sm btn-warning text-white mr-2"
+               th:href="@{'/electronicImageDocuments/annull/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-ban"></i></a>
 
 
-            <a class="btn btn-sm btn-outline-danger"
-               th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{delete}">Delete</a>
+            <a class="btn btn-sm btn-danger"
+               th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
         </div>
     </div>
+
+<!--    <br>-->
 
     <div class="row px-3">
-        <a th:href="@{'/electronicImageDocuments/showPreviousVersions/' + ${document.id} + '/' + ${document.decimalNumber}}" th:target="_blank" th:text="#{showPreviousVersions}">Show previous versions</a>
+        <a th:href="@{'/electronicImageDocuments/showPreviousVersions/' + ${document.id} + '/' + ${document.decimalNumber}}" th:text="#{showPreviousVersions}">Show previous versions</a>
     </div>
+
+
+    <br><br>
 
 </div>
 </body>

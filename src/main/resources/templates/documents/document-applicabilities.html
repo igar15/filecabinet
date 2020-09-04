@@ -24,9 +24,12 @@
 
     <br>
 
-    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
     <hr>
+
+    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.applicabilities.section.applicability}"></p>
+
 
     <form th:action="@{'/documents/addApplicability/' + ${id}}" method="post" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
         <div class="row mb-1">
@@ -48,10 +51,11 @@
 
     <br>
 
-    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.applicabilities.section.applicability}"></p>
+<!--    <p class="h4 mb-3" th:text="${document.decimalNumber} + ' ' + #{document.applicabilities.section.applicability}"></p>-->
 
     <div th:if="${document.applicabilities == null ||document.applicabilities.size() == 0}">
-        <p class="h6" th:text="#{noApplicability}">No applicability</p>
+        <br>
+        <p class="h6 font-weight-bold" th:text="#{noApplicability}">No applicability</p>
     </div>
 
     <div th:if="${document.applicabilities != null && document.applicabilities.size() != 0}">
@@ -65,13 +69,13 @@
             </thead>
             <tbody>
                 <tr th:each="tempApplicability : ${document.applicabilities}">
-                    <td class="align-middle">
+                    <td class="align-middle text-center">
                         <a th:href="@{'/documents/showDocumentInfo/' + ${tempApplicability.id}}"><span class="text-dark" th:text="${tempApplicability.decimalNumber}"/></a>
                     </td>
-                    <td class="align-middle" th:text="${tempApplicability.name}"></td>
-                    <td class="align-middle" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/documents/removeApplicability/' + ${id} + '/' + ${tempApplicability.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
+                    <td class="align-middle text-center" th:text="${tempApplicability.name}"></td>
+                    <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
+                        <a class="btn btn-sm btn-danger"
+                           th:href="@{'/documents/removeApplicability/' + ${id} + '/' + ${tempApplicability.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </tbody>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+
     <meta charset="UTF-8">
 
     <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
@@ -10,6 +11,12 @@
     <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <style>
+        .custom {
+            width: 170px !important;
+        }
+    </style>
 
     <title th:text="#{internalDispatchesList}">Internal dispatches list</title>
 </head>
@@ -24,7 +31,7 @@
 
     <br>
 
-    <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
     <hr>
 
@@ -32,6 +39,7 @@
 
 
     <div th:if="${document.internalDispatches == null || document.internalDispatches.size() == 0}">
+        <br>
         <h6 th:text="#{noInternalDispatches}">No internal dispatches</h6>
     </div>
 
@@ -63,9 +71,9 @@
                         <a th:href="@{'/internaldispatches/showInternalDispatchInfo/' + ${tempInternal.key.id}}" th:text="${tempInternal.key.waybill}"></a>
                     </td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
+                        <a class="btn btn-sm btn-danger custom" th:if="${tempInternal.value == true && tempInternal.key.albumName != document.decimalNumber}"
                            th:href="@{'/documents/deregisterInternal/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregister}">Deregister</a>
-                        <a class="btn btn-sm btn-outline-danger" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"
+                        <a class="btn btn-sm btn-danger custom" th:if="${tempInternal.value == true && tempInternal.key.albumName == document.decimalNumber}"
                            th:href="@{'/documents/deregisterAlbum/' + ${id} + '/' + ${tempInternal.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{deregisterAlbum}">Deregister album</a>
                     </td>
                 </tr>

@@ -23,11 +23,11 @@
 
         <br>
 
-        <h3 th:text="#{documentDirectory}">Document Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.documents}">Documents</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3" th:text="#{documentCard}">Document Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-4" th:text="#{documentCard}">Document Card</p>
 
         <form class="form-horizontal" th:object="${document}" th:action="@{/documents/save}" method="post">
 
@@ -38,8 +38,8 @@
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{decimalNumber} + ':'">Decimal number:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{decimalNumber} + ':'">Decimal number:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{decimalNumber}" th:class="${#fields.hasErrors('decimalNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{decimalNumber}"/>
@@ -52,8 +52,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{name} + ':'">Document name:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Document name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
@@ -66,8 +66,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{inventoryNumber} + ':'">Inventory number:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" th:field="*{inventoryNumber}" th:class="${#fields.hasErrors('inventoryNumber')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{inventoryNumber}"/>
@@ -80,8 +80,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="date" th:field="*{receiptDate}" th:class="${#fields.hasErrors('receiptDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{issueDate}"/>
@@ -94,8 +94,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{status} + ':'">Status:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{status} + ':'">Status:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('status')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
@@ -113,8 +113,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{form} + ':'">Document form:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{form} + ':'">Document form:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" th:class="${#fields.hasErrors('form')} ? 'btn-group btn-group-toggle is-invalid' : 'btn-group btn-group-toggle'">
@@ -132,8 +132,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{stage} + ':'">Stage:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{stage} + ':'">Stage:</h6>
                 </div>
                 <div class="col-sm-5">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons"
@@ -154,8 +154,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{sheetsAmount} + ':'">Sheets amount:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" th:field="*{sheetsAmount}" th:class="${#fields.hasErrors('sheetsAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{sheetsAmount}"/>
@@ -168,8 +168,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{format} + ':'">Format:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{format} + ':'">Format:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{format}"
@@ -184,8 +184,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{a4Amount} + ':'">A4 amount:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{a4Amount} + ':'">A4 amount:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" th:field="*{a4Amount}" th:class="${#fields.hasErrors('a4Amount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{a4Amount}"/>
@@ -198,8 +198,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{developer} + ':'">Developer:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{department}">
@@ -218,8 +218,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{originalHolder} + ':'">Original holder:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{originalHolder} + ':'">Original holder:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{originalHolder}">
@@ -238,7 +238,7 @@
             </div>
 
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${document.isNew() ? 'create'  : 'update'}}">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{${document.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
             <br><br>
         </form>

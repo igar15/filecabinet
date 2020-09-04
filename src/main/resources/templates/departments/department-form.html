@@ -23,11 +23,11 @@
 
         <br>
 
-        <h3 th:text="#{departmentDirectory}">Department Directory</h3>
+        <h3 class="font-weight-bold text-secondary" th:text="#{index.section.departments}">Departments</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3" th:text="#{departmentCard}">Department Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-4" th:text="#{departmentCard}">Department Card</p>
 
         <form class="form-horizontal" th:object="${department}" th:action="@{/departments/save}" method="post">
 
@@ -38,8 +38,8 @@
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
@@ -52,8 +52,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{chief} + ':'">Chief name:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{chief} + ':'">Chief name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{chiefName}" th:class="${#fields.hasErrors('chiefName')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{chief}"/>
@@ -66,8 +66,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{workersAmount} + ':'">Workers amount:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{workersAmount} + ':'">Workers amount:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" th:field="*{workersAmount}" th:class="${#fields.hasErrors('workersAmount')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{workersAmount}"/>
@@ -80,22 +80,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{description} + ':'">Description:</h6>
-                </div>
-                <div class="col-sm-5">
-                    <textarea rows="3" th:field="*{description}" th:class="${#fields.hasErrors('description')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{description}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('description')}">
-                        <ul>
-                            <li class="text-danger" th:each="err : ${#fields.errors('description')}" th:text="${err}"/>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{isDeveloper} + ':'">Is Developer:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{isDeveloper} + ':'">Is Developer:</h6>
                 </div>
                 <div class="col-sm-5 mt-2">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -113,8 +99,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{useAlbums} + ':'">Use albums:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{useAlbums} + ':'">Use albums:</h6>
                 </div>
                 <div class="col-sm-5 mt-2">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -131,8 +117,22 @@
                 </div>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{description} + ':'">Description:</h6>
+                </div>
+                <div class="col-sm-5">
+                    <textarea rows="3" th:field="*{description}" th:class="${#fields.hasErrors('description')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{description}"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('description')}">
+                        <ul>
+                            <li class="text-danger" th:each="err : ${#fields.errors('description')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${department.isNew() ? 'create'  : 'update'}}">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{${department.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
 
             <br><br>

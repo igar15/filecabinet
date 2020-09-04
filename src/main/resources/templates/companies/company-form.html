@@ -27,7 +27,7 @@
 
         <hr>
 
-        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-3" th:text="#{companyCard}">Company Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-4" th:text="#{companyCard}">Company Card</p>
 
         <form class="form-horizontal" th:object="${company}" th:action="@{/companies/save}" method="post">
 
@@ -38,7 +38,7 @@
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -52,7 +52,7 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{zipCode} + ':'">Zipcode:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -66,7 +66,7 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{city} + ':'">City:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -80,7 +80,7 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{street} + ':'">Street:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -94,7 +94,7 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{building} + ':'">Building:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -108,7 +108,7 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
                     <h6 class="font-weight-bold pull-right" th:text="#{contactPerson} + ':'">Contact person:</h6>
                 </div>
                 <div class="col-sm-5">
@@ -122,7 +122,7 @@
             </div>
 
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${company.isNew() ? 'create'  : 'update'}}">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{${company.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
 
             <br><br>
