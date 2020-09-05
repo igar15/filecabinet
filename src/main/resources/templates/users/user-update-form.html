@@ -41,7 +41,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{userName} + ':'" class="pull-right">User name:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{userName} + ':'">User name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{userName}"/>
@@ -55,7 +55,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{email} + ':'" class="pull-right">Email:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{email} + ':'">Email:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{email}"/>
@@ -69,7 +69,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 class="pull-right" th:text="#{department} + ':'">Department:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{department} + ':'">Department:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{department}">
@@ -89,7 +89,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{role} + ':'" class="pull-right">Role:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{role} + ':'">Role:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{role}">

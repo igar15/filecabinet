@@ -29,7 +29,7 @@
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3" th:text="#{userCard}">User Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-4" th:text="#{userCard}">User Card</p>
 
         <form class="form-horizontal" th:object="${user}" th:action="@{/users/save}" method="post">
 
@@ -42,8 +42,8 @@
             <input type="hidden" th:field="*{enabled}">
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{userName} + ':'" class="pull-right">User name:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{userName} + ':'">User name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{userName}"/>
@@ -56,8 +56,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{email} + ':'" class="pull-right">Email:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{email} + ':'">Email:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{email}"/>
@@ -70,8 +70,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{password} + ':'" class="pull-right">Password:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{password} + ':'">Password:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{password}"/>
@@ -93,8 +93,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{passwordConfirmation} + ':'" class="pull-right">Password confirmation:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{passwordConfirmation} + ':'">Password confirmation:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="password" th:field="*{passwordConfirmation}" th:class="${#fields.hasErrors('passwordConfirmation')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{passwordConfirmation}"/>
@@ -107,8 +107,8 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 class="pull-right" th:text="#{department} + ':'">Department:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{department} + ':'">Department:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{department}">
@@ -146,8 +146,8 @@
 <!--            </div>-->
 
             <div class="row mb-3">
-                <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{role} + ':'" class="pull-right">Role:</h6>
+                <div class="col-sm-3 form-control-plaintext offset-sm-1">
+                    <h6 class="font-weight-bold pull-right" th:text="#{role} + ':'">Role:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{role}">
@@ -168,7 +168,7 @@
 
 
             <div class="row">
-                <button type="submit" class="btn-sm btn-primary offset-7" th:text="#{${user.isNew() ? 'create'  : 'update'}}">Save</button>
+                <button type="submit" class="btn-sm btn-primary offset-8" th:text="#{${user.isNew() ? 'create'  : 'update'}}">Save</button>
             </div>
 
             <br><br>
