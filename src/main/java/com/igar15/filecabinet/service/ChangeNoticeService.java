@@ -26,4 +26,6 @@ public interface ChangeNoticeService {
     String removeDocument(ChangeNotice changeNotice, int documentId);
 
     void deleteById(int id);
+
+    ChangeNotice findByIdWithElectronicImage(int id);
 }

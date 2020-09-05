@@ -93,7 +93,7 @@
 
         <p class="h4 mb-4" th:text="${changeNotice.name} + ' ' + #{electronicImage}"></p>
 
-        <div th:if="${electronicImageChangeNotice == null}">
+        <div th:if="${changeNotice.electronicImageChangeNotice == null}">
             <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
             <br>
 
@@ -149,16 +149,16 @@
             </script>
         </div>
 
-        <div class="row align-items-center h-100 px-3 mb-3" th:if="${electronicImageChangeNotice != null}">
+        <div class="row align-items-center h-100 px-3 mb-3" th:if="${changeNotice.electronicImageChangeNotice != null}">
             <div class="col-sm-4">
-                <h6 class="pull-right m-1" th:text="${electronicImageChangeNotice.fileName}">Electronic image file name</h6>
+                <h6 class="pull-right m-1" th:text="${changeNotice.electronicImageChangeNotice.fileName}">Electronic image file name</h6>
             </div>
             <div class="col-sm-4">
                 <a class="btn btn-sm btn-success mr-2"
-                   th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
+                   th:href="@{'/electronicImageChangeNotices/showFile/' + ${changeNotice.id} + '/' + ${changeNotice.electronicImageChangeNotice.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
 
                 <a class="btn btn-sm btn-danger"
-                   th:href="@{'/electronicImageChangeNotices/delete/' + ${changeNotice.id} + '/' + ${electronicImageChangeNotice.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
+                   th:href="@{'/electronicImageChangeNotices/delete/' + ${changeNotice.id} + '/' + ${changeNotice.electronicImageChangeNotice.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
             </div>
         </div>
 

@@ -46,4 +46,6 @@ public interface DocumentService {
     void deregisterAlbum(int id, int internalId);
 
     void deleteById(int id);
+
+    Document findByIdWithElectronicImage(int id);
 }

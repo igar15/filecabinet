@@ -57,6 +57,11 @@ public class ChangeNoticeServiceImpl implements ChangeNoticeService {
     }
 
     @Override
+    public ChangeNotice findByIdWithElectronicImage(int id) {
+        return ValidationUtil.checkNotFoundWithId(changeNoticeRepository.findByIdWithElectronicImage(id).orElse(null), id);
+    }
+
+    @Override
     public Page<ChangeNotice> findAll(String name, String department, String changeCode, String after, String before, Pageable pageable) {
         LocalDate afterDate = (after == null) ? LocalDate.of(1900, 1, 1) : LocalDate.parse(after);
         LocalDate beforeDate = (before == null) ? LocalDate.of(2050, 1, 1) : LocalDate.parse(before);

@@ -1,9 +1,6 @@
 package com.igar15.filecabinet.service.impl;
 
-import com.igar15.filecabinet.entity.ChangeNotice;
-import com.igar15.filecabinet.entity.Document;
-import com.igar15.filecabinet.entity.ExternalDispatch;
-import com.igar15.filecabinet.entity.InternalDispatch;
+import com.igar15.filecabinet.entity.*;
 import com.igar15.filecabinet.entity.enums.Form;
 import com.igar15.filecabinet.entity.enums.Stage;
 import com.igar15.filecabinet.entity.enums.Status;
@@ -101,6 +98,18 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document findByIdWithApplicabilities(int id) {
         return ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithApplicabilities(id).orElse(null), id);
+    }
+
+    @Override
+    public Document findByIdWithElectronicImage(int id) {
+       Document document = ValidationUtil.checkNotFoundWithId(documentRepository.findByIdWithElectronicImage(id).orElse(null), id);
+       if (document.getElectronicImageDocuments().size() != 0) {
+           Set<ElectronicImageDocument> electronicImageDocuments = document.getElectronicImageDocuments().stream()
+                   .filter(e -> e.getNonAnnulled())
+                   .collect(Collectors.toSet());
+           document.setElectronicImageDocuments(electronicImageDocuments);
+       }
+       return document;
     }
 
     @Override

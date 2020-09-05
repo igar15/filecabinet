@@ -69,4 +69,9 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
                                @Param("a4Amount") int a4Amount, @Param("department") Department department, @Param("originalHolder") Company originalHolder);
 
 
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
+    @Query("select d from Document d left join fetch d.electronicImageDocuments e where d.id=:id")
+    Optional<Document> findByIdWithElectronicImage(@Param("id") int id);
+
+
 }

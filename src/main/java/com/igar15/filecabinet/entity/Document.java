@@ -96,6 +96,9 @@ public class Document extends AbstractNamedEntity {
     @Column(name = "is_active")
     private Map<InternalDispatch, Boolean> internalDispatches;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "document")
+    private Set<ElectronicImageDocument> electronicImageDocuments;
+
 
     public Document() {
     }
@@ -240,5 +243,13 @@ public class Document extends AbstractNamedEntity {
 
     public void setInternalDispatches(Map<InternalDispatch, Boolean> internalDispatches) {
         this.internalDispatches = internalDispatches;
+    }
+
+    public Set<ElectronicImageDocument> getElectronicImageDocuments() {
+        return electronicImageDocuments;
+    }
+
+    public void setElectronicImageDocuments(Set<ElectronicImageDocument> electronicImageDocuments) {
+        this.electronicImageDocuments = electronicImageDocuments;
     }
 }

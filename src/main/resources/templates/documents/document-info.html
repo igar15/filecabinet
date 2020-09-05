@@ -202,7 +202,7 @@
 
     <p class="h4 mb-4" th:text="${document.decimalNumber} + ' ' + #{electronicImage}"></p>
 
-    <div th:if="${electronicImageDocument == null}">
+    <div th:if="${document.electronicImageDocuments == null || document.electronicImageDocuments.size() == 0}">
 
         <p class="h6" th:text="#{noElectronicImages}">No electronic images</p>
         <br>
@@ -277,20 +277,20 @@
     </div>
 
 
-    <div class="row align-items-center h-100 px-3 mb-3" th:if="${electronicImageDocument != null}">
+    <div class="row align-items-center h-100 px-3 mb-3" th:if="${document.electronicImageDocuments != null && document.electronicImageDocuments.size() == 1}">
         <div class="col-sm-4">
-            <h6 class="pull-right m-1" th:text="${electronicImageDocument.fileName} + ' (' + #{change} + ' ' + ${electronicImageDocument.changeNumber} + ')'">Electronic image file name</h6>
+            <h6 class="pull-right m-1" th:text="${document.electronicImageDocuments.iterator().next().fileName} + ' (' + #{change} + ' ' + ${document.electronicImageDocuments.iterator().next().changeNumber} + ')'">Electronic image file name</h6>
         </div>
         <div class="col-sm-4">
             <a class="btn btn-sm btn-success mr-2"
-               th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${electronicImageDocument.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
+               th:href="@{'/electronicImageDocuments/showFile/' + ${document.id} + '/' + ${document.electronicImageDocuments.iterator().next().id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
 
             <a class="btn btn-sm btn-warning text-white mr-2"
-               th:href="@{'/electronicImageDocuments/annull/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-ban"></i></a>
+               th:href="@{'/electronicImageDocuments/annull/' + ${document.id} + '/' + ${document.electronicImageDocuments.iterator().next().id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-ban"></i></a>
 
 
             <a class="btn btn-sm btn-danger"
-               th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${electronicImageDocument.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
+               th:href="@{'/electronicImageDocuments/delete/' + ${document.id} + '/' + ${document.electronicImageDocuments.iterator().next().id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
         </div>
     </div>
 

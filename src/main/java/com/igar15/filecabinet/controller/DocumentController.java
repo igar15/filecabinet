@@ -1,6 +1,7 @@
 package com.igar15.filecabinet.controller;
 
 import com.igar15.filecabinet.entity.*;
+import com.igar15.filecabinet.repository.DocumentRepository;
 import com.igar15.filecabinet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -99,9 +100,10 @@ public class DocumentController {
 
     @GetMapping("/showDocumentInfo/{id}")
     public String showDocumentInfo(@PathVariable("id") int id, Model model) {
-        ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByNonAnnulledAndByDocumentId(true, id);
-        model.addAttribute("document", documentService.findById(id));
-        model.addAttribute("electronicImageDocument", electronicImageDocument);
+        Document document = documentService.findByIdWithElectronicImage(id);
+//        ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByNonAnnulledAndByDocumentId(true, id);
+        model.addAttribute("document", document);
+//        model.addAttribute("electronicImageDocument", electronicImageDocument);
         return "/documents/document-info";
     }
 
