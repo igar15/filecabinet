@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -66,15 +68,17 @@ public class ElectronicImageDocumentController {
     }
 
     @GetMapping("/showFile/{documentId}/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("documentId") int documentId,
-                                                 @PathVariable("id") int id) {
+    public void downloadFile(@PathVariable("documentId") int documentId,
+                             @PathVariable("id") int id,
+                             HttpServletResponse response) throws IOException {
         // Load file from database
         ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByIdAndDocumentIdWithElectronicImageData(documentId, id);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(electronicImageDocument.getFileType()))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
-                .body(new ByteArrayResource(electronicImageDocument.getElectronicImageData().getData()));
+        response.setContentType("application/pdf");
+
+        InputStream inputStream = new ByteArrayInputStream(electronicImageDocument.getElectronicImageData().getData());
+        OutputStream outputStream = response.getOutputStream();
+        outputStream.write(inputStream.readAllBytes());
     }
 
     @GetMapping("/annull/{documentId}/{id}")

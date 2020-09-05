@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 @Controller
 @RequestMapping("/electronicImageChangeNotices")
 public class ElectronicImageChangeNoticeController {
@@ -45,15 +51,17 @@ public class ElectronicImageChangeNoticeController {
     }
 
     @GetMapping("/showFile/{changeNoticeId}/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("changeNoticeId") int changeNoticeId,
-                                                 @PathVariable("id") int id) {
+    public void downloadFile(@PathVariable("changeNoticeId") int changeNoticeId,
+                             @PathVariable("id") int id,
+                             HttpServletResponse response) throws IOException {
         // Load file from database
         ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByIdAndChangeNoticeIdWithElectronicImageData(id, changeNoticeId);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(electronicImageChangeNotice.getFileType()))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
-                .body(new ByteArrayResource(electronicImageChangeNotice.getElectronicImageData().getData()));
+        response.setContentType("application/pdf");
+
+        InputStream inputStream = new ByteArrayInputStream(electronicImageChangeNotice.getElectronicImageData().getData());
+        OutputStream outputStream = response.getOutputStream();
+        outputStream.write(inputStream.readAllBytes());
     }
 
 
