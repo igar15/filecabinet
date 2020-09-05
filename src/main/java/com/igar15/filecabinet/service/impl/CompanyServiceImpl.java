@@ -48,13 +48,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Cacheable("companies")
     public Page<Company> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
 
     @Override
-    @Cacheable("companies")
     public Page<Company> findAllByNameContainsIgnoreCase(String companyName, Pageable pageable) {
         return companyRepository.findAllByNameContainsIgnoreCase(companyName, pageable);
     }

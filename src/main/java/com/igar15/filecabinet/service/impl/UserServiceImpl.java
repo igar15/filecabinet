@@ -9,6 +9,8 @@ import com.igar15.filecabinet.util.exception.EmailExistsException;
 import com.igar15.filecabinet.util.exception.NotFoundException;
 import com.igar15.filecabinet.util.validation.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable);
     }
 
+    @Cacheable("users")
     @Override
     public List<User> findAllByNonLocked(boolean nonLocked) {
         return userRepository.findAllByNonLocked(nonLocked);
@@ -80,6 +83,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void changeStatus(User user) {
         userRepository.changeStatus(user.getNonLocked(), user.getId());

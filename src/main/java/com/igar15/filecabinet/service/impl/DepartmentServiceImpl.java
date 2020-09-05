@@ -57,7 +57,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    @Cacheable("departments")
     public Page<Department> findAll(Pageable pageable) {
         return departmentRepository.findAll(pageable);
     }
