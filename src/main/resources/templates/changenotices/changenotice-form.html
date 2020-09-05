@@ -23,23 +23,23 @@
 
         <br>
 
-        <h3 th:text="#{changeNoticeDirectory}">Change notice Directory</h3>
+        <h3 class="font-weight-bold text-secondary" th:text="#{index.section.changenotices}">Change notices</h3>
 
         <hr>
 
-        <p class="h4 mb-3 offset-sm-3" th:text="#{changeNoticeCard}">Change notice Card</p>
+        <p class="h4 font-weight-bolder font-italic mb-4 offset-sm-3" th:text="#{changeNoticeCard}">Change notice Card</p>
 
         <form class="form-horizontal" th:object="${changeNotice}" th:action="@{/changenotices/save}" method="post">
 
-            <div th:if="${#fields.hasErrors('*')}" class="text-danger h5 offset-sm-2">
-                <p th:text="#{pleaseCorrectValues}">Error Message</p>
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger h5 col-sm-6 offset-sm-2 text-center">
+                <p class="m-1" th:text="#{pleaseCorrectValues}">Error Message</p>
             </div>
 
             <input type="hidden" th:field="*{id}">
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{name} + ':'">Name:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{name} + ':'">Name:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{name}"/>
@@ -53,7 +53,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{changeCode} + ':'">Change code:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{changeCode} + ':'">Change code:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" th:field="*{changeCode}" th:class="${#fields.hasErrors('changeCode')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="#{changeCode}"/>
@@ -67,7 +67,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{issueDate} + ':'">Issue date:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{issueDate} + ':'">Issue date:</h6>
                 </div>
                 <div class="col-sm-5">
                     <input type="date" th:field="*{issueDate}" th:class="${#fields.hasErrors('issueDate')} ? 'form-control is-invalid' : 'form-control'" th:placeholder="'Issue date'"/>
@@ -81,7 +81,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm-2 form-control-plaintext offset-sm-1">
-                    <h6 th:text="#{developer} + ':'">Developer:</h6>
+                    <h6 class="font-weight-bold pull-right" th:text="#{developer} + ':'">Developer:</h6>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-control selectpicker" th:field="*{department}">

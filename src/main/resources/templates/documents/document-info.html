@@ -235,8 +235,8 @@
                 <span class="help-block col-sm-5" th:if="${changeNumberError != null}">
                     <div th:switch="${changeNumberError}">
                         <ul class="px-6">
-                            <li class="text-danger" th:case="'Change number should not be empty!'" th:text="${changeNumberError}"/>
-                            <li class="text-danger" th:case="'Change number already exist'" th:text="${changeNumberError}"/>
+                            <li class="text-danger" th:case="'Change number should not be empty!'" th:text="#{changeNumberRequired}"/>
+                            <li class="text-danger" th:case="'Change number already exist'" th:text="#{changeNumberExist}"/>
                         </ul>
                     </div>
                 </span>

@@ -23,7 +23,7 @@
 
     <br>
 
-    <h3 th:text="#{changeNoticeDirectory}">Change notice Directory</h3>
+    <h3 class="font-weight-bold text-secondary" th:text="#{index.section.changenotices}">Change notices</h3>
 
     <hr>
 
@@ -47,7 +47,7 @@
                     </div>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <input type="number" th:class="${numberErrorMessage == null} ? 'form-control' : 'form-control is-invalid'" th:name="newDocumentChangeNumber" th:value="${numberErrorMessage != null || docErrorMessage != null} ? ${param.newDocumentChangeNumber} : ''" th:placeholder="#{changeNumber}"/>
                 <span class="help-block" th:if="${numberErrorMessage != null}">
                     <div th:switch="${numberErrorMessage}">
@@ -81,7 +81,7 @@
                 <th class="align-middle" th:text="#{name}">Name</th>
                 <th class="align-middle" th:text="#{changeNumber}">Change number</th>
                 <th class="align-middle" th:text="#{developer}">Developer</th>
-                <th class="align-middle" th:text="#{action}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Action</th>
+                <th class="align-middle" th:text="#{remove}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">Remove</th>
             </thead>
             <tbody>
                 <tr th:each="entry : ${changeNotice.documents.entrySet()}">
@@ -90,8 +90,8 @@
                     <td class="align-middle text-center" th:text="${entry.value}"></td>
                     <td class="align-middle text-center" th:text="${entry.key.department == null} ? '' : ${entry.key.department.name}"></td>
                     <td class="align-middle text-center" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_OTD_WORKER')">
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="@{'/changenotices/removeDocument/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false" th:text="#{remove}">Remove</a>
+                        <a class="btn btn-sm btn-danger"
+                           th:href="@{'/changenotices/removeDocument/' + ${changeNotice.id} + '/' + ${entry.key.id}}" onclick="if (!(confirm('Are you sure?'))) return false"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </tbody>
