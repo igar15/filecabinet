@@ -154,7 +154,7 @@
                         <option value="" th:text="#{nothingSelected}">Nothing selected</option>
                         <option th:each="dropValue : ${T(com.igar15.filecabinet.entity.enums.Role).values()}"
                                 th:value="${dropValue}"
-                                th:text="${dropValue}">
+                                th:text="#{'role.' + ${dropValue}}">
                         </option>
                     </select>
                     <span class="help-block" th:if="${#fields.hasErrors('role')}">
