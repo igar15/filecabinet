@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 @Aspect
+@ConditionalOnExpression("${authentication.service.enabled:true}")
 @Component
 public class LoggingAspect {
 
