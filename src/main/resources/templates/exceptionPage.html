@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/css/bootstrap-4.5.0-dist/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <link th:href="@{/css/custom.css}" rel="stylesheet" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+
+    <script th:src="@{/js/jquery-1.7.2.js}"></script>
+
+    <title th:text="#{error}">Error</title>
+</head>
+<body>
+
+<div class="container" th:replace="fragments/menu :: menu">
+    <p>menu</p>
+</div>
+
+<br>
+
+<div class="container">
+    <div class="row px-3">
+        <p class="h4 font-weight-bold text-danger" th:text="#{error} + '!'">Error</p>
+    </div>
+    <div class="row px-3" th:if="${notFoundMessage != null}">
+        <p class="alert alert-danger col-sm-12 text-center font-weight-bold" th:text="#{notFoundMessage}">Not found message</p>
+    </div>
+    <div class="row px-3" th:if="${exceptionMessage != null}">
+        <p class="alert alert-danger col-sm-12 text-center font-weight-bold" th:text="${exceptionMessage}">Exception message</p>
+    </div>
+</div>
+
+</body>
+</html>
