@@ -36,10 +36,6 @@ public class ChangeNotice extends AbstractNamedEntity {
     @Column(name = "change")
     private Map<Document, Integer> documents;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "changeNotice")
-    private ElectronicImageChangeNotice electronicImageChangeNotice;
-
-
     public ChangeNotice() {
     }
 
@@ -83,11 +79,4 @@ public class ChangeNotice extends AbstractNamedEntity {
         this.issueDate = issueDate;
     }
 
-    public ElectronicImageChangeNotice getElectronicImageChangeNotice() {
-        return electronicImageChangeNotice;
-    }
-
-    public void setElectronicImageChangeNotice(ElectronicImageChangeNotice electronicImageChangeNotice) {
-        this.electronicImageChangeNotice = electronicImageChangeNotice;
-    }
 }

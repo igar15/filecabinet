@@ -27,5 +27,4 @@ public interface ChangeNoticeService {
 
     void deleteById(int id);
 
-    ChangeNotice findByIdWithElectronicImage(int id);
 }

@@ -54,7 +54,4 @@ public interface ChangeNoticeRepository extends JpaRepository<ChangeNotice, Inte
     void updateWithoutChildren(@Param("id") int id, @Param("name") String name, @Param("changeCode") int changeCode,
                                @Param("issueDate") LocalDate issueDate, @Param("department") Department department);
 
-    @EntityGraph(attributePaths = "department")
-    @Query("select c from ChangeNotice c left join fetch c.electronicImageChangeNotice where c.id=:id")
-    Optional<ChangeNotice> findByIdWithElectronicImage(@Param("id") int id);
 }

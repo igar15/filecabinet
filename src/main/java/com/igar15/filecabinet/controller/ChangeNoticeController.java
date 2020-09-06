@@ -78,9 +78,9 @@ public class ChangeNoticeController {
 
     @GetMapping("/showChangeNoticeInfo/{id}")
     public String showChangeNoticeInfo(@PathVariable("id") int id, Model model) {
-        ChangeNotice changeNotice = changeNoticeService.findByIdWithElectronicImage(id);
-//        ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByChangeNoticeId(id);
-//        model.addAttribute("electronicImageChangeNotice", electronicImageChangeNotice);
+        ChangeNotice changeNotice = changeNoticeService.findById(id);
+        ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByChangeNoticeId(id);
+        model.addAttribute("electronicImageChangeNotice", electronicImageChangeNotice);
         model.addAttribute("changeNotice", changeNotice);
         return "/changenotices/changenotice-info";
     }

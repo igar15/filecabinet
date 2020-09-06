@@ -22,6 +22,7 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
+    @EntityGraph(attributePaths = {"department", "originalHolder"})
     Optional<Document> findByDecimalNumber(String decimalNumber);
 
     @EntityGraph(attributePaths = {"department", "originalHolder"})

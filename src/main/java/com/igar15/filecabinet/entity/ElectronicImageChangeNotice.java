@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class ElectronicImageChangeNotice extends ElectronicImage {
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "change_notice_id")
     private ChangeNotice changeNotice;
 
