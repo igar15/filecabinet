@@ -39,7 +39,7 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
     Optional<Document> findByIdWithInternalDispatches(@Param("id") int id);
 
 //    @EntityGraph(attributePaths = {"department", "originalHolder"})
-    @Query("select d from Document d left join fetch d.department left join fetch d.originalHolder left join fetch d.applicabilities a left join fetch a.department where d.id=:id")
+    @Query("select d from Document d left join fetch d.department left join fetch d.originalHolder left join fetch d.applicabilities a left join fetch a.department left join fetch a.originalHolder where d.id=:id")
     Optional<Document> findByIdWithApplicabilities(@Param("id") int id);
 
     List<Document> findAllByApplicabilities_DecimalNumber(String decimalNumber);

@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Table(name = "electronic_image_change_notices")
 public class ElectronicImageChangeNotice extends ElectronicImage {
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @MapsId
     @JoinColumn(name = "change_notice_id")
     private ChangeNotice changeNotice;
 
