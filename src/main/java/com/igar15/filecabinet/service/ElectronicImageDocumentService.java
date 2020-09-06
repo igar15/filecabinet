@@ -19,6 +19,8 @@ public interface ElectronicImageDocumentService {
     void annull(int documentId, int id);
 
     List<ElectronicImageDocument> findAllByNonAnnulledAndDocumentId(boolean nonAnnulled, int documentId);
+
+    ElectronicImageDocument findByDocumentIdAndNonAnnulledWithElectronicImageData(int documentId);
 }
 
 

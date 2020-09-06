@@ -10,5 +10,5 @@ public interface ElectronicImageChangeNoticeService {
 
     void delete(int changeNoticeId, int id);
 
-    ElectronicImageChangeNotice findByIdAndChangeNoticeIdWithElectronicImageData(int id, int changeNoticeId);
+    ElectronicImageChangeNotice findByChangeNoticeIdWithElectronicImageData(int changeNoticeId);
 }

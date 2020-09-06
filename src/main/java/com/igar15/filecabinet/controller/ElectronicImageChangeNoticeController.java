@@ -50,12 +50,11 @@ public class ElectronicImageChangeNoticeController {
         return "redirect:/changenotices/showChangeNoticeInfo/" + changeNoticeId;
     }
 
-    @GetMapping("/showFile/{changeNoticeId}/{id}")
+    @GetMapping("/showFile/{changeNoticeId}")
     public void downloadFile(@PathVariable("changeNoticeId") int changeNoticeId,
-                             @PathVariable("id") int id,
                              HttpServletResponse response) throws IOException {
         // Load file from database
-        ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByIdAndChangeNoticeIdWithElectronicImageData(id, changeNoticeId);
+        ElectronicImageChangeNotice electronicImageChangeNotice = electronicImageChangeNoticeService.findByChangeNoticeIdWithElectronicImageData(changeNoticeId);
 
         response.setContentType("application/pdf");
 

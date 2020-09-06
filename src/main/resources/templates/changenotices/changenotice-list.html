@@ -92,7 +92,8 @@
                         <a th:if="${tempChangeNotice.department != null}" th:href="@{'/departments/showDepartmentInfo/' + ${tempChangeNotice.department.id}}" th:target="_blank" th:text="${tempChangeNotice.department.name}"></a>
                     </td>
                     <td class="align-middle text-center">
-                        <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
+                        <a class="btn btn-sm btn-success mr-2"
+                           th:href="@{'/electronicImageChangeNotices/showFile/' + ${tempChangeNotice.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
                     </td>
                 </tr>
             </tbody>

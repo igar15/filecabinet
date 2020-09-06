@@ -68,11 +68,24 @@ public class ElectronicImageDocumentController {
     }
 
     @GetMapping("/showFile/{documentId}/{id}")
-    public void downloadFile(@PathVariable("documentId") int documentId,
-                             @PathVariable("id") int id,
-                             HttpServletResponse response) throws IOException {
+    public void showFile(@PathVariable("documentId") int documentId,
+                         @PathVariable("id") int id,
+                         HttpServletResponse response) throws IOException {
         // Load file from database
         ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByIdAndDocumentIdWithElectronicImageData(documentId, id);
+
+        response.setContentType("application/pdf");
+
+        InputStream inputStream = new ByteArrayInputStream(electronicImageDocument.getElectronicImageData().getData());
+        OutputStream outputStream = response.getOutputStream();
+        outputStream.write(inputStream.readAllBytes());
+    }
+
+    @GetMapping("/showNonAnnulledFile/{documentId}")
+    public void showNonAnnulledFile(@PathVariable("documentId") int documentId,
+                                    HttpServletResponse response) throws IOException {
+        // Load file from database
+        ElectronicImageDocument electronicImageDocument = electronicImageDocumentService.findByDocumentIdAndNonAnnulledWithElectronicImageData(documentId);
 
         response.setContentType("application/pdf");
 

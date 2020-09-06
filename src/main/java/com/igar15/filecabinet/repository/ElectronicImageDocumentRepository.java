@@ -15,6 +15,9 @@ public interface ElectronicImageDocumentRepository extends JpaRepository<Electro
     @Query("select e from ElectronicImageDocument e where e.nonAnnulled=:nonAnnulled and e.document.id=:documentId")
     Optional<ElectronicImageDocument> findByNonAnnulledAndByDocumentId(@Param("nonAnnulled") boolean nonAnnulled, @Param("documentId") int documentId);
 
+    @Query("select e from ElectronicImageDocument e left join fetch e.electronicImageData where e.nonAnnulled=:nonAnnulled and e.document.id=:documentId")
+    Optional<ElectronicImageDocument> findByDocumentIdAndNonAnnulledWithElectronicImageData(@Param("nonAnnulled") boolean nonAnnulled, @Param("documentId") int documentId);
+
     @Modifying
     @Transactional
     @Query("delete from ElectronicImageDocument e where e.document.id=:documentId and e.id=:id")

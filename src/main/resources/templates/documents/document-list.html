@@ -140,7 +140,8 @@
                         <a th:if="${tempDocument.originalHolder != null}" th:href="@{'/companies/showCompanyInfo/' + ${tempDocument.originalHolder.id}}" th:target="_blank" th:text="${tempDocument.originalHolder.name}"></a>
                     </td>
                     <td class="align-middle text-center">
-                        <a href="file:///C:/ARCHIV_22_N/PODL/VUIA/301411/068/SP/" class="btn btn-sm btn-success"><i class="fa fa-binoculars"></i></a>
+                        <a class="btn btn-sm btn-success mr-2"
+                           th:href="@{'/electronicImageDocuments/showNonAnnulledFile/' + ${tempDocument.id}}" th:target="_blank"><i class="fa fa-binoculars"></i></a>
                     </td>
                 </tr>
             </tbody>

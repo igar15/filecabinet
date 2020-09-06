@@ -49,8 +49,8 @@ public class ElectronicImageChangeNoticeServiceImpl implements ElectronicImageCh
     }
 
     @Override
-    public ElectronicImageChangeNotice findByIdAndChangeNoticeIdWithElectronicImageData(int id, int changeNoticeId) {
+    public ElectronicImageChangeNotice findByChangeNoticeIdWithElectronicImageData(int changeNoticeId) {
         return ValidationUtil.checkNotFound(electronicImageChangeNoticeRepository
-                .findByIdAndChangeNoticeIdWithElectronicImageData(id, changeNoticeId).orElse(null), " with change notice id " + changeNoticeId + " and id " + id);
+                .findByChangeNoticeIdWithElectronicImageData(changeNoticeId).orElse(null), " with change notice id " + changeNoticeId);
     }
 }

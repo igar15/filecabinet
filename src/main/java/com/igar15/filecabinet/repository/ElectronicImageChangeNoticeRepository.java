@@ -15,8 +15,8 @@ public interface ElectronicImageChangeNoticeRepository extends JpaRepository<Ele
 
     Optional<ElectronicImageChangeNotice> findByIdAndAndChangeNotice_Id(int id, int changeNoticeId);
 
-    @Query("select e from ElectronicImageChangeNotice e join fetch e.electronicImageData where e.changeNotice.id=:changeNoticeId and e.id=:id")
-    Optional<ElectronicImageChangeNotice> findByIdAndChangeNoticeIdWithElectronicImageData(@Param("id") int id, @Param("changeNoticeId") int changeNoticeId);
+    @Query("select e from ElectronicImageChangeNotice e join fetch e.electronicImageData where e.changeNotice.id=:changeNoticeId")
+    Optional<ElectronicImageChangeNotice> findByChangeNoticeIdWithElectronicImageData(@Param("changeNoticeId") int changeNoticeId);
 
     @Modifying
     @Transactional

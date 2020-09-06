@@ -62,6 +62,11 @@ public class ElectronicImageDocumentServiceImpl implements ElectronicImageDocume
     }
 
     @Override
+    public ElectronicImageDocument findByDocumentIdAndNonAnnulledWithElectronicImageData(int documentId) {
+        return ValidationUtil.checkNotFound(electronicImageDocumentRepository.findByDocumentIdAndNonAnnulledWithElectronicImageData(true, documentId).orElse(null), "with document id " + documentId);
+    }
+
+    @Override
     public void annull(int documentId, int id) {
         electronicImageDocumentRepository.annull(documentId, id, false);
     }
