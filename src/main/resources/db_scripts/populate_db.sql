@@ -98,6 +98,6 @@ values (1009, 1026, true),
        (1013, 1027, true),
        (1014, 1028, true);
 
-insert into users (id, email, name, department_id, password, created, enabled, non_locked, role)
-values (1035, 'igar15@yandex.ru', 'Shlyakhtenkov Igor', 1004, '$2y$12$xkbP.LsqRdXHl2tf9gGYheGVgcf7mJrArAQskGLCp0AsK.XXwTHg6', '2020-08-29', true, true, 'ROLE_ADMIN'),
-       (1036, 'igar151@yandex.ru', 'Shlyakhtenkov Igor', 1004, '$2y$12$xkbP.LsqRdXHl2tf9gGYheGVgcf7mJrArAQskGLCp0AsK.XXwTHg6', '2020-08-29', true, true, 'ROLE_USER');
+insert into users (email, name, department_id, password, created, enabled, non_locked, role)
+values ('igar15@yandex.ru', 'Shlyakhtenkov Igor', 1004, '$2y$12$xkbP.LsqRdXHl2tf9gGYheGVgcf7mJrArAQskGLCp0AsK.XXwTHg6', '2020-08-29', true, true, 'ROLE_ADMIN'),
+       ('igar151@yandex.ru', 'Shlyakhtenkov Igor', 1004, '$2y$12$xkbP.LsqRdXHl2tf9gGYheGVgcf7mJrArAQskGLCp0AsK.XXwTHg6', '2020-08-29', true, true, 'ROLE_USER');
